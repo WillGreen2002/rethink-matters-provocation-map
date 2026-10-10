@@ -62,6 +62,7 @@
       select(id);
     },
     onHover: (n, px, py) => showTip(n, px, py),
+    onInteract: () => { S.touched = true; },   // once the visitor has moved the map themselves, stop re-fitting it on resize
   });
 
   const app = {
@@ -202,7 +203,7 @@
       const real = [...set].filter((id) => id !== "__none__");
       matchLine.append(h("span", null, h("b", null, real.length), ` of ${topics.length} prompts match`));
       if (!real.length) matchLine.append(h("span", null, "Try removing a filter."));
-      if (move && real.length) { notice(`${real.length} prompt${real.length === 1 ? "" : "s"} match — the rest are dimmed`); view.flyToSet(real, 0.3, 1.1); }
+      if (move && real.length) { S.touched = true; notice(`${real.length} prompt${real.length === 1 ? "" : "s"} match — the rest are dimmed`); view.flyToSet(real, 0.3, 1.1); }
     }
   }
   let noticeT;
@@ -347,6 +348,7 @@
   function select(id, o = {}) {
     const n = byId.get(id);
     if (!n) return;
+    S.touched = true;
     if (S.sel && S.sel !== id && !o.noPush) { S.hist.push(S.sel); if (S.hist.length > 30) S.hist.shift(); }
     S.sel = id;
     view.setSelected(id);
@@ -454,10 +456,17 @@
     else if (S.thread && !typing && e.key === "ArrowRight") stepTo(S.thread.i + 1);
     else if (S.thread && !typing && e.key === "ArrowLeft") stepTo(S.thread.i - 1);
   });
-  $("#zIn").onclick = () => view.zoomBy(1.4);
-  $("#zOut").onclick = () => view.zoomBy(1 / 1.4);
-  $("#zFit").onclick = () => view.fit(true);
-  new ResizeObserver(() => { view.resize(); setInsets(body.classList.contains("right-open")); }).observe($("#stage"));
+  $("#zIn").onclick = () => { S.touched = true; view.zoomBy(1.4); };
+  $("#zOut").onclick = () => { S.touched = true; view.zoomBy(1 / 1.4); };
+  $("#zFit").onclick = () => { S.touched = false; view.fit(true); };
+  let refitT;
+  new ResizeObserver(() => {
+    view.resize();
+    setInsets(body.classList.contains("right-open"));
+    // window resized / phone rotated / panel animation finished: re-fit the whole map unless the visitor has taken over the camera
+    clearTimeout(refitT);
+    refitT = setTimeout(() => { if (!S.touched && !S.sel && !S.thread) view.fit(false); }, 120);
+  }).observe($("#stage"));
   window.addEventListener("hashchange", () => { const id = decodeURIComponent(location.hash.slice(1)); if (id && byId.has(id) && id !== S.sel) select(id); });
 
   /* ------------------------------------------------------------------ boot */

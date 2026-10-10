@@ -369,6 +369,7 @@
       cv.addEventListener("pointerdown", (e) => {
         cv.setPointerCapture(e.pointerId);
         this.touch = e.pointerType === "touch";
+        this.cb.onInteract && this.cb.onInteract();
         const [px, py] = pos(e);
         pts.set(e.pointerId, [px, py]);
         this.anim = null;
@@ -442,6 +443,7 @@
       cv.addEventListener("pointerleave", (e) => { if (e.pointerType !== "touch" && !down) { this.hover = null; this.dirty = true; this.cb.onHover && this.cb.onHover(null); } });
       cv.addEventListener("wheel", (e) => {
         e.preventDefault();
+        this.cb.onInteract && this.cb.onInteract();
         const [px, py] = pos(e);
         const f = Math.exp(-e.deltaY * (e.ctrlKey ? 0.012 : (e.deltaMode === 1 ? 0.05 : 0.0016)));
         this.zoomAt(px, py, f);

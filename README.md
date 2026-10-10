@@ -18,7 +18,26 @@ and the visual grammar of the *Map of shared aims* on the About page).
 | `docs/build-report.md` | tag usage, network statistics, warnings from the last build |
 | `source_data/`, `source_notes/`, `build/local_checks.json` | **local only — never in the GitHub repo.** The original spreadsheets and notes document (participant names, contact e-mails, budgets), and the private lists of names/terms the leak check refuses to publish. See `build/local_checks.example.json` for the format. |
 
-## View it
+## Live site
+
+**<https://willgreen2002.github.io/rethink-matters-provocation-map/>** — hosted by GitHub Pages straight from this repository.
+A GitHub Actions workflow (`.github/workflows/pages.yml`) publishes **only the `site/` folder**; the vault, curation files and build tools are in the repository but are not served.
+Share a link to any note with `#`, e.g. `…/#n:hype-vs-evidence`. The page carries `noindex`, so search engines are asked to leave it alone — but anyone with the link can open it.
+
+To update the live site after changing `curation/` (or the code in `site/assets/`):
+
+```bash
+python -I build/build.py       # rebuild site/, vault/ and docs/ (skip if you only edited site/assets/)
+python -I build/preflight.py   # must say "preflight OK" before anything is committed
+git add -A
+git commit -m "describe the change"
+git push                       # the site redeploys within a minute or two
+```
+
+The repository is **public** (free GitHub Pages needs that), so everything committed is readable by anyone — which is why the original spreadsheets, the raw notes
+document and `build/local_checks.json` are git-ignored and must stay out. `preflight.py` checks for exactly this; do not skip it.
+
+## View it locally
 
 Double-click `site/index.html` (it works from disk), or serve the folder:
 
