@@ -1,0 +1,140 @@
+# Proposed provocations — from the 'Backup Provocations' tab and 'registration of interest'. Not yet discussed in a session,
+# so no post-meeting notes. Provocation text is pulled verbatim from the workbook at build time.
+
+- id: classing-by-application
+  title: "Does classing biomaterials by application help or hinder?"
+  sessions: [PROPOSED]
+  scale: [micro]
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "classing biomaterials by application" }
+  refs: []
+  notes: ""
+
+- id: circular-bioeconomy
+  title: "How to achieve a circular bioeconomy?"
+  sessions: [PROPOSED]
+  scale: [macro]
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "How to achieve a circular bioeconomy" }
+  refs: []
+  notes: ""
+
+- id: predict-and-design-wood
+  title: "What are we missing to predict and design biobased materials? Designing wood from scratch"
+  sessions: [PROPOSED]
+  scale: []
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "What are we missing to predict" }
+  refs: []
+  notes: ""
+
+- id: emergent-properties
+  title: "Which materials have emergent properties — and how would we model them?"
+  sessions: [PROPOSED]
+  scale: [micro]
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "Which material has emergent properties" }
+  refs: []
+  notes: ""
+
+- id: waste-feedstock-economics
+  title: "Waste feedstocks aren’t as “cheap” as they look"
+  sessions: [PROPOSED]
+  scale: [macro]
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "Waste feedstocks are often framed" }
+  refs: []
+  notes: ""
+
+- id: composite-property-database
+  title: "Predicting composite properties: where is the database?"
+  sessions: [PROPOSED]
+  scale: [meso]
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "difficult to predict composite material properties" }
+  refs:
+    - { label: "MOF database cited as an example", url: "https://mof.tech.northwestern.edu/" }
+  notes: ""
+
+- id: biomimicry-feature-map
+  title: "Mapping which biological features have, and haven’t, been reproduced"
+  sessions: [PROPOSED]
+  scale: [micro]
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "Biomimicry in action" }
+  refs: []
+  notes: ""
+
+- id: protein-waste-valorisation
+  title: "Protein-based waste valorisation"
+  sessions: [PROPOSED]
+  scale: [meso, macro]
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "Protein-based waste valorisation" }
+  refs:
+    - { label: "Review table cited", url: "https://www.nature.com/articles/s41578-026-00925-3" }
+  notes: ""
+
+- id: expansion-microscopy
+  title: "1000× expansion microscopy"
+  sessions: [PROPOSED]
+  scale: [micro]
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "expansion microscopy" }
+  refs:
+    - { label: "Preprint cited", url: "https://www.biorxiv.org/content/10.64898/2026.05.31.729018v1.full.pdf" }
+  notes: ""
+
+- id: engineer-protein-for-structure
+  title: "Can we engineer proteins to make the biomaterial structure we want?"
+  sessions: [PROPOSED]
+  scale: []
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "engineer protein to make biomaterial structure" }
+  refs: []
+  notes: ""
+
+- id: ip-for-biomaterials
+  title: "IP for biomaterials: genes, design principles, patents"
+  sessions: [PROPOSED]
+  scale: [macro]
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "IP (copyright/patent/trademark)" }
+  refs: []
+  notes: ""
+
+- id: disordered-peptide-risk
+  title: "Predicting unstable and disordered peptides — and the risks they carry"
+  sessions: [PROPOSED]
+  scale: [micro]
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "intrinsically disordered peptide chains" }
+  refs: []
+  notes: ""
+
+- id: ncaa-expanding-chemistry
+  title: "Is 20 amino acids a ceiling or a contingent constraint?"
+  sessions: [PROPOSED]
+  scale: []
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "20 canonical amino acids" }
+  refs: []
+  notes: ""
+
+- id: discovery-vs-circularity
+  title: "Discovery and circularity: competing or complementary?"
+  sessions: [PROPOSED]
+  scale: []
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "Competing or Complementary" }
+  refs: []
+  notes: ""
+
+- id: bioelectrode-stability
+  title: "Chronic bioelectrodes: is the conductive-polymer route overhyped?"
+  sessions: [PROPOSED]
+  scale: []
+  texts:
+    - { from: xlsx, sheet: "Backup Provocations", find: "Implantable chronic bioelectrodes" }
+  refs: []
+  notes: ""

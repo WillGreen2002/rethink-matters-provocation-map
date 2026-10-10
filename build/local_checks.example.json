@@ -1,0 +1,9 @@
+{
+  "_comment": "Copy this file to build/local_checks.json (that file is git-ignored and must never be published). name_tokens: first names / nicknames / surnames of participants and of any outside people named in the raw notes. phrases: full names. restricted: regular expressions for project-confidential terms. redactions: key -> [original text, replacement]; a discussion in curation/discussions_*.yaml opts in with `redact: [key]`, so the original wording never appears in the published repo.",
+  "name_tokens": ["ExampleFirstName", "ExampleSurname"],
+  "phrases": ["Example Person"],
+  "restricted": ["confidential-term"],
+  "redactions": {
+    "example-key": ["original wording to blank out", "replacement wording"]
+  }
+}

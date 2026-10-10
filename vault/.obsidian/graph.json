@@ -1,0 +1,34 @@
+{
+  "colorGroups": [
+    {
+      "query": "tag:#pillar/design",
+      "color": {
+        "a": 1,
+        "rgb": 3107683
+      }
+    },
+    {
+      "query": "tag:#pillar/climate",
+      "color": {
+        "a": 1,
+        "rgb": 11949112
+      }
+    },
+    {
+      "query": "tag:#pillar/governance",
+      "color": {
+        "a": 1,
+        "rgb": 5991228
+      }
+    },
+    {
+      "query": "tag:#pillar/translation",
+      "color": {
+        "a": 1,
+        "rgb": 13211199
+      }
+    }
+  ],
+  "showTags": false,
+  "showOrphans": false
+}

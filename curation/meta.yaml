@@ -1,0 +1,108 @@
+# Rethink Matters — Provocation Map: global metadata
+# Edited by hand. Wording of themes/prompts comes from the Bristol Retreat sheet (Prompts (LIVE));
+# everything here is the *structure around it* (lenses, arcs, sessions, centre).
+
+site:
+  title: "Provocation Map"
+  org: "Rethink Matters"
+  home_url: "https://rethinkmatters.org"
+  nav:
+    - { label: "About us", href: "https://rethinkmatters.org/about" }
+    - { label: "Bookshelf", href: "https://rethinkmatters.org/bookshelf" }
+    - { label: "Members", href: "https://rethinkmatters.org/members" }
+  apply: { label: "Apply", href: "https://rethinkmatters.org/apply" }
+  chatham: "Ideas on this map come from sessions held under the Chatham House Rule. Nothing here is attributed to any person or organisation."
+  shared_language_post: "https://rethinkmatters.org/lets-build-a-shared-language-20-04-2026"
+
+center:
+  label: "A world we want to live in"
+  question: "As we learn to engineer the living world, how can we ensure it is a world in which we want to live?"
+  citation:
+    text: "Revisiting and Realizing the Promises of Synthetic Biology. World Economic Forum, 2021."
+    url: "https://www.weforum.org/publications/revisiting-and-realizing-the-promises-of-synthetic-biology/"
+  values_intro: "The same report looks at synthetic biology through four values that matter for realising its benefits and minimising harm. We use them as one lens on this map."
+
+# The group's own reading arc (Bookshelf categories). Themes are laid out in this order, clockwise.
+arcs:
+  - { id: matter-to-life, label: "How matter becomes life", themes: [1, 2] }
+  - { id: life-to-technology, label: "How life becomes technology", themes: [3, 4, 7, 9] }
+  - { id: technology-to-society, label: "How technology becomes society", themes: [5, 6, 8] }
+
+# Ring order (clockwise from upper left) — follows the arcs.
+theme_order: [1, 2, 3, 4, 7, 9, 5, 6, 8]
+
+# Short graph labels for the nine themes (full titles come from the sheet).
+themes:
+  1: { short: "Defining biomaterials", arc: matter-to-life }
+  2: { short: "Nature's design principles", arc: matter-to-life }
+  3: { short: "Prediction, AI & data", arc: life-to-technology }
+  4: { short: "Programming & biofabrication", arc: life-to-technology }
+  5: { short: "Circularity & waste", arc: technology-to-society }
+  6: { short: "Value, scale & adoption", arc: technology-to-society }
+  7: { short: "Medical & long-term safety", arc: life-to-technology }
+  8: { short: "Ethics, ownership & purpose", arc: technology-to-society }
+  9: { short: "Ocean & extreme environments", arc: life-to-technology }
+
+# ---------------------------------------------------------------------------------------------
+# LENSES — every provocation topic carries these (they colour / filter the map; they are not nodes)
+# ---------------------------------------------------------------------------------------------
+lenses:
+  scale:
+    label: "Scale"
+    question: "At what length scale does the problem become visible?"
+    source: "The group's own Micro / Meso / Macro format (sign-up sheet 'Read me')."
+    values:
+      micro: { label: "Micro", q: "What are we building?", def: "Molecular structure, material properties, surface chemistry, biological functionality.", color: "#48909F" }
+      meso: { label: "Meso", q: "How does it behave?", def: "Structure and interfaces, processing, reproducibility, measurement gaps, human perception, inter/intraspecies ecological interactions.", color: "#7F8C64" }
+      macro: { label: "Macro", q: "What are the real-world implications?", def: "Scale-up manufacturing, regulation, cost, adoption, socio-ethical issues, infrastructure, regenerative ecology.", color: "#A04340" }
+  wg:
+    label: "Working group"
+    question: "Which working group would carry this forward?"
+    source: "The 'Relevant working group' column of the sign-up sheets. Where a session recorded no group, the map proposes one (shown dashed)."
+    values:
+      wg1: { label: "WG1 · Prediction, knowledge & metrics", short: "WG1", def: "Models, data, definitions and the metrics needed to know what a biomaterial does.", color: "#2F6B63" }
+      wg2: { label: "WG2 · Utopian to utilisation & socioeconomic application", short: "WG2", def: "From speculative aims to real use: economics, society, ethics, adoption.", color: "#B65438" }
+      wg3: { label: "WG3 · Manufacturing & infrastructure", short: "WG3", def: "How things are made at scale, and the infrastructure, supply chains and environments they need.", color: "#C9963F" }
+  pillar:
+    label: "Pillar"
+    question: "Which part of the Rethink Matters mission does it advance?"
+    source: "The tagline on rethinkmatters.org: 'climate performance, biomimetic design, and biological governance for translation'. Colours follow the tagline."
+    values:
+      design: { label: "Biomimetic design", def: "Learning from, and designing with, biological principles, structures and processes — including the tools (prediction, programming) that make that possible.", color: "#2F6B63" }
+      climate: { label: "Climate performance", def: "Environmental performance of biomaterials: carbon, energy, circularity, waste, degradation, living and manufacturing in climate extremes.", color: "#B65438" }
+      governance: { label: "Biological governance", def: "Safety, ethics, regulation, ownership and responsibility for engineered biology.", color: "#5B6B3C" }
+      translation: { label: "Translation", def: "Getting from lab to use: scale-up, economics, adoption, standards, evidence and infrastructure.", color: "#C9963F" }
+  value:
+    label: "Value"
+    question: "Which value does it speak to in 'a world in which we want to live'?"
+    source: "The four values the World Economic Forum report uses as its lens (equity, humility, sustainability, solidarity). Assigned by the map; not every note carries one."
+    values:
+      equity: { label: "Equity", def: "Fair access to benefits, costs and risks; who funds, owns and decides.", color: "#A04340" }
+      humility: { label: "Humility", def: "Acknowledging uncertainty and limits; evidence before hype; learning from nature and from failure.", color: "#C9963F" }
+      sustainability: { label: "Sustainability", def: "Planetary and long-term performance: circularity, energy, durability, care.", color: "#5B6B3C" }
+      solidarity: { label: "Solidarity", def: "Shared language, shared infrastructure, open data, collective responsibility and care.", color: "#48909F" }
+
+# ---------------------------------------------------------------------------------------------
+# TAG FACETS — semantic tags (see tags.yaml). These drive the cross-links between topics.
+# ---------------------------------------------------------------------------------------------
+facets:
+  tension: { label: "Tensions", question: "What is being pulled in two directions?", blurb: "The debates the group keeps returning to. A topic carries a tension tag when it sits on that fault line — two notes on the same fault line are in conversation even if they are about different materials." }
+  concept: { label: "Concepts", question: "Which phenomenon or principle is at work?", blurb: "The recurring ideas — emergence, gradients, variability, degradation — that let a result in one setting inform another." }
+  barrier: { label: "Barriers", question: "What stands in the way?", blurb: "The kinds of obstacle that recur across themes: missing data, missing vocabulary, unit economics, regulation, adoption, safety." }
+  domain: { label: "Domains", question: "Which material system or application?", blurb: "Where the work lands: cellulose and wood, proteins, textiles, clinical use, marine environments…" }
+  method: { label: "Methods", question: "Which tool or approach?", blurb: "The enabling toolbox: machine learning, biofabrication, screening and directed evolution." }
+
+# ---------------------------------------------------------------------------------------------
+# SESSIONS — where discussions took place (dates from the sign-up workbook's tab names)
+# ---------------------------------------------------------------------------------------------
+sessions:
+  RM003: { label: "RM003", date: "2026-04-11" }
+  RM004: { label: "RM004", date: "2026-04-25" }
+  RM005: { label: "RM005", date: "2026-05-18" }
+  VAN: { label: "Vancouver edition", date: "2026-06-08" }
+  RM006: { label: "RM006", date: "2026-06-20" }
+  RM007: { label: "RM007", date: "2026-07-11" }
+  RM008: { label: "RM008", date: "2026-08-11" }
+  RM009: { label: "RM009", date: "2026-08-20" }
+  RM010: { label: "RM010", date: "2026-09-12" }
+  PROPOSED: { label: "Proposed", date: null }

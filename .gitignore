@@ -1,0 +1,19 @@
+# --- NEVER publish ---------------------------------------------------------------------------------
+# Raw sources: participant names, contact e-mails, budgets. The map is anonymised (Chatham House Rule); these are not.
+source_data/
+source_notes/
+# Local-only lists for the leak check (names, confidential terms, redaction wording)
+build/local_checks.json
+
+# --- local / generated noise ------------------------------------------------------------------------
+.claude/
+*.zip
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Obsidian writes per-user state into the vault; keep only our graph colours
+vault/.obsidian/*
+!vault/.obsidian/graph.json

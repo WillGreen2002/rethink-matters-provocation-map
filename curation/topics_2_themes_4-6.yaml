@@ -1,0 +1,273 @@
+# ============================== THEME 4 · Programming structure and biofabrication ==============================
+- id: patterning-and-organs
+  theme: 4
+  match: "Bring up anything from spanning"
+  label: "Patterning to organs"
+  scale: [micro]
+  wg: [wg3]
+  pillar: [design, translation]
+  value: [humility]
+  tags: [concept/patterning, concept/gradients, tension/near-vs-far, tension/control-vs-emergence, domain/medical-and-clinical, domain/engineered-cells, method/biofabrication]
+  sources: [cell-patterning-utility, control-over-biology]
+  reading: [tissue-engineering]
+  links:
+    - { to: signalling-and-crosstalk, type: enables, why: "Spatial pattern is built out of signals; whether a pattern holds depends on how well one signal is insulated from another." }
+
+- id: signalling-and-crosstalk
+  theme: 4
+  match: "controlling signalling, preventing unwanted crosstalk"
+  label: "Signalling & crosstalk"
+  scale: [meso]
+  wg: [wg1]
+  pillar: [design]
+  value: [humility]
+  tags: [concept/signalling, tension/robust-vs-adaptable, concept/patterning, domain/engineered-cells, concept/programmability]
+  sources: [crosstalk-robustness]
+  reading: []
+  links:
+    - { to: variable-feedstocks, type: echoes, why: "Same trade-off at different scales — how robust is robust, and how robust is too robust? Tissue signalling and bioreactor feedstocks both ask when to tolerate variation and when to shield against it." }
+    - { to: survive-then-degrade, type: echoes, why: "Robust enough to survive use, adaptable enough to give way afterwards: the same design tension at the scale of a product's whole life." }
+
+- id: printing-meets-growth
+  theme: 4
+  match: "Combining printing and machine-imposed constraints"
+  label: "Printing meets growth"
+  scale: [micro, meso]
+  wg: [wg3]
+  pillar: [design, translation]
+  value: [humility]
+  tags: [tension/control-vs-emergence, method/biofabrication, concept/self-assembly, concept/patterning, concept/variability, method/machine-learning]
+  sources: [manufacturing-vs-self-assembly]
+  reading: [biofabrication-book]
+  links:
+    - { to: fabrication-readiness, type: extends, why: "Guided morphogenesis moves fabrication from static shaping to setting initial conditions; whether today's methods are ready for that is the next question." }
+    - { to: variable-feedstocks, type: echoes, why: "Manufacturing expects uniform inputs and outputs, while biological materials often get their properties from randomness. Both topics ask whether variability is a defect to remove or a resource to design with." }
+
+- id: fabrication-readiness
+  theme: 4
+  match: "practical utility and readiness"
+  label: "Fabrication readiness"
+  scale: [micro]
+  wg: [wg3]
+  pillar: [translation]
+  value: [humility]
+  tags: [method/biofabrication, barrier/scale-up, tension/near-vs-far, concept/self-assembly, domain/cellulose-and-wood]
+  sources: [biofabrication-as-method, manufacturing-vs-self-assembly]
+  reading: [biofabrication-book]
+  links:
+    - { to: micro-vs-bulk, type: echoes, why: "Which fabrication method wins depends on scale: micro-scale precision pays for itself in medicine, while bulk materials need volume, energy economy and infrastructure." }
+
+- id: programmable-biopolymers
+  theme: 4
+  match: "Leverage biomacromolecules"
+  label: "Programmable biopolymers"
+  scale: [micro]
+  wg: [wg1]
+  pillar: [design]
+  value: []
+  tags: [concept/programmability, concept/new-to-nature, domain/dna-and-nucleic-acids, domain/proteins-and-peptides, barrier/scale-up, barrier/unit-economics]
+  sources: [dna-like-macromolecules]
+  reading: []
+  links:
+    - { to: non-canonical-amino-acids, type: extends, why: "Non-canonical amino acids and new-to-nature composite polymers both expand chemistry beyond what biology has used." }
+
+- id: non-canonical-amino-acids
+  theme: 4
+  match: "non-canonical amino acids"
+  label: "Non-canonical amino acids"
+  scale: [micro]
+  wg: [wg1]
+  pillar: [design, governance]
+  value: [solidarity]
+  tags: [concept/new-to-nature, domain/proteins-and-peptides, barrier/shared-language, barrier/regulation-and-evidence, concept/programmability, domain/medical-and-clinical]
+  sources: [ncaa-expanding-chemistry]
+  reading: []
+  links:
+    - { to: scaffolds-nanoparticles-adhesives, type: enables, why: "Mussel-inspired peptide wet-adhesives built with non-canonical residues could replace cyanoacrylate in surgery — a concrete payoff for expanding the genetic code." }
+
+# ============================== THEME 5 · Circularity, waste and adaptive manufacturing ==============================
+- id: waste-valorisation
+  theme: 5
+  match: "Waste valorisation"
+  label: "Waste valorisation"
+  scale: [meso, macro]
+  wg: [wg3]
+  pillar: [climate]
+  value: [sustainability]
+  tags: [concept/circularity, domain/waste-and-feedstocks, domain/proteins-and-peptides, barrier/unit-economics]
+  sources: [protein-waste-valorisation, waste-feedstock-economics]
+  reading: [plastics]
+  links:
+    - { to: variable-feedstocks, type: enables, why: "Valorising waste only works if bioprocesses can cope with the variable, inconsistent inputs that waste streams are." }
+
+- id: full-cost-of-waste
+  theme: 5
+  match: "The full costs of collection"
+  label: "Full cost of waste"
+  scale: [macro]
+  wg: [wg3]
+  pillar: [climate, translation]
+  value: [sustainability]
+  tags: [concept/true-cost, barrier/unit-economics, domain/waste-and-feedstocks, concept/variability, concept/circularity, barrier/scale-up, method/lca-and-economics]
+  sources: [waste-feedstock-economics]
+  reading: []
+  links:
+    - { to: value-capture, type: extends, why: "Knowing the full cost chain — collection, transport, storage, preprocessing, contamination — is what lets you ask who captures the value and who carries the cost." }
+
+- id: variable-feedstocks
+  theme: 5
+  match: "Designing bioprocesses that tolerate variable feedstocks"
+  label: "Variable feedstocks"
+  scale: [macro]
+  wg: [wg3]
+  pillar: [climate, design]
+  value: [sustainability]
+  tags: [concept/variability, tension/robust-vs-adaptable, concept/circularity, domain/waste-and-feedstocks, barrier/scale-up, concept/dynamic-function]
+  sources: [variable-feedstocks]
+  reading: []
+  links: []
+
+- id: value-capture
+  theme: 5
+  match: "Who captures value"
+  label: "Who captures value"
+  scale: [macro]
+  wg: [wg2]
+  pillar: [translation, governance]
+  value: [equity]
+  tags: [concept/true-cost, tension/private-vs-common, barrier/funding-and-incentives, barrier/unit-economics, domain/waste-and-feedstocks]
+  sources: [waste-feedstock-economics]
+  reading: []
+  links:
+    - { to: funding-platform-medicines, type: echoes, why: "Who captures the value, who carries the cost and who funds what the market will not — the same distributive question in waste chains and in platform genetic medicines." }
+    - { to: ip-and-biological-design, type: echoes, why: "Value capture is also decided upstream, by who owns the genes and designs a supply chain depends on." }
+
+- id: discovery-vs-reuse
+  theme: 5
+  match: "Whether discovering more materials"
+  label: "Discovery vs reuse"
+  scale: [macro]
+  wg: [wg2]
+  pillar: [climate]
+  value: [sustainability]
+  tags: [tension/invent-vs-implement, concept/circularity, concept/degradation, method/machine-learning, barrier/adoption-inertia]
+  sources: [discovery-vs-circularity, circular-bioeconomy]
+  reading: [making-the-modern-world, plastics]
+  links:
+    - { to: societal-inertia, type: echoes, why: "'We don't need more solutions' and 'do we need more materials?' are the same argument: the bottleneck may be implementation and reuse, not discovery." }
+    - { to: survive-then-degrade, type: echoes, why: "Every new material creates a future end-of-life problem; designing reliable degradation or collection is the other half of discovery." }
+
+# ============================== THEME 6 · Commercial value, scale and adoption ==============================
+- id: standardising-dynamic-properties
+  theme: 6
+  match: "Should we standardise dynamic material properties"
+  label: "Standardising dynamic properties"
+  scale: [meso]
+  wg: [wg3]
+  pillar: [translation]
+  value: [solidarity]
+  tags: [concept/dynamic-function, barrier/shared-language, tension/general-vs-specific, concept/variability, barrier/regulation-and-evidence, tension/platform-vs-bespoke]
+  sources: [dropin-replacement]
+  reading: []
+  links:
+    - { to: infection-sensing-dressings, type: echoes, why: "Diagnostic dressings show why standards for sensing and responsive behaviour matter: the more generic the signal, the easier it is to manufacture but the harder to regulate." }
+    - { to: derisk-gene-delivery-once, type: echoes, why: "Derisk-once logic and standardisation are the same bet: a validated, reusable platform or property set that does not have to be re-proved every time." }
+
+- id: replacement-vs-new-capability
+  theme: 6
+  match: "Replacement materials versus new capabilities"
+  label: "Replace or reinvent"
+  scale: [micro, macro]
+  wg: [wg2]
+  pillar: [translation]
+  value: [sustainability]
+  tags: [tension/replace-vs-reinvent, concept/dynamic-function, barrier/unit-economics, barrier/adoption-inertia, concept/climate-performance, method/lca-and-economics]
+  sources: [dropin-replacement]
+  reading: []
+  links:
+    - { to: cellulose-wood-concrete, type: tension, why: "Bacterial cellulose as a wood substitute is the textbook drop-in trap; asking what it can do that wood never could is the new-capability route." }
+
+- id: micro-vs-bulk
+  theme: 6
+  match: "High-value microscale applications versus bulk"
+  label: "Micro vs bulk"
+  scale: [macro]
+  wg: [wg3]
+  pillar: [translation]
+  value: [sustainability]
+  tags: [tension/niche-vs-bulk, barrier/scale-up, barrier/unit-economics, domain/medical-and-clinical, domain/cellulose-and-wood, concept/climate-performance]
+  sources: [micro-vs-bulk]
+  reading: [scale]
+  links:
+    - { to: scaffolds-nanoparticles-adhesives, type: echoes, why: "Medical scaffolds, nanoparticles and adhesives are the clearest case where micro-scale precision earns its keep." }
+    - { to: energy-cost-fit, type: extends, why: "The micro-versus-bulk question is settled in practice by energy requirements, cost and infrastructure." }
+
+- id: cellulose-wood-concrete
+  theme: 6
+  match: "Bacterial cellulose versus wood"
+  label: "Cellulose, wood & concrete"
+  scale: [micro]
+  wg: [wg3]
+  pillar: [climate, design]
+  value: [sustainability]
+  tags: [domain/cellulose-and-wood, domain/construction-and-minerals, tension/replace-vs-reinvent, tension/niche-vs-bulk, concept/hydration, concept/climate-performance, concept/hierarchy, method/lca-and-economics, domain/marine-and-ocean]
+  sources: [bacterial-cellulose-vs-wood, biomineral-rocks]
+  reading: []
+  links: []
+
+- id: energy-cost-fit
+  theme: 6
+  match: "Energy requirements, cost, infrastructure"
+  label: "Energy, cost & fit"
+  scale: [macro]
+  wg: [wg3]
+  pillar: [translation]
+  value: [sustainability]
+  tags: [barrier/unit-economics, barrier/scale-up, concept/climate-performance, tension/niche-vs-bulk, concept/true-cost, method/lca-and-economics]
+  sources: [micro-vs-bulk, dropin-replacement]
+  reading: [your-life-is-manufactured]
+  links:
+    - { to: venture-lessons, type: echoes, why: "Product–market fit, cost and energy are where the ventures in the next topic ran aground." }
+
+- id: venture-lessons
+  theme: 6
+  match: "Lessons from biobased textile ventures"
+  label: "Lessons from ventures"
+  scale: [macro]
+  wg: [wg2, wg3]
+  pillar: [translation]
+  value: [humility]
+  tags: [domain/textiles-and-fashion, barrier/funding-and-incentives, barrier/unit-economics, concept/climate-performance, tension/hype-vs-evidence, tension/natural-vs-good, method/lca-and-economics]
+  sources: [biobased-startups]
+  reading: []
+  links:
+    - { to: hype-vs-evidence, type: echoes, why: "Investor expectations and sustainability claims feed the same breakthrough-versus-hype cycle that surrounds any bold result." }
+    - { to: bio-is-not-good, type: echoes, why: "Sustainability claims can lean on 'bio' origin; origin alone does not establish environmental value." }
+
+- id: hype-vs-evidence
+  theme: 6
+  match: "Distinguishing evidence from both hype"
+  label: "Hype vs evidence"
+  scale: [meso]
+  wg: [wg2]
+  pillar: [translation, governance]
+  value: [humility]
+  tags: [tension/hype-vs-evidence, barrier/shared-language, barrier/funding-and-incentives, domain/engineered-cells]
+  sources: [spudcells-hype]
+  reading: []
+  links:
+    - { to: chronic-bioelectrodes, type: echoes, why: "The same discipline of evidence in a different field: is the conductive-polymer route to chronic bioelectrodes overhyped, and what long-term data would settle it?" }
+
+- id: societal-inertia
+  theme: 6
+  match: "Whether implementation and societal inertia"
+  label: "Societal inertia"
+  scale: [macro]
+  wg: [wg2]
+  pillar: [translation, governance]
+  value: [solidarity]
+  tags: [barrier/adoption-inertia, tension/invent-vs-implement, barrier/funding-and-incentives, concept/circularity]
+  sources: [societal-inertia]
+  reading: [great-reconfiguration, your-life-is-manufactured]
+  links:
+    - { to: theory-of-change, type: extends, why: "Societal inertia is one candidate answer to 'what theory of change will drive a technological transition?' — the question the Ethics theme asks directly." }

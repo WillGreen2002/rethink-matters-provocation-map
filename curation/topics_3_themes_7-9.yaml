@@ -1,0 +1,319 @@
+# ============================== THEME 7 · Medical applications and long-term safety ==============================
+- id: funding-platform-medicines
+  theme: 7
+  match: "Who should fund platform genetic medicines"
+  label: "Funding platform medicines"
+  scale: [macro]
+  wg: [wg2]
+  pillar: [governance, translation]
+  value: [equity]
+  tags: [barrier/funding-and-incentives, tension/private-vs-common, barrier/regulation-and-evidence, tension/platform-vs-bespoke, domain/medical-and-clinical, domain/dna-and-nucleic-acids, concept/true-cost]
+  sources: []
+  reading: []
+  links:
+    - { to: derisk-gene-delivery-once, type: extends, why: "If a platform can be derisked once, the funding question changes: the cost of proving safety is shared across every disease it later serves." }
+
+- id: derisk-gene-delivery-once
+  theme: 7
+  match: "Should a living therapeutic material platform"
+  label: "Derisk once: gene delivery"
+  scale: [macro]
+  wg: [wg2]
+  pillar: [governance, translation]
+  value: [equity]
+  tags: [tension/platform-vs-bespoke, barrier/regulation-and-evidence, domain/medical-and-clinical, domain/living-materials, domain/dna-and-nucleic-acids]
+  sources: []
+  reading: []
+  links:
+    - { to: derisk-synthesis-platform, type: extends, why: "The same idea one level up: derisk the whole synthesis platform, not just the delivery vehicle." }
+
+- id: derisk-synthesis-platform
+  theme: 7
+  match: "Can a genetic medicine synthesis platform be derisked"
+  override_text: "Can a genetic medicine synthesis platform be derisked once and reused for all materials? (prompted by a recent talk)"
+  label: "Derisk once: synthesis platform"
+  scale: [macro]
+  wg: [wg2]
+  pillar: [governance, translation]
+  value: [equity]
+  tags: [tension/platform-vs-bespoke, tension/general-vs-specific, barrier/regulation-and-evidence, domain/medical-and-clinical, domain/dna-and-nucleic-acids]
+  sources: []
+  reading: []
+  links: []
+
+- id: infection-sensing-dressings
+  theme: 7
+  match: "Infection-sensing sutures and dressings"
+  label: "Infection-sensing dressings"
+  scale: [macro]
+  wg: [wg2]
+  pillar: [translation, governance]
+  value: [equity]
+  tags: [concept/dynamic-function, domain/medical-and-clinical, tension/general-vs-specific, barrier/regulation-and-evidence, tension/access-vs-safety, domain/proteins-and-peptides]
+  sources: [smart-sutures]
+  reading: []
+  links:
+    - { to: who-benefits-wounds, type: extends, why: "Which wounds, which patients, and how much clinical judgement can be delegated to a colour change?" }
+    - { to: human-machine-responsibility, type: echoes, why: "Diagnostic dressings and brain implants both ask what replaces clinical judgement — and who is responsible when the device fails or is misread." }
+
+- id: who-benefits-wounds
+  theme: 7
+  match: "Which patients and wounds"
+  label: "Who benefits? Wounds & clinicians"
+  scale: [macro]
+  wg: [wg2]
+  pillar: [governance]
+  value: [equity]
+  tags: [tension/access-vs-safety, barrier/regulation-and-evidence, domain/medical-and-clinical, tension/general-vs-specific, barrier/data-gaps]
+  sources: [smart-sutures]
+  reading: []
+  links: []
+
+- id: chronic-bioelectrodes
+  theme: 7
+  match: "Chronic bioelectrodes"
+  label: "Chronic bioelectrodes"
+  scale: [meso]
+  wg: [wg1]
+  pillar: [translation]
+  value: [humility]
+  tags: [concept/degradation, barrier/regulation-and-evidence, tension/hype-vs-evidence, domain/medical-and-clinical, barrier/data-gaps]
+  sources: [bioelectrode-stability]
+  reading: []
+  links:
+    - { to: survive-then-degrade, type: echoes, why: "Implanted conductive polymers can degrade on timescales similar to metal electrodes: designing something that lasts long enough in the body, then yields, mirrors the durable-then-degradable problem." }
+
+- id: designed-peptide-risks
+  theme: 7
+  match: "Potential aggregation, toxicity"
+  label: "Designed-peptide risks"
+  scale: [micro]
+  wg: [wg1]
+  pillar: [governance, design]
+  value: [humility]
+  tags: [domain/proteins-and-peptides, barrier/safety-and-misuse, barrier/regulation-and-evidence, barrier/data-gaps, concept/new-to-nature]
+  sources: [disordered-peptide-risk]
+  reading: []
+  links:
+    - { to: care-and-convivial-tech, type: tension, why: "If biotech is opened up, safety has to travel with it: the convivial-technology discussion asked for a 'safety' row, and designed peptides are a case where the risks (aggregation, toxicity) are poorly predicted." }
+
+- id: scaffolds-nanoparticles-adhesives
+  theme: 7
+  match: "Medical scaffolds, targeted nanoparticles"
+  label: "Scaffolds, nanoparticles & adhesives"
+  scale: [micro]
+  wg: [wg3]
+  pillar: [translation]
+  value: []
+  tags: [domain/medical-and-clinical, tension/niche-vs-bulk, concept/new-to-nature, method/biofabrication, domain/proteins-and-peptides, concept/hydration]
+  sources: [micro-vs-bulk, ncaa-expanding-chemistry]
+  reading: [tissue-engineering]
+  links: []
+
+- id: expansion-microscopy
+  theme: 7
+  match: "Expansion microscopy"
+  label: "Expansion microscopy"
+  scale: [micro]
+  wg: [wg1]
+  pillar: [design]
+  value: [humility]
+  tags: [barrier/data-gaps, concept/hierarchy, concept/emergence]
+  sources: [expansion-microscopy]
+  reading: []
+  links:
+    - { to: emergent-properties, type: enables, why: "Seeing nanostructure across scales is one way to collect the data on patterning and alignment that models of emergent properties lack." }
+
+# ============================== THEME 8 · Ethics, ownership and social purpose ==============================
+- id: theory-of-change
+  theme: 8
+  match: "What theory of change"
+  label: "Theory of change"
+  scale: [macro]
+  wg: [wg2]
+  pillar: [governance, translation]
+  value: [solidarity]
+  tags: [barrier/adoption-inertia, tension/invent-vs-implement, tension/private-vs-common, barrier/funding-and-incentives]
+  sources: [societal-inertia]
+  reading: [great-reconfiguration, wizard-and-prophet]
+  links:
+    - { to: care-and-convivial-tech, type: echoes, why: "One theory of change is bottom-up: technology people can use, adapt and repair, rather than a market or regulatory push from above." }
+
+- id: duties-to-organisms
+  theme: 8
+  match: "Duties towards the organisms"
+  label: "Duties to organisms"
+  scale: [macro]
+  wg: [wg2]
+  pillar: [governance]
+  value: [humility]
+  tags: [tension/human-vs-organism, concept/care-and-maintenance, domain/engineered-cells, concept/ecosystems, barrier/safety-and-misuse]
+  sources: [organism-ethics, bio-not-good]
+  reading: [frankenstein, staying-with-the-trouble]
+  links:
+    - { to: salt-and-ecosystems, type: echoes, why: "Duties to the organisms we use extend to the ecosystems we affect: marine interventions have consequences for the creatures and systems they touch." }
+    - { to: when-to-let-die, type: echoes, why: "If a living material is alive, what do we owe it? Ongoing care — or the decision to let it die — is an ethical question as well as a technical one." }
+
+- id: bio-is-not-good
+  theme: 8
+  match: "Why biological origin alone"
+  label: "'Bio' ≠ good"
+  scale: [macro]
+  wg: [wg2]
+  pillar: [governance]
+  value: [humility]
+  tags: [tension/natural-vs-good, concept/climate-performance, barrier/shared-language, domain/medical-and-clinical, concept/care-and-maintenance]
+  sources: [bio-not-good]
+  reading: []
+  links: []
+
+- id: care-and-convivial-tech
+  theme: 8
+  match: "Designing for care, accessibility"
+  label: "Care & convivial tech"
+  scale: [macro]
+  wg: [wg2]
+  pillar: [governance]
+  value: [equity, solidarity]
+  tags: [tension/access-vs-safety, tension/private-vs-common, concept/care-and-maintenance, barrier/safety-and-misuse, barrier/regulation-and-evidence]
+  sources: [convivial-biomaterial]
+  reading: [tools-for-conviviality, maintenance]
+  links:
+    - { to: human-machine-responsibility, type: echoes, why: "Wider access shifts responsibility: from open biotech to implants run by a single company, someone has to be accountable for safety, continuity and misuse." }
+
+- id: ip-and-biological-design
+  theme: 8
+  match: "Patents and other intellectual-property"
+  label: "IP & biological design"
+  scale: [macro]
+  wg: [wg2]
+  pillar: [governance]
+  value: [equity]
+  tags: [tension/private-vs-common, tension/copy-vs-principles, domain/dna-and-nucleic-acids, concept/true-cost]
+  sources: [ip-for-biomaterials]
+  reading: []
+  links:
+    - { to: design-principles, type: tension, why: "Can a design principle found in nature be owned? IP over biological design sits uneasily with the aim of extracting portable, shared principles from biology." }
+
+- id: human-machine-responsibility
+  theme: 8
+  match: "Whose responsibility is it to ensure the safety"
+  label: "Human–machine integration"
+  scale: [macro]
+  wg: [wg2]
+  pillar: [governance]
+  value: [equity]
+  tags: [barrier/safety-and-misuse, barrier/regulation-and-evidence, tension/access-vs-safety, tension/private-vs-common, domain/medical-and-clinical]
+  sources: [brain-machine-future]
+  reading: []
+  links: []
+
+# ============================== THEME 9 · Ocean futures and extreme environments ==============================
+- id: habitats-first
+  theme: 9
+  match: "Will humanity establish feasible habitats"
+  label: "Underwater or space first?"
+  scale: [macro]
+  wg: [wg3]
+  pillar: [climate, translation]
+  value: [sustainability]
+  tags: [domain/marine-and-ocean, tension/near-vs-far, barrier/scale-up, concept/care-and-maintenance, concept/ecosystems]
+  sources: [ocean-habitation, ocean-as-factory]
+  reading: []
+  links:
+    - { to: underwater-materials, type: extends, why: "If habitats come first underwater, the question becomes which materials can survive pressure, darkness and biofouling." }
+
+- id: underwater-materials
+  theme: 9
+  match: "Which materials would be useful for underwater habitation"
+  label: "Underwater materials"
+  scale: [meso]
+  wg: [wg3]
+  pillar: [climate, design]
+  value: [sustainability]
+  tags: [domain/marine-and-ocean, concept/hydration, domain/construction-and-minerals, concept/degradation, domain/living-materials, method/biofabrication]
+  sources: [ocean-habitation]
+  reading: []
+  links:
+    - { to: hydrated-materials, type: echoes, why: "Underwater, hydrated materials are the default rather than the exception — hydrogels, biomineralisation and biofouling become design variables." }
+
+- id: ocean-as-factory
+  theme: 9
+  match: "Using pressure, salinity, currents"
+  label: "Ocean as factory"
+  scale: [micro, macro]
+  wg: [wg3]
+  pillar: [climate, design]
+  value: [sustainability]
+  tags: [domain/marine-and-ocean, concept/gradients, tension/near-vs-far, concept/climate-performance, concept/ecosystems]
+  sources: [ocean-as-factory]
+  reading: []
+  links: []
+
+- id: seabed-structures
+  theme: 9
+  match: "Seabed-grown structures"
+  label: "Seabed structures & farms"
+  scale: [micro, macro]
+  wg: [wg3]
+  pillar: [design, climate]
+  value: [sustainability]
+  tags: [domain/marine-and-ocean, domain/construction-and-minerals, concept/self-assembly, tension/near-vs-far, concept/ecosystems]
+  sources: [ocean-as-factory]
+  reading: []
+  links:
+    - { to: cellulose-wood-concrete, type: echoes, why: "Coral-like, biomineralised structures grown on the seabed are the marine counterpart of biomineral alternatives to concrete." }
+
+- id: living-interfaces
+  theme: 9
+  match: "Which living interfaces"
+  label: "Living interfaces"
+  scale: [micro, macro]
+  wg: [wg3]
+  pillar: [design]
+  value: []
+  tags: [domain/marine-and-ocean, concept/dynamic-function, concept/hydration, domain/living-materials, tension/near-vs-far, domain/textiles-and-fashion]
+  sources: [ocean-as-factory]
+  reading: []
+  links:
+    - { to: replacement-vs-new-capability, type: echoes, why: "Self-healing skins and artificial gills are 'What can we make possible that was previously impossible?' in concrete form." }
+
+- id: salt-and-ecosystems
+  theme: 9
+  match: "Salt tolerance, ecosystem modelling"
+  label: "Salt tolerance & ecosystems"
+  scale: [micro, meso]
+  wg: [wg3]
+  pillar: [climate, governance]
+  value: [humility, sustainability]
+  tags: [concept/ecosystems, domain/marine-and-ocean, tension/human-vs-organism, barrier/data-gaps, domain/engineered-cells, method/machine-learning]
+  sources: [ocean-habitation]
+  reading: []
+  links: []
+
+- id: survive-then-degrade
+  theme: 9
+  match: "How can materials survive use and climate extremes"
+  label: "Survive use, degrade after"
+  scale: [macro]
+  wg: [wg3]
+  pillar: [climate]
+  value: [sustainability]
+  tags: [concept/degradation, concept/circularity, tension/robust-vs-adaptable, concept/dynamic-function, barrier/scale-up, concept/climate-performance, domain/waste-and-feedstocks]
+  sources: [aqueous-materials]
+  reading: []
+  links: []
+
+- id: when-to-let-die
+  theme: 9
+  match: "Which living functions justify ongoing"
+  label: "When to let materials die"
+  scale: [macro]
+  wg: [wg3, wg2]
+  pillar: [climate, governance]
+  value: [sustainability, solidarity]
+  tags: [concept/care-and-maintenance, tension/living-vs-inert, tension/human-vs-organism, domain/living-materials, concept/degradation, concept/circularity]
+  sources: [aqueous-materials, living-material-wear]
+  reading: [maintenance]
+  links:
+    - { to: survive-then-degrade, type: extends, why: "If a material is designed to live, the choice to stop caring for it is the end-of-life trigger." }

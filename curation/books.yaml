@@ -1,0 +1,26 @@
+# Titles / authors / shelf copied from https://rethinkmatters.org/bookshelf (the group's own reading list).
+# Only books that a topic references are listed. Mapping topic -> book is a suggestion by the map's author.
+# 'shelf' = the Bookshelf category.
+stuff-matters: { title: "Stuff Matters", author: "Mark Miodownik", shelf: "How matter becomes life" }
+liquid: { title: "Liquid", author: "Mark Miodownik", shelf: "How matter becomes life" }
+how-life-works: { title: "How Life Works", author: "Philip Ball", shelf: "How matter becomes life" }
+vibrant-matter: { title: "Vibrant Matter", author: "Jane Bennett", shelf: "How matter becomes life" }
+music-of-life: { title: "The Music of Life", author: "Denis Noble", shelf: "How matter becomes life" }
+wood-formation: { title: "Wood Formation in Trees", author: "Nigel J. Chaffey", shelf: "How matter becomes life" }
+ways-of-being: { title: "Ways of Being", author: "James Bridle", shelf: "How life becomes technology" }
+biomimicry-architecture: { title: "Biomimicry in Architecture", author: "Michael Pawlyn", shelf: "How life becomes technology" }
+biofabrication-book: { title: "Biofabrication", author: "Ritu Raman", shelf: "How life becomes technology" }
+tissue-engineering: { title: "Principles of Tissue Engineering", author: "Robert Lanza, Robert Langer, Joseph P. Vacanti", shelf: "How life becomes technology" }
+synthetic-aesthetics: { title: "Synthetic Aesthetics", author: "Alexandra Daisy Ginsberg, Jane Calvert, Pablo Schyfter, Alistair Elfick and Drew Endy", shelf: "How life becomes technology" }
+frankenstein: { title: "Frankenstein (annotated for scientists, engineers and creators)", author: "Mary Shelley, edited by David H. Guston, Ed Finn and Jason Scott Robert", shelf: "How life becomes technology" }
+bio-design: { title: "Bio Design", author: "William Myers", shelf: "How life becomes technology" }
+staying-with-the-trouble: { title: "Staying with the Trouble", author: "Donna Haraway", shelf: "How technology becomes society" }
+tools-for-conviviality: { title: "Tools for Conviviality", author: "Ivan Illich", shelf: "How technology becomes society" }
+maintenance: { title: "Maintenance", author: "Stewart Brand", shelf: "How technology becomes society" }
+your-life-is-manufactured: { title: "Your Life Is Manufactured", author: "Tim Minshall", shelf: "How technology becomes society" }
+great-reconfiguration: { title: "The Great Reconfiguration", author: "Frank W. Geels and Bruno Turnheim", shelf: "How technology becomes society" }
+thinking-in-systems: { title: "Thinking in Systems", author: "Donella H. Meadows", shelf: "How technology becomes society" }
+wizard-and-prophet: { title: "The Wizard and the Prophet", author: "Charles C. Mann", shelf: "How technology becomes society" }
+plastics: { title: "Plastics", author: "Imari Walker-Franklin and Jenna Jambeck", shelf: "How technology becomes society" }
+making-the-modern-world: { title: "Making the Modern World", author: "Vaclav Smil", shelf: "How technology becomes society" }
+scale: { title: "Scale", author: "Geoffrey West", shelf: "How technology becomes society" }
