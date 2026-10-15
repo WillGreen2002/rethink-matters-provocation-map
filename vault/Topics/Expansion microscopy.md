@@ -1,6 +1,6 @@
 ---
 id: expansion-microscopy
-theme: 7
+theme: 5
 tags:
   - scale/micro
   - wg/wg1
@@ -14,7 +14,7 @@ tags:
 
 > Expansion microscopy as a separate, early-stage discussion idea.
 
-**Theme:** [[Theme 7 — Medical & long-term safety]]  
+**Theme:** [[Theme 5 — Medical & long-term safety]]  
 **Scale:** micro · **Working group:** WG1 (proposed) · **Pillar:** design · **Value:** humility
 
 ## Discussions behind this

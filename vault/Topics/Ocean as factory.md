@@ -1,6 +1,6 @@
 ---
 id: ocean-as-factory
-theme: 9
+theme: 6
 tags:
   - scale/micro
   - scale/macro
@@ -18,7 +18,7 @@ tags:
 
 > Using pressure, salinity, currents and marine organisms in manufacturing.
 
-**Theme:** [[Theme 9 — Ocean & extreme environments]]  
+**Theme:** [[Theme 6 — Ocean & extreme environments]]  
 **Scale:** micro, macro · **Working group:** WG3 · **Pillar:** climate, design · **Value:** sustainability
 
 ## Discussions behind this

@@ -1,6 +1,6 @@
 ---
 id: salt-and-ecosystems
-theme: 9
+theme: 6
 tags:
   - scale/micro
   - scale/meso
@@ -20,7 +20,7 @@ tags:
 
 > Salt tolerance, ecosystem modelling and the consequences of marine interventions.
 
-**Theme:** [[Theme 9 — Ocean & extreme environments]]  
+**Theme:** [[Theme 6 — Ocean & extreme environments]]  
 **Scale:** micro, meso · **Working group:** WG3 · **Pillar:** climate, governance · **Value:** humility, sustainability
 
 ## Discussions behind this

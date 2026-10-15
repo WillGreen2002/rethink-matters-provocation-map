@@ -1,6 +1,6 @@
 ---
 id: replacement-vs-new-capability
-theme: 6
+theme: 8
 tags:
   - scale/micro
   - scale/macro
@@ -18,7 +18,7 @@ tags:
 
 > Replacement materials versus new capabilities such as sensing, repair and adaptation.
 
-**Theme:** [[Theme 6 — Value, scale & adoption]]  
+**Theme:** [[Theme 8 — Value, scale & adoption]]  
 **Scale:** micro, macro · **Working group:** WG2 (proposed) · **Pillar:** translation · **Value:** sustainability
 
 ## Discussions behind this

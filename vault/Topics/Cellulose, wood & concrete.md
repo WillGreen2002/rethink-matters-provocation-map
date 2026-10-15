@@ -1,6 +1,6 @@
 ---
 id: cellulose-wood-concrete
-theme: 6
+theme: 8
 tags:
   - scale/micro
   - wg/wg3
@@ -21,7 +21,7 @@ tags:
 
 > Bacterial cellulose versus wood; biomineralised materials versus concrete and conventional carbonates.
 
-**Theme:** [[Theme 6 — Value, scale & adoption]]  
+**Theme:** [[Theme 8 — Value, scale & adoption]]  
 **Scale:** micro · **Working group:** WG3 (proposed) · **Pillar:** climate, design · **Value:** sustainability
 
 ## Discussions behind this

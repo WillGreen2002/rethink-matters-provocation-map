@@ -1,7 +1,7 @@
 ---
-tags: [theme/6, arc/technology-to-society]
+tags: [theme/8, arc/technology-to-society]
 ---
-# Theme 6. Commercial value, scale and adoption
+# Theme 8. Commercial value, scale and adoption
 
 > Where do biomaterials offer a compelling advantage, and what stops them reaching widespread use?
 

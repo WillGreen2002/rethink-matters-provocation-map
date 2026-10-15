@@ -1,6 +1,6 @@
 ---
 id: standardising-dynamic-properties
-theme: 6
+theme: 8
 tags:
   - scale/meso
   - wg/wg3
@@ -17,7 +17,7 @@ tags:
 
 > Should we standardise dynamic material properties including sensing, repair and adaptation?
 
-**Theme:** [[Theme 6 — Value, scale & adoption]]  
+**Theme:** [[Theme 8 — Value, scale & adoption]]  
 **Scale:** meso · **Working group:** WG3 (proposed) · **Pillar:** translation · **Value:** solidarity
 
 ## Discussions behind this

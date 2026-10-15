@@ -12,14 +12,17 @@
   const PAPER = "#FAF8F3", INK = "#22211C", FAINT = "#6B675C", THREAD = "#666666", NONE = "#9C978A", GOLD = "#C9963F";
   const FACET_COLOR = { tension: "#A04340", concept: "#48909F", barrier: "#7F8C64", domain: "#D9A441", method: "#8A8577" };
   const REL_COLOR = { echoes: "#2F6B63", tension: "#B65438", enables: "#5B6B3C", extends: "#9A6F1F" };
-  const RANK = { tag: 0, book: 1, discussion: 2, topic: 3, theme: 4, center: 5 };
+  const RANK = { arc: -1, tag: 0, book: 1, discussion: 2, topic: 3, theme: 4, center: 5 };
+  // the three chapters (the Bookshelf's shelves) take three points of the logo's gradient, in reading order
+  const CHAPTER_TONE = [0.2, 0.6, 0.97];
 
   /* geometry, in world units (1 unit = 1 CSS pixel at zoom 1) */
   const ROW = 17;                          // pitch between neighbouring prompts in a column
-  const GAP_THEME = 0.85, GAP_ARC = 1.9;   // extra rows between two themes, and between two story arcs (room for the arc's caption)
+  const GAP_THEME = 0.85;                  // extra rows between two themes
+  const GAP_ARC = 1.9, GAP_SPLIT = 1.1;    // ... where a chapter opens (room for its name), and where one carries on from the other column
   const SPAN = (62 * Math.PI) / 180;       // the two columns stop this far either side of the horizontal, so the top and bottom stay open
   const HUB_ORBIT = 0.6, DISC_ORBIT = 0.84;
-  const RADIUS = { center: 66, theme: 44, topic: 5.4, discussion: 3.4, tag: 4, book: 4 };
+  const RADIUS = { center: 66, theme: 44, topic: 5.4, discussion: 3.4, tag: 4, book: 4, arc: 0 };
   const LABEL_GAP = 8;                     // px between a prompt and its label
   const ROOM_MAX = 18.5, ROOM_MIN = 9.5;   // longest prompt label, in ems; on a cramped screen long labels are shortened (…) down to
                                            // ROOM_MIN rather than hidden
@@ -89,6 +92,7 @@
     hubOf(n) { return n && n.kind === "topic" ? this.byId.get("th:" + n.d.theme) : null; }
 
     /* ------------------------------------------------------------------ colour by lens */
+    arcColor(id) { const i = Math.max(0, this.D.arcs.findIndex((a) => a.id === id)); return u.logoColor(CHAPTER_TONE[i % CHAPTER_TONE.length]); }
     themeColor(n) {
       const order = this.D.themeOrder, i = order.indexOf(n);
       return u.logoColor(0.11 + 0.86 * (i / (order.length - 1)));
@@ -113,6 +117,7 @@
         else if (n.kind === "tag") n.colors = [FACET_COLOR[n.d.facet] || FAINT];
         else if (n.kind === "discussion") n.colors = [THREAD];
         else if (n.kind === "book") n.colors = [FAINT];
+        else if (n.kind === "arc") n.colors = [this.arcColor(n.d.arc)];
         else n.colors = [INK];
       }
       this.dirty = true;
@@ -134,13 +139,22 @@
       const D = this.D;
       const themes = D.themeOrder.map((n) => this.byId.get("th:" + n));
       const topicsOf = new Map(themes.map((th) => [th, this.nodes.filter((n) => n.kind === "topic" && n.d.theme === th.d.n).sort((a, b) => a.d.order - b.d.order)]));
-      // Each column reads top to bottom like a list, prompts in the sheet's order: a story-arc caption heads the column, and another
-      // opens wherever the arc changes. The themes still go round clockwise: down the right-hand column, then up the left-hand one.
-      const gap = (above, below) => (above.d.arc !== below.d.arc ? GAP_ARC : GAP_THEME);
-      const rowsOf = (col) => col.reduce((s, th, i) => s + (i ? gap(col[i - 1], th) : GAP_ARC) + topicsOf.get(th).length, 0);
-      let best = null;   // the split of the clockwise run that makes the two columns most even
-      for (let k = 1; k < themes.length; k++) {
-        const right = themes.slice(0, k), left = themes.slice(k).reverse();
+      // The themes run clockwise from the top left: theme 1 heads the left-hand column, the next ones go down the right-hand column,
+      // and the rest come back up the left. Each column reads top to bottom like a list, prompts in the sheet's order.
+      // A chapter's name heads the run of themes that holds its first theme; a run that only carries a chapter on from the other
+      // column gets no second caption — the chapter's coloured band on the ring carries it across.
+      const first = new Map();
+      for (const th of themes) if (!first.has(th.d.arc)) first.set(th.d.arc, th);
+      const opens = (col, i) => i === 0 || col[i - 1].d.arc !== col[i].d.arc;
+      const captioned = (col, i) => {
+        for (let j = i; j < col.length && col[j].d.arc === col[i].d.arc; j++) if (first.get(col[i].d.arc) === col[j]) return true;
+        return false;
+      };
+      const gapAbove = (col, i) => (!opens(col, i) ? GAP_THEME : captioned(col, i) ? GAP_ARC : i === 0 ? 0 : GAP_SPLIT);
+      const rowsOf = (col) => col.reduce((s, th, i) => s + gapAbove(col, i) + topicsOf.get(th).length, 0);
+      let best = null;   // how many themes go down the right-hand side: the split that makes the two columns most even
+      for (let k = 1; k < themes.length - 1; k++) {
+        const right = themes.slice(1, k + 1), left = [themes[0], ...themes.slice(k + 1).reverse()];
         const rows = Math.max(rowsOf(right), rowsOf(left));
         if (!best || rows < best.rows) best = { right, left, rows };
       }
@@ -154,10 +168,10 @@
         const pitch = H / rowsOf(col), yOf = (p) => -H / 2 + p * pitch;   // the shorter column is spread to the same height
         let p = 0;
         col.forEach((th, i) => {
-          const g = i ? gap(col[i - 1], th) : GAP_ARC;
-          if (g === GAP_ARC) {
+          const g = gapAbove(col, i);
+          if (opens(col, i) && captioned(col, i)) {
             const y = yOf(p + g / 2);
-            this.arcHeads.push({ label: D.arcs.find((a) => a.id === th.d.arc).label, x: xAt(y, side), y, side });
+            this.arcHeads.push({ id: "arc:" + th.d.arc, arc: th.d.arc, label: D.arcs.find((a) => a.id === th.d.arc).label, x: xAt(y, side), y, side });
           }
           p += g;
           let ss = 0, cs = 0;
@@ -171,9 +185,19 @@
           th.side = side; th.ang = Math.atan2(ss, cs);
         });
       }
-      // clockwise from twelve o'clock, for the opening sweep
+      // clockwise from theme 1's first prompt, for the opening sweep
       const around = (t) => { const [x, y] = target.get(t); return (Math.atan2(x, -y) + TAU) % TAU; };
-      this.nodes.filter((n) => n.kind === "topic").sort((a, b) => around(a) - around(b)).forEach((t, i) => { t.clock = i; });
+      const start = around(topicsOf.get(themes[0])[0]) - 0.02, fromStart = (t) => (around(t) - start + TAU) % TAU;
+      this.nodes.filter((n) => n.kind === "topic").sort((a, b) => fromStart(a) - fromStart(b)).forEach((t, i) => { t.clock = i; });
+      // each chapter's band along the outer ring, from the first of its prompts to the last (clockwise), across any gap between
+      this.arcBands = D.arcs.map((a) => {
+        const angs = this.nodes.filter((n) => n.kind === "topic" && n.d.arc === a.id).map((t) => t.ang);
+        if (!angs.length) return null;
+        const mid = Math.atan2(angs.reduce((s, x) => s + Math.sin(x), 0), angs.reduce((s, x) => s + Math.cos(x), 0));
+        const d = angs.map((x) => Math.atan2(Math.sin(x - mid), Math.cos(x - mid)));
+        const pad = (0.55 * ROW) / Ry;
+        return { id: "arc:" + a.id, arc: a.id, color: this.arcColor(a.id), a0: mid + Math.min(...d) - pad, a1: mid + Math.max(...d) + pad };
+      }).filter(Boolean);
       // themes on the inner orbit, opposite the middle of their prompts, nudged apart where they would touch
       this.spread(themes, HUB_ORBIT, 2 * RADIUS.theme + 18);
       for (const th of themes) target.set(th, [HUB_ORBIT * Rx * Math.cos(th.ang), HUB_ORBIT * Ry * Math.sin(th.ang)]);
@@ -593,6 +617,27 @@
       ctx.strokeStyle = u.rgba(FAINT, 0.32 * a);
       ctx.beginPath(); ctx.ellipse(0, 0, Rx, Ry, 0, 0, TAU); ctx.stroke();
       ctx.restore();
+      // the three chapters as coloured bands along the ring; the one in focus (or holding the prompt in focus) comes forward
+      const fa = this.focusArc();
+      ctx.save();
+      ctx.lineCap = "round";
+      for (const b of this.arcBands) {
+        const on = fa.arc === b.arc;
+        const al = (on ? (fa.strong ? 0.95 : 0.75) : fa.arc || this._F || this.thread ? 0.16 : 0.5) * a;
+        ctx.lineWidth = (on ? (fa.strong ? 4.6 : 3.6) : 3) / k;
+        ctx.strokeStyle = u.rgba(b.color, al);
+        ctx.beginPath(); ctx.ellipse(0, 0, Rx, Ry, 0, b.a0, b.a1); ctx.stroke();
+      }
+      ctx.restore();
+    }
+    /* the chapter pointed at or open — a chapter itself (strong), or the chapter of the prompt or theme in focus */
+    focusArc() {
+      if (this.thread) return { arc: null, strong: false };
+      for (const id of [this.hover, this.sel]) {
+        const n = id && this.byId.get(id);
+        if (n && (n.kind === "arc" || n.kind === "topic" || n.kind === "theme")) return { arc: n.d.arc, strong: n.kind === "arc" };
+      }
+      return { arc: null, strong: false };
     }
     fanPath(ctx, h, p) {
       const dh = Math.hypot(h.x, h.y) || 1, dp = Math.hypot(p.x, p.y) || 1, d = Math.hypot(p.x - h.x, p.y - h.y);
@@ -750,18 +795,24 @@
         placed.push({ x: sx - r, y: sy - r, w: r * 2, h: r * 2 });
       }
 
-      // story-arc captions, set like section headings in the columns
+      // the chapters' names, set like section headings in the columns and in their band's colour:
+      // point at one to light the chapter up, click it to open it
       const lab = this.labelsOn(k), fs = this.labelFont(k);
       if (lab && !this.thread) {
-        const hf = this.headFont(k), al = F || this.match ? 0.45 : 0.9;
-        ctx.font = `italic 500 ${hf}px Spectral, Georgia, serif`;
+        const hf = this.headFont(k), fa = this.focusArc();
         for (const a of this.arcHeads) {
+          const on = fa.arc === a.arc, tone = this.arcColor(a.arc);
+          const al = (on ? 1 : fa.arc || F || this.match ? 0.42 : 0.94) * this.center.alpha;
+          ctx.font = `italic ${on && fa.strong ? 600 : 500} ${hf}px Spectral, Georgia, serif`;
           const [sx, sy] = this.toScreen(a.x, a.y), tw = ctx.measureText(a.label).width;
-          const x = a.side > 0 ? sx + LABEL_GAP : sx - LABEL_GAP;
+          const x = a.side > 0 ? sx + LABEL_GAP : sx - LABEL_GAP, x0 = a.side > 0 ? x : x - tw;
           ctx.textAlign = a.side > 0 ? "left" : "right";
-          ctx.fillStyle = u.rgba(FAINT, al * this.center.alpha);
+          ctx.fillStyle = u.rgba(u.mix(tone, INK, 0.45), al);
           ctx.fillText(a.label, x, sy);
-          placed.push({ x: a.side > 0 ? x : x - tw, y: sy - hf * 0.65, w: tw, h: hf * 1.3 });
+          if (on && fa.strong) { ctx.fillStyle = u.rgba(tone, 0.9); ctx.fillRect(x0, sy + hf * 0.62, tw, 1.5); }
+          const rect = { x: x0, y: sy - hf * 0.7, w: tw, h: hf * 1.4 };
+          placed.push(rect);
+          this.labelHits.push(Object.assign({ id: a.id }, rect));
         }
       }
 

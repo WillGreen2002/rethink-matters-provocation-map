@@ -1,6 +1,6 @@
 ---
 id: venture-lessons
-theme: 6
+theme: 8
 tags:
   - scale/macro
   - wg/wg2
@@ -19,7 +19,7 @@ tags:
 
 > Lessons from biobased textile ventures, investor expectations and sustainability claims.
 
-**Theme:** [[Theme 6 — Value, scale & adoption]]  
+**Theme:** [[Theme 8 — Value, scale & adoption]]  
 **Scale:** macro · **Working group:** WG2, WG3 · **Pillar:** translation · **Value:** humility
 
 ## Discussions behind this

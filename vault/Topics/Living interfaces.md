@@ -1,6 +1,6 @@
 ---
 id: living-interfaces
-theme: 9
+theme: 6
 tags:
   - scale/micro
   - scale/macro
@@ -17,7 +17,7 @@ tags:
 
 > Which living interfaces such as self-healing skins, hydrogel optics and artificial gills could help us live at the bottom of the ocean?
 
-**Theme:** [[Theme 9 — Ocean & extreme environments]]  
+**Theme:** [[Theme 6 — Ocean & extreme environments]]  
 **Scale:** micro, macro · **Working group:** WG3 · **Pillar:** design · **Value:** —
 
 ## Discussions behind this

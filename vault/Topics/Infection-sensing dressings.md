@@ -1,6 +1,6 @@
 ---
 id: infection-sensing-dressings
-theme: 7
+theme: 5
 tags:
   - scale/macro
   - wg/wg2
@@ -18,7 +18,7 @@ tags:
 
 > Infection-sensing sutures and dressings that combine diagnosis with treatment.
 
-**Theme:** [[Theme 7 — Medical & long-term safety]]  
+**Theme:** [[Theme 5 — Medical & long-term safety]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** translation, governance · **Value:** equity
 
 ## Discussions behind this

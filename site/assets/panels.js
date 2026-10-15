@@ -143,6 +143,7 @@
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), `Theme ${n.n} · ${arc.label}`));
     body.append(h("h1", null, n.title));
     body.append(h("p", { class: "prompt", style: { "--c": color } }, n.lead));
+    if (n.sheet && n.sheet !== n.n) body.append(h("p", { class: "cite", style: { margin: "-6px 0 14px" } }, `Theme ${n.sheet} in the Bristol retreat sheet — the map numbers the themes in order round the ring.`));
     const ts = n.topics.map((id) => app.byId.get(id)).sort((a, b) => a.order - b.order);
     body.append(h("h2", null, "Prompts", h("small", null, `${ts.length} — open one for the notes behind it`)));
     ts.forEach((t) => body.append(h("button", { class: "rel-item", onclick: () => app.select(t.id) },
@@ -163,7 +164,38 @@
     body.append(h("h2", null, "Tags that define this theme"));
     body.append(h("div", { class: "chips" }, top.map(([tg, c]) => h("button", { class: "chip sm ro", onclick: () => app.select(tg), title: app.byId.get(tg).def }, h("i", { class: "dot", style: { "--c": FACET_COLOR[app.byId.get(tg).facet] } }), app.byId.get(tg).label + " ", h("span", { class: "n" }, c)))));
     body.append(conf(app));
-    return { crumb: h("span", null, arc.label), body };
+    return { crumb: h("a", { href: "#arc:" + arc.id, onclick: (e) => { e.preventDefault(); app.select("arc:" + arc.id); } }, "Chapter · " + arc.label), body };
+  }
+
+  /* ---------------------------------------------------------------- chapter (one of the Bookshelf's three shelves) */
+  function arc(app, n) {
+    const body = h("div"), color = app.colorOf(n.id);
+    const ths = n.themes.map((x) => app.byId.get("th:" + x)).filter(Boolean);
+    body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), "Chapter"));
+    body.append(h("h1", null, n.label));
+    body.append(h("p", { class: "prompt", style: { "--c": color, fontStyle: "normal", fontSize: "17px" } },
+      `One of the three shelves of the Rethink Matters Bookshelf, and one of the three chapters of this map: ${ths.length} themes and ${n.topics.length} prompts, side by side on the ring. The chapters run clockwise from the top left — how matter becomes life, how life becomes technology, how technology becomes society.`));
+    body.append(h("h2", null, "Themes in this chapter"));
+    ths.forEach((t) => body.append(h("button", { class: "rel-item", onclick: () => app.select(t.id) },
+      h("div", { class: "rt" }, h("i", { style: { "--c": app.colorOf(t.id) } }), h("span", null, `Theme ${t.n} · ${t.title}`),
+        h("span", { class: "ty", style: { color: "var(--faint)" } }, `${t.topics.length} prompts`)),
+      h("p", { class: "why" }, t.lead))));
+    const r = app.chapterReach(n.arc);
+    body.append(h("h2", null, "How it connects", h("small", null, "links between prompts, at the current strength")));
+    body.append(h("div", { class: "chips" },
+      h("span", { class: "chip sm static" }, `${r.inside} within this chapter`),
+      r.out.map((o) => {
+        const a = app.byId.get("arc:" + o.id);
+        return a ? h("button", { class: "chip sm ro", onclick: () => app.select(a.id) }, h("i", { class: "dot", style: { "--c": app.colorOf(a.id) } }), `${o.count} to ${a.label.replace(/^How /, "how ")}`) : null;
+      })));
+    if (n.books.length) {
+      body.append(h("h2", null, "On this shelf", h("small", null, "books the map suggests alongside these prompts")));
+      body.append(h("div", { class: "chips books" }, n.books.map((b) => nodeLink(app, b, app.byId.get(b).label))));
+    }
+    body.append(h("p", { class: "md", style: { marginTop: "16px" } }, h("a", { class: "ext", href: "https://rethinkmatters.org/bookshelf", target: "_blank", rel: "noopener noreferrer" }, "See the whole shelf on the Rethink Matters Bookshelf ↗")));
+    body.append(h("p", { class: "cite" }, "Which themes sit on which shelf is the map’s first draft: the Bookshelf itself shelves books, not themes."));
+    body.append(conf(app));
+    return { crumb: h("span", null, "Chapters · the Bookshelf’s three shelves"), body };
   }
 
   /* ---------------------------------------------------------------- centre */
@@ -183,7 +215,8 @@
     body.append(h("h2", null, "How to read this map"));
     const ol = h("ul", { class: "howto" });
     [
-      "The question sits in the middle. On the inner ring are the nine themes from the Bristol retreat sheet; on the outer ring, beside each theme, are its discussion prompts — sixty in all, read clockwise from the top along the Bookshelf’s arc: how matter becomes life, how life becomes technology, how technology becomes society.",
+      "The question sits in the middle. On the inner ring are the nine themes from the Bristol retreat sheet, numbered 1 to 9 clockwise from the top left (each theme’s note gives its number in the sheet); on the outer ring, beside each theme, are its discussion prompts — sixty in all.",
+      "The themes fall into three chapters, the three shelves of the Rethink Matters Bookshelf: how matter becomes life, how life becomes technology, how technology becomes society. Each is a coloured band round the ring; point at a chapter’s name to light it up, click it for its themes, its links and its books.",
       "Point at a prompt or a theme and its connections light up across the map: teal lines echo, terracotta lines pull in tension, olive lines enable, ochre lines lead on. Dashed lines are links through shared tags or a shared discussion. At rest only the hand-written bridges show, faintly — change that under Connections.",
       "Click a prompt to open the provocation behind it, what the group said, and why it connects to the others. The map holds still while you read, so you can follow a connection by clicking the prompt at its other end. Grey dots (switch on under Layers) are the discussions themselves.",
       "Colour shows the lens you choose on the left — by default the pillar of the Rethink Matters mission each prompt speaks to. Filter by scale, working group, value or any tag to see how a single idea runs across themes.",
@@ -258,7 +291,7 @@
     render(app, id) {
       const n = app.byId.get(id);
       if (!n) return null;
-      return { topic, theme, center, discussion, tag, book }[n.kind](app, n);
+      return { topic, theme, center, discussion, tag, book, arc }[n.kind](app, n);
     },
   };
 })();

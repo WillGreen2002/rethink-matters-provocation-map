@@ -1,6 +1,6 @@
 ---
 id: funding-platform-medicines
-theme: 7
+theme: 5
 tags:
   - scale/macro
   - wg/wg2
@@ -19,7 +19,7 @@ tags:
 
 > Who should fund platform genetic medicines that do not have a market and require timely regulatory approval?
 
-**Theme:** [[Theme 7 — Medical & long-term safety]]  
+**Theme:** [[Theme 5 — Medical & long-term safety]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** governance, translation · **Value:** equity
 
 ## Linked ideas

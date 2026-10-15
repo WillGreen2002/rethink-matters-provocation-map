@@ -1,6 +1,6 @@
 ---
 id: bio-is-not-good
-theme: 8
+theme: 9
 tags:
   - scale/macro
   - wg/wg2
@@ -16,7 +16,7 @@ tags:
 
 > Why biological origin alone does not establish environmental or ethical value.
 
-**Theme:** [[Theme 8 — Ethics, ownership & purpose]]  
+**Theme:** [[Theme 9 — Ethics, ownership & purpose]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** governance · **Value:** humility
 
 ## Discussions behind this

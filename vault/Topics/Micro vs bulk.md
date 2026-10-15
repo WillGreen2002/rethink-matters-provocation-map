@@ -1,6 +1,6 @@
 ---
 id: micro-vs-bulk
-theme: 6
+theme: 8
 tags:
   - scale/macro
   - wg/wg3
@@ -17,7 +17,7 @@ tags:
 
 > High-value microscale applications versus bulk production.
 
-**Theme:** [[Theme 6 — Value, scale & adoption]]  
+**Theme:** [[Theme 8 — Value, scale & adoption]]  
 **Scale:** macro · **Working group:** WG3 (proposed) · **Pillar:** translation · **Value:** sustainability
 
 ## Discussions behind this

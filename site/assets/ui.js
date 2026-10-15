@@ -4,6 +4,14 @@
   const { u } = RM;
   const h = u.h;
   const D = window.RM_DATA;
+  // The Bookshelf's three shelves are the map's chapters: each gets a node of its own so it can be pointed at, opened, searched
+  // and linked to (#arc:…). Its prompts are its themes' prompts; its books are the ones on that shelf that the map suggests.
+  for (const a of D.arcs) {
+    if (D.nodes.some((n) => n.id === "arc:" + a.id)) continue;
+    const ths = a.themes.map((x) => D.nodes.find((n) => n.kind === "theme" && n.n === x)).filter(Boolean);
+    D.nodes.push({ id: "arc:" + a.id, kind: "arc", label: a.label, arc: a.id, themes: a.themes, topics: ths.flatMap((t) => t.topics),
+      books: D.nodes.filter((b) => b.kind === "book" && b.shelf === a.label).map((b) => b.id) });
+  }
   const $ = (s, r) => (r || document).querySelector(s);
   const body = document.body;
   if (/[?&]embed\b/.test(location.search)) body.classList.add("embed");
@@ -81,6 +89,19 @@
         if (a === n && b !== n) c[b] = (c[b] || 0) + 1; else if (b === n && a !== n) c[a] = (c[a] || 0) + 1;
       }
       return Object.entries(c).map(([theme, count]) => ({ theme: +theme, count })).sort((x, y) => y.count - x.count);
+    },
+    // links (at the current strength) inside a chapter, and from it to each of the others
+    chapterReach: (arc) => {
+      const c = {};
+      let inside = 0;
+      for (const l of relLinks) {
+        if (!(l.curated || l.score >= S.minScore)) continue;
+        const a = byId.get(l.s).arc, b = byId.get(l.t).arc;
+        if (a === arc && b === arc) inside++;
+        else if (a === arc) c[b] = (c[b] || 0) + 1;
+        else if (b === arc) c[a] = (c[a] || 0) + 1;
+      }
+      return { inside, out: Object.entries(c).map(([id, count]) => ({ id, count })).sort((x, y) => y.count - x.count) };
     },
   };
 
@@ -222,7 +243,7 @@
     const extra = n.kind === "topic" ? n.text : n.kind === "tag" ? n.def : n.kind === "theme" ? n.lead : n.kind === "discussion" ? (n.texts.map((t) => t.paras.join(" ")).join(" ") + " " + n.notes) : n.author || "";
     searchIndex.push({ id: n.id, kind: n.kind, label: n.label, hay1: label.toLowerCase(), hay2: extra.toLowerCase().replace(/[*_]/g, "") });
   }
-  const KIND_LABEL = { topic: "Prompt", theme: "Theme", tag: "Tag", discussion: "Discussion", book: "Book" };
+  const KIND_LABEL = { topic: "Prompt", theme: "Theme", tag: "Tag", discussion: "Discussion", book: "Book", arc: "Chapter" };
   let resIdx = -1, resList = [];
   function onSearch() {
     const q = searchInput.value.trim().toLowerCase();
@@ -280,7 +301,7 @@
       h("div", { class: "meta" }, h("span", { class: "pips" }, t.steps.map((s) => h("i", { style: { "--c": app.colorOf(s.topic) }, "data-t": s.topic }))), h("span", null, `${t.steps.length} stops`)))));
   const indexEls = [];
   D.arcs.forEach((arc) => {
-    panes.index.append(h("div", { class: "idx-arc" }, arc.label));
+    panes.index.append(h("button", { class: "idx-arc", "data-arc": arc.id, onclick: () => { select("arc:" + arc.id); if (mobile()) closeLeft(); } }, arc.label));
     for (const n of D.themeOrder.filter((x) => arc.themes.includes(x))) {
       const th = byId.get("th:" + n);
       const ul = h("ul", null, th.topics.map((id) => byId.get(id)).sort((a, b) => a.order - b.order).map((t) => {
@@ -294,6 +315,7 @@
   function refreshIndexColors() {
     for (const b of indexEls) { const dot = $(".dot", b); dot.style.setProperty("--c", app.colorOf(dot.dataset.id)); }
     for (const el of document.querySelectorAll(".thread-card .pips i")) el.style.setProperty("--c", app.colorOf(el.dataset.t));
+    for (const el of document.querySelectorAll(".idx-arc")) el.style.setProperty("--c", app.colorOf("arc:" + el.dataset.arc));
   }
 
   /* ------------------------------------------------------------------ legend + tooltip */
@@ -318,6 +340,7 @@
     else if (n.kind === "tag") sub = D.facets[n.d.facet].label.replace(/s$/, "") + " tag · " + n.d.topics.length + " prompts";
     else if (n.kind === "discussion") sub = n.d.sessions.map((s) => D.sessions[s].label).join(", ");
     else if (n.kind === "book") sub = n.d.author;
+    else if (n.kind === "arc") sub = `Chapter · ${n.d.themes.length} themes, ${n.d.topics.length} prompts · click to open`;
     else sub = "Click for the question and how to read this map";
     tip.replaceChildren(h("b", null, n.kind === "center" ? D.center.label : n.d.label), h("small", null, sub));
     const stage = $("#stage").getBoundingClientRect();

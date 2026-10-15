@@ -1,6 +1,6 @@
 ---
 id: habitats-first
-theme: 9
+theme: 6
 tags:
   - scale/macro
   - wg/wg3
@@ -17,7 +17,7 @@ tags:
 
 > Will humanity establish feasible habitats underwater or in space first, and what resources will be necessary?
 
-**Theme:** [[Theme 9 — Ocean & extreme environments]]  
+**Theme:** [[Theme 6 — Ocean & extreme environments]]  
 **Scale:** macro · **Working group:** WG3 · **Pillar:** climate, translation · **Value:** sustainability
 
 ## Discussions behind this

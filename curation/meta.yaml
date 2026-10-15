@@ -28,7 +28,9 @@ arcs:
   - { id: life-to-technology, label: "How life becomes technology", themes: [3, 4, 7, 9] }
   - { id: technology-to-society, label: "How technology becomes society", themes: [5, 6, 8] }
 
-# Ring order (clockwise from upper left) — follows the arcs.
+# Ring order, using the sheet's theme numbers: the first sits at the top left of the map and the rest follow clockwise.
+# The map numbers the themes 1-9 in this order so that the numbers read round the ring in sequence (sheet theme 7 is
+# shown as theme 5, and so on); everything in curation/ keeps the sheet's own numbers.
 theme_order: [1, 2, 3, 4, 7, 9, 5, 6, 8]
 
 # Short graph labels for the nine themes (full titles come from the sheet).

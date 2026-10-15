@@ -1,6 +1,6 @@
 ---
 id: duties-to-organisms
-theme: 8
+theme: 9
 tags:
   - scale/macro
   - wg/wg2
@@ -16,7 +16,7 @@ tags:
 
 > Duties towards the organisms used in research and manufacturing, including questions of sentience.
 
-**Theme:** [[Theme 8 — Ethics, ownership & purpose]]  
+**Theme:** [[Theme 9 — Ethics, ownership & purpose]]  
 **Scale:** macro · **Working group:** WG2 · **Pillar:** governance · **Value:** humility
 
 ## Discussions behind this

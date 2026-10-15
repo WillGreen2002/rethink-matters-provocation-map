@@ -1,6 +1,6 @@
 ---
 id: who-benefits-wounds
-theme: 7
+theme: 5
 tags:
   - scale/macro
   - wg/wg2
@@ -16,7 +16,7 @@ tags:
 
 > Which patients and wounds could benefit, and the role of clinical assessment.
 
-**Theme:** [[Theme 7 — Medical & long-term safety]]  
+**Theme:** [[Theme 5 — Medical & long-term safety]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** governance · **Value:** equity
 
 ## Discussions behind this

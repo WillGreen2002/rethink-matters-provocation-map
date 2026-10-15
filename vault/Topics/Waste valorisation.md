@@ -1,6 +1,6 @@
 ---
 id: waste-valorisation
-theme: 5
+theme: 7
 tags:
   - scale/meso
   - scale/macro
@@ -16,7 +16,7 @@ tags:
 
 > Waste valorisation, including protein-based waste.
 
-**Theme:** [[Theme 5 — Circularity & waste]]  
+**Theme:** [[Theme 7 — Circularity & waste]]  
 **Scale:** meso, macro · **Working group:** WG3 (proposed) · **Pillar:** climate · **Value:** sustainability
 
 ## Discussions behind this

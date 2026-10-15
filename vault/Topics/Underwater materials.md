@@ -1,6 +1,6 @@
 ---
 id: underwater-materials
-theme: 9
+theme: 6
 tags:
   - scale/meso
   - wg/wg3
@@ -18,7 +18,7 @@ tags:
 
 > Which materials would be useful for underwater habitation?
 
-**Theme:** [[Theme 9 — Ocean & extreme environments]]  
+**Theme:** [[Theme 6 — Ocean & extreme environments]]  
 **Scale:** meso · **Working group:** WG3 · **Pillar:** climate, design · **Value:** sustainability
 
 ## Discussions behind this

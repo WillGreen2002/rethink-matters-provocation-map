@@ -1,6 +1,6 @@
 # Build report
 
-Generated 2026-10-15 12:40
+Generated 2026-10-15 14:12
 
 - Themes 9 · topics 60 · discussions 43 (18 with notes) · semantic tags used 53 · books 21
 - Topic↔topic links stored: 301 (73 curated); shown at default threshold (6.0): 105
@@ -69,35 +69,35 @@ Generated 2026-10-15 12:40
 
 ## Cross-theme links at default threshold (theme pair → count)
 
-- T6 ↔ T7: 7
-- T1 ↔ T9: 6
+- T5 ↔ T8: 7
+- T1 ↔ T6: 6
 - T2 ↔ T4: 6
-- T7 ↔ T8: 4
+- T5 ↔ T9: 4
 - T1 ↔ T4: 3
 - T2 ↔ T3: 3
-- T3 ↔ T7: 3
+- T3 ↔ T5: 3
 - T3 ↔ T4: 3
-- T1 ↔ T6: 2
-- T2 ↔ T6: 2
-- T3 ↔ T6: 2
-- T4 ↔ T5: 2
-- T5 ↔ T6: 2
-- T5 ↔ T9: 2
-- T5 ↔ T8: 2
-- T6 ↔ T9: 2
+- T1 ↔ T8: 2
+- T2 ↔ T8: 2
+- T3 ↔ T8: 2
+- T4 ↔ T7: 2
+- T7 ↔ T8: 2
+- T6 ↔ T7: 2
+- T7 ↔ T9: 2
 - T6 ↔ T8: 2
 - T8 ↔ T9: 2
+- T6 ↔ T9: 2
 - T1 ↔ T2: 1
-- T1 ↔ T8: 1
-- T2 ↔ T8: 1
-- T2 ↔ T7: 1
+- T1 ↔ T9: 1
 - T2 ↔ T9: 1
-- T3 ↔ T9: 1
-- T4 ↔ T9: 1
+- T2 ↔ T5: 1
+- T2 ↔ T6: 1
+- T3 ↔ T6: 1
 - T4 ↔ T6: 1
-- T4 ↔ T7: 1
+- T4 ↔ T8: 1
+- T4 ↔ T5: 1
 - T5 ↔ T7: 1
-- T7 ↔ T9: 1
+- T5 ↔ T6: 1
 
 ## Degree (links shown) per topic — top and bottom
 

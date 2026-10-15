@@ -1,6 +1,6 @@
 ---
 id: human-machine-responsibility
-theme: 8
+theme: 9
 tags:
   - scale/macro
   - wg/wg2
@@ -16,7 +16,7 @@ tags:
 
 > Whose responsibility is it to ensure the safety, security and morality of human-machine integrations (including implants and exoskeletons)
 
-**Theme:** [[Theme 8 — Ethics, ownership & purpose]]  
+**Theme:** [[Theme 9 — Ethics, ownership & purpose]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** governance · **Value:** equity
 
 ## Discussions behind this

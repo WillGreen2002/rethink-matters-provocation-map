@@ -1,6 +1,6 @@
 ---
 id: care-and-convivial-tech
-theme: 8
+theme: 9
 tags:
   - scale/macro
   - wg/wg2
@@ -17,7 +17,7 @@ tags:
 
 > Designing for care, accessibility and convivial technology.
 
-**Theme:** [[Theme 8 — Ethics, ownership & purpose]]  
+**Theme:** [[Theme 9 — Ethics, ownership & purpose]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** governance · **Value:** equity, solidarity
 
 ## Discussions behind this

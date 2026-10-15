@@ -1,7 +1,7 @@
 ---
-tags: [theme/5, arc/technology-to-society]
+tags: [theme/7, arc/technology-to-society]
 ---
-# Theme 5. Circularity, waste and adaptive manufacturing
+# Theme 7. Circularity, waste and adaptive manufacturing
 
 > What would make a circular bioeconomy technically and economically workable?
 

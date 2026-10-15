@@ -1,6 +1,6 @@
 ---
 id: ip-and-biological-design
-theme: 8
+theme: 9
 tags:
   - scale/macro
   - wg/wg2
@@ -15,7 +15,7 @@ tags:
 
 > Patents and other intellectual-property questions around genes and biological design.
 
-**Theme:** [[Theme 8 — Ethics, ownership & purpose]]  
+**Theme:** [[Theme 9 — Ethics, ownership & purpose]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** governance · **Value:** equity
 
 ## Discussions behind this

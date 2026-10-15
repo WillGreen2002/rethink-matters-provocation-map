@@ -1,7 +1,7 @@
 ---
-tags: [theme/9, arc/life-to-technology]
+tags: [theme/6, arc/life-to-technology]
 ---
-# Theme 9. Ocean futures and extreme environments
+# Theme 6. Ocean futures and extreme environments
 
 > Could biomaterials help us live, manufacture and adapt underwater, in space and amid climate extremes, and what maintenance would they require?
 

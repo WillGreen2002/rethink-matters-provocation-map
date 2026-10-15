@@ -1,6 +1,6 @@
 ---
 id: energy-cost-fit
-theme: 6
+theme: 8
 tags:
   - scale/macro
   - wg/wg3
@@ -17,7 +17,7 @@ tags:
 
 > Energy requirements, cost, infrastructure and product–market fit.
 
-**Theme:** [[Theme 6 — Value, scale & adoption]]  
+**Theme:** [[Theme 8 — Value, scale & adoption]]  
 **Scale:** macro · **Working group:** WG3 (proposed) · **Pillar:** translation · **Value:** sustainability
 
 ## Discussions behind this

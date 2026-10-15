@@ -1,6 +1,6 @@
 ---
 id: societal-inertia
-theme: 6
+theme: 8
 tags:
   - scale/macro
   - wg/wg2
@@ -16,7 +16,7 @@ tags:
 
 > Whether implementation and societal inertia matters more than a shortage of technical solutions.
 
-**Theme:** [[Theme 6 — Value, scale & adoption]]  
+**Theme:** [[Theme 8 — Value, scale & adoption]]  
 **Scale:** macro · **Working group:** WG2 · **Pillar:** translation, governance · **Value:** solidarity
 
 ## Discussions behind this

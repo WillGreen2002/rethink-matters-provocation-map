@@ -1,6 +1,6 @@
 ---
 id: theory-of-change
-theme: 8
+theme: 9
 tags:
   - scale/macro
   - wg/wg2
@@ -16,7 +16,7 @@ tags:
 
 > What theory of change do you believe will drive a technological transition and why?
 
-**Theme:** [[Theme 8 — Ethics, ownership & purpose]]  
+**Theme:** [[Theme 9 — Ethics, ownership & purpose]]  
 **Scale:** macro · **Working group:** WG2 · **Pillar:** governance, translation · **Value:** solidarity
 
 ## Discussions behind this

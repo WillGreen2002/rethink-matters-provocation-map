@@ -1,7 +1,7 @@
 ---
-tags: [theme/7, arc/life-to-technology]
+tags: [theme/5, arc/life-to-technology]
 ---
-# Theme 7. Medical applications and long-term safety
+# Theme 5. Medical applications and long-term safety
 
 > Can biomaterials deliver reliable clinical benefits over meaningful timescales?
 

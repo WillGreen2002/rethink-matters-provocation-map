@@ -1,6 +1,6 @@
 ---
 id: scaffolds-nanoparticles-adhesives
-theme: 7
+theme: 5
 tags:
   - scale/micro
   - wg/wg3
@@ -16,7 +16,7 @@ tags:
 
 > Medical scaffolds, targeted nanoparticles and surgical adhesives.
 
-**Theme:** [[Theme 7 — Medical & long-term safety]]  
+**Theme:** [[Theme 5 — Medical & long-term safety]]  
 **Scale:** micro · **Working group:** WG3 (proposed) · **Pillar:** translation · **Value:** —
 
 ## Discussions behind this

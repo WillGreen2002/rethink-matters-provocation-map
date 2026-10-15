@@ -327,6 +327,20 @@ for key, c in curated.items():
         warn(f"curated link {key} shares no tag or discussion — consider adding a shared tag")
 
 # ----------------------------------------------------------------------------------------------------------
+# 3b. Theme numbers: on the map the themes are numbered 1-9 in ring order (theme 1 at the top left, then clockwise), so the
+#     numbers read in order round the map. curation/ keeps the sheet's own numbers; the sheet number travels along as `sheet`.
+# ----------------------------------------------------------------------------------------------------------
+if sorted(meta["theme_order"]) != sorted(bristol):
+    raise SystemExit("curation/meta.yaml: theme_order must list every theme in the sheet exactly once")
+num = {sheet_n: i + 1 for i, sheet_n in enumerate(meta["theme_order"])}
+bristol = {num[n]: dict(th, n=num[n], sheet=n) for n, th in bristol.items()}
+meta["themes"] = {num[n]: m for n, m in meta["themes"].items()}
+meta["arcs"] = [dict(a, themes=[num[n] for n in a["themes"]]) for a in meta["arcs"]]
+meta["theme_order"] = [num[n] for n in meta["theme_order"]]
+for t in topics_cur:
+    t["theme"] = num[t["theme"]]
+
+# ----------------------------------------------------------------------------------------------------------
 # 4. Assemble the graph
 # ----------------------------------------------------------------------------------------------------------
 nodes, hier = [], []
@@ -338,8 +352,8 @@ for t in topics_cur:
 for n in meta["theme_order"]:
     th = bristol[n]
     m = meta["themes"][n]
-    nodes.append({"id": f"th:{n}", "kind": "theme", "n": n, "label": m["short"], "title": th["title"], "lead": th["lead"],
-                  "arc": m["arc"], "topics": ["n:" + x for x in theme_topics[n]]})
+    nodes.append({"id": f"th:{n}", "kind": "theme", "n": n, "sheet": th["sheet"], "label": m["short"], "title": th["title"],
+                  "lead": th["lead"], "arc": m["arc"], "topics": ["n:" + x for x in theme_topics[n]]})
     hier.append({"s": "c", "t": f"th:{n}", "kind": "hier"})
 
 wg_confirmed = {}

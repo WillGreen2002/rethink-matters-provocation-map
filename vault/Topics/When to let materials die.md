@@ -1,6 +1,6 @@
 ---
 id: when-to-let-die
-theme: 9
+theme: 6
 tags:
   - scale/macro
   - wg/wg3
@@ -20,7 +20,7 @@ tags:
 
 > Which living functions justify ongoing moisture, nutrients and care—and when should we let materials die after growing them?
 
-**Theme:** [[Theme 9 — Ocean & extreme environments]]  
+**Theme:** [[Theme 6 — Ocean & extreme environments]]  
 **Scale:** macro · **Working group:** WG3 (proposed), WG2 (proposed) · **Pillar:** climate, governance · **Value:** sustainability, solidarity
 
 ## Discussions behind this

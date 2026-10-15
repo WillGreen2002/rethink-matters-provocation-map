@@ -1,6 +1,6 @@
 ---
 id: discovery-vs-reuse
-theme: 5
+theme: 7
 tags:
   - scale/macro
   - wg/wg2
@@ -16,7 +16,7 @@ tags:
 
 > Whether discovering more materials complements or complicates reuse and end-of-life management.
 
-**Theme:** [[Theme 5 — Circularity & waste]]  
+**Theme:** [[Theme 7 — Circularity & waste]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** climate · **Value:** sustainability
 
 ## Discussions behind this

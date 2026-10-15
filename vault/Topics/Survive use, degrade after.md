@@ -1,6 +1,6 @@
 ---
 id: survive-then-degrade
-theme: 9
+theme: 6
 tags:
   - scale/macro
   - wg/wg3
@@ -18,7 +18,7 @@ tags:
 
 > How can materials survive use and climate extremes, yet biodegrade after disposal: reliable triggers or dedicated collection systems?
 
-**Theme:** [[Theme 9 — Ocean & extreme environments]]  
+**Theme:** [[Theme 6 — Ocean & extreme environments]]  
 **Scale:** macro · **Working group:** WG3 (proposed) · **Pillar:** climate · **Value:** sustainability
 
 ## Discussions behind this

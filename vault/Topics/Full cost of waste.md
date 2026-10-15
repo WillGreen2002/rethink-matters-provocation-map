@@ -1,6 +1,6 @@
 ---
 id: full-cost-of-waste
-theme: 5
+theme: 7
 tags:
   - scale/macro
   - wg/wg3
@@ -19,7 +19,7 @@ tags:
 
 > The full costs of collection, transport, storage, preprocessing and contamination.
 
-**Theme:** [[Theme 5 — Circularity & waste]]  
+**Theme:** [[Theme 7 — Circularity & waste]]  
 **Scale:** macro · **Working group:** WG3 (proposed) · **Pillar:** climate, translation · **Value:** sustainability
 
 ## Discussions behind this

@@ -20,13 +20,13 @@ Values used as a lens: #value/equity, #value/humility, #value/sustainability, #v
 **How life becomes technology**
 - [[Theme 3 — Prediction, AI & data]]
 - [[Theme 4 — Programming & biofabrication]]
-- [[Theme 7 — Medical & long-term safety]]
-- [[Theme 9 — Ocean & extreme environments]]
+- [[Theme 5 — Medical & long-term safety]]
+- [[Theme 6 — Ocean & extreme environments]]
 
 **How technology becomes society**
-- [[Theme 5 — Circularity & waste]]
-- [[Theme 6 — Value, scale & adoption]]
-- [[Theme 8 — Ethics, ownership & purpose]]
+- [[Theme 7 — Circularity & waste]]
+- [[Theme 8 — Value, scale & adoption]]
+- [[Theme 9 — Ethics, ownership & purpose]]
 
 ## Threads
 

@@ -1,6 +1,6 @@
 ---
 id: variable-feedstocks
-theme: 5
+theme: 7
 tags:
   - scale/macro
   - wg/wg3
@@ -18,7 +18,7 @@ tags:
 
 > Designing bioprocesses that tolerate variable feedstocks.
 
-**Theme:** [[Theme 5 — Circularity & waste]]  
+**Theme:** [[Theme 7 — Circularity & waste]]  
 **Scale:** macro · **Working group:** WG3 (proposed) · **Pillar:** climate, design · **Value:** sustainability
 
 ## Discussions behind this

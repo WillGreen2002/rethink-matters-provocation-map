@@ -1,6 +1,6 @@
 ---
 id: designed-peptide-risks
-theme: 7
+theme: 5
 tags:
   - scale/micro
   - wg/wg1
@@ -17,7 +17,7 @@ tags:
 
 > Potential aggregation, toxicity and stability risks from designed peptides.
 
-**Theme:** [[Theme 7 — Medical & long-term safety]]  
+**Theme:** [[Theme 5 — Medical & long-term safety]]  
 **Scale:** micro · **Working group:** WG1 (proposed) · **Pillar:** governance, design · **Value:** humility
 
 ## Discussions behind this

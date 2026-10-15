@@ -1,6 +1,6 @@
 ---
 id: chronic-bioelectrodes
-theme: 7
+theme: 5
 tags:
   - scale/meso
   - wg/wg1
@@ -16,7 +16,7 @@ tags:
 
 > Chronic bioelectrodes: conductivity, degradation, tissue response and long-term evidence.
 
-**Theme:** [[Theme 7 — Medical & long-term safety]]  
+**Theme:** [[Theme 5 — Medical & long-term safety]]  
 **Scale:** meso · **Working group:** WG1 (proposed) · **Pillar:** translation · **Value:** humility
 
 ## Discussions behind this

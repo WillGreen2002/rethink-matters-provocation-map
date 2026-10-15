@@ -161,7 +161,12 @@ details.facet .seg { margin-bottom: 4px; }
 .thread-card .pips { display: flex; gap: 3px; }
 .thread-card .pips i { width: 7px; height: 7px; border-radius: 50%; background: var(--c); }
 
-.idx-arc { margin: 18px 0 6px; font-family: var(--font-serif); font-style: italic; font-size: 15px; color: var(--faint); }
+.idx-arc {
+  display: flex; align-items: center; gap: 9px; width: 100%; margin: 18px 0 6px; padding: 0; border: 0; background: transparent; cursor: pointer; text-align: left;
+  font-family: var(--font-serif); font-style: italic; font-size: 15px; color: var(--faint); transition: color .15s;
+}
+.idx-arc::before { content: ""; width: 16px; height: 3px; border-radius: 2px; background: var(--c, var(--line)); flex: none; }
+.idx-arc:hover { color: var(--ink); }
 .idx-theme { margin: 6px 0 10px; }
 .idx-theme > button { display: flex; align-items: baseline; gap: 8px; border: 0; background: transparent; padding: 4px 0; cursor: pointer; text-align: left; font-weight: 600; font-size: 14px; letter-spacing: -.005em; }
 .idx-theme > button i { font-style: normal; font-weight: 500; font-size: 11px; color: var(--faint); width: 18px; flex: none; }

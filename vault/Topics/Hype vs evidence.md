@@ -1,6 +1,6 @@
 ---
 id: hype-vs-evidence
-theme: 6
+theme: 8
 tags:
   - scale/meso
   - wg/wg2
@@ -16,7 +16,7 @@ tags:
 
 > Distinguishing evidence from both hype and premature dismissal, including the SpudCells discussion.
 
-**Theme:** [[Theme 6 — Value, scale & adoption]]  
+**Theme:** [[Theme 8 — Value, scale & adoption]]  
 **Scale:** meso · **Working group:** WG2 · **Pillar:** translation, governance · **Value:** humility
 
 ## Discussions behind this

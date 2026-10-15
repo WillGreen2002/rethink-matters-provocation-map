@@ -1,6 +1,6 @@
 ---
 id: value-capture
-theme: 5
+theme: 7
 tags:
   - scale/macro
   - wg/wg2
@@ -17,7 +17,7 @@ tags:
 
 > Who captures value across waste-to-material supply chains. Who captures costs?
 
-**Theme:** [[Theme 5 — Circularity & waste]]  
+**Theme:** [[Theme 7 — Circularity & waste]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** translation, governance · **Value:** equity
 
 ## Discussions behind this

@@ -1,7 +1,7 @@
 ---
-tags: [theme/8, arc/technology-to-society]
+tags: [theme/9, arc/technology-to-society]
 ---
-# Theme 8. Ethics, ownership and social purpose
+# Theme 9. Ethics, ownership and social purpose
 
 > What would make biomaterials ethically and socially better?
 
