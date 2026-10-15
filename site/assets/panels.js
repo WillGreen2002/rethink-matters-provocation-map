@@ -10,11 +10,12 @@
     const R = u.t("relations");
     return forward ? R[type] : R[type + "_rev"] || R[type];
   }
+  // a prompt's pillar: a coloured label (its definition on hover), the same colour as its disc on the Regime
   function pillarChip(app, key) {
     const v = app.D.lenses.pillar.values[key];
-    return h("button", { type: "button", class: "chip sm ro", style: { "--c": v.color }, title: u.t("topic.pillar_tip") + " " + (v.def || v.q || ""),
-      onclick: () => app.filterBy("pillar", key) }, h("i", { class: "dot" }), v.short || v.label);
+    return h("span", { class: "chip sm static", style: { "--c": v.color }, title: v.def || v.q || null }, h("i", { class: "dot" }), v.short || v.label);
   }
+
   function tagChip(app, tid) {
     const t = app.byId.get(tid);
     return h("button", { type: "button", class: "chip sm ro", title: t.def, onclick: () => app.select(tid) }, h("i", { class: "dot", style: { "--c": FACET_COLOR[t.facet] } }), t.label);
@@ -111,8 +112,11 @@
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), u.t("topic.kind")));
     body.append(h("h1", null, n.label));
     body.append(h("p", { class: "prompt", style: { "--c": color } }, n.text));
-    if (app.level() === "regime") body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) },
-      h("span", { "aria-hidden": "true" }, "↓ "), app.sourceCount(n.id) === 1 ? u.t("topic.down_one") : u.t("topic.down", { n: app.sourceCount(n.id) })));
+    if (app.level() === "regime") {
+      const c = app.sourceCount(n.id);
+      body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) },
+        h("span", { "aria-hidden": "true" }, "↓ "), c === 0 ? u.t("topic.down_none") : c === 1 ? u.t("topic.down_one") : u.t("topic.down", { n: c })));
+    }
     body.append(h("div", { class: "lens-row" }, h("span", null, u.t("topic.pillar")), h("div", { class: "chips" }, n.pillar.map((v) => pillarChip(app, v)))));
     put(body, metaLine(app, n.wg, n.wgProposed, n.value));
 
@@ -128,7 +132,8 @@
 
     // connections
     const rels = app.relOf(n.id);
-    const cur = rels.filter((r) => r.link.curated), der = rels.filter((r) => !r.link.curated && r.link.score >= 3.4);
+    // exactly the links the Regime and the Niche draw: every bridge, and the strong shared-tag links
+    const cur = rels.filter((r) => r.link.curated), der = rels.filter((r) => !r.link.curated && app.shown(r.link));
     body.append(h("h2", null, u.t("topic.connections"), h("small", null, u.t("topic.connections_sub", { cur: cur.length, der: der.length }))));
     if (cur.length) cur.forEach((r) => body.append(relItem(app, n.id, r)));
     if (der.length) {
@@ -167,7 +172,7 @@
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), u.t("theme.kind", { n: n.n, chapter: arc.label })));
     body.append(h("h1", null, n.title));
     body.append(h("p", { class: "prompt", style: { "--c": color } }, n.lead));
-    // down to its prompts (from the Landscape), or show only them (on the map itself)
+    // down to its prompts (from the Landscape; on the Regime the theme is already in the middle)
     if (app.level() === "landscape") body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) }, h("span", { "aria-hidden": "true" }, "↓ "), u.t("theme.down", { n: ts.length })));
     put(body, future(app, n.future, u.t("future.title"), n.future && n.future.evidence === "thin" ? u.t("future.theme_note_thin") : u.t("future.theme_note")));
     if (n.sheet && n.sheet !== n.n) body.append(h("p", { class: "cite" }, u.t("theme.sheet", { sheet: n.sheet })));

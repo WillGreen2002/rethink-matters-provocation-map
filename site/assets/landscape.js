@@ -1,5 +1,5 @@
-/* The Landscape level: the nine themes round the question, in the same clockwise order as the map of prompts below it (theme 1
-   at the top right), each chapter heading its run of themes, and dashed lines between themes whose prompts are linked.
+/* The Landscape level, the top of the descent: the nine themes round the question, clockwise from theme 1 at the top right, each
+   chapter heading its run of themes, and dashed lines between themes whose prompts are linked. A theme's arrow goes down to it.
    Built from real buttons over a decorative SVG, so it works with a keyboard and a screen reader and needs no second animation loop.
    On a phone the ring becomes a list of cards. */
 (function () {

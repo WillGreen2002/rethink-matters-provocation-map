@@ -48,7 +48,7 @@ The level and any focus go in the address; the open note goes after `#`:
 
 Older links keep working: `#n:…` and `#t:…` open on the Regime (in the prompt's theme); `#d:…`, `#b:…` and `#ex:…` open on the Niche (under the first prompt
 they belong to); `#th:…`, `#arc:…` and `#c` open on the Landscape.
-The browser's Back button goes back up a level, or back across. With the level bar focused, keys **1**, **2** and **3** (or the arrow keys) switch level; **Esc** ends a
+The browser's Back button goes back up a level, or back across. With the level bar focused, keys **1**, **2** and **3** switch level (the arrow keys move along it; Enter goes); **Esc** ends a
 walk, then closes a note.
 The copy-link button in a note always gives the full-page link (without `embed`).
 
@@ -128,7 +128,7 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
 
 ## What is on the map
 
-* **The level bar** (top centre; a tab bar at the bottom on a phone) is also the trail: *Landscape › Theme 5 · Medical & long-term safety › Hype vs evidence*. Click a step to go
+* **The level bar** (top centre; a tab bar at the bottom on a phone) is also the trail: *Landscape › Theme 8 · Value, scale & adoption › Hype vs evidence*. Click a step to go
   back up. The tab at the bottom of the map goes one level down from whatever is open; the arrows at the sides move across, to the next theme or the next prompt in the theme.
 * **Words.** A *prompt* is one of the sixty (the sheet's provocation prompts); a *provocation* is what was put to a session, and a *discussion* holds it with what was said;
   a *source* is what sits under a prompt on the Niche (its discussions, examples and books); a *note* is the panel that opens when you choose something.
@@ -141,7 +141,8 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
 * **Regime.** One theme in the middle and only its prompts round it (verbatim from the sheet, coloured by the pillar of the Rethink Matters mission each speaks to), with
   the links between them. The other themes they reach sit further out as small numbered discs: point at a prompt and its links light up in the colour of the relation (teal
   *echoes*, terracotta *in tension with*, olive *enables*, ochre *leads on to*; dashed lines share tags or a discussion), together with the themes it reaches; click a theme
-  further out to move across to it. Point at a prompt (or open it) and its "N sources" pill appears; it goes down to the Niche. The left panel can highlight one pillar.
+  further out to move across to it. Point at a prompt (or open it, or tab to it) and its "N sources" pill appears; it goes down to the Niche ("links only" when nothing
+  sits under the prompt yet). During a walk, the theme further out that holds the next stop takes you on to it.
 * **Niche.** One prompt in the middle with its sources round it: the discussions where it was aired (open one for the provocation and what the group said), the books
   suggested with it, and examples shaped by type (square paper, triangle company, diamond product, ring pre-clinical, dot clinical, cross other). The prompts it links to sit
   further out, in the colour of the relation; click one to move across.

@@ -614,8 +614,7 @@ body:not([data-level="landscape"]) .landscape-only { display: none; }
 .fmap[data-style="regime"] .fm-label { font-size: var(--fs, 12px); font-weight: 600; line-height: 1.15; hyphens: auto; -webkit-hyphens: auto; text-wrap: balance; }
 .fmap[data-style="regime"] .fm-member.on .fm-node, .fmap[data-style="regime"] .fm-node:hover { transform: scale(1.06); background: color-mix(in srgb, var(--c) 20%, var(--paper)); }
 .fmap[data-style="regime"] .fm-member.sel .fm-node { box-shadow: 0 0 0 4px var(--paper), 0 0 0 6px var(--c); }
-.fmap[data-style="regime"].focused .fm-member.dim .fm-node, .fmap[data-style="regime"] .fm-member.filtered .fm-node { border-color: color-mix(in srgb, var(--c) 35%, var(--paper)); background: var(--paper); box-shadow: 0 0 0 2px var(--paper); }
-.fmap[data-style="regime"] .fm-member.filtered .fm-node { border-style: dashed; }
+.fmap[data-style="regime"].focused .fm-member.dim .fm-node { border-color: color-mix(in srgb, var(--c) 35%, var(--paper)); background: var(--paper); box-shadow: 0 0 0 2px var(--paper); }
 .fm-down {
   position: absolute; z-index: 1; left: calc(50% + var(--ux, 0) * (var(--rm, 40px) + 7px)); top: calc(50% + var(--uy, 1) * (var(--rm, 40px) + 7px));
   transform: translate(calc(-50% + var(--ux, 0) * 50%), calc(-50% + var(--uy, 1) * 50%)); white-space: nowrap; border: 1px solid var(--line); background: var(--card);
@@ -659,7 +658,7 @@ body:not([data-level="landscape"]) .landscape-only { display: none; }
 .fm-nb:hover .fm-nbname { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--c); }
 .fmap.focused .fm-nb.dim .fm-nbdot { border-color: color-mix(in srgb, var(--c) 35%, var(--paper)); background: var(--paper); }
 .fm-nb.walk-next .fm-nbdot, .fm-nb.walk-prev .fm-nbdot { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--gold); }
-.fmap:not(.stack) .fm-h { display: none; }
+.fmap:not(.stack) .fm-h { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }   /* drawn as a ring: the headings are for screen readers */
 
 /* sideways, and in from the side */
 .fmap.fm-enter .fm-member, .fmap.fm-enter .fm-nb, .fmap.fm-enter .fm-centre { animation: fm-in .5s var(--ease) both; animation-delay: calc(var(--i, 0) * 30ms); }
@@ -704,8 +703,8 @@ body.right-open .side-arrow.next { right: calc(var(--right-w) + 10px); }
 }
 
 /* quiet at rest: a prompt's way down shows when you point at it, open it or tab to it; a neighbour's link count on pointing */
-.fmap[data-style="regime"]:not(.stack) .fm-down { opacity: 0; visibility: hidden; transition: opacity .15s, visibility 0s linear .35s, background .15s, color .15s; }
-.fmap[data-style="regime"]:not(.stack) .fm-member.hot .fm-down, .fmap[data-style="regime"]:not(.stack) .fm-member:focus-within .fm-down { opacity: 1; visibility: visible; transition: opacity .15s, visibility 0s, background .15s, color .15s; }
+.fmap[data-style="regime"]:not(.stack) .fm-down { opacity: 0; pointer-events: none; transition: opacity .15s, background .15s, color .15s; }
+.fmap[data-style="regime"]:not(.stack) .fm-member.hot .fm-down, .fmap[data-style="regime"]:not(.stack) .fm-member:focus-within .fm-down { opacity: 1; pointer-events: auto; }
 .fmap[data-style="regime"]:not(.stack) .fm-nblabel { font-size: 11.5px; max-width: 132px; }
 .fmap[data-style="regime"]:not(.stack) .fm-nblabel small { display: none; }
 .fmap[data-style="regime"]:not(.stack) .fm-nb:hover .fm-nblabel small, .fmap[data-style="regime"]:not(.stack) .fm-nb.on .fm-nblabel small, .fmap[data-style="regime"]:not(.stack) .fm-nb:focus-visible .fm-nblabel small { display: block; }
@@ -728,3 +727,6 @@ body.right-open .pill-btn { width: 40px; padding: 0; justify-content: center; }
 body.right-open .pill-btn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 /* the list beside an open note on a laptop: one readable column */
 .fmap.stack > .fm-centre, .fmap.stack > .fm-member, .fmap.stack > .fm-nb, .fmap.stack > .fm-h, .fmap.stack > .fm-empty { max-width: 620px; margin-left: auto; margin-right: auto; }
+.fm-centre.tight { padding: 0 8px; }
+.fm-centre.tight .fm-sub { display: none; }
+.fm-centre.tight .fm-kicker { font-size: 9px; letter-spacing: .06em; }

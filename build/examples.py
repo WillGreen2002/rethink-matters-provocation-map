@@ -66,10 +66,13 @@ def normalise_header(h: str) -> str:
 
 
 def resolve_prompt(ref: str, ids: set[str], by_label: dict[str, str]):
-    """A prompt reference may be its id, 'n:<id>', a link copied from the map (anything after '#'), or its exact label.
-    Returns (id, suggestions)."""
+    """A prompt reference may be its id, 'n:<id>', a link copied from the map (the Niche's address names its prompt as
+    focus=n:<id>; an older link carries #n:<id>), or its exact label. Returns (id, suggestions)."""
     r = ref.strip()
-    if "#" in r:
+    m = re.search(r"[?&]focus=(n:[a-z0-9-]+)", r)
+    if m:
+        r = m.group(1)
+    elif "#" in r:
         r = r.rsplit("#", 1)[1]
     if r.startswith("n:"):
         r = r[2:]

@@ -17,7 +17,7 @@
   class FocusMap {
     constructor(el, cb) {
       this.el = el; this.cb = cb || {};
-      this.m = null; this.sel = null; this.hover = null; this.walk = null; this.dim = new Set();
+      this.m = null; this.sel = null; this.hover = null; this.walk = null;
       this.insets = { l: 0, r: 0, t: 0, b: 0 };
       this.reduced = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
       new ResizeObserver(() => this.layout()).observe(el);
@@ -31,10 +31,14 @@
          membersTitle, neighboursTitle, empty?: { title, body } }
        dir: where it comes from ("left", "right", "down", "up"), for a short entrance */
     show(m, dir) {
+      const ae = document.activeElement, hadFocus = !!ae && this.el.contains(ae), fresh = !this.m || this.m.key.split("|")[0] !== m.key.split("|")[0];
       this.m = m; this.hover = null;
       if (this.sel && !this.has(this.sel)) this.sel = null;
       this.build();
+      if (fresh) this.el.scrollTop = 0;   // a list (phone, or beside a note) starts again from the top for something new
       this.layout();
+      // keyboard focus was on something that has just been replaced (a theme or prompt further out): it lands on the new centre
+      if (hadFocus) this.centre.focus({ preventScroll: !this.el.classList.contains("stack") });
       clearTimeout(this._enterT);
       this.el.classList.remove("fm-enter");
       if (dir && !this.reduced) {
@@ -45,7 +49,9 @@
         this._enterT = setTimeout(() => this.el.classList.remove("fm-enter"), 1100);
       }
     }
-    has(id) { const m = this.m; return !!m && (m.centre.id === id || m.members.some((x) => x.id === id) || m.neighbours.some((x) => x.id === id)); }
+    has(id) { const m = this.m; return !!m && (this.holds(id) || m.neighbours.some((x) => x.id === id)); }
+    // in the middle or on the ring (what a note can stay open on); the neighbours further out belong to another focus
+    holds(id) { const m = this.m; return !!m && (m.centre.id === id || m.members.some((x) => x.id === id)); }
 
     /* ---------------------------------------------------------------- DOM */
     build() {
@@ -117,7 +123,6 @@
     /* ---------------------------------------------------------------- state */
     setSelected(id) { this.sel = id && this.has(id) ? id : null; this.paint(); }
     setHover(id) { if (id !== this.hover) { this.hover = id; this.paint(); } }
-    setDim(set) { this.dim = set || new Set(); this.paint(); }
     setWalk(w) { this.walk = w; this.paint(); if (this.pos) this.drawWalk(this.pos); }
     setInsets(i) {
       const before = JSON.stringify(this.insets);
@@ -149,7 +154,6 @@
         item.classList.toggle("dim", !!F && !F.members.has(mb.id));
         item.classList.toggle("sel", this.sel === mb.id);
         item.classList.toggle("hot", mb.id === this.hover || mb.id === this.sel);
-        item.classList.toggle("filtered", this.dim.has(mb.id));
         item.classList.toggle("walk-cur", !!W && W.cur === mb.id);
         const stop = W && W.stops && W.stops.get(mb.id);
         badge.textContent = stop ? String(stop) : "";
@@ -172,11 +176,11 @@
       const I = this.insets, sw = this.el.clientWidth - I.l - I.r;
       return sw < (this.m && this.m.style === "niche" ? 700 : 600);
     }
-    layout() {
+    layout(cramped) {
       if (!this.m) return;
       const W = this.el.clientWidth, H = this.el.clientHeight;
       if (!W || !H) return;
-      const stack = this.stacked();
+      const stack = cramped || this.stacked();
       this.el.classList.toggle("stack", stack);
       if (stack) {
         for (const el of [this.centre, this.emptyEl, ...this.items.map((x) => x.item), ...this.nbs.map((x) => x.btn)].filter(Boolean)) {
@@ -214,10 +218,21 @@
         const room = Rx2 - cw / 2 - nbR - 16;
         Rx1 = N ? u.clamp(Rx2 - cw / 2 - nbR - 46, Math.min(Ry1 * 0.7, room), room) : Math.min(sw / 2 - cw / 2 - 18, Ry1 * 1.7);
       }
-      const rc = niche ? u.clamp(Math.min(Rx1 - cw / 2, Ry1 - ch / 2) - 16, 44, 96) : u.clamp(Math.min(Rx1, Ry1) - rm - 20, 42, 88);
-      // members: evenly round the ring from the top, clockwise (an even count starts half a step on, so it sits symmetrically)
+      // members: evenly round the ring from the top, clockwise (an even count starts half a step on, so it sits symmetrically;
+      // two sit above and below the middle, where wide cards have the most room)
       const at1 = u.alongEllipse(Rx1, Ry1);
-      const mAng = this.items.map((x, i) => at1(i / Math.max(1, M) + (M % 2 === 0 ? 0.5 / M : 0)));
+      const mAng = this.items.map((x, i) => at1(i / Math.max(1, M) + (M % 2 === 0 && M !== 2 ? 0.5 / M : 0)));
+      let rc;
+      if (niche) {
+        // the middle may be as large as the room the cards leave it; narrow the cards first, and if that is not enough, use the list
+        const gap = (w) => (M ? Math.min(...mAng.map((a) => Math.hypot(Math.max(Math.abs(Rx1 * Math.cos(a)) - w / 2, 0), Math.max(Math.abs(Ry1 * Math.sin(a)) - ch / 2, 0)))) : Math.min(Rx1, Ry1));
+        while (M && gap(cw) - 14 < 56 && cw > 112) cw -= 8;
+        if (gap(cw) - 14 < 44) return this.layout(true);
+        rc = u.clamp(gap(cw) - 14, 44, 96);
+      } else {
+        if (Math.min(Rx1, Ry1) - rm - 20 < 40) return this.layout(true);
+        rc = u.clamp(Math.min(Rx1, Ry1) - rm - 20, 42, 88);
+      }
       // neighbours: on the Regime, towards the prompts that link to them; on the Niche, in the gaps between the sources
       const nAng = niche ? this.gapAngles(mAng, N) : this.towardAngles(mAng, Rx2, Ry2, nbR);
       this.pos = { cx, cy, Rx1, Ry1, Rx2, Ry2, rm, cw, ch, rc, nbR, niche,
@@ -271,7 +286,8 @@
       Object.assign(this.centre.style, { left: cx - rc + "px", top: cy - rc + "px", width: 2 * rc + "px", height: 2 * rc + "px" });
       if (this.emptyEl) Object.assign(this.emptyEl.style, { left: cx + "px", top: cy + rc + 18 + "px" });
       // the longest word of the label in the middle has to fit across it
-      this.centre.style.setProperty("--fs", u.clamp(Math.min(rc * 0.2, (1.55 * rc - 8) / this.widest(this.m.centre.title, 500, "Spectral, Georgia, serif")), 12, 24).toFixed(1) + "px");
+      this.centre.style.setProperty("--fs", u.clamp(Math.min(rc * 0.2, (1.55 * rc - 8) / this.widest(this.m.centre.title, 500, "Spectral, Georgia, serif")), 10.5, 24).toFixed(1) + "px");
+      this.centre.classList.toggle("tight", rc < 66);   // a small middle keeps only its kicker and title
       for (const { mb, item } of this.items) {
         const [x, y] = g.members.get(mb.id), d = Math.hypot(x - cx, y - cy) || 1;
         if (niche) Object.assign(item.style, { left: x + "px", top: y + "px", width: cw + "px", height: "" });

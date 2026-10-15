@@ -84,7 +84,7 @@
     }
   }
 
-  const S = { level: "landscape", theme: null, prompt: null, sel: null, hist: [], thread: null, walkExtras: [], q: "", pillars: new Set(), tab: "explore", opener: null };
+  const S = { level: "landscape", theme: null, prompt: null, sel: null, hist: [], thread: null, walkExtras: [], q: "", tab: "explore", opener: null };
 
   const app = {
     D, byId, topics, examples, S,
@@ -94,7 +94,7 @@
     exOf: (id) => exByTopic.get(id) || [],
     sourceCount,
     select: (id, o) => select(id, o),
-    filterBy: (lens, key) => { if (lens === "pillar") togglePillar(key, true); },
+    shown,
     startThread: (id) => startThread(id),
     drill: (id) => drill(id),
     goLevel: (lv, o) => goLevel(lv, o),
@@ -156,8 +156,8 @@
     const th = byId.get(thId), mine = promptsOf(thId), inTheme = new Set(mine), arc = D.arcs.find((a) => a.id === th.arc);
     const members = mine.map((id) => {
       const t = byId.get(id), cs = pillarColors(t), n = sourceCount(id);
-      return { id, kind: "topic", label: t.label, color: cs[0] || NONE, color2: cs[1],
-        down: { label: n === 1 ? u.t("regime.down_one") : u.t("regime.down", { n }), aria: u.t("regime.down_aria", { label: t.label }) } };
+      const label = n === 0 ? u.t("regime.down_none") : n === 1 ? u.t("regime.down_one") : u.t("regime.down", { n });
+      return { id, kind: "topic", label: t.label, color: cs[0] || NONE, color2: cs[1], down: { label, aria: u.t("regime.down_aria", { what: label, label: t.label }) } };
     });
     const links = [], out = new Map();
     for (const l of relLinks) {
@@ -172,11 +172,14 @@
     }
     const extras = S.thread ? S.walkExtras.filter((x) => x !== thId && !out.has(x)) : [];
     for (const x of extras) out.set(x, []);
+    const w = S.thread ? walkThemes() : {};
     const neighbours = THEME_IDS.filter((x) => out.has(x)).map((x) => {
       const o = byId.get(x), ties = out.get(x), count = ties.length;
-      const sub = count ? (count === 1 ? u.t("regime.nb_one") : u.t("regime.nb_sub", { n: count })) : u.t("regime.nb_walk");
+      let sub = count ? (count === 1 ? u.t("regime.nb_one") : u.t("regime.nb_sub", { n: count })) : "";
+      const walkWord = x === w.next ? u.t("regime.nb_walk_next") : x === w.prev ? u.t("regime.nb_walk_prev") : "";
+      if (walkWord) sub = sub ? sub + " · " + walkWord : walkWord;
       return { id: x, num: o.n, label: o.label, sub, color: themeColor(o.n), ties,
-        aria: u.t("regime.nb_aria", { num: o.n, label: o.label, links: sub }) };
+        aria: walkWord ? u.t("regime.nb_aria_walk", { num: o.n, label: o.label, walk: walkWord }) : u.t("regime.nb_aria", { num: o.n, label: o.label, links: sub }) };
     });
     return { key: thId + "|" + extras.join(","), style: "regime", members, links, neighbours,
       centre: { id: thId, kicker: u.t("landscape.theme_n", { n: th.n }), title: th.label, sub: arc ? arc.label : "", color: themeColor(th.n) },
@@ -203,7 +206,7 @@
       membersTitle: u.t("niche.members_title"), neighboursTitle: u.t("niche.nbs_title"),
       empty: { title: u.t("niche.empty_title"), body: u.t("niche.empty_body") } };
   }
-  function showRegime(dir) { const m = regimeModel(S.theme); if (!reg.m || reg.m.key !== m.key) reg.show(m, dir); reg.setSelected(S.sel); applyHighlight(); }
+  function showRegime(dir) { const m = regimeModel(S.theme); if (!reg.m || reg.m.key !== m.key) reg.show(m, dir); reg.setSelected(S.sel); }
   function showNiche(dir) { const m = nicheModel(S.prompt); if (!nic.m || nic.m.key !== m.key) nic.show(m, dir); nic.setSelected(S.sel); }
 
   /* ------------------------------------------------------------------ level bar (a breadcrumb), side arrows, peek tab, live region */
@@ -293,29 +296,12 @@
     return (themeBtns[id] = h("button", { type: "button", class: "theme-go", style: { "--c": themeColor(th.n) }, onclick: () => { goTheme(id); if (mobile()) closeLeft(); } },
       h("b", { class: "num" }, th.n), h("span", null, th.label), h("small", null, u.t("explore.theme_count", { n: th.topics.length }))));
   }));
-  const pillarChips = {};
   const PL = D.lenses.pillar;
-  const pillarSeg = h("div", { class: "seg" }, Object.entries(PL.values).map(([k, v]) =>
-    (pillarChips[k] = chip(v.short || v.label, { color: v.color, title: v.def || v.q, onclick: () => togglePillar(k) }))));
   const legendEl = h("div", { class: "legend-inline", id: "legend", "aria-label": u.t("explore.legend") });
   panes.explore.append(
     sec(u.t("explore.themes_title"), h("p", { class: "hint" }, u.t("explore.themes_hint")), themeList),
-    h("div", { class: "regime-only" }, sec(u.t("explore.pillar_title"), h("p", { class: "hint" }, PL.question), pillarSeg)),
     h("div", { class: "not-landscape" }, sec(u.t("explore.legend_title"), legendEl)));
 
-  function togglePillar(k, reveal) {
-    S.pillars.has(k) ? S.pillars.delete(k) : S.pillars.add(k);
-    if (reveal) { openLeft(); setTab("explore"); }
-    for (const [key, el] of Object.entries(pillarChips)) el.setAttribute("aria-pressed", S.pillars.has(key) ? "true" : "false");
-    applyHighlight();
-  }
-  // a pillar highlight fades the Regime's other prompts (their names stay readable)
-  function applyHighlight() {
-    if (!reg.m) return;
-    const off = new Set();
-    if (S.pillars.size) for (const mb of reg.m.members) if (!byId.get(mb.id).pillar.some((v) => S.pillars.has(v))) off.add(mb.id);
-    reg.setDim(off);
-  }
   function renderLegend() {
     const el = legendEl, R = u.t("relations");
     const line = (color, label, dash) => h("span", { html: `<svg viewBox="0 0 22 12"><path d="M1 8 Q 11 0 21 6" fill="none" stroke="${color}" stroke-width="${dash ? 1.3 : 1.8}"${dash ? ' stroke-dasharray="3 3"' : ""} stroke-linecap="round"/></svg>` }, label);
@@ -465,9 +451,18 @@
     if (o.prompt) return o.prompt;
     const n = S.sel && byId.get(S.sel);
     if (n && n.kind === "topic") return n.id;
-    if (n && n.topics && n.kind !== "theme" && n.kind !== "arc" && n.kind !== "tag") return n.topics.includes(S.prompt) ? S.prompt : n.topics[0];
+    if (n && n.kind === "theme") return promptsOf(n.id)[0];
+    if (n && n.kind === "arc") return promptsOf("th:" + n.themes[0])[0];
+    if (n && n.topics && n.kind !== "tag") return promptUnder(n);
     if (S.prompt && (!S.theme || themeOf(S.prompt) === S.theme)) return S.prompt;
     return promptsOf(S.theme || THEME_IDS[0])[0];
+  }
+  // the prompt to show a source under: the prompt you were reading if it is one of its own, else one in the theme you are in
+  function promptUnder(n) {
+    const sel = S.sel && byId.get(S.sel);
+    if (sel && sel.kind === "topic" && n.topics.includes(sel.id)) return sel.id;
+    if (S.prompt && n.topics.includes(S.prompt)) return S.prompt;
+    return n.topics.find((t) => themeOf(t) === S.theme) || n.topics[0];
   }
   // going up or down keeps your place: what was open travels with you if the new level shows it, or its parent does
   function carryTo(id, lv, from) {
@@ -477,11 +472,11 @@
     if (n.kind === "tag") return id;   // a tag runs across every level: its note stays open
     if (lv === "landscape") return LV.shows("landscape", id) ? id : themeOf(from === "niche" ? S.prompt || id : id);
     if (lv === "regime") {
-      if (reg.has(id) || n.kind === "tag") return id;
-      if (from === "niche") return S.prompt;
+      if (reg.holds(id)) return id;
+      if (from === "niche" && S.prompt && themeOf(S.prompt) === S.theme) return S.prompt;
       return null;
     }
-    return nic.has(id) || n.kind === "tag" ? id : null;
+    return nic.holds(id) ? id : null;
   }
   function goLevel(lv, o = {}) {
     if (!LEVELS.includes(lv)) return;
@@ -491,7 +486,7 @@
       if (lv === "niche" && o.prompt && o.prompt !== S.prompt) setPrompt(o.prompt, { sync: o.sync });
       return;
     }
-    const ae = document.activeElement, stranded = !!ae && (PLANE[from].contains(ae) || peek === ae);
+    const ae = document.activeElement, stranded = !!ae && (PLANE[from].contains(ae) || peek === ae || right.contains(ae));
     if (S.thread && lv !== "regime") endThread(true);
     if (lv === "regime") S.theme = themeFor(o, from);
     if (lv === "niche") { S.prompt = promptFor(o); S.theme = themeOf(S.prompt); }
@@ -503,10 +498,11 @@
     const carried = o.selecting ? S.sel : carryTo(S.sel, lv, from);
     renderChrome();
     swapPlanes(from, lv, o.instant);
-    if (carried !== S.sel) { if (carried) select(carried, { noPush: true, sync: false }); else deselect({ sync: false }); }
+    if (carried !== S.sel) { if (carried) select(carried, { noPush: true, sync: false, keepFocus: true }); else deselect({ sync: false, keepFocus: true }); }
     else { MAPS[lv].setSelected(S.sel); if (S.sel && !o.selecting) renderNote(); }
-    live.textContent = u.t("levels.announce", { name: u.t("levels." + lv + ".name"), what: levelWhatText(lv) || u.t("levels." + lv + ".short") });
-    if (stranded) rescueFocus(true);
+    announce();
+    // a keyboard user who went down (or up) lands on the middle of the new level, not on whatever came after it
+    if (stranded && !o.selecting && !right.contains(document.activeElement)) { const c = lv === "landscape" ? land.center : MAPS[lv].centre; if (c) c.focus({ preventScroll: true }); }
     if (o.sync !== false) syncURL(o.push !== false);
   }
   // one step down from a theme (to its prompts) or from a prompt (to its sources)
@@ -521,9 +517,21 @@
   function goTheme(id) { if (S.thread) endThread(true); if (S.level === "regime") setTheme(id); else goLevel("regime", { theme: id }); }
   // sideways: another theme on the Regime, another prompt on the Niche
   function move(id, dir) {
-    if (S.thread && !S.thread.t.steps.some((s) => s.topic === id)) endThread(true);
+    // during a walk, the theme holding the next (or previous) stop is the way on (or back)
+    if (S.thread) {
+      const w = walkThemes();
+      if (id === w.next) { stepTo(S.thread.i + 1); return; }
+      if (id === w.prev) { stepTo(S.thread.i - 1); return; }
+      if (!S.thread.t.steps.some((s) => s.topic === id)) { endThread(true); live.textContent = u.t("walks.ended"); }
+    }
     if (S.level === "regime") setTheme(id, { dir });
     else if (S.level === "niche") setPrompt(id, { dir });
+  }
+  // the themes of the stops either side of the current one, when they are not this one
+  function walkThemes() {
+    const T = S.thread, steps = T ? T.t.steps : [], at = (j) => steps[j] && themeOf(steps[j].topic);
+    const cur = at(T ? T.i : -1) || S.theme, prev = at(T.i - 1), next = at(T.i + 1);
+    return { prev: prev && prev !== cur ? prev : null, next: next && next !== cur ? next : null };
   }
   const order = (list, a, b) => (list.indexOf(b) >= list.indexOf(a) ? "right" : "left");
   function setTheme(id, o = {}) {
@@ -532,8 +540,9 @@
     S.theme = id;
     showRegime(o.dir || (before ? order(THEME_IDS, before, id) : null));
     if (S.sel === before && byId.get(id)) select(id, { noPush: true, sync: false, keepFocus: true });   // the note follows the theme in the middle
-    else if (S.sel && !reg.has(S.sel) && byId.get(S.sel).kind !== "tag") deselect({ sync: false });
+    else if (S.sel && !reg.holds(S.sel)) deselect({ sync: false, keepFocus: true });
     renderChrome();
+    if (!o.quiet) announce();
     if (o.sync !== false) syncURL(true);
   }
   function setPrompt(id, o = {}) {
@@ -544,8 +553,9 @@
     const all = THEME_IDS.flatMap(promptsOf);
     showNiche(o.dir || (before ? order(all, before, id) : null));
     if (S.sel === before) select(id, { noPush: true, sync: false, keepFocus: true });
-    else if (S.sel && !nic.has(S.sel) && byId.get(S.sel).kind !== "tag") deselect({ sync: false });
+    else if (S.sel && !nic.holds(S.sel)) deselect({ sync: false, keepFocus: true });
     renderChrome();
+    if (!o.quiet) announce();
     if (o.sync !== false) syncURL(true);
   }
   // where an item's note opens: its own level, focused so the item is in view
@@ -556,8 +566,12 @@
       case "theme": return S.level === "landscape" ? { level: "landscape" } : { level: "regime", theme: id };
       case "topic": return S.level === "niche" ? { level: "niche", prompt: id } : { level: "regime", theme: themeOf(id) };
       case "tag": return { level: S.level };
-      default: return { level: "niche", prompt: S.level === "niche" && n.topics.includes(S.prompt) ? S.prompt : n.topics[0] };
+      default: return { level: "niche", prompt: promptUnder(n) };
     }
+  }
+  // say where you are now (level and what is in the middle), for screen readers
+  function announce() {
+    live.textContent = u.t("levels.announce", { name: u.t("levels." + S.level + ".name"), what: levelWhatText(S.level) || u.t("levels." + S.level + ".short") });
   }
   function levelWhatText(lv) {
     if (lv === "regime" && S.theme) { const th = byId.get(S.theme); return u.t("levels.regime.what", { n: th.n, label: th.label }); }
@@ -568,7 +582,7 @@
     const lv = S.level;
     for (const [k, b] of Object.entries(levelBtns)) {
       if (k === lv) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current");
-      const what = LEVELS.indexOf(k) <= LEVELS.indexOf(lv) || k === "regime" ? levelWhatText(k) : "";
+      const what = LEVELS.indexOf(k) <= LEVELS.indexOf(lv) ? levelWhatText(k) : "";
       levelWhat[k].textContent = what;
       b.classList.toggle("has-what", !!what);
     }
@@ -576,7 +590,10 @@
     const sel = S.sel && byId.get(S.sel);
     let down = null;
     if (lv === "landscape" && sel && sel.kind === "theme") down = u.t("peek.landscape", { n: sel.n, count: sel.topics.length });
-    if (lv === "regime" && sel && sel.kind === "topic") { const c = sourceCount(sel.id); down = c === 1 ? u.t("peek.regime_one", { label: sel.label }) : u.t("peek.regime", { label: sel.label, count: c }); }
+    if (lv === "regime" && sel && sel.kind === "topic") {
+      const c = sourceCount(sel.id);
+      down = c === 0 ? u.t("peek.regime_none", { label: sel.label }) : c === 1 ? u.t("peek.regime_one", { label: sel.label }) : u.t("peek.regime", { label: sel.label, count: c });
+    }
     peek.hidden = !down || !!S.thread;
     if (down) peek.replaceChildren(planesIcon(lv === "landscape" ? "regime" : "niche", "lv-ico"), h("span", null, down), h("span", { "aria-hidden": "true" }, " ↓"));
     // sideways
@@ -586,7 +603,7 @@
       if (!id) continue;
       const o = byId.get(id), short = kind === "theme" ? u.t("landscape.theme_n", { n: o.n }) : o.label;
       btn.replaceChildren(h("span", { class: "sa-arrow", "aria-hidden": "true" }, k === "prev" ? "‹" : "›"), h("span", { class: "sa-label" }, short));
-      btn.setAttribute("aria-label", u.t("side." + k + "_" + kind, { label: kind === "theme" ? o.label : o.label }));
+      btn.setAttribute("aria-label", u.t("side." + k + "_" + kind, { short, label: o.label }));
     }
     for (const [id, b] of Object.entries(themeBtns)) b.setAttribute("aria-current", lv !== "landscape" && S.theme === id ? "true" : "false");
     renderLevelNote();
@@ -686,6 +703,10 @@
     const ae = document.activeElement, fromControl = o.sync !== false && !o.keepFocus && !!ae && ae !== document.body && !right.contains(ae) && !bar.contains(ae);
     if (fromControl) S.opener = ae;
     const p = place(id), prevSel = S.sel;
+    if (S.thread && !S.thread.t.steps.some((s) => s.topic === id) && (p.level !== S.level || (p.theme && p.theme !== S.theme) || p.prompt)) {
+      endThread(true);
+      live.textContent = u.t("walks.ended");
+    }
     let pushed = false;
     if (p.level === S.level) {
       if (p.theme && p.theme !== S.theme) { S.sel = null; setTheme(p.theme, { sync: false }); pushed = true; }
@@ -711,7 +732,7 @@
     if (prev) select(prev, { noPush: true });
   }
   function deselect(o = {}) {
-    const ae = document.activeElement, inNote = !!ae && right.contains(ae);
+    const ae = document.activeElement, inNote = !o.keepFocus && !!ae && right.contains(ae);
     S.sel = null; S.hist = [];
     for (const m of Object.values(MAPS)) m.setSelected(null);
     body.classList.remove("right-open");
@@ -764,8 +785,8 @@
     const T = S.thread, steps = T.t.steps, cur = steps[T.i] && steps[T.i].topic;
     if (!cur) return null;
     const stops = new Map();
-    steps.forEach((s, k) => { if (reg.has(s.topic)) stops.set(s.topic, k + 1); });
-    const end = (j) => { const s = steps[j]; if (!s) return null; return { id: reg.has(s.topic) ? s.topic : "th:" + byId.get(s.topic).theme }; };
+    steps.forEach((s, k) => { if (reg.holds(s.topic)) stops.set(s.topic, k + 1); });
+    const end = (j) => { const s = steps[j]; if (!s) return null; return { id: reg.holds(s.topic) ? s.topic : "th:" + byId.get(s.topic).theme }; };
     return { cur, stops, prev: end(T.i - 1), next: end(T.i + 1) };
   }
   function stepTo(i, o = {}) {
@@ -775,14 +796,15 @@
     T.i = u.clamp(i, 0, n);
     renderBar();   // first, so the map can make room for the card at its real height
     if (T.i < n) {
-      const id = t.steps[T.i].topic, th = themeOf(id);
+      const id = t.steps[T.i].topic, th = themeOf(id), reading = body.classList.contains("right-open") && !mobile();
       S.walkExtras = walkExtras(T.i);
       const dir = was >= 0 && was !== T.i ? (T.i > was ? "right" : "left") : null;
+      S.sel = id;   // first, so moving to the stop's theme keeps the note open rather than closing it
       if (S.level !== "regime") goLevel("regime", { theme: th, sync: false });
-      else if (th !== S.theme) setTheme(th, { sync: false, dir });
+      else if (th !== S.theme) setTheme(th, { sync: false, dir, quiet: true });
       else showRegime();
-      if (body.classList.contains("right-open") && !mobile()) select(id, { noPush: true, sync: false, keepFocus: true });   // keep reading along if a note is open
-      else { S.sel = id; reg.setSelected(id); }
+      if (reading) select(id, { noPush: true, sync: false, keepFocus: true });   // keep reading along if a note is open
+      else { reg.setSelected(id); }
       reg.setWalk(walkOverlay());
     } else {
       S.sel = null; reg.setSelected(null); reg.setWalk(null); body.classList.remove("right-open");

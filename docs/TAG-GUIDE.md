@@ -50,7 +50,7 @@ The 'Relevant working group' column of the sign-up sheets. Where a session recor
 | `wg/wg2` **WG2 · Utopian to utilisation & socioeconomic application** | From speculative aims to real use: economics, society, ethics, adoption. | 18 |
 | `wg/wg3` **WG3 · Manufacturing & infrastructure** | How things are made at scale, and the infrastructure, supply chains and environments they need. | 22 |
 
-*42 of the working-group assignments are proposals by the map (the sheets recorded none for that discussion); they appear dashed on the site. Please confirm or change them.*
+*42 of the working-group assignments are proposals by the map (the sheets recorded none for that discussion); they are marked with an asterisk on the site. Please confirm or change them.*
 
 ### Pillar: *Which part of the Rethink Matters mission does it advance?*
 
@@ -176,7 +176,7 @@ Aim for **4–8 semantic tags** per prompt. Before inventing a tag, check whethe
 
 ## How tags turn into links
 
-For every pair of prompts the build adds up the weight of the semantic tags they share (rarer tags weigh more, `ln((N+1)/(n+1))`; tensions count 1.5×, domains 0.7×, methods 0.8×) and adds 2.5 for each discussion they both grew from. Pairs above a threshold become a link; the link-strength slider under More options on the Regime level moves that threshold. Hand-written bridges are always shown. Lenses are *not* used for linking (every prompt has a scale, so sharing one means little).
+For every pair of prompts the build adds up the weight of the semantic tags they share (rarer tags weigh more, `ln((N+1)/(n+1))`; tensions count 1.5×, domains 0.7×, methods 0.8×) and adds 2.5 for each discussion they both grew from. Pairs scoring at least `DEFAULT_MIN` (6.0, set in `build/build.py`) are drawn on the Regime and the Niche, and listed in each prompt's note. Hand-written bridges are always shown. Lenses are *not* used for linking (every prompt has a scale, so sharing one means little).
 
 ## Things to decide
 

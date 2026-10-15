@@ -78,7 +78,6 @@ explore:
   themes_title: "Go to a theme"
   themes_hint: "Each opens on the Regime with its prompts."
   theme_count: "{n} prompts"
-  pillar_title: "Highlight a pillar"
   legend_title: "Key"
   legend: "Key"
   legend_lines: "Lit-up links"
@@ -101,7 +100,6 @@ relations:
 
 tip:
   topic: "Theme {n} · {label}"
-  theme: "Theme {n} · {count} prompts"
   theme_title: "Theme {n} · {label}"
   theme_landscape: "{n} prompts · click for its note"
   theme_move: "Click to move to this theme"
@@ -121,10 +119,13 @@ regime:
   nbs_title: "Themes they link to"
   down: "{n} sources"
   down_one: "1 source"
-  down_aria: "Go down to what sits under {label}"
+  down_aria: "{what}: go down to what sits under {label}"
+  down_none: "links only"
   nb_sub: "{n} links"
   nb_one: "1 link"
-  nb_walk: "the walk goes on here"
+  nb_walk_next: "the walk's next stop"
+  nb_walk_prev: "the walk's last stop"
+  nb_aria_walk: "Theme {num}: {label}, {walk}. Choose it to step there."
   nb_aria: "Theme {num}: {label}, {links}. Move to this theme."
 
 niche:
@@ -143,10 +144,11 @@ peek:
   landscape: "Into theme {n} · {count} prompts"
   regime: "Into {label} · {count} sources"
   regime_one: "Into {label} · 1 source"
+  regime_none: "Into {label} · its links"
 
 side:
-  prev_theme: "Previous theme: {label}"
-  next_theme: "Next theme: {label}"
+  prev_theme: "Previous theme: {short}, {label}"
+  next_theme: "Next theme: {short}, {label}"
   prev_prompt: "Previous prompt in this theme: {label}"
   next_prompt: "Next prompt in this theme: {label}"
 
@@ -182,6 +184,7 @@ walks:
   next: "Next"
   finish: "Finish"
   big_picture: "See the big picture"
+  ended: "Walk ended"
 
 note:
   label: "Note"
@@ -197,8 +200,8 @@ topic:
   crumb: "Theme {n} · {title}"
   down: "Go down to its {n} sources"
   down_one: "Go down to its 1 source"
+  down_none: "Go down: nothing sits under it yet, only its links"
   pillar: "Pillar"
-  pillar_tip: "Highlight the prompts on this pillar."
   wg: "Working group"
   wg_proposed: "* proposed by the map: the sheets did not record it"
   value: "Value"
@@ -250,11 +253,11 @@ center:
   answer: "Our draft answer"
   howto: "How to read this map"
   howto_items:
-    - "**Three levels, from the big picture down.** The Landscape shows the nine themes. Step into a theme and the Regime shows its prompts; step into a prompt and the Niche shows what sits under it. The bar at the top says where you are."
+    - "**Three levels, from the big picture down.** The Landscape shows the nine themes. Step into a theme and the Regime shows its prompts; step into a prompt and the Niche shows what sits under it. The level bar says where you are."
     - "**On the Landscape**, each theme has a draft future and an arrow down to its prompts. On a wide screen, dashed lines join themes whose prompts are linked; the thicker the line, the more links."
     - "**On the Regime**, point at a prompt and its links light up: teal echoes, terracotta pulls in tension, olive enables, ochre leads on; dashed lines share tags or a discussion. The other themes it reaches sit further out: choose one to move across."
     - "**On the Niche**, a prompt's discussions, books and examples sit round it, and the prompts it links to further out. Open a discussion for the provocation and what the group said."
-    - "**Colour** shows each prompt's pillar of the Rethink Matters mission. Highlight one pillar from the Explore tab."
+    - "**Colour** shows each prompt's pillar of the Rethink Matters mission; the key in the Explore tab names them."
     - "**A guided walk** is the quickest way in: a handful of prompts, in order, moving across themes and ending back at the question."
   values: "Four values, one lens"
   values_n: "{n} prompts speak to this value"

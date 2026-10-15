@@ -33,7 +33,7 @@ The Niche level of the map shows real, public examples (papers, companies, produ
 | `stage` | no | how far along it is, in its own source's words (e.g. research, prototype, on the market, phase 1) |
 | `summary` | no | one plain line: what it is or does, as its public source says. No opinions or 'first/best' claims. |
 | `url` | yes | a public link: a DOI for papers, the organisation's own site, or a trial registry. Links into private storage (Google Drive or Docs, SharePoint, Dropbox, iCloud and the like), shortened links, signed links and local addresses are refused. |
-| `prompts` | yes | the prompt(s) it speaks to, separated by `;`. Use the prompt id from the table below, the prompt's exact name, or paste a link copied from the map. |
+| `prompts` | yes | the prompt(s) it speaks to, separated by `;`. Use the prompt id from the table below, the prompt's exact name, or paste the address of its Niche (it contains `focus=n:` and the id). |
 | `status` | yes | `draft` when added; `checked` once a second person has checked it; `hidden` to withdraw it. **Only `checked` rows appear on the map.** |
 | `notes` | no | notes for the checker. Public on GitHub, not shown on the map. |
 

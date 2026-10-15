@@ -484,7 +484,7 @@ for t in topics_cur:
             warn(f"curated link duplicated between {key}")
         curated[key] = rec
 
-MIN_SCORE = 2.6  # stored threshold (UI slider filters at runtime)
+MIN_SCORE = 2.6  # links weaker than this are not stored at all
 links = []
 for (a, b), rec in pairs.items():
     key = (a, b) if (a, b) in curated else tuple(sorted((a, b)))
@@ -606,7 +606,7 @@ examples_by_topic = Counter(t for e in example_nodes for t in e["topics"])
 # ----------------------------------------------------------------------------------------------------------
 # 5. Network checks (reported, and used to tune the vocabulary)
 # ----------------------------------------------------------------------------------------------------------
-DEFAULT_MIN = 6.0  # UI default (slider can go lower/higher); every topic keeps >=1 link at this level
+DEFAULT_MIN = 6.0  # the map draws every bridge and the shared-tag links at or above this; every topic keeps >=1 link at this level
 rel_default = [l for l in links if l["curated"] or l["score"] >= DEFAULT_MIN]
 adj = defaultdict(set)
 for l in rel_default:
@@ -1012,7 +1012,7 @@ def write_tag_guide():
         if lk == "wg":
             prop = sum(len(n["wgProposed"]) for n in nodes if n["kind"] == "topic")
             A("")
-            A(f"*{prop} of the working-group assignments are proposals by the map (the sheets recorded none for that discussion); they appear dashed on the site. Please confirm or change them.*")
+            A(f"*{prop} of the working-group assignments are proposals by the map (the sheets recorded none for that discussion); they are marked with an asterisk on the site. Please confirm or change them.*")
         A("")
     A("## Layer 2: semantic tags")
     A("")
@@ -1039,7 +1039,7 @@ def write_tag_guide():
     A("")
     A("## How tags turn into links")
     A("")
-    A("For every pair of prompts the build adds up the weight of the semantic tags they share (rarer tags weigh more, `ln((N+1)/(n+1))`; tensions count 1.5×, domains 0.7×, methods 0.8×) and adds 2.5 for each discussion they both grew from. Pairs above a threshold become a link; the link-strength slider under More options on the Regime level moves that threshold. Hand-written bridges are always shown. Lenses are *not* used for linking (every prompt has a scale, so sharing one means little).")
+    A("For every pair of prompts the build adds up the weight of the semantic tags they share (rarer tags weigh more, `ln((N+1)/(n+1))`; tensions count 1.5×, domains 0.7×, methods 0.8×) and adds 2.5 for each discussion they both grew from. Pairs scoring at least `DEFAULT_MIN` (6.0, set in `build/build.py`) are drawn on the Regime and the Niche, and listed in each prompt's note. Hand-written bridges are always shown. Lenses are *not* used for linking (every prompt has a scale, so sharing one means little).")
     A("")
     A("## Things to decide")
     A("")
@@ -1157,7 +1157,7 @@ def write_examples_guide():
          "| `stage` | no | how far along it is, in its own source's words (e.g. research, prototype, on the market, phase 1) |",
          "| `summary` | no | one plain line: what it is or does, as its public source says. No opinions or 'first/best' claims. |",
          "| `url` | yes | a public link: a DOI for papers, the organisation's own site, or a trial registry. Links into private storage (Google Drive or Docs, SharePoint, Dropbox, iCloud and the like), shortened links, signed links and local addresses are refused. |",
-         "| `prompts` | yes | the prompt(s) it speaks to, separated by `;`. Use the prompt id from the table below, the prompt's exact name, or paste a link copied from the map. |",
+         "| `prompts` | yes | the prompt(s) it speaks to, separated by `;`. Use the prompt id from the table below, the prompt's exact name, or paste the address of its Niche (it contains `focus=n:` and the id). |",
          "| `status` | yes | `draft` when added; `checked` once a second person has checked it; `hidden` to withdraw it. **Only `checked` rows appear on the map.** |",
          "| `notes` | no | notes for the checker. Public on GitHub, not shown on the map. |", "",
          "## Checking a row (two different people)", "",

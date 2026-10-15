@@ -35,6 +35,12 @@ def test_prompt_references():
     assert r["examples"][0]["topics"] == ["n:hype-vs-evidence", "n:chronic-bioelectrodes", "n:when-to-let-die"]
 
 
+def test_niche_address_as_prompt():
+    r = run("h1,paper,Test row,Org,2021,,x,https://example.org/a,https://example.org/map/?level=niche&focus=n:hype-vs-evidence#d:x,checked,\n")
+    assert r["errors"] == [], r["errors"]
+    assert r["examples"][0]["topics"] == ["n:hype-vs-evidence"]
+
+
 def test_unknown_prompt_suggests():
     r = run("c1,paper,Test row,Org,2021,,x,https://example.org/a,hype-vs-evidense,checked,\n")
     assert len(r["errors"]) == 1 and "did you mean" in r["errors"][0] and "row 2" in r["errors"][0]
