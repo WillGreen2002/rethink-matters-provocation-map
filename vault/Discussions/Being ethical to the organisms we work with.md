@@ -12,9 +12,9 @@ tags: [discussion, aired, scale/macro, wg/wg2]
 ## Post-meeting synthesis (anonymised digest)
 
 Brief handwritten notes from the session:
-- “Alien” thought experiments — how another kind of being might treat us.
+- “Alien” thought experiments: how another kind of being might treat us.
 - The food chain: we already live by consuming other organisms.
-- Engineered food organisms that “atrophy” — GM organisms unable to survive alone.
+- Engineered food organisms that “atrophy”: GM organisms unable to survive alone.
 - A view that self-defence comes first, and ethics after; and that ethics applies to humans rather than to other beings.
 
 ## Feeds topics

@@ -22,10 +22,17 @@ import leakcheck  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 FORBIDDEN_PATHS = [r"^source_data/", r"^source_notes/", r"^build/local_checks\.json$", r"^\.claude/", r"^\.obsidian/workspace",
-                   r"\.(xlsx|xlsm|xls|docx|doc|zip|pdf|pptx)$"]
-TEXT_EXT = {".js", ".html", ".css", ".md", ".yaml", ".yml", ".json", ".py", ".svg", ".txt", ".gitignore", ".gitattributes", ""}
+                   r"\.(xlsx|xlsm|xls|docx|doc|zip|pdf|pptx)$",
+                   r"(^|/)~\$",                     # Excel's lock files carry the Windows user name
+                   r"^build/_(review|packs)/"]      # review sheets and evidence packs stay local
+TEXT_EXT = {".js", ".html", ".css", ".md", ".yaml", ".yml", ".json", ".py", ".svg", ".txt", ".csv", ".tsv", ".gitignore", ".gitattributes", ""}
 # files that necessarily contain the *patterns* themselves
-SKIP_CONTENT = {"build/leakcheck.py", "build/preflight.py", "build/local_checks.example.json"}
+SKIP_CONTENT = {"build/leakcheck.py", "build/preflight.py", "build/local_checks.example.json",
+                "build/examples.py", "build/test_examples.py"}   # (they list the private-storage hosts they refuse)
+# the public Niche examples: scanned with scope="example" (exact phrases on the private example_ok list are allowed there only)
+EXAMPLE_SCOPE = [r"^curation/niche_examples\.csv$", r"^site/examples-data\.js$", r"^vault/Examples/"]
+# everything the map shows (and its source text) must be free of em dashes
+NO_DASH = [r"^site/", r"^vault/", r"^docs/", r"^curation/"]
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
@@ -62,11 +69,19 @@ def main():
             problems.append(f"cannot read {f}: {e}")
             continue
         scanned += 1
+        scope = "example" if any(re.search(p, f) for p in EXAMPLE_SCOPE) else "all"
+        dashes = any(re.search(p, f) for p in NO_DASH)
         for n, line in enumerate(text.split("\n"), 1):
-            for what, ctx in leakcheck.dedupe(leakcheck.scan_text(line, local)):
+            for what, ctx in leakcheck.dedupe(leakcheck.scan_text(line, local, scope=scope)):
                 problems.append(f"{f}:{n}: {what!r} in {ctx[:70]!r}")
+            if dashes:
+                for name in leakcheck.banned_chars(line):
+                    problems.append(f"{f}:{n}: {name} (house style: none anywhere in the map)")
+        if f == "site/examples-data.js" and '"fixture":true' in text.replace(" ", ""):
+            problems.append("site/examples-data.js was built from a test fixture; rebuild from curation/niche_examples.csv")
     # sensitive paths must be ignored by git, not merely absent today
-    for probe in ("source_data/x.xlsx", "source_notes/x.docx", "build/local_checks.json"):
+    for probe in ("source_data/x.xlsx", "source_notes/x.docx", "build/local_checks.json", "curation/~$niche_examples.csv",
+                  "build/_review/x.csv", "build/_packs/x.md"):
         r = subprocess.run(["git", "check-ignore", "-q", probe], cwd=ROOT)
         if r.returncode != 0:
             problems.append(f".gitignore does not cover {probe}")

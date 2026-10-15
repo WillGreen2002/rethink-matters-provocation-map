@@ -29,17 +29,17 @@ tags: [discussion, aired, scale/micro, scale/meso]
 
 ## Post-meeting synthesis (anonymised digest)
 
-**Vancouver session — what is self-assembly?**
+**Vancouver session: what is self-assembly?**
 - There is no good agreed answer. Thermodynamically spontaneous re-ordering? “No human input”? Is genetic engineering of a self-assembly pathway still self-assembly? Not everything is self-assembly; almost everything we make is additive manufacturing.
 - Bottom-up approaches aim to produce less waste, but self-assembly is bottlenecked by the complexity of the starting material.
 - Randomness matters: for many biological materials it is the random distribution of components that gives their properties, whereas mass manufacturing expects uniformity. Cultured meat is among the most complex things we can attempt.
 - When does order become life? Candidate criteria: information (DNA), intelligence, starting to *function* rather than merely having capability, reproducing (alone but within its surroundings), reducing entropy.
 
-**RM006 session — printing methods and imagined applications**
-- Printing routes of interest: extrusion, droplet (oil-in-water / water-in-oil) printing, liquid-in-liquid printing, two-photon (scattering limits), aspiration-assisted assembly — and **volumetric / xolographic printing**, judged most interesting: if cell and medium densities match, cells distribute homogeneously and could carry genetic logic gates (for example to trigger cell–cell adhesion). Limits: scale (light penetration) and refractive-index matching.
+**RM006 session: printing methods and imagined applications**
+- Printing routes of interest: extrusion, droplet (oil-in-water / water-in-oil) printing, liquid-in-liquid printing, two-photon (scattering limits), aspiration-assisted assembly, and **volumetric / xolographic printing**, judged most interesting: if cell and medium densities match, cells distribute homogeneously and could carry genetic logic gates (for example to trigger cell–cell adhesion). Limits: scale (light penetration) and refractive-index matching.
 - Likely outcome: a mixture of self-assembly (emergence) and encoded, ordered structure.
-- Imagined applications: heart organoids built from progenitor cells on a tube-like scaffold (heart contraction is physics-based, so shape and orientation coordinate it); synthetic wood; morphogenesis — the current limits of two- and three-node Turing patterns in silico versus in vivo.
-- Wood: how do we cultivate carbon-sequestering structural materials? Engineering *wood* from day one might mean ready-to-use planks growing vertically with peel-off bark; engineering a *tree* for efficient extraction might mean a pristine cellulose core with a lignin/xylan exterior. How to engineer anisotropy into (mostly isotropic) bacterial cellulose — for example a xylem-like cellulose–lignin mat with algae seeded on top for photosynthesis in a “runway” bioreactor? At least one start-up is exploring cultured wood via xylem differentiation of plant cells.
+- Imagined applications: heart organoids built from progenitor cells on a tube-like scaffold (heart contraction is physics-based, so shape and orientation coordinate it); synthetic wood; morphogenesis (the current limits of two- and three-node Turing patterns in silico versus in vivo).
+- Wood: how do we cultivate carbon-sequestering structural materials? Engineering *wood* from day one might mean ready-to-use planks growing vertically with peel-off bark; engineering a *tree* for efficient extraction might mean a pristine cellulose core with a lignin/xylan exterior. How to engineer anisotropy into (mostly isotropic) bacterial cellulose, for example a xylem-like cellulose–lignin mat with algae seeded on top for photosynthesis in a “runway” bioreactor? At least one start-up is exploring cultured wood via xylem differentiation of plant cells.
 - Hot takes: the physics of biomacromolecules is the same across classes; people do not know what they want until it is presented to them; there should be no limits to innovation (fundamental research can look like a gimmick until it is not).
 
 ## Feeds topics

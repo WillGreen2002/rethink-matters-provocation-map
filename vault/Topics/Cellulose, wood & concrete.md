@@ -21,20 +21,20 @@ tags:
 
 > Bacterial cellulose versus wood; biomineralised materials versus concrete and conventional carbonates.
 
-**Theme:** [[Theme 8 — Value, scale & adoption]]  
+**Theme:** [[Theme 8 · Value, scale & adoption]]  
 **Scale:** micro · **Working group:** WG3 (proposed) · **Pillar:** climate, design · **Value:** sustainability
 
 ## Discussions behind this
 
-- [[Bacterial cellulose ≠ wood]] — Vancouver edition
-- [[Making rocks biomineral versus concrete]] — RM004
+- [[Bacterial cellulose ≠ wood]] (Vancouver edition)
+- [[Making rocks biomineral versus concrete]] (RM004)
 
 ## Linked ideas
 
-- *echoes* → [[Engineering a tree]] — Both refuse the 'drop-in substitute' framing: what would a tree look like if engineered from day one, and what can bacterial cellulose do that wood never could?
-- *echoes* → [[Hydrated materials]] — Bacterial cellulose is 98–99% water: the hydration problem that limits aqueous materials in general is the one that limits cellulose as a wood substitute.
-- *tension* → [[Replace or reinvent]] — Bacterial cellulose as a wood substitute is the textbook drop-in trap; asking what it can do that wood never could is the new-capability route.
-- *echoes* → [[Seabed structures & farms]] — Coral-like, biomineralised structures grown on the seabed are the marine counterpart of biomineral alternatives to concrete.
+- *echoes* → [[Engineering a tree]]: Both refuse the 'drop-in substitute' framing: what would a tree look like if engineered from day one, and what can bacterial cellulose do that wood never could?
+- *echoes* → [[Hydrated materials]]: Bacterial cellulose is 98–99% water: the hydration problem that limits aqueous materials in general is the one that limits cellulose as a wood substitute.
+- *tension* → [[Replace or reinvent]]: Bacterial cellulose as a wood substitute is the textbook drop-in trap; asking what it can do that wood never could is the new-capability route.
+- *echoes* → [[Seabed structures & farms]]: Coral-like, biomineralised structures grown on the seabed are the marine counterpart of biomineral alternatives to concrete.
 - via #concept/climate-performance, #method/lca-and-economics, #tension/niche-vs-bulk → [[Energy, cost & fit]]
 - via #concept/climate-performance, #domain/cellulose-and-wood, #tension/niche-vs-bulk → [[Micro vs bulk]]
 - via #concept/hydration, #tension/niche-vs-bulk → [[Scaffolds, nanoparticles & adhesives]]
@@ -45,12 +45,12 @@ tags:
 
 ## Tags
 
-- [[Domain — Cellulose & wood]]
-- [[Domain — Construction & minerals]]
-- [[Tension — Drop-in replacement ↔ new capability]]
-- [[Tension — High-value niche ↔ bulk volume]]
-- [[Concept — Water & hydration]]
-- [[Concept — Climate performance]]
-- [[Concept — Hierarchy & modularity]]
-- [[Method — Life-cycle & techno-economic analysis]]
-- [[Domain — Marine & ocean]]
+- [[Domain · Cellulose & wood]]
+- [[Domain · Construction & minerals]]
+- [[Tension · Drop-in replacement ↔ new capability]]
+- [[Tension · High-value niche ↔ bulk volume]]
+- [[Concept · Water & hydration]]
+- [[Concept · Climate performance]]
+- [[Concept · Hierarchy & modularity]]
+- [[Method · Life-cycle & techno-economic analysis]]
+- [[Domain · Marine & ocean]]

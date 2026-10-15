@@ -17,17 +17,17 @@ tags:
 
 > Which living interfaces such as self-healing skins, hydrogel optics and artificial gills could help us live at the bottom of the ocean?
 
-**Theme:** [[Theme 6 — Ocean & extreme environments]]  
-**Scale:** micro, macro · **Working group:** WG3 · **Pillar:** design · **Value:** —
+**Theme:** [[Theme 6 · Ocean & extreme environments]]  
+**Scale:** micro, macro · **Working group:** WG3 · **Pillar:** design · **Value:** none
 
 ## Discussions behind this
 
-- [[What if the ocean became a place we manufacture in]] — RM008
+- [[What if the ocean became a place we manufacture in]] (RM008)
 
 ## Linked ideas
 
-- *echoes* → [[Material 'intelligence']] — Self-healing skins, hydrogel optics and artificial gills are materials that sense, respond and adapt — the very properties debated here as possible 'intelligence'.
-- *echoes* → [[Replace or reinvent]] — Self-healing skins and artificial gills are 'What can we make possible that was previously impossible?' in concrete form.
+- *echoes* → [[Material 'intelligence']]: Self-healing skins, hydrogel optics and artificial gills are materials that sense, respond and adapt: the very properties debated here as possible 'intelligence'.
+- *echoes* → [[Replace or reinvent]]: Self-healing skins and artificial gills are 'What can we make possible that was previously impossible?' in concrete form.
 - via #domain/marine-and-ocean, #tension/near-vs-far → [[Underwater or space first]]
 - via #domain/marine-and-ocean, #tension/near-vs-far → [[Ocean as factory]]
 - via #domain/marine-and-ocean, #tension/near-vs-far → [[Seabed structures & farms]]
@@ -42,9 +42,9 @@ tags:
 
 ## Tags
 
-- [[Domain — Marine & ocean]]
-- [[Concept — Sensing, repair & adaptation]]
-- [[Concept — Water & hydration]]
-- [[Domain — Living materials]]
-- [[Tension — Near-term utility ↔ long-term & speculative]]
-- [[Domain — Textiles & fashion]]
+- [[Domain · Marine & ocean]]
+- [[Concept · Sensing, repair & adaptation]]
+- [[Concept · Water & hydration]]
+- [[Domain · Living materials]]
+- [[Tension · Near-term utility ↔ long-term & speculative]]
+- [[Domain · Textiles & fashion]]

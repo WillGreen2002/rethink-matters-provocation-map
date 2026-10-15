@@ -18,16 +18,16 @@ tags:
 
 > Seabed-grown structures and drifting material farms.
 
-**Theme:** [[Theme 6 — Ocean & extreme environments]]  
+**Theme:** [[Theme 6 · Ocean & extreme environments]]  
 **Scale:** micro, macro · **Working group:** WG3 · **Pillar:** design, climate · **Value:** sustainability
 
 ## Discussions behind this
 
-- [[What if the ocean became a place we manufacture in]] — RM008
+- [[What if the ocean became a place we manufacture in]] (RM008)
 
 ## Linked ideas
 
-- *echoes* → [[Cellulose, wood & concrete]] — Coral-like, biomineralised structures grown on the seabed are the marine counterpart of biomineral alternatives to concrete.
+- *echoes* → [[Cellulose, wood & concrete]]: Coral-like, biomineralised structures grown on the seabed are the marine counterpart of biomineral alternatives to concrete.
 - via #concept/ecosystems, #domain/marine-and-ocean, #tension/near-vs-far → [[Underwater or space first]]
 - via #concept/ecosystems, #domain/marine-and-ocean, #tension/near-vs-far → [[Ocean as factory]]
 - via #domain/marine-and-ocean, #tension/near-vs-far → [[Living interfaces]]
@@ -43,8 +43,8 @@ tags:
 
 ## Tags
 
-- [[Domain — Marine & ocean]]
-- [[Domain — Construction & minerals]]
-- [[Concept — Self-assembly & morphogenesis]]
-- [[Tension — Near-term utility ↔ long-term & speculative]]
-- [[Concept — Ecosystems & symbiosis]]
+- [[Domain · Marine & ocean]]
+- [[Domain · Construction & minerals]]
+- [[Concept · Self-assembly & morphogenesis]]
+- [[Tension · Near-term utility ↔ long-term & speculative]]
+- [[Concept · Ecosystems & symbiosis]]

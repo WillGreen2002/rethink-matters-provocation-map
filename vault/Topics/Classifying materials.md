@@ -17,18 +17,18 @@ tags:
 
 > Classifying materials by application, composition, properties or level of biological control.
 
-**Theme:** [[Theme 1 — Defining biomaterials]]  
+**Theme:** [[Theme 1 · Defining biomaterials]]  
 **Scale:** micro · **Working group:** WG1 (proposed) · **Pillar:** translation, design · **Value:** humility
 
 ## Discussions behind this
 
-- [[Does classing biomaterials by application help or hinder]] — Proposed
-- [[Do we have enough control over biology A technology scale of biological control]] — RM008
+- [[Does classing biomaterials by application help or hinder]] (Proposed)
+- [[Do we have enough control over biology A technology scale of biological control]] (RM008)
 
 ## Linked ideas
 
-- *extends* → [[Patterning to organs]] — A scale of biological control puts organoids (achievable) and full-size vascularised organs (not yet) on one axis — a way to separate what is market-ready from what is deep research.
-- *enables* → [[Standardising dynamic properties]] — You can only decide which properties to standardise once you have agreed which axis — application, composition, properties or level of control — you are classifying along.
+- *extends* → [[Patterning to organs]]: A scale of biological control puts organoids (achievable) and full-size vascularised organs (not yet) on one axis: a way to separate what is market-ready from what is deep research.
+- *enables* → [[Standardising dynamic properties]]: You can only decide which properties to standardise once you have agreed which axis (application, composition, properties or level of control) you are classifying along.
 - via #barrier/shared-language, #tension/near-vs-far → [[Unexplored biological features]]
 - via #domain/cellulose-and-wood, #tension/near-vs-far → [[Fabrication readiness]]
 - via #barrier/shared-language, #tension/general-vs-specific → [[Portable design principles]]
@@ -44,8 +44,8 @@ tags:
 
 ## Tags
 
-- [[Barrier — Definitions & shared language]]
-- [[Tension — Near-term utility ↔ long-term & speculative]]
-- [[Tension — General & portable ↔ specific & contextual]]
-- [[Domain — Cellulose & wood]]
-- [[Domain — Engineered cells & hosts]]
+- [[Barrier · Definitions & shared language]]
+- [[Tension · Near-term utility ↔ long-term & speculative]]
+- [[Tension · General & portable ↔ specific & contextual]]
+- [[Domain · Cellulose & wood]]
+- [[Domain · Engineered cells & hosts]]

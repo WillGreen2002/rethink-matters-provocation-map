@@ -13,14 +13,14 @@ tags: [discussion, aired, scale/micro, scale/meso]
 
 **Two axes of use**
 - Change the biomaterials we already have; or use patterning with morphogens to build organoids.
-- Nanostructure can pattern tissue and cells — for example neuron matrices, or nanoparticles that set a pattern or phenotype according to a cell’s metabolic state.
+- Nanostructure can pattern tissue and cells: for example neuron matrices, or nanoparticles that set a pattern or phenotype according to a cell’s metabolic state.
 
 **Tissue, organoids and appearance**
 - Organoids are mostly a research platform for now (2D to 3D; microfluidics to pattern, for instance, neural tissue).
 - Possible performance targets: colouration, UV protection, antimicrobial or water-repellent surfaces. Could patterning replace photolithography for materials, leaving cell patterning for cell-related purposes?
 
 **Architecture and wood**
-- For buildings what matters is how a material weathers over time — which biofilms can or cannot grow on it, and whether it ages uniformly.
+- For buildings what matters is how a material weathers over time: which biofilms can or cannot grow on it, and whether it ages uniformly.
 - Interesting properties are those that change over time, or are set early and then maintained (pruning a tree is one example).
 - Changing wood’s cellulose/lignin composition, structure or density could matter for construction, but competes with an established industry of post-processing wood (thermally modified “caramelised” wood is fire- and hurricane-resistant).
 - Patterning for cell differentiation and spatiotemporal organisation remains distinct from polymer assembly (for example cellulose); wood is mainly polymer, not only cells.

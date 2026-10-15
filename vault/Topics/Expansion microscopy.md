@@ -14,16 +14,16 @@ tags:
 
 > Expansion microscopy as a separate, early-stage discussion idea.
 
-**Theme:** [[Theme 5 — Medical & long-term safety]]  
+**Theme:** [[Theme 5 · Medical & long-term safety]]  
 **Scale:** micro · **Working group:** WG1 (proposed) · **Pillar:** design · **Value:** humility
 
 ## Discussions behind this
 
-- [[1000× expansion microscopy]] — Proposed
+- [[1000× expansion microscopy]] (Proposed)
 
 ## Linked ideas
 
-- *enables* → [[Emergent properties]] — Seeing nanostructure across scales is one way to collect the data on patterning and alignment that models of emergent properties lack.
+- *enables* → [[Emergent properties]]: Seeing nanostructure across scales is one way to collect the data on patterning and alignment that models of emergent properties lack.
 - via #barrier/data-gaps, #concept/hierarchy → [[Engineering a tree]]
 - via #barrier/data-gaps, #concept/emergence → [[AI meets biological constraints]]
 - via #barrier/data-gaps, #concept/emergence → [[Predicting composites & proteins]]
@@ -31,6 +31,6 @@ tags:
 
 ## Tags
 
-- [[Barrier — Data gaps & readouts]]
-- [[Concept — Hierarchy & modularity]]
-- [[Concept — Emergence]]
+- [[Barrier · Data gaps & readouts]]
+- [[Concept · Hierarchy & modularity]]
+- [[Concept · Emergence]]

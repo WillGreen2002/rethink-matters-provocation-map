@@ -19,13 +19,13 @@ tags:
 
 > Who should fund platform genetic medicines that do not have a market and require timely regulatory approval?
 
-**Theme:** [[Theme 5 — Medical & long-term safety]]  
+**Theme:** [[Theme 5 · Medical & long-term safety]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** governance, translation · **Value:** equity
 
 ## Linked ideas
 
-- *extends* → [[Derisk once gene delivery]] — If a platform can be derisked once, the funding question changes: the cost of proving safety is shared across every disease it later serves.
-- *echoes* → [[Who captures value]] — Who captures the value, who carries the cost and who funds what the market will not — the same distributive question in waste chains and in platform genetic medicines.
+- *extends* → [[Derisk once gene delivery]]: If a platform can be derisked once, the funding question changes: the cost of proving safety is shared across every disease it later serves.
+- *echoes* → [[Who captures value]]: Who captures the value, who carries the cost and who funds what the market will not: the same distributive question in waste chains and in platform genetic medicines.
 - via #barrier/regulation-and-evidence, #domain/dna-and-nucleic-acids, #domain/medical-and-clinical, #tension/platform-vs-bespoke → [[Derisk once synthesis platform]]
 - via #concept/true-cost, #domain/dna-and-nucleic-acids, #tension/private-vs-common → [[IP & biological design]]
 - via #barrier/regulation-and-evidence, #domain/medical-and-clinical, #tension/private-vs-common → [[Human–machine integration]]
@@ -36,10 +36,10 @@ tags:
 
 ## Tags
 
-- [[Barrier — Funding & incentives]]
-- [[Tension — Private ownership ↔ common good]]
-- [[Barrier — Regulation & long-term evidence]]
-- [[Tension — Derisk once & reuse ↔ approve case by case]]
-- [[Domain — Medical & clinical]]
-- [[Domain — DNA & nucleic acids]]
-- [[Concept — True cost & value capture]]
+- [[Barrier · Funding & incentives]]
+- [[Tension · Private ownership ↔ common good]]
+- [[Barrier · Regulation & long-term evidence]]
+- [[Tension · Derisk once & reuse ↔ approve case by case]]
+- [[Domain · Medical & clinical]]
+- [[Domain · DNA & nucleic acids]]
+- [[Concept · True cost & value capture]]

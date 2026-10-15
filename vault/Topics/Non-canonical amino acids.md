@@ -18,18 +18,18 @@ tags:
 
 > Expanding material possibilities through non-canonical amino acids.
 
-**Theme:** [[Theme 4 — Programming & biofabrication]]  
+**Theme:** [[Theme 4 · Programming & biofabrication]]  
 **Scale:** micro · **Working group:** WG1 (proposed) · **Pillar:** design, governance · **Value:** solidarity
 
 ## Discussions behind this
 
-- [[Is 20 amino acids a ceiling or a contingent constraint]] — Proposed
+- [[Is 20 amino acids a ceiling or a contingent constraint]] (Proposed)
 
 ## Linked ideas
 
-- *enables* → [[Scaffolds, nanoparticles & adhesives]] — Mussel-inspired peptide wet-adhesives built with non-canonical residues could replace cyanoacrylate in surgery — a concrete payoff for expanding the genetic code.
-- *extends* → [[Programmable biopolymers]] — Non-canonical amino acids and new-to-nature composite polymers both expand chemistry beyond what biology has used.
-- *echoes* → [[A shared language]] — The same gap at the molecular scale: no common vocabulary between the biologists who build the tools, the chemists who would formulate with them and the regulators who would certify them.
+- *enables* → [[Scaffolds, nanoparticles & adhesives]]: Mussel-inspired peptide wet-adhesives built with non-canonical residues could replace cyanoacrylate in surgery, a concrete payoff for expanding the genetic code.
+- *extends* → [[Programmable biopolymers]]: Non-canonical amino acids and new-to-nature composite polymers both expand chemistry beyond what biology has used.
+- *echoes* → [[A shared language]]: The same gap at the molecular scale: no common vocabulary between the biologists who build the tools, the chemists who would formulate with them and the regulators who would certify them.
 - via #concept/new-to-nature, #concept/programmability, #domain/proteins-and-peptides → [[Biosensor design]]
 - via #barrier/regulation-and-evidence, #concept/new-to-nature, #domain/proteins-and-peptides → [[Designed-peptide risks]]
 - via #barrier/regulation-and-evidence, #barrier/shared-language, #domain/medical-and-clinical → [[Biobased vs biomaterial]]
@@ -39,9 +39,9 @@ tags:
 
 ## Tags
 
-- [[Concept — New-to-nature chemistry]]
-- [[Domain — Proteins & peptides]]
-- [[Barrier — Definitions & shared language]]
-- [[Barrier — Regulation & long-term evidence]]
-- [[Concept — Programmable matter]]
-- [[Domain — Medical & clinical]]
+- [[Concept · New-to-nature chemistry]]
+- [[Domain · Proteins & peptides]]
+- [[Barrier · Definitions & shared language]]
+- [[Barrier · Regulation & long-term evidence]]
+- [[Concept · Programmable matter]]
+- [[Domain · Medical & clinical]]

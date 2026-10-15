@@ -11,7 +11,7 @@ tags: [discussion, aired, scale/macro]
 
 ## Post-meeting synthesis (anonymised digest)
 
-**What “convivial” means here** — after Ivan Illich (*Tools for Conviviality*, 1973): tools that let people exercise autonomy and creativity, in contrast to industrial tools that become destructive to autonomy and ingenuity. Examples given: bicycles, kombucha, open-source software (convivial) versus smartphones, cars and closed software (opacity, dependency, isolation, environmental damage). The *Matrix of Convivial Technology* scores a technology on five dimensions — relatedness, access, adaptability, biointeraction, appropriateness — across four life-cycle levels: materials, production, use, infrastructure.
+**What “convivial” means here**, after Ivan Illich (*Tools for Conviviality*, 1973): tools that let people exercise autonomy and creativity, in contrast to industrial tools that become destructive to autonomy and ingenuity. Examples given: bicycles, kombucha, open-source software (convivial) versus smartphones, cars and closed software (opacity, dependency, isolation, environmental damage). The *Matrix of Convivial Technology* scores a technology on five dimensions (relatedness, access, adaptability, biointeraction, appropriateness) across four life-cycle levels: materials, production, use, infrastructure.
 
 **Takeaways**
 - Convivial biomaterials and engineering biology have clear upsides, but access to instruments has to be safely regulated (dangerous chemicals; risks of self-medication).

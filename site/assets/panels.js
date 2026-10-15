@@ -15,7 +15,7 @@
     const v = app.D.lenses[lens].values[key];
     return h("button", {
       class: "chip sm ro" + (proposed ? " dashed" : ""), style: { "--c": v.color },
-      title: (proposed ? "Proposed by the map — the sheets did not record this. " : "") + "Filter the map by this. " + (v.def || v.q || ""),
+      title: (proposed ? "Proposed by the map: the sheets did not record this. " : "") + "Filter the map by this. " + (v.def || v.q || ""),
       onclick: () => app.filterBy(lens, key),
     }, h("i", { class: "dot" }), v.short || v.label);
   }
@@ -23,7 +23,7 @@
     const t = app.byId.get(tid);
     return h("button", { class: "chip sm ro", title: t.def, onclick: () => app.select(tid) }, h("i", { class: "dot", style: { "--c": FACET_COLOR[t.facet] } }), t.label);
   }
-  function lensRow(label, chips) { return h("div", { class: "lens-row" }, h("span", null, label), h("div", { class: "chips" }, chips.length ? chips : h("span", { style: { color: "var(--faint)", fontSize: "13px" } }, "—"))); }
+  function lensRow(label, chips) { return h("div", { class: "lens-row" }, h("span", null, label), h("div", { class: "chips" }, chips.length ? chips : h("span", { style: { color: "var(--faint)", fontSize: "13px" } }, "none"))); }
   function nodeLink(app, id, extra) {
     const n = app.byId.get(id);
     return h("button", { class: "chip sm ro", onclick: () => app.select(id) }, h("i", { class: "dot", style: { "--c": app.colorOf(id) } }), extra || n.label);
@@ -32,7 +32,7 @@
     if (!list || !list.length) return null;
     return h("ul", { class: "refs" }, list.map((r) => h("li", null, h("a", { href: r.url, target: "_blank", rel: "noopener noreferrer" }, r.label))));
   }
-  function conf(app) { return h("p", { class: "conf" }, app.D.site.chatham, " Tags and links are a first-draft classification — treat them as proposals."); }
+  function conf(app) { return h("p", { class: "conf" }, app.D.site.chatham, " Tags and links are a first-draft classification: treat them as proposals."); }
   function sessionMeta(app, d) {
     const S = app.D.sessions, out = [];
     for (const s of d.sessions) {
@@ -57,7 +57,7 @@
     }
     wrap.append(h("h3", null, "What the group said"));
     if (d.notes) wrap.append(u.md(d.notes));
-    else wrap.append(h("p", { class: "md", style: { color: "var(--faint)", fontStyle: "italic", margin: 0 } }, d.proposed ? "Proposed — not yet discussed in a session." : "Notes from this session haven’t been added to the map yet."));
+    else wrap.append(h("p", { class: "md", style: { color: "var(--faint)", fontStyle: "italic", margin: 0 } }, d.proposed ? "Proposed, not yet discussed in a session." : "Notes from this session haven’t been added to the map yet."));
     const r = refs(d.refs);
     if (r) { wrap.append(h("h3", null, "References")); wrap.append(r); }
     return wrap;
@@ -143,9 +143,9 @@
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), `Theme ${n.n} · ${arc.label}`));
     body.append(h("h1", null, n.title));
     body.append(h("p", { class: "prompt", style: { "--c": color } }, n.lead));
-    if (n.sheet && n.sheet !== n.n) body.append(h("p", { class: "cite", style: { margin: "-6px 0 14px" } }, `Theme ${n.sheet} in the Bristol retreat sheet — the map numbers the themes in order round the ring.`));
+    if (n.sheet && n.sheet !== n.n) body.append(h("p", { class: "cite", style: { margin: "-6px 0 14px" } }, `Theme ${n.sheet} in the Bristol retreat sheet. The map numbers the themes in order round the ring.`));
     const ts = n.topics.map((id) => app.byId.get(id)).sort((a, b) => a.order - b.order);
-    body.append(h("h2", null, "Prompts", h("small", null, `${ts.length} — open one for the notes behind it`)));
+    body.append(h("h2", null, "Prompts", h("small", null, `${ts.length}: open one for the notes behind it`)));
     ts.forEach((t) => body.append(h("button", { class: "rel-item", onclick: () => app.select(t.id) },
       h("div", { class: "rt" }, h("i", { style: { "--c": app.colorOf(t.id) } }), h("span", null, t.label)),
       h("p", { class: "why" }, t.text))));
@@ -174,7 +174,7 @@
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), "Chapter"));
     body.append(h("h1", null, n.label));
     body.append(h("p", { class: "prompt", style: { "--c": color, fontStyle: "normal", fontSize: "17px" } },
-      `One of the three shelves of the Rethink Matters Bookshelf, and one of the three chapters of this map: ${ths.length} themes and ${n.topics.length} prompts, side by side on the ring. The chapters run clockwise from the top — how matter becomes life, how life becomes technology, how technology becomes society.`));
+      `One of the three shelves of the Rethink Matters Bookshelf, and one of the three chapters of this map: ${ths.length} themes and ${n.topics.length} prompts, side by side on the ring. The chapters run clockwise from the top: how matter becomes life, how life becomes technology, how technology becomes society.`));
     body.append(h("h2", null, "Themes in this chapter"));
     ths.forEach((t) => body.append(h("button", { class: "rel-item", onclick: () => app.select(t.id) },
       h("div", { class: "rt" }, h("i", { style: { "--c": app.colorOf(t.id) } }), h("span", null, `Theme ${t.n} · ${t.title}`),
@@ -215,11 +215,11 @@
     body.append(h("h2", null, "How to read this map"));
     const ol = h("ul", { class: "howto" });
     [
-      "The question sits in the middle. On the inner ring are the nine themes from the Bristol retreat sheet, numbered 1 to 9 clockwise from the top right (each theme’s note gives its number in the sheet); on the outer ring, beside each theme, are its discussion prompts — sixty in all.",
+      "The question sits in the middle. On the inner ring are the nine themes from the Bristol retreat sheet, numbered 1 to 9 clockwise from the top right (each theme’s note gives its number in the sheet); on the outer ring, beside each theme, are its discussion prompts, sixty in all.",
       "The themes fall into three chapters, the three shelves of the Rethink Matters Bookshelf: how matter becomes life, how life becomes technology, how technology becomes society. Each is a coloured band round the ring; point at a chapter’s name to light it up, click it for its themes, its links and its books.",
-      "Point at a prompt or a theme and its connections light up across the map: teal lines echo, terracotta lines pull in tension, olive lines enable, ochre lines lead on. Dashed lines are links through shared tags or a shared discussion. At rest only the hand-written bridges show, faintly — change that under Connections.",
+      "Point at a prompt or a theme and its connections light up across the map: teal lines echo, terracotta lines pull in tension, olive lines enable, ochre lines lead on. Dashed lines are links through shared tags or a shared discussion. At rest only the hand-written bridges show, faintly, change that under Connections.",
       "Click a prompt to open the provocation behind it, what the group said, and why it connects to the others. The map holds still while you read, so you can follow a connection by clicking the prompt at its other end. Grey dots (switch on under Layers) are the discussions themselves.",
-      "Colour shows the lens you choose on the left — by default the pillar of the Rethink Matters mission each prompt speaks to. Filter by scale, working group, value or any tag to see how a single idea runs across themes.",
+      "Colour shows the lens you choose on the left: by default the pillar of the Rethink Matters mission each prompt speaks to. Filter by scale, working group, value or any tag to see how a single idea runs across themes.",
       "Follow a thread (left, second tab) for a guided path that crosses themes and ends where it started: back at the question.",
     ].forEach((t) => ol.append(h("li", null, t)));
     body.append(ol);

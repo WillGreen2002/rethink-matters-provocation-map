@@ -156,7 +156,7 @@
     const L = D.lenses[lens];
     lensChipsEl[lens] = {};
     return h("div", { style: { marginBottom: "14px" } },
-      h("div", { style: { fontSize: "13px", fontWeight: 500, marginBottom: "6px" } }, L.label, h("span", { style: { color: "var(--faint)", fontWeight: 400 } }, " — " + L.question.replace(/\?$/, ""))),
+      h("div", { style: { fontSize: "13px", fontWeight: 500, marginBottom: "6px" } }, L.label, h("span", { style: { color: "var(--faint)", fontWeight: 400 } }, ": " + L.question.replace(/\?$/, ""))),
       h("div", { class: "seg" }, Object.entries(L.values).map(([k, v]) =>
         (lensChipsEl[lens][k] = chip(v.short || v.label, { color: v.color, count: lensCount(lens, k), title: v.def || v.q, onclick: () => toggleFilter(lens, k) })))));
   });
@@ -175,7 +175,7 @@
       restSeg,
       h("p", { class: "hint" }, "Bridges are the hand-written links, each with a one-line reason. Point at any prompt or theme and all of its connections light up, whatever is chosen here."),
       h("div", { class: "range-meta", style: { marginTop: "14px" } }, h("span", null, "More"), linkCount, h("span", null, "Fewer")), slider),
-    sec("Layers", layerRow("disc", "Discussions", "Grey dots just inside the prompts — each provocation as aired, with its notes", S.layers.disc)),
+    sec("Layers", layerRow("disc", "Discussions", "Grey dots just inside the prompts, each provocation as aired, with its notes", S.layers.disc)),
     sec("Filter by lens", ...lensBlocks, h("p", { class: "hint" }, "Within a lens: any of the selected. Across lenses and tag families: all. Everything else dims.")),
     sec("Filter by tag", h("div", null, facetBlocks)),
     matchLine,
@@ -223,7 +223,7 @@
       matchLine.append(h("span", null, h("b", null, real.length), ` of ${topics.length} prompts match`));
       if (!real.length) matchLine.append(h("span", null, "Try removing a filter."));
       if (move && real.length) {
-        notice(`${real.length} prompt${real.length === 1 ? "" : "s"} match — the rest are dimmed`);
+        notice(`${real.length} prompt${real.length === 1 ? "" : "s"} match, the rest are dimmed`);
         if (mobile()) { S.touched = true; view.fit(true, real); }   // on a phone, frame the matches; elsewhere the whole map stays in view
       }
     }
@@ -277,7 +277,7 @@
   }
   function renderResults() {
     results.replaceChildren();
-    if (!resList.length) results.append(h("div", { class: "none" }, "Nothing matches — try a single word."));
+    if (!resList.length) results.append(h("div", { class: "none" }, "Nothing matches, try a single word."));
     resList.forEach((e, i) => results.append(h("button", { role: "option", class: i === resIdx ? "active" : "", onmousedown: (ev) => { ev.preventDefault(); pickResult(e); } }, h("span", { class: "k" }, KIND_LABEL[e.kind]), h("span", null, e.label))));
     results.classList.add("open");
   }
@@ -295,7 +295,7 @@
 
   /* ------------------------------------------------------------------ threads + index panes */
   panes.threads.append(
-    h("p", { class: "hint", style: { margin: "0 0 14px", fontSize: "13.5px", lineHeight: 1.55 } }, "A thread is a guided path through the map: a handful of prompts, in order, each handing on to the next — and ending back at the question. Pick one."),
+    h("p", { class: "hint", style: { margin: "0 0 14px", fontSize: "13.5px", lineHeight: 1.55 } }, "A thread is a guided path through the map: a handful of prompts, in order, each handing on to the next, and ending back at the question. Pick one."),
     ...D.threads.map((t) => h("button", { class: "thread-card", onclick: () => startThread(t.id) },
       h("h4", null, t.title), h("p", null, t.intro),
       h("div", { class: "meta" }, h("span", { class: "pips" }, t.steps.map((s) => h("i", { style: { "--c": app.colorOf(s.topic) }, "data-t": s.topic }))), h("span", null, `${t.steps.length} stops`)))));
@@ -493,7 +493,7 @@
   new ResizeObserver(() => {
     view.resize();
     setInsets(body.classList.contains("right-open"));
-    // window resized / phone rotated / panel opened or closed: re-proportion the orbit if the shape changed a lot, then re-frame —
+    // window resized / phone rotated / panel opened or closed: re-proportion the orbit if the shape changed a lot, then re-frame , 
     // unless the visitor has taken over the camera
     clearTimeout(refitT);
     refitT = setTimeout(() => {
@@ -518,7 +518,7 @@
   $("#qcap").addEventListener("click", () => select("c", { fly: false }));
   if (hashId && byId.has(hashId)) select(hashId);
   else notice(mobile() ? "Tap a prompt to open its notes · pinch to zoom" : "Point at a prompt to see what it connects to · click to open its notes");
-  // web fonts change label widths — refit once they have loaded (unless the visitor has already started exploring)
+  // web fonts change label widths, refit once they have loaded (unless the visitor has already started exploring)
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
     view._lw = null; view.dirty = true;
     view.relayout(false);

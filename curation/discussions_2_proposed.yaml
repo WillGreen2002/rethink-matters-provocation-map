@@ -1,4 +1,4 @@
-# Proposed provocations — from the 'Backup Provocations' tab and 'registration of interest'. Not yet discussed in a session,
+# Proposed provocations, from the 'Backup Provocations' tab and 'registration of interest'. Not yet discussed in a session,
 # so no post-meeting notes. Provocation text is pulled verbatim from the workbook at build time.
 
 - id: classing-by-application
@@ -29,7 +29,7 @@
   notes: ""
 
 - id: emergent-properties
-  title: "Which materials have emergent properties — and how would we model them?"
+  title: "Which materials have emergent properties, and how would we model them?"
   sessions: [PROPOSED]
   scale: [micro]
   texts:
@@ -104,7 +104,7 @@
   notes: ""
 
 - id: disordered-peptide-risk
-  title: "Predicting unstable and disordered peptides — and the risks they carry"
+  title: "Predicting unstable and disordered peptides, and the risks they carry"
   sessions: [PROPOSED]
   scale: [micro]
   texts:

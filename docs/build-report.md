@@ -1,6 +1,6 @@
 # Build report
 
-Generated 2026-10-15 14:22
+Generated 2026-10-15 16:54
 
 - Themes 9 · topics 60 · discussions 43 (18 with notes) · semantic tags used 53 · books 21
 - Topic↔topic links stored: 301 (73 curated); shown at default threshold (6.0): 105
@@ -99,7 +99,7 @@ Generated 2026-10-15 14:22
 - T5 ↔ T7: 1
 - T5 ↔ T6: 1
 
-## Degree (links shown) per topic — top and bottom
+## Degree (links shown) per topic: top and bottom
 
 Top: Printing meets growth (7), Cellulose, wood & concrete (7), Portable design principles (6), Standardising dynamic properties (6), Energy, cost & fit (6), Survive use, degrade after (6), Emergent properties (5), Patterning to organs (5)
 Bottom: Designed-peptide risks (2), Duties to organisms (2), 'Bio' ≠ good (2), Underwater materials (2), DNA is fancy PEG (1), Unexplored biological features (1), Predicting composites & proteins (1), Expansion microscopy (1)
@@ -126,6 +126,26 @@ Bottom: Designed-peptide risks (2), Duties to organisms (2), 'Bio' ≠ good (2),
 - pillar: design 31, translation 24, governance 19, climate 14
 - value: humility 25, sustainability 16, solidarity 9, equity 9
 - working-group assignments proposed by the map (not recorded in the sheets): 42
+
+## Niche examples
+
+- spreadsheet rows: 0 (0 checked and published, 0 draft, 0 hidden)
+- published by type: none yet
+- prompts with at least one example: 0 of 60
+- read as utf-8 with ',' between columns; ids made from the name: 0 (fill in the id column to keep share links stable)
+
+## Futures
+
+- Theme 1: none yet
+- Theme 2: none yet
+- Theme 3: none yet
+- Theme 4: none yet
+- Theme 5: none yet
+- Theme 6: none yet
+- Theme 7: none yet
+- Theme 8: none yet
+- Theme 9: none yet
+- Overall answer: none yet
 
 ## Deliberate redactions in verbatim provocation text
 

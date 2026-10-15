@@ -14,16 +14,16 @@ tags:
 
 > Comparing biomolecules with conventional polymers: the “DNA is fancy PEG” provocation.
 
-**Theme:** [[Theme 1 — Defining biomaterials]]  
-**Scale:** micro · **Working group:** WG1 · **Pillar:** design · **Value:** —
+**Theme:** [[Theme 1 · Defining biomaterials]]  
+**Scale:** micro · **Working group:** WG1 · **Pillar:** design · **Value:** none
 
 ## Discussions behind this
 
-- [[Should other macromolecules be more like DNA (DNA is fancy PEG)]] — RM007
+- [[Should other macromolecules be more like DNA (DNA is fancy PEG)]] (RM007)
 
 ## Linked ideas
 
-- *extends* → [[Programmable biopolymers]] — If DNA is just a programmable polymer, the practical question is which other biomacromolecules can be made as cheap to synthesise, assemble and sequence — and combined into new composite polymers.
+- *extends* → [[Programmable biopolymers]]: If DNA is just a programmable polymer, the practical question is which other biomacromolecules can be made as cheap to synthesise, assemble and sequence, and combined into new composite polymers.
 - via #domain/dna-and-nucleic-acids, #tension/general-vs-specific → [[Derisk once synthesis platform]]
 - via #domain/proteins-and-peptides, #tension/general-vs-specific → [[Infection-sensing dressings]]
 - via #concept/programmability, #domain/proteins-and-peptides → [[Biosensor design]]
@@ -37,7 +37,7 @@ tags:
 
 ## Tags
 
-- [[Concept — Programmable matter]]
-- [[Tension — General & portable ↔ specific & contextual]]
-- [[Domain — DNA & nucleic acids]]
-- [[Domain — Proteins & peptides]]
+- [[Concept · Programmable matter]]
+- [[Tension · General & portable ↔ specific & contextual]]
+- [[Domain · DNA & nucleic acids]]
+- [[Domain · Proteins & peptides]]

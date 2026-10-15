@@ -43,10 +43,10 @@
   texts:
     - { from: docx, find: "aqueous phase" }
   refs:
-    - { label: "Stuff Matters — Guardian review", url: "https://www.theguardian.com/books/2013/jul/03/stuff-matters-strange-miodownik" }
+    - { label: "Stuff Matters (Guardian review)", url: "https://www.theguardian.com/books/2013/jul/03/stuff-matters-strange-miodownik" }
   notes: |
     **Main takeaway**
-    - Humidity in a material is conducive to life, which leads to degradation after fabrication. Above roughly 65% relative humidity, chemical or biological deterioration (hydrolysis, mould) sets in — “biology always wins”. Wetting-and-drying cycles are the particular problem.
+    - Humidity in a material is conducive to life, which leads to degradation after fabrication. Above roughly 65% relative humidity, chemical or biological deterioration (hydrolysis, mould) sets in: “biology always wins”. Wetting-and-drying cycles are the particular problem.
     - Agency over biodegradation is low: the group felt we have very little control over the moment a material becomes functional and the moment it stops being so.
     - Man-made materials are mostly dehydrated (“only as strong as the day they are made”) and tolerate little change in humidity (e.g. swelling and shrinking in wood). There is no built-in cycle of life and death that could keep a living material going without changing its constitution.
 
@@ -55,7 +55,7 @@
     - Architecture looks more realistic than textiles: wet fabric on skin is unpopular and unhygienic, and garments need washing.
 
     **Wider question**
-    - Do we want materials to last? “We want total control over end of life” — but that is not currently possible. To what extent can we make things degrade in specific environments?
+    - Do we want materials to last? “We want total control over end of life”, but that is not currently possible. To what extent can we make things degrade in specific environments?
 
 - id: convivial-biomaterial
   title: "Can a biomaterial be a convivial technology?"
@@ -69,7 +69,7 @@
     - { label: "Tools for Conviviality (Illich, 1973)", url: "https://en.wikipedia.org/wiki/Tools_for_Conviviality" }
     - { label: "Article cited in the provocation", url: "https://www.tandfonline.com/doi/abs/10.1080/23299460.2024.2351233" }
   notes: |
-    **What “convivial” means here** — after Ivan Illich (*Tools for Conviviality*, 1973): tools that let people exercise autonomy and creativity, in contrast to industrial tools that become destructive to autonomy and ingenuity. Examples given: bicycles, kombucha, open-source software (convivial) versus smartphones, cars and closed software (opacity, dependency, isolation, environmental damage). The *Matrix of Convivial Technology* scores a technology on five dimensions — relatedness, access, adaptability, biointeraction, appropriateness — across four life-cycle levels: materials, production, use, infrastructure.
+    **What “convivial” means here**, after Ivan Illich (*Tools for Conviviality*, 1973): tools that let people exercise autonomy and creativity, in contrast to industrial tools that become destructive to autonomy and ingenuity. Examples given: bicycles, kombucha, open-source software (convivial) versus smartphones, cars and closed software (opacity, dependency, isolation, environmental damage). The *Matrix of Convivial Technology* scores a technology on five dimensions (relatedness, access, adaptability, biointeraction, appropriateness) across four life-cycle levels: materials, production, use, infrastructure.
 
     **Takeaways**
     - Convivial biomaterials and engineering biology have clear upsides, but access to instruments has to be safely regulated (dangerous chemicals; risks of self-medication).
@@ -89,7 +89,7 @@
     - { from: docx, find: "making rocks" }
   refs: []
   notes: |
-    - Removing the need for a carbonation step would be a major win — ideally coupling calcium carbonate directly with other elements to mimic Portland cement.
+    - Removing the need for a carbonation step would be a major win, ideally coupling calcium carbonate directly with other elements to mimic Portland cement.
     - Alternatives already exist: supplementary cementitious materials (fly ash, slag, silica fume) partly replace Portland cement, cutting CO₂ and cost while improving durability.
     - Biomineralisation can reduce CO₂ emissions and some companies already pursue it (for example [Biomason](https://biomason.com/) and [BioZeroC](https://www.biozeroc.com/)).
     - Of interest beyond carbonate: control over crystal shape, microstructure, polymorphs and hierarchical structuring; plus added functionality such as self-healing and integration with living systems.
@@ -108,14 +108,14 @@
   notes: |
     **Two axes of use**
     - Change the biomaterials we already have; or use patterning with morphogens to build organoids.
-    - Nanostructure can pattern tissue and cells — for example neuron matrices, or nanoparticles that set a pattern or phenotype according to a cell’s metabolic state.
+    - Nanostructure can pattern tissue and cells: for example neuron matrices, or nanoparticles that set a pattern or phenotype according to a cell’s metabolic state.
 
     **Tissue, organoids and appearance**
     - Organoids are mostly a research platform for now (2D to 3D; microfluidics to pattern, for instance, neural tissue).
     - Possible performance targets: colouration, UV protection, antimicrobial or water-repellent surfaces. Could patterning replace photolithography for materials, leaving cell patterning for cell-related purposes?
 
     **Architecture and wood**
-    - For buildings what matters is how a material weathers over time — which biofilms can or cannot grow on it, and whether it ages uniformly.
+    - For buildings what matters is how a material weathers over time: which biofilms can or cannot grow on it, and whether it ages uniformly.
     - Interesting properties are those that change over time, or are set early and then maintained (pruning a tree is one example).
     - Changing wood’s cellulose/lignin composition, structure or density could matter for construction, but competes with an established industry of post-processing wood (thermally modified “caramelised” wood is fire- and hurricane-resistant).
     - Patterning for cell differentiation and spatiotemporal organisation remains distinct from polymer assembly (for example cellulose); wood is mainly polymer, not only cells.
@@ -133,8 +133,8 @@
     - { label: "Nature feature on abandoned implants", url: "https://www.nature.com/immersive/d41586-022-03810-5/index.html" }
   notes: |
     - The discussion started from early clinical-trial results for a brain implant on the motor cortex (for example, controlling a wheelchair by thought).
-    - Where might this go? The most influential players seem most interested in enhancement — to keep up with AI (brain–AI interfaces).
-    - Which regulations would protect consumers if an implant company goes bankrupt (real cases exist where users and physicians lost access to the proprietary software needed to recalibrate a device) — or protect agency, for example against hacking?
+    - Where might this go? The most influential players seem most interested in enhancement, to keep up with AI (brain–AI interfaces).
+    - Which regulations would protect consumers if an implant company goes bankrupt (real cases exist where users and physicians lost access to the proprietary software needed to recalibrate a device), or protect agency, for example against hacking?
     - Might biomaterials and biological modification turn out to be a more likely route to human enhancement than electronics, or a mixture of both?
     - What are the benefits? Would people be left with no real choice, as has happened with smartphones?
 
@@ -156,7 +156,7 @@
 
     **At home versus in the clinic**
     - Strong interest in non-invasive diagnostics that limit dressing removal and reapplication. At home: self-detection prompts people to seek care, but misinterpretation, or delayed care if the device fails. In the clinic: bedside diagnostic devices.
-    - Key question — clinician redundancy: can the device replace clinical judgement? Self-diagnosis is already common (lateral-flow tests, glucose monitors). The idea of “normal” should be objective and measurable but is often subjective.
+    - Key question (clinician redundancy): can the device replace clinical judgement? Self-diagnosis is already common (lateral-flow tests, glucose monitors). The idea of “normal” should be objective and measurable but is often subjective.
 
     **Is it feasible on a 10–20–30-year horizon?**
     - Animal-derived collagen materials were said to be approved already (citation needed); other candidates include chitosan and cellulose.
@@ -195,7 +195,7 @@
 
     **What new functions should define the value of biomaterials?**
     - Accessibility and ease of fabrication are key to wide integration; composites are often the material of choice, so functionalised biomaterials must compete. What looks good in a paper often differs from what works in industry.
-    - Reproducibility is a major challenge for advanced functionalised biomaterials: the field must standardise which parameters are shared, and ask how much performance is set by the starting material or supplier — a problem conventional polymers such as polyethylene also have (batch mixing).
+    - Reproducibility is a major challenge for advanced functionalised biomaterials: the field must standardise which parameters are shared, and ask how much performance is set by the starting material or supplier, a problem conventional polymers such as polyethylene also have (batch mixing).
     - Do not force a material out of its nature: harness natural properties and look at what already exists. Processes and chemistry can themselves act as functions. Purity is a big problem. High-value biomaterials already exist (wood, for example); using waste is attractive environmentally, with function secondary.
 
     **Sustainability claims**
@@ -219,8 +219,8 @@
     - No consensus on the definition of biomimicry. One view: it requires understanding of *mechanism* rather than structure (a materials-science perspective). Another: not necessarily mechanistic understanding, but taking part in wider ecosystem life cycles over time.
     - Where is the line between mimicry and inspiration? Mimicry is more precise; “bioinspired” is looser, often a buzzword, and the border is fuzzy. Scale is not the issue; definitions vary by field.
     - Are we replicating something, or making something and then finding a similar thing in nature? (Replication example: layer-by-layer, nacre-like fabrication of an organic polymer plus an inorganic mineral. Retrospective-tagging example: a material’s thermal insulation resembling the hollow structure of polar-bear fur.) What matters is the mechanism.
-    - What gets lost when biomimicry becomes visual or metaphorical? Bioinspiration may fall short of true biomimicry yet still be positive — and still serve as a marketing tool.
-    - One group argued biomimicry is *not literal enough*: true biomimicry has not been achieved, and symbiosis — water, cell and gas cycles — is the more important concept.
+    - What gets lost when biomimicry becomes visual or metaphorical? Bioinspiration may fall short of true biomimicry yet still be positive, and still serve as a marketing tool.
+    - One group argued biomimicry is *not literal enough*: true biomimicry has not been achieved, and symbiosis (water, cell and gas cycles) is the more important concept.
 
     **RM009 follow-up** (brief handwritten notes)
     - Better collaboration between the sciences; scale matters, and changes perspective.
@@ -242,17 +242,17 @@
     - "What is the end point of 3D fabrication or morphogenesis?"
   refs: []
   notes: |
-    **Vancouver session — what is self-assembly?**
+    **Vancouver session: what is self-assembly?**
     - There is no good agreed answer. Thermodynamically spontaneous re-ordering? “No human input”? Is genetic engineering of a self-assembly pathway still self-assembly? Not everything is self-assembly; almost everything we make is additive manufacturing.
     - Bottom-up approaches aim to produce less waste, but self-assembly is bottlenecked by the complexity of the starting material.
     - Randomness matters: for many biological materials it is the random distribution of components that gives their properties, whereas mass manufacturing expects uniformity. Cultured meat is among the most complex things we can attempt.
     - When does order become life? Candidate criteria: information (DNA), intelligence, starting to *function* rather than merely having capability, reproducing (alone but within its surroundings), reducing entropy.
 
-    **RM006 session — printing methods and imagined applications**
-    - Printing routes of interest: extrusion, droplet (oil-in-water / water-in-oil) printing, liquid-in-liquid printing, two-photon (scattering limits), aspiration-assisted assembly — and **volumetric / xolographic printing**, judged most interesting: if cell and medium densities match, cells distribute homogeneously and could carry genetic logic gates (for example to trigger cell–cell adhesion). Limits: scale (light penetration) and refractive-index matching.
+    **RM006 session: printing methods and imagined applications**
+    - Printing routes of interest: extrusion, droplet (oil-in-water / water-in-oil) printing, liquid-in-liquid printing, two-photon (scattering limits), aspiration-assisted assembly, and **volumetric / xolographic printing**, judged most interesting: if cell and medium densities match, cells distribute homogeneously and could carry genetic logic gates (for example to trigger cell–cell adhesion). Limits: scale (light penetration) and refractive-index matching.
     - Likely outcome: a mixture of self-assembly (emergence) and encoded, ordered structure.
-    - Imagined applications: heart organoids built from progenitor cells on a tube-like scaffold (heart contraction is physics-based, so shape and orientation coordinate it); synthetic wood; morphogenesis — the current limits of two- and three-node Turing patterns in silico versus in vivo.
-    - Wood: how do we cultivate carbon-sequestering structural materials? Engineering *wood* from day one might mean ready-to-use planks growing vertically with peel-off bark; engineering a *tree* for efficient extraction might mean a pristine cellulose core with a lignin/xylan exterior. How to engineer anisotropy into (mostly isotropic) bacterial cellulose — for example a xylem-like cellulose–lignin mat with algae seeded on top for photosynthesis in a “runway” bioreactor? At least one start-up is exploring cultured wood via xylem differentiation of plant cells.
+    - Imagined applications: heart organoids built from progenitor cells on a tube-like scaffold (heart contraction is physics-based, so shape and orientation coordinate it); synthetic wood; morphogenesis (the current limits of two- and three-node Turing patterns in silico versus in vivo).
+    - Wood: how do we cultivate carbon-sequestering structural materials? Engineering *wood* from day one might mean ready-to-use planks growing vertically with peel-off bark; engineering a *tree* for efficient extraction might mean a pristine cellulose core with a lignin/xylan exterior. How to engineer anisotropy into (mostly isotropic) bacterial cellulose, for example a xylem-like cellulose–lignin mat with algae seeded on top for photosynthesis in a “runway” bioreactor? At least one start-up is exploring cultured wood via xylem differentiation of plant cells.
     - Hot takes: the physics of biomacromolecules is the same across classes; people do not know what they want until it is presented to them; there should be no limits to innovation (fundamental research can look like a gimmick until it is not).
 
 - id: bacterial-cellulose-vs-wood
@@ -291,11 +291,11 @@
     - { from: xlsx, sheet: "006 | 20062026", find: "limited to the microscale" }
   refs: []
   notes: |
-    - **Overall stance:** the group mostly pushed back on the micro-scale framing — macroscale biomaterials already dominate (agriculture has shaped living materials since prehistory; wood is the most abundant biomaterial; bulk biomaterials do not have to be genetically modified to count as biotechnology) — but agreed that micro-scale precision is essential for medical applications.
+    - **Overall stance:** the group mostly pushed back on the micro-scale framing (macroscale biomaterials already dominate: agriculture has shaped living materials since prehistory; wood is the most abundant biomaterial; bulk biomaterials do not have to be genetically modified to count as biotechnology), but agreed that micro-scale precision is essential for medical applications.
     - **Growing bulk materials in bioreactors:** on *energy economy*, simple monomers are cheap and a fair drop-in while complex materials (for example with integrated sensing) get inefficient quickly; it was suggested that a bioprocess can rival harsh chemical synthesis on energy. On *quality versus speed*, can fast bioreactor cellulose ever match hardwood? Ideas: design directly for hardwood composition and lignin ratios; “overclock” trees by simulating seasons in controlled warehouses.
     - **Where micro-scale wins:** precision patterning is irreplaceable for in-vitro organs, prosthetics, bone grafts (3D-printed scaffolds, hydrogels with stem cells or growth factors), cartilage and collagen composites; cultivated meat also needs scaffolds. Lipid nanoparticles in vaccines can programme release kinetics (for example a delayed booster).
-    - **Higher-order programming can also come from physics:** self-organisation and excitable-media dynamics (for example spiral calcium waves in heart cells) give large-scale order from geometry alone — a counterpoint to the premise that advanced genetic manipulation is the route.
-    - **Circularity tangent:** modified wood and cross-laminated-timber buildings; a pitch for brick-style deconstructable buildings so that treated wood can be reused rather than landfilled — framed as a policy problem with our linear system.
+    - **Higher-order programming can also come from physics:** self-organisation and excitable-media dynamics (for example spiral calcium waves in heart cells) give large-scale order from geometry alone, a counterpoint to the premise that advanced genetic manipulation is the route.
+    - **Circularity tangent:** modified wood and cross-laminated-timber buildings; a pitch for brick-style deconstructable buildings so that treated wood can be reused rather than landfilled, framed as a policy problem with our linear system.
 
 - id: variable-feedstocks
   title: "Nature handles inconsistent inputs. Do our bioprocesses?"
@@ -320,9 +320,9 @@
     - { label: "biotic.org (cited in the provocation)", url: "https://www.biotic.org" }
     - { label: "Press coverage, The Guardian, 1 July 2026", url: "https://www.theguardian.com/science/2026/jul/01/synthetic-life-lab-made-dna-spudcells-scientists" }
   notes: |
-    - **The case:** a high-profile claim of a “fully replicating artificial cell”, and how a result like that travels — through the press, preprints and a polarising “breakthrough versus hype” binary.
+    - **The case:** a high-profile claim of a “fully replicating artificial cell”, and how a result like that travels, through the press, preprints and a polarising “breakthrough versus hype” binary.
     - **Technical crux discussed: division.** As the group understood the claim, division happens by mechanical extrusion in giant unilamellar vesicles: the constriction step can be engineered but the cleaving step is hard to manage. In bacteria a Min-system oscillator (MinC/MinD/MinE) positions the division machinery (FtsZ) at mid-cell; it is unclear how this applies to non-rod shapes such as cocci. How does the genome split equally?
-    - **What would count as a breakthrough?** Biochemical replication — even if the cell consumes ribosomes and every other required molecule — i.e. being a replicator. Evolvability may or may not be desirable (a non-evolving, cooperative system could even be a design goal).
+    - **What would count as a breakthrough?** Biochemical replication (even if the cell consumes ribosomes and every other required molecule), i.e. being a replicator. Evolvability may or may not be desirable (a non-evolving, cooperative system could even be a design goal).
     - **Hype dynamics:** polarising press takes that lack nuance; scientists rarely accept new science at face value; incremental science lacks impact and visibility; the “economy of attention” was raised as a driver.
     - **What can we do?** Press involvement is not inherently bad (grey literature counts). Consider changing the publication structure: plain-language abstracts (for example describing the science in the thousand most common words), open sourcing, and writing in increasing specificity from public to expert. “Simplification reveals the truth.”
 
@@ -345,15 +345,15 @@
   wg: [wg2, wg3]
   texts:
     - { from: xlsx, sheet: "007 | 11072026", find: "Assessing past biobased" }
-  # one redaction of named third parties — the wording lives in build/local_checks.json (never published)
+  # one redaction of named third parties; the wording lives in build/local_checks.json (never published)
   redact: [startups-companies]
   refs: []
   notes: |
-    - **Why look back?** The “second wave” of companies is struggling with venture-capital funding — so how do you build a biomaterial company? Tensions behind earlier disappointments: timing, investor expectations, product–market fit, sustainability claims, regulation and policy hurdles.
+    - **Why look back?** The “second wave” of companies is struggling with venture-capital funding, so how do you build a biomaterial company? Tensions behind earlier disappointments: timing, investor expectations, product–market fit, sustainability claims, regulation and policy hurdles.
     - **Range of examples discussed:** stretchable bio-based formulations (a balloon replacement), mycelium-based materials, bacterial-cellulose products, a universal peptide adhesive inspired by mussel glue, elastic dampers. A pivot under delivery pressure was cited as one pattern to watch.
     - **What does a win look like?** Possibly a *quiet* one: something that operates in a niche or at small scale and solves a real problem; incremental collaborations with established brands.
-    - **Every company has a missing factor** — sustainability (life-cycle assessments are likely to be gate-to-gate rather than cradle-to-gate) or price.
-    - **Open questions:** why does no one want to wear wool? Is the protein trend engineered? Should the focus be novel bio-based materials — and is it always down to regulation, so should we lobby government? Local production and incentives.
+    - **Every company has a missing factor:** sustainability (life-cycle assessments are likely to be gate-to-gate rather than cradle-to-gate) or price.
+    - **Open questions:** why does no one want to wear wool? Is the protein trend engineered? Should the focus be novel bio-based materials? And is it always down to regulation, so should we lobby government? Local production and incentives.
 
 - id: societal-inertia
   title: "“We don’t need more solutions”"
@@ -458,9 +458,9 @@
   refs: []
   notes: |
     Brief handwritten notes from the session:
-    - “Alien” thought experiments — how another kind of being might treat us.
+    - “Alien” thought experiments: how another kind of being might treat us.
     - The food chain: we already live by consuming other organisms.
-    - Engineered food organisms that “atrophy” — GM organisms unable to survive alone.
+    - Engineered food organisms that “atrophy”: GM organisms unable to survive alone.
     - A view that self-defence comes first, and ethics after; and that ethics applies to humans rather than to other beings.
 
 - id: biosensor-evolution
@@ -473,11 +473,11 @@
     - { from: xlsx, sheet: "010 | 12092026", find: "million enzyme variants" }
   refs: []
   notes: |
-    - **Problem:** many metabolites (for example oxo acids) cannot be detected at high throughput; the usual workaround — HPLC or mass spectrometry — is slow and low-throughput.
+    - **Problem:** many metabolites (for example oxo acids) cannot be detected at high throughput; the usual workaround (HPLC or mass spectrometry) is slow and low-throughput.
     - **Proposed solution:** engineer transcription factors that bind the target metabolite and drive a fluorescent reporter, enabling high-throughput screening (FACS or plate-based sorting) paired with continuous or adaptive laboratory evolution to select high producers.
-    - **Key challenges:** evolutionary escape (strains that give signal without making product); ubiquitous cellular metabolites (pyruvate, for example) that are hard to evolve away from; quantitative — not just presence/absence — detection.
+    - **Key challenges:** evolutionary escape (strains that give signal without making product); ubiquitous cellular metabolites (pyruvate, for example) that are hard to evolve away from; quantitative (not just presence/absence) detection.
     - **Existing approaches mentioned:** the Marionette strain (positive and negative selection using non-canonical amino acids to evolve transcription-factor specificity); single-cell Raman sorting as a transcription-factor-free alternative (needs a calibration curve and costly equipment); retron-guided continuous evolution as a way to generate libraries.
-    - **Opportunity:** biosensor design plus recursive strain improvement is highly automatable — a possible autonomous-lab service.
+    - **Opportunity:** biosensor design plus recursive strain improvement is highly automatable: a possible autonomous-lab service.
 
 - id: ocean-habitation
   title: "Is there a rationale for ocean habitation?"
@@ -490,7 +490,7 @@
   refs: []
   notes: |
     - **Definition:** no consensus on what “ocean habitation” means; the agreed definition was *underwater*, not merely floating (stilt and piloti houses excluded).
-    - **Science case vs habitation case:** the science case is strong (a vast unmapped seabed; bioprospecting and sequencing efforts, for example plastic-adapted microbes from pressurised seafloor samples). The habitation case is weaker — hard to justify beyond research and niche industrial uses (high-pressure processes, deep-sea mining, bioprospecting). The ocean is easier to return from than space, and resilience is higher (desalination, reverse osmosis, semi-enclosed water systems).
+    - **Science case vs habitation case:** the science case is strong (a vast unmapped seabed; bioprospecting and sequencing efforts, for example plastic-adapted microbes from pressurised seafloor samples). The habitation case is weaker: hard to justify beyond research and niche industrial uses (high-pressure processes, deep-sea mining, bioprospecting). The ocean is easier to return from than space, and resilience is higher (desalination, reverse osmosis, semi-enclosed water systems).
     - **Challenges:** pressure, darkness, circadian disruption and loneliness; viable depth limited by light; the longest recorded submarine stay (about 200 days) had a documented psychological toll.
     - **Structural concepts debated:** static anchored modules near geothermal vents (energy, manufacturing); free-floating, current-propelled structures (currents as an energy source); modular bubble clusters (if one fails others survive; can grow stepwise); a 15 km vertical “Ocean Spiral” concept for CO₂ storage and energy generation.
     - **Materials:** titanium resists pressure but suffers biofouling (microstructured coatings, or deliberate biofouling, as possible answers); hydrogels’ viscoelastic and hydrating properties for structural or lifestyle roles; biomineralisation under ocean acidification as a design constraint; rigid–elastic hybrids to absorb current stress; bioluminescence or chemiluminescence for light; photo-initiated resins for underwater 3D printing; metamaterials that filter wavelengths. Deep-water coral at 300–400 m is a biological precedent. Modules likely need to be built above sea level and submerged.

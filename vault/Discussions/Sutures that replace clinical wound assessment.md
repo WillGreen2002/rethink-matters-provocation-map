@@ -19,7 +19,7 @@ tags: [discussion, aired, scale/macro]
 
 **At home versus in the clinic**
 - Strong interest in non-invasive diagnostics that limit dressing removal and reapplication. At home: self-detection prompts people to seek care, but misinterpretation, or delayed care if the device fails. In the clinic: bedside diagnostic devices.
-- Key question — clinician redundancy: can the device replace clinical judgement? Self-diagnosis is already common (lateral-flow tests, glucose monitors). The idea of “normal” should be objective and measurable but is often subjective.
+- Key question (clinician redundancy): can the device replace clinical judgement? Self-diagnosis is already common (lateral-flow tests, glucose monitors). The idea of “normal” should be objective and measurable but is often subjective.
 
 **Is it feasible on a 10–20–30-year horizon?**
 - Animal-derived collagen materials were said to be approved already (citation needed); other candidates include chitosan and cellulose.

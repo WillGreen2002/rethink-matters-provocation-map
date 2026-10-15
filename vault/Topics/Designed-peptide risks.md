@@ -17,17 +17,17 @@ tags:
 
 > Potential aggregation, toxicity and stability risks from designed peptides.
 
-**Theme:** [[Theme 5 — Medical & long-term safety]]  
+**Theme:** [[Theme 5 · Medical & long-term safety]]  
 **Scale:** micro · **Working group:** WG1 (proposed) · **Pillar:** governance, design · **Value:** humility
 
 ## Discussions behind this
 
-- [[Predicting unstable and disordered peptides — and the risks they carry]] — Proposed
+- [[Predicting unstable and disordered peptides, and the risks they carry]] (Proposed)
 
 ## Linked ideas
 
-- *echoes* → [[Predicting composites & proteins]] — Disordered, aggregation-prone proteins are both hard to predict and the source of the toxicity risk for designed peptides: a modelling gap with a safety consequence.
-- *tension* → [[Care & convivial tech]] — If biotech is opened up, safety has to travel with it: the convivial-technology discussion asked for a 'safety' row, and designed peptides are a case where the risks (aggregation, toxicity) are poorly predicted.
+- *echoes* → [[Predicting composites & proteins]]: Disordered, aggregation-prone proteins are both hard to predict and the source of the toxicity risk for designed peptides: a modelling gap with a safety consequence.
+- *tension* → [[Care & convivial tech]]: If biotech is opened up, safety has to travel with it: the convivial-technology discussion asked for a 'safety' row, and designed peptides are a case where the risks (aggregation, toxicity) are poorly predicted.
 - via #barrier/regulation-and-evidence, #concept/new-to-nature, #domain/proteins-and-peptides → [[Non-canonical amino acids]]
 - via #barrier/data-gaps, #concept/new-to-nature, #domain/proteins-and-peptides → [[Biosensor design]]
 - via #barrier/regulation-and-evidence, #barrier/safety-and-misuse → [[Human–machine integration]]
@@ -40,8 +40,8 @@ tags:
 
 ## Tags
 
-- [[Domain — Proteins & peptides]]
-- [[Barrier — Safety, security & misuse]]
-- [[Barrier — Regulation & long-term evidence]]
-- [[Barrier — Data gaps & readouts]]
-- [[Concept — New-to-nature chemistry]]
+- [[Domain · Proteins & peptides]]
+- [[Barrier · Safety, security & misuse]]
+- [[Barrier · Regulation & long-term evidence]]
+- [[Barrier · Data gaps & readouts]]
+- [[Concept · New-to-nature chemistry]]

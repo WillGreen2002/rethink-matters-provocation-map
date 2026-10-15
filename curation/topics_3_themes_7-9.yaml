@@ -54,7 +54,7 @@
   reading: []
   links:
     - { to: who-benefits-wounds, type: extends, why: "Which wounds, which patients, and how much clinical judgement can be delegated to a colour change?" }
-    - { to: human-machine-responsibility, type: echoes, why: "Diagnostic dressings and brain implants both ask what replaces clinical judgement — and who is responsible when the device fails or is misread." }
+    - { to: human-machine-responsibility, type: echoes, why: "Diagnostic dressings and brain implants both ask what replaces clinical judgement, and who is responsible when the device fails or is misread." }
 
 - id: who-benefits-wounds
   theme: 7
@@ -152,7 +152,7 @@
   reading: [frankenstein, staying-with-the-trouble]
   links:
     - { to: salt-and-ecosystems, type: echoes, why: "Duties to the organisms we use extend to the ecosystems we affect: marine interventions have consequences for the creatures and systems they touch." }
-    - { to: when-to-let-die, type: echoes, why: "If a living material is alive, what do we owe it? Ongoing care — or the decision to let it die — is an ethical question as well as a technical one." }
+    - { to: when-to-let-die, type: echoes, why: "If a living material is alive, what do we owe it? Ongoing care (or the decision to let it die) is an ethical question as well as a technical one." }
 
 - id: bio-is-not-good
   theme: 8
@@ -235,7 +235,7 @@
   sources: [ocean-habitation]
   reading: []
   links:
-    - { to: hydrated-materials, type: echoes, why: "Underwater, hydrated materials are the default rather than the exception — hydrogels, biomineralisation and biofouling become design variables." }
+    - { to: hydrated-materials, type: echoes, why: "Underwater, hydrated materials are the default rather than the exception: hydrogels, biomineralisation and biofouling become design variables." }
 
 - id: ocean-as-factory
   theme: 9
@@ -307,6 +307,8 @@
 - id: when-to-let-die
   theme: 9
   match: "Which living functions justify ongoing"
+  # the sheet's wording, with its em dash replaced by a comma (house style: no em dashes on the map)
+  override_text: "Which living functions justify ongoing moisture, nutrients and care, and when should we let materials die after growing them?"
   label: "When to let materials die"
   scale: [macro]
   wg: [wg3, wg2]

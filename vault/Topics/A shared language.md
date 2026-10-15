@@ -16,19 +16,19 @@ tags:
 
 > Developing a shared language across biology, materials science, engineering and design.
 
-**Theme:** [[Theme 2 — Nature's design principles]]  
+**Theme:** [[Theme 2 · Nature's design principles]]  
 **Scale:** meso, macro · **Working group:** WG1 · **Pillar:** design, translation · **Value:** solidarity
 
 ## Discussions behind this
 
-- [[Biomimicry is too literal]] — Vancouver edition, RM009
-- [[Is 20 amino acids a ceiling or a contingent constraint]] — Proposed
+- [[Biomimicry is too literal]] (Vancouver edition, RM009)
+- [[Is 20 amino acids a ceiling or a contingent constraint]] (Proposed)
 
 ## Linked ideas
 
-- *enables* → [[Portable design principles]] — Principles only transfer if they are written down in a portable form — 'abstract enough to transfer, precise enough to design with'.
-- *echoes* → [[Non-canonical amino acids]] — The same gap at the molecular scale: no common vocabulary between the biologists who build the tools, the chemists who would formulate with them and the regulators who would certify them.
-- *enables* → [[Biobased vs biomaterial]] — Being explicit about which meaning of 'biomaterial' is in play — function (use in the body), interaction (with living systems) or origin (biological provenance) — is the first move towards a shared language.
+- *enables* → [[Portable design principles]]: Principles only transfer if they are written down in a portable form: 'abstract enough to transfer, precise enough to design with'.
+- *echoes* → [[Non-canonical amino acids]]: The same gap at the molecular scale: no common vocabulary between the biologists who build the tools, the chemists who would formulate with them and the regulators who would certify them.
+- *enables* → [[Biobased vs biomaterial]]: Being explicit about which meaning of 'biomaterial' is in play, function (use in the body), interaction (with living systems) or origin (biological provenance), is the first move towards a shared language.
 - via #barrier/shared-language, #tension/copy-vs-principles → [[Unexplored biological features]]
 - via #barrier/shared-language, #tension/general-vs-specific → [[Classifying materials]]
 - via #barrier/shared-language, #tension/general-vs-specific → [[Standardising dynamic properties]]
@@ -43,10 +43,10 @@ tags:
 
 ## On the Bookshelf
 
-- *Synthetic Aesthetics* — Alexandra Daisy Ginsberg, Jane Calvert, Pablo Schyfter, Alistair Elfick and Drew Endy
+- *Synthetic Aesthetics*, Alexandra Daisy Ginsberg, Jane Calvert, Pablo Schyfter, Alistair Elfick and Drew Endy
 
 ## Tags
 
-- [[Barrier — Definitions & shared language]]
-- [[Tension — General & portable ↔ specific & contextual]]
-- [[Tension — Copy nature's parts ↔ extract its rules]]
+- [[Barrier · Definitions & shared language]]
+- [[Tension · General & portable ↔ specific & contextual]]
+- [[Tension · Copy nature's parts ↔ extract its rules]]

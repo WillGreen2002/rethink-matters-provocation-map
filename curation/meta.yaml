@@ -1,4 +1,4 @@
-# Rethink Matters — Provocation Map: global metadata
+# Rethink Matters, Provocation Map: global metadata
 # Edited by hand. Wording of themes/prompts comes from the Bristol Retreat sheet (Prompts (LIVE));
 # everything here is the *structure around it* (lenses, arcs, sessions, centre).
 
@@ -45,8 +45,18 @@ themes:
   8: { short: "Ethics, ownership & purpose", arc: technology-to-society }
   9: { short: "Ocean & extreme environments", arc: life-to-technology }
 
+# The Niche level: the kinds of example curation/niche_examples.csv may list (column `type`), in the order they hang from a
+# prompt on the map, from the lab to the market. `shape` is how each is drawn.
+example_types:
+  paper: { label: "Paper", plural: "Papers", shape: square }
+  preclinical: { label: "Pre-clinical", plural: "Pre-clinical", shape: ring }
+  clinical: { label: "Clinical", plural: "Clinical", shape: dot }
+  product: { label: "Product", plural: "Products", shape: diamond }
+  company: { label: "Company", plural: "Companies", shape: triangle }
+  other: { label: "Other", plural: "Other", shape: cross }
+
 # ---------------------------------------------------------------------------------------------
-# LENSES — every provocation topic carries these (they colour / filter the map; they are not nodes)
+# LENSES: every provocation topic carries these (they colour / filter the map; they are not nodes)
 # ---------------------------------------------------------------------------------------------
 lenses:
   scale:
@@ -70,7 +80,7 @@ lenses:
     question: "Which part of the Rethink Matters mission does it advance?"
     source: "The tagline on rethinkmatters.org: 'climate performance, biomimetic design, and biological governance for translation'. Colours follow the tagline."
     values:
-      design: { label: "Biomimetic design", def: "Learning from, and designing with, biological principles, structures and processes — including the tools (prediction, programming) that make that possible.", color: "#2F6B63" }
+      design: { label: "Biomimetic design", def: "Learning from, and designing with, biological principles, structures and processes, including the tools (prediction, programming) that make that possible.", color: "#2F6B63" }
       climate: { label: "Climate performance", def: "Environmental performance of biomaterials: carbon, energy, circularity, waste, degradation, living and manufacturing in climate extremes.", color: "#B65438" }
       governance: { label: "Biological governance", def: "Safety, ethics, regulation, ownership and responsibility for engineered biology.", color: "#5B6B3C" }
       translation: { label: "Translation", def: "Getting from lab to use: scale-up, economics, adoption, standards, evidence and infrastructure.", color: "#C9963F" }
@@ -85,17 +95,17 @@ lenses:
       solidarity: { label: "Solidarity", def: "Shared language, shared infrastructure, open data, collective responsibility and care.", color: "#48909F" }
 
 # ---------------------------------------------------------------------------------------------
-# TAG FACETS — semantic tags (see tags.yaml). These drive the cross-links between topics.
+# TAG FACETS: semantic tags (see tags.yaml). These drive the cross-links between topics.
 # ---------------------------------------------------------------------------------------------
 facets:
-  tension: { label: "Tensions", question: "What is being pulled in two directions?", blurb: "The debates the group keeps returning to. A topic carries a tension tag when it sits on that fault line — two notes on the same fault line are in conversation even if they are about different materials." }
-  concept: { label: "Concepts", question: "Which phenomenon or principle is at work?", blurb: "The recurring ideas — emergence, gradients, variability, degradation — that let a result in one setting inform another." }
+  tension: { label: "Tensions", question: "What is being pulled in two directions?", blurb: "The debates the group keeps returning to. A topic carries a tension tag when it sits on that fault line; two notes on the same fault line are in conversation even if they are about different materials." }
+  concept: { label: "Concepts", question: "Which phenomenon or principle is at work?", blurb: "The recurring ideas (emergence, gradients, variability, degradation) that let a result in one setting inform another." }
   barrier: { label: "Barriers", question: "What stands in the way?", blurb: "The kinds of obstacle that recur across themes: missing data, missing vocabulary, unit economics, regulation, adoption, safety." }
   domain: { label: "Domains", question: "Which material system or application?", blurb: "Where the work lands: cellulose and wood, proteins, textiles, clinical use, marine environments…" }
   method: { label: "Methods", question: "Which tool or approach?", blurb: "The enabling toolbox: machine learning, biofabrication, screening and directed evolution." }
 
 # ---------------------------------------------------------------------------------------------
-# SESSIONS — where discussions took place (dates from the sign-up workbook's tab names)
+# SESSIONS: where discussions took place (dates from the sign-up workbook's tab names)
 # ---------------------------------------------------------------------------------------------
 sessions:
   RM003: { label: "RM003", date: "2026-04-11" }

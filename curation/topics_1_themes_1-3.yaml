@@ -32,8 +32,8 @@
   sources: [bio-not-good, classing-by-application]
   reading: []
   links:
-    - { to: bio-is-not-good, type: echoes, why: "Two faces of one ambiguity: 'bio' tells you about origin, or contact with tissue — not about performance, safety or sustainability. The group's own essay on the Bookshelf makes the same point." }
-    - { to: shared-language, type: enables, why: "Being explicit about which meaning of 'biomaterial' is in play — function (use in the body), interaction (with living systems) or origin (biological provenance) — is the first move towards a shared language." }
+    - { to: bio-is-not-good, type: echoes, why: "Two faces of one ambiguity: 'bio' tells you about origin, or contact with tissue, not about performance, safety or sustainability. The group's own essay on the Bookshelf makes the same point." }
+    - { to: shared-language, type: enables, why: "Being explicit about which meaning of 'biomaterial' is in play, function (use in the body), interaction (with living systems) or origin (biological provenance), is the first move towards a shared language." }
 
 - id: material-intelligence
   theme: 1
@@ -48,7 +48,7 @@
   reading: [ways-of-being, how-life-works]
   links:
     - { to: printing-meets-growth, type: echoes, why: "When does guided morphogenesis stop being 'structure' and start behaving like a primitive living, intelligent material? The same question sits at the end of printing plus self-assembly." }
-    - { to: living-interfaces, type: echoes, why: "Self-healing skins, hydrogel optics and artificial gills are materials that sense, respond and adapt — the very properties debated here as possible 'intelligence'." }
+    - { to: living-interfaces, type: echoes, why: "Self-healing skins, hydrogel optics and artificial gills are materials that sense, respond and adapt: the very properties debated here as possible 'intelligence'." }
 
 - id: classifying-materials
   theme: 1
@@ -62,8 +62,8 @@
   sources: [classing-by-application, control-over-biology]
   reading: []
   links:
-    - { to: patterning-and-organs, type: extends, why: "A scale of biological control puts organoids (achievable) and full-size vascularised organs (not yet) on one axis — a way to separate what is market-ready from what is deep research." }
-    - { to: standardising-dynamic-properties, type: enables, why: "You can only decide which properties to standardise once you have agreed which axis — application, composition, properties or level of control — you are classifying along." }
+    - { to: patterning-and-organs, type: extends, why: "A scale of biological control puts organoids (achievable) and full-size vascularised organs (not yet) on one axis: a way to separate what is market-ready from what is deep research." }
+    - { to: standardising-dynamic-properties, type: enables, why: "You can only decide which properties to standardise once you have agreed which axis (application, composition, properties or level of control) you are classifying along." }
 
 - id: dna-is-fancy-peg
   theme: 1
@@ -77,7 +77,7 @@
   sources: [dna-like-macromolecules]
   reading: []
   links:
-    - { to: programmable-biopolymers, type: extends, why: "If DNA is just a programmable polymer, the practical question is which other biomacromolecules can be made as cheap to synthesise, assemble and sequence — and combined into new composite polymers." }
+    - { to: programmable-biopolymers, type: extends, why: "If DNA is just a programmable polymer, the practical question is which other biomacromolecules can be made as cheap to synthesise, assemble and sequence, and combined into new composite polymers." }
 
 - id: hydrated-materials
   theme: 1
@@ -91,7 +91,7 @@
   sources: [aqueous-materials, bacterial-cellulose-vs-wood]
   reading: [stuff-matters, liquid]
   links:
-    - { to: survive-then-degrade, type: echoes, why: "'Biology always wins' in a wet material — the same lack of agency over degradation that makes reliable biodegradation triggers so hard to design." }
+    - { to: survive-then-degrade, type: echoes, why: "'Biology always wins' in a wet material: the same lack of agency over degradation that makes reliable biodegradation triggers so hard to design." }
     - { to: cellulose-wood-concrete, type: echoes, why: "Bacterial cellulose is 98–99% water: the hydration problem that limits aqueous materials in general is the one that limits cellulose as a wood substitute." }
 
 # ============================== THEME 2 · Learning nature's design principles ==============================
@@ -107,7 +107,7 @@
   sources: [biomimicry-too-literal]
   reading: [biomimicry-architecture]
   links:
-    - { to: shared-language, type: enables, why: "Principles only transfer if they are written down in a portable form — 'abstract enough to transfer, precise enough to design with'." }
+    - { to: shared-language, type: enables, why: "Principles only transfer if they are written down in a portable form: 'abstract enough to transfer, precise enough to design with'." }
     - { to: printing-meets-growth, type: tension, why: "Self-assembly supplies hierarchy and emergence; machines supply control. Extracting a principle rather than copying a structure points towards designing initial conditions and constraints instead of final form." }
     - { to: unexplored-features, type: extends, why: "Mapping which features have and have not been reproduced is the empirical side of working out which principles are really portable." }
 
@@ -124,7 +124,7 @@
   reading: [music-of-life, how-life-works]
   links:
     - { to: ai-and-biological-constraints, type: tension, why: "Emergent behaviour is exactly where current ML is weakest: benchmark accuracy can hide failures that matter in practice." }
-    - { to: public-datasets, type: enables, why: "To model emergent properties we need training data that records patterning, alignment and signalling — not just composition. Is that the real bottleneck under all of biotech?" }
+    - { to: public-datasets, type: enables, why: "To model emergent properties we need training data that records patterning, alignment and signalling, not just composition. Is that the real bottleneck under all of biotech?" }
 
 - id: gradients
   theme: 2
@@ -138,7 +138,7 @@
   sources: [gradients-as-design-notion]
   reading: [stuff-matters, liquid]
   links:
-    - { to: ocean-as-factory, type: echoes, why: "Pressure, salinity and current gradients in the ocean are natural gradients that could be used as manufacturing inputs — a gradient as a process principle, not only a structural one." }
+    - { to: ocean-as-factory, type: echoes, why: "Pressure, salinity and current gradients in the ocean are natural gradients that could be used as manufacturing inputs: a gradient as a process principle, not only a structural one." }
     - { to: patterning-and-organs, type: enables, why: "Morphogen and diffusion gradients are how tissues pattern themselves; designing with gradients is one route to the patterned structures this topic asks about." }
 
 - id: engineered-wood
@@ -154,7 +154,7 @@
   reading: [wood-formation]
   links:
     - { to: cellulose-wood-concrete, type: echoes, why: "Both refuse the 'drop-in substitute' framing: what would a tree look like if engineered from day one, and what can bacterial cellulose do that wood never could?" }
-    - { to: fabrication-readiness, type: extends, why: "Cultured wood, volumetric printing and anisotropic alignment are candidate routes to engineered wood — and each needs an honest readiness check." }
+    - { to: fabrication-readiness, type: extends, why: "Cultured wood, volumetric printing and anisotropic alignment are candidate routes to engineered wood, and each needs an honest readiness check." }
 
 - id: unexplored-features
   theme: 2
@@ -197,7 +197,7 @@
   reading: []
   links:
     - { to: hype-vs-evidence, type: echoes, why: "A single percentage point of benchmark error can separate a working drug from a failed one: claims need real-world evidence, whether they come from an AI model or an 'artificial cell'." }
-    - { to: public-datasets, type: enables, why: "Models that respect biology's constraints still need data — what to measure and record is the practical question behind the paradigm debate." }
+    - { to: public-datasets, type: enables, why: "Models that respect biology's constraints still need data: what to measure and record is the practical question behind the paradigm debate." }
 
 - id: predicting-properties
   theme: 3
@@ -225,7 +225,7 @@
   sources: [composite-property-database, emergent-properties]
   reading: []
   links:
-    - { to: standardising-dynamic-properties, type: enables, why: "A shared, standard list of parameters is exactly what a public dataset has to record — standardisation and datasets are the same task seen from two sides." }
+    - { to: standardising-dynamic-properties, type: enables, why: "A shared, standard list of parameters is exactly what a public dataset has to record; standardisation and datasets are the same task seen from two sides." }
     - { to: chronic-bioelectrodes, type: echoes, why: "Both turn on what to record and for how long: public datasets for composites, long-term stability data for implanted electrodes." }
 
 - id: world-models
@@ -255,7 +255,7 @@
   sources: [biosensor-evolution]
   reading: []
   links:
-    - { to: biosensor-design, type: enables, why: "Biosensors convert binding events into signals, supplying the high-throughput readout that variant-library screening lacks — otherwise we sample a millionth of the fitness landscape." }
+    - { to: biosensor-design, type: enables, why: "Biosensors convert binding events into signals, supplying the high-throughput readout that variant-library screening lacks; otherwise we sample a millionth of the fitness landscape." }
     - { to: ai-and-biological-constraints, type: echoes, why: "Automating the decision between design and experiment depends on models that respect biological constraints and on readouts fast enough to close the loop." }
 
 - id: biosensor-design
@@ -271,4 +271,4 @@
   reading: []
   links:
     - { to: signalling-and-crosstalk, type: echoes, why: "Engineering a signal and shielding against unwanted crosstalk are two halves of signalling control." }
-    - { to: infection-sensing-dressings, type: echoes, why: "The same move at different scales: turning a molecular event into a readable output — fluorescence for screening, colour change for infection." }
+    - { to: infection-sensing-dressings, type: echoes, why: "The same move at different scales: turning a molecular event into a readable output (fluorescence for screening, colour change for infection)." }

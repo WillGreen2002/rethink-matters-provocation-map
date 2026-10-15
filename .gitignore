@@ -17,3 +17,8 @@ desktop.ini
 # Obsidian writes per-user state into the vault; keep only our graph colours
 vault/.obsidian/*
 !vault/.obsidian/graph.json
+
+# Excel lock files and local review/evidence exports
+~$*
+build/_review/
+build/_packs/

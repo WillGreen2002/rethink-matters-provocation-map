@@ -18,17 +18,17 @@ tags:
 
 > Replacement materials versus new capabilities such as sensing, repair and adaptation.
 
-**Theme:** [[Theme 8 — Value, scale & adoption]]  
+**Theme:** [[Theme 8 · Value, scale & adoption]]  
 **Scale:** micro, macro · **Working group:** WG2 (proposed) · **Pillar:** translation · **Value:** sustainability
 
 ## Discussions behind this
 
-- [[Biobased materials ≠ drop-in replacements]] — Vancouver edition
+- [[Biobased materials ≠ drop-in replacements]] (Vancouver edition)
 
 ## Linked ideas
 
-- *tension* → [[Cellulose, wood & concrete]] — Bacterial cellulose as a wood substitute is the textbook drop-in trap; asking what it can do that wood never could is the new-capability route.
-- *echoes* → [[Living interfaces]] — Self-healing skins and artificial gills are 'What can we make possible that was previously impossible?' in concrete form.
+- *tension* → [[Cellulose, wood & concrete]]: Bacterial cellulose as a wood substitute is the textbook drop-in trap; asking what it can do that wood never could is the new-capability route.
+- *echoes* → [[Living interfaces]]: Self-healing skins and artificial gills are 'What can we make possible that was previously impossible?' in concrete form.
 - via #barrier/unit-economics, #concept/climate-performance, #method/lca-and-economics → [[Energy, cost & fit]]
 - via #concept/climate-performance, #tension/replace-vs-reinvent → [[Engineering a tree]]
 - via #barrier/unit-economics, #concept/climate-performance, #method/lca-and-economics → [[Lessons from ventures]]
@@ -39,9 +39,9 @@ tags:
 
 ## Tags
 
-- [[Tension — Drop-in replacement ↔ new capability]]
-- [[Concept — Sensing, repair & adaptation]]
-- [[Barrier — Unit economics]]
-- [[Barrier — Adoption & inertia]]
-- [[Concept — Climate performance]]
-- [[Method — Life-cycle & techno-economic analysis]]
+- [[Tension · Drop-in replacement ↔ new capability]]
+- [[Concept · Sensing, repair & adaptation]]
+- [[Barrier · Unit economics]]
+- [[Barrier · Adoption & inertia]]
+- [[Concept · Climate performance]]
+- [[Method · Life-cycle & techno-economic analysis]]

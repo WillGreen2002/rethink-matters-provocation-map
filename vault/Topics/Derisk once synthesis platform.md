@@ -17,12 +17,12 @@ tags:
 
 > Can a genetic medicine synthesis platform be derisked once and reused for all materials? (prompted by a recent talk)
 
-**Theme:** [[Theme 5 — Medical & long-term safety]]  
+**Theme:** [[Theme 5 · Medical & long-term safety]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** governance, translation · **Value:** equity
 
 ## Linked ideas
 
-- *extends* → [[Derisk once gene delivery]] — The same idea one level up: derisk the whole synthesis platform, not just the delivery vehicle.
+- *extends* → [[Derisk once gene delivery]]: The same idea one level up: derisk the whole synthesis platform, not just the delivery vehicle.
 - via #barrier/regulation-and-evidence, #tension/general-vs-specific, #tension/platform-vs-bespoke → [[Standardising dynamic properties]]
 - via #barrier/regulation-and-evidence, #domain/dna-and-nucleic-acids, #domain/medical-and-clinical, #tension/platform-vs-bespoke → [[Funding platform medicines]]
 - via #barrier/regulation-and-evidence, #domain/medical-and-clinical, #tension/general-vs-specific → [[Infection-sensing dressings]]
@@ -35,8 +35,8 @@ tags:
 
 ## Tags
 
-- [[Tension — Derisk once & reuse ↔ approve case by case]]
-- [[Tension — General & portable ↔ specific & contextual]]
-- [[Barrier — Regulation & long-term evidence]]
-- [[Domain — Medical & clinical]]
-- [[Domain — DNA & nucleic acids]]
+- [[Tension · Derisk once & reuse ↔ approve case by case]]
+- [[Tension · General & portable ↔ specific & contextual]]
+- [[Barrier · Regulation & long-term evidence]]
+- [[Domain · Medical & clinical]]
+- [[Domain · DNA & nucleic acids]]

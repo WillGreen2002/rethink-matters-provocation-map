@@ -28,7 +28,7 @@ tags: [discussion, aired, scale/micro, scale/macro]
 
 **What new functions should define the value of biomaterials?**
 - Accessibility and ease of fabrication are key to wide integration; composites are often the material of choice, so functionalised biomaterials must compete. What looks good in a paper often differs from what works in industry.
-- Reproducibility is a major challenge for advanced functionalised biomaterials: the field must standardise which parameters are shared, and ask how much performance is set by the starting material or supplier — a problem conventional polymers such as polyethylene also have (batch mixing).
+- Reproducibility is a major challenge for advanced functionalised biomaterials: the field must standardise which parameters are shared, and ask how much performance is set by the starting material or supplier, a problem conventional polymers such as polyethylene also have (batch mixing).
 - Do not force a material out of its nature: harness natural properties and look at what already exists. Processes and chemistry can themselves act as functions. Purity is a big problem. High-value biomaterials already exist (wood, for example); using waste is attractive environmentally, with function secondary.
 
 **Sustainability claims**

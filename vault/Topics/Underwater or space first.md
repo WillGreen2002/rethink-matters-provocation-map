@@ -17,17 +17,17 @@ tags:
 
 > Will humanity establish feasible habitats underwater or in space first, and what resources will be necessary?
 
-**Theme:** [[Theme 6 — Ocean & extreme environments]]  
+**Theme:** [[Theme 6 · Ocean & extreme environments]]  
 **Scale:** macro · **Working group:** WG3 · **Pillar:** climate, translation · **Value:** sustainability
 
 ## Discussions behind this
 
-- [[Is there a rationale for ocean habitation]] — RM010
-- [[What if the ocean became a place we manufacture in]] — RM008
+- [[Is there a rationale for ocean habitation]] (RM010)
+- [[What if the ocean became a place we manufacture in]] (RM008)
 
 ## Linked ideas
 
-- *extends* → [[Underwater materials]] — If habitats come first underwater, the question becomes which materials can survive pressure, darkness and biofouling.
+- *extends* → [[Underwater materials]]: If habitats come first underwater, the question becomes which materials can survive pressure, darkness and biofouling.
 - via #concept/ecosystems, #domain/marine-and-ocean, #tension/near-vs-far → [[Ocean as factory]]
 - via #concept/ecosystems, #domain/marine-and-ocean, #tension/near-vs-far → [[Seabed structures & farms]]
 - via #domain/marine-and-ocean, #tension/near-vs-far → [[Living interfaces]]
@@ -40,8 +40,8 @@ tags:
 
 ## Tags
 
-- [[Domain — Marine & ocean]]
-- [[Tension — Near-term utility ↔ long-term & speculative]]
-- [[Barrier — Scale-up & infrastructure]]
-- [[Concept — Care & maintenance]]
-- [[Concept — Ecosystems & symbiosis]]
+- [[Domain · Marine & ocean]]
+- [[Tension · Near-term utility ↔ long-term & speculative]]
+- [[Barrier · Scale-up & infrastructure]]
+- [[Concept · Care & maintenance]]
+- [[Concept · Ecosystems & symbiosis]]

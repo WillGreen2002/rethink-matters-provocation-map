@@ -29,7 +29,7 @@ GENERIC_PATTERNS = [
 
 
 def load_local() -> dict:
-    d = {"name_tokens": [], "phrases": [], "restricted": [], "redactions": {}, "present": False}
+    d = {"name_tokens": [], "phrases": [], "restricted": [], "redactions": {}, "example_ok": [], "present": False}
     if os.path.exists(LOCAL_PATH):
         with open(LOCAL_PATH, encoding="utf-8") as f:
             d.update(json.load(f))
@@ -37,12 +37,19 @@ def load_local() -> dict:
     return d
 
 
-def scan_text(text: str, local: dict, extra_tokens=()) -> list[tuple[str, str]]:
-    """Return [(what_matched, context)] for one string. `extra_tokens` = names read live from the source sheets."""
+def scan_text(text: str, local: dict, extra_tokens=(), scope: str = "all") -> list[tuple[str, str]]:
+    """Return [(what_matched, context)] for one string. `extra_tokens` = names read live from the source sheets.
+
+    scope="example" is for the public Niche examples only: exact phrases listed under `example_ok` in the local file (e.g. a
+    company that is fine to list from its own public website) are set aside first. Every other check still applies, so a
+    deliberate, per-phrase decision is needed before a restricted name can appear, and only in the examples."""
     hits: list[tuple[str, str]] = []
     s2 = text
     for ph in ALLOW_PHRASES:
         s2 = s2.replace(ph, "")
+    if scope == "example":
+        for ph in local.get("example_ok", []):
+            s2 = s2.replace(ph, "")
     ctx = text[:100].replace("\n", " ")
     for tok in list(local.get("name_tokens", [])) + list(extra_tokens):
         if re.search(rf"(?<![\w]){re.escape(tok)}(?![\w])", s2):
@@ -62,6 +69,15 @@ def scan_text(text: str, local: dict, extra_tokens=()) -> list[tuple[str, str]]:
         if re.search(pat, s2, re.I):
             hits.append((pat, ctx))
     return hits
+
+
+# House style for everything the map shows: no em dashes (or the horizontal bar that looks like one).
+BANNED_CHARS = {"—": "em dash", "―": "horizontal bar"}
+
+
+def banned_chars(text: str) -> list[str]:
+    """Names of the banned characters found in `text` (empty if none)."""
+    return [name for ch, name in BANNED_CHARS.items() if ch in text]
 
 
 def dedupe(hits):

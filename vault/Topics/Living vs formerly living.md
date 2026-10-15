@@ -18,18 +18,18 @@ tags:
 
 > Living versus formerly living materials: microbial textiles, cotton and everyday biomaterials.
 
-**Theme:** [[Theme 1 — Defining biomaterials]]  
+**Theme:** [[Theme 1 · Defining biomaterials]]  
 **Scale:** macro · **Working group:** WG1 (proposed) · **Pillar:** design · **Value:** humility
 
 ## Discussions behind this
 
-- [[How long till we wear living materials]] — RM008
-- [[The most common biomaterial you meet every day]] — RM008
+- [[How long till we wear living materials]] (RM008)
+- [[The most common biomaterial you meet every day]] (RM008)
 
 ## Linked ideas
 
-- *echoes* → [[When to let materials die]] — Whether a material counts as living has practical consequences: a living material needs ongoing moisture, nutrients and care, and someone has to decide when to stop providing them.
-- *extends* → [[Biobased vs biomaterial]] — 'Living' is one more contested word alongside 'bio': the same discipline-by-discipline drift in meaning applies to it.
+- *echoes* → [[When to let materials die]]: Whether a material counts as living has practical consequences: a living material needs ongoing moisture, nutrients and care, and someone has to decide when to stop providing them.
+- *extends* → [[Biobased vs biomaterial]]: 'Living' is one more contested word alongside 'bio': the same discipline-by-discipline drift in meaning applies to it.
 - via #barrier/shared-language, #concept/dynamic-function, #tension/living-vs-inert → [[Material 'intelligence']]
 - via #domain/textiles-and-fashion, #tension/living-vs-inert → [[Hydrated materials]]
 - via #concept/dynamic-function, #domain/living-materials, #domain/textiles-and-fashion → [[Living interfaces]]
@@ -40,14 +40,14 @@ tags:
 
 ## On the Bookshelf
 
-- *Vibrant Matter* — Jane Bennett
+- *Vibrant Matter*, Jane Bennett
 
 ## Tags
 
-- [[Tension — Living & maintained ↔ inert & finished]]
-- [[Domain — Living materials]]
-- [[Domain — Textiles & fashion]]
-- [[Domain — Cellulose & wood]]
-- [[Barrier — Definitions & shared language]]
-- [[Concept — Sensing, repair & adaptation]]
-- [[Concept — Care & maintenance]]
+- [[Tension · Living & maintained ↔ inert & finished]]
+- [[Domain · Living materials]]
+- [[Domain · Textiles & fashion]]
+- [[Domain · Cellulose & wood]]
+- [[Barrier · Definitions & shared language]]
+- [[Concept · Sensing, repair & adaptation]]
+- [[Concept · Care & maintenance]]

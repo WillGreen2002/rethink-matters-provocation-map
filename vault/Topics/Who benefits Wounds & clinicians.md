@@ -16,16 +16,16 @@ tags:
 
 > Which patients and wounds could benefit, and the role of clinical assessment.
 
-**Theme:** [[Theme 5 — Medical & long-term safety]]  
+**Theme:** [[Theme 5 · Medical & long-term safety]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** governance · **Value:** equity
 
 ## Discussions behind this
 
-- [[Sutures that replace clinical wound assessment]] — RM005
+- [[Sutures that replace clinical wound assessment]] (RM005)
 
 ## Linked ideas
 
-- *extends* → [[Infection-sensing dressings]] — Which wounds, which patients, and how much clinical judgement can be delegated to a colour change?
+- *extends* → [[Infection-sensing dressings]]: Which wounds, which patients, and how much clinical judgement can be delegated to a colour change?
 - via #barrier/regulation-and-evidence, #domain/medical-and-clinical, #tension/access-vs-safety → [[Human–machine integration]]
 - via #barrier/regulation-and-evidence, #tension/access-vs-safety → [[Care & convivial tech]]
 - via #barrier/regulation-and-evidence, #domain/medical-and-clinical, #tension/general-vs-specific → [[Derisk once synthesis platform]]
@@ -40,8 +40,8 @@ tags:
 
 ## Tags
 
-- [[Tension — Open access ↔ safety & misuse]]
-- [[Barrier — Regulation & long-term evidence]]
-- [[Domain — Medical & clinical]]
-- [[Tension — General & portable ↔ specific & contextual]]
-- [[Barrier — Data gaps & readouts]]
+- [[Tension · Open access ↔ safety & misuse]]
+- [[Barrier · Regulation & long-term evidence]]
+- [[Domain · Medical & clinical]]
+- [[Tension · General & portable ↔ specific & contextual]]
+- [[Barrier · Data gaps & readouts]]

@@ -15,16 +15,16 @@ tags:
 
 > Are there biological features still unexplored and unable to be reproduced in materials science?
 
-**Theme:** [[Theme 2 — Nature's design principles]]  
+**Theme:** [[Theme 2 · Nature's design principles]]  
 **Scale:** micro · **Working group:** WG1 (proposed) · **Pillar:** design · **Value:** humility
 
 ## Discussions behind this
 
-- [[Mapping which biological features have, and haven't, been reproduced]] — Proposed
+- [[Mapping which biological features have, and haven't, been reproduced]] (Proposed)
 
 ## Linked ideas
 
-- *extends* → [[Portable design principles]] — Mapping which features have and have not been reproduced is the empirical side of working out which principles are really portable.
+- *extends* → [[Portable design principles]]: Mapping which features have and have not been reproduced is the empirical side of working out which principles are really portable.
 - via #barrier/shared-language, #tension/copy-vs-principles → [[A shared language]]
 - via #barrier/data-gaps, #tension/copy-vs-principles → [[Engineering a tree]]
 - via #barrier/shared-language, #tension/near-vs-far → [[Classifying materials]]
@@ -40,7 +40,7 @@ tags:
 
 ## Tags
 
-- [[Tension — Copy nature's parts ↔ extract its rules]]
-- [[Tension — Near-term utility ↔ long-term & speculative]]
-- [[Barrier — Data gaps & readouts]]
-- [[Barrier — Definitions & shared language]]
+- [[Tension · Copy nature's parts ↔ extract its rules]]
+- [[Tension · Near-term utility ↔ long-term & speculative]]
+- [[Barrier · Data gaps & readouts]]
+- [[Barrier · Definitions & shared language]]

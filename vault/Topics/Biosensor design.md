@@ -17,18 +17,18 @@ tags:
 
 > Designing biosensors that turn molecular binding into signals for screening and continuous evolution.
 
-**Theme:** [[Theme 3 — Prediction, AI & data]]  
+**Theme:** [[Theme 3 · Prediction, AI & data]]  
 **Scale:** micro · **Working group:** WG1 · **Pillar:** design · **Value:** humility
 
 ## Discussions behind this
 
-- [[Biosensors for continuous evolution what blocks them]] — RM010
+- [[Biosensors for continuous evolution what blocks them]] (RM010)
 
 ## Linked ideas
 
-- *enables* → [[Variant-library screening]] — Biosensors convert binding events into signals, supplying the high-throughput readout that variant-library screening lacks — otherwise we sample a millionth of the fitness landscape.
-- *echoes* → [[Signalling & crosstalk]] — Engineering a signal and shielding against unwanted crosstalk are two halves of signalling control.
-- *echoes* → [[Infection-sensing dressings]] — The same move at different scales: turning a molecular event into a readable output — fluorescence for screening, colour change for infection.
+- *enables* → [[Variant-library screening]]: Biosensors convert binding events into signals, supplying the high-throughput readout that variant-library screening lacks; otherwise we sample a millionth of the fitness landscape.
+- *echoes* → [[Signalling & crosstalk]]: Engineering a signal and shielding against unwanted crosstalk are two halves of signalling control.
+- *echoes* → [[Infection-sensing dressings]]: The same move at different scales: turning a molecular event into a readable output (fluorescence for screening, colour change for infection).
 - via #concept/new-to-nature, #concept/programmability, #domain/proteins-and-peptides → [[Programmable biopolymers]]
 - via #concept/new-to-nature, #concept/programmability, #domain/proteins-and-peptides → [[Non-canonical amino acids]]
 - via #barrier/data-gaps, #concept/new-to-nature, #domain/proteins-and-peptides → [[Designed-peptide risks]]
@@ -40,9 +40,9 @@ tags:
 
 ## Tags
 
-- [[Concept — Signalling & circuits]]
-- [[Domain — Engineered cells & hosts]]
-- [[Domain — Proteins & peptides]]
-- [[Concept — Programmable matter]]
-- [[Concept — New-to-nature chemistry]]
-- [[Barrier — Data gaps & readouts]]
+- [[Concept · Signalling & circuits]]
+- [[Domain · Engineered cells & hosts]]
+- [[Domain · Proteins & peptides]]
+- [[Concept · Programmable matter]]
+- [[Concept · New-to-nature chemistry]]
+- [[Barrier · Data gaps & readouts]]

@@ -25,7 +25,7 @@
   sources: [crosstalk-robustness]
   reading: []
   links:
-    - { to: variable-feedstocks, type: echoes, why: "Same trade-off at different scales — how robust is robust, and how robust is too robust? Tissue signalling and bioreactor feedstocks both ask when to tolerate variation and when to shield against it." }
+    - { to: variable-feedstocks, type: echoes, why: "Same trade-off at different scales: how robust is robust, and how robust is too robust? Tissue signalling and bioreactor feedstocks both ask when to tolerate variation and when to shield against it." }
     - { to: survive-then-degrade, type: echoes, why: "Robust enough to survive use, adaptable enough to give way afterwards: the same design tension at the scale of a product's whole life." }
 
 - id: printing-meets-growth
@@ -83,7 +83,7 @@
   sources: [ncaa-expanding-chemistry]
   reading: []
   links:
-    - { to: scaffolds-nanoparticles-adhesives, type: enables, why: "Mussel-inspired peptide wet-adhesives built with non-canonical residues could replace cyanoacrylate in surgery — a concrete payoff for expanding the genetic code." }
+    - { to: scaffolds-nanoparticles-adhesives, type: enables, why: "Mussel-inspired peptide wet-adhesives built with non-canonical residues could replace cyanoacrylate in surgery, a concrete payoff for expanding the genetic code." }
 
 # ============================== THEME 5 · Circularity, waste and adaptive manufacturing ==============================
 - id: waste-valorisation
@@ -112,7 +112,7 @@
   sources: [waste-feedstock-economics]
   reading: []
   links:
-    - { to: value-capture, type: extends, why: "Knowing the full cost chain — collection, transport, storage, preprocessing, contamination — is what lets you ask who captures the value and who carries the cost." }
+    - { to: value-capture, type: extends, why: "Knowing the full cost chain (collection, transport, storage, preprocessing, contamination) is what lets you ask who captures the value and who carries the cost." }
 
 - id: variable-feedstocks
   theme: 5
@@ -139,7 +139,7 @@
   sources: [waste-feedstock-economics]
   reading: []
   links:
-    - { to: funding-platform-medicines, type: echoes, why: "Who captures the value, who carries the cost and who funds what the market will not — the same distributive question in waste chains and in platform genetic medicines." }
+    - { to: funding-platform-medicines, type: echoes, why: "Who captures the value, who carries the cost and who funds what the market will not: the same distributive question in waste chains and in platform genetic medicines." }
     - { to: ip-and-biological-design, type: echoes, why: "Value capture is also decided upstream, by who owns the genes and designs a supply chain depends on." }
 
 - id: discovery-vs-reuse
@@ -270,4 +270,4 @@
   sources: [societal-inertia]
   reading: [great-reconfiguration, your-life-is-manufactured]
   links:
-    - { to: theory-of-change, type: extends, why: "Societal inertia is one candidate answer to 'what theory of change will drive a technological transition?' — the question the Ethics theme asks directly." }
+    - { to: theory-of-change, type: extends, why: "Societal inertia is one candidate answer to 'what theory of change will drive a technological transition?' (the question the Ethics theme asks directly)." }

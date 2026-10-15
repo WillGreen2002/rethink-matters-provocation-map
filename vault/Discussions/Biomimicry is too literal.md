@@ -28,8 +28,8 @@ tags: [discussion, aired, scale/meso, scale/macro, wg/wg1]
 - No consensus on the definition of biomimicry. One view: it requires understanding of *mechanism* rather than structure (a materials-science perspective). Another: not necessarily mechanistic understanding, but taking part in wider ecosystem life cycles over time.
 - Where is the line between mimicry and inspiration? Mimicry is more precise; “bioinspired” is looser, often a buzzword, and the border is fuzzy. Scale is not the issue; definitions vary by field.
 - Are we replicating something, or making something and then finding a similar thing in nature? (Replication example: layer-by-layer, nacre-like fabrication of an organic polymer plus an inorganic mineral. Retrospective-tagging example: a material’s thermal insulation resembling the hollow structure of polar-bear fur.) What matters is the mechanism.
-- What gets lost when biomimicry becomes visual or metaphorical? Bioinspiration may fall short of true biomimicry yet still be positive — and still serve as a marketing tool.
-- One group argued biomimicry is *not literal enough*: true biomimicry has not been achieved, and symbiosis — water, cell and gas cycles — is the more important concept.
+- What gets lost when biomimicry becomes visual or metaphorical? Bioinspiration may fall short of true biomimicry yet still be positive, and still serve as a marketing tool.
+- One group argued biomimicry is *not literal enough*: true biomimicry has not been achieved, and symbiosis (water, cell and gas cycles) is the more important concept.
 
 **RM009 follow-up** (brief handwritten notes)
 - Better collaboration between the sciences; scale matters, and changes perspective.

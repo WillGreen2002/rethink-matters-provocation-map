@@ -17,18 +17,18 @@ tags:
 
 > High-value microscale applications versus bulk production.
 
-**Theme:** [[Theme 8 — Value, scale & adoption]]  
+**Theme:** [[Theme 8 · Value, scale & adoption]]  
 **Scale:** macro · **Working group:** WG3 (proposed) · **Pillar:** translation · **Value:** sustainability
 
 ## Discussions behind this
 
-- [[Should biomaterials research be limited to the microscale]] — RM006
+- [[Should biomaterials research be limited to the microscale]] (RM006)
 
 ## Linked ideas
 
-- *extends* → [[Energy, cost & fit]] — The micro-versus-bulk question is settled in practice by energy requirements, cost and infrastructure.
-- *echoes* → [[Scaffolds, nanoparticles & adhesives]] — Medical scaffolds, nanoparticles and adhesives are the clearest case where micro-scale precision earns its keep.
-- *echoes* → [[Fabrication readiness]] — Which fabrication method wins depends on scale: micro-scale precision pays for itself in medicine, while bulk materials need volume, energy economy and infrastructure.
+- *extends* → [[Energy, cost & fit]]: The micro-versus-bulk question is settled in practice by energy requirements, cost and infrastructure.
+- *echoes* → [[Scaffolds, nanoparticles & adhesives]]: Medical scaffolds, nanoparticles and adhesives are the clearest case where micro-scale precision earns its keep.
+- *echoes* → [[Fabrication readiness]]: Which fabrication method wins depends on scale: micro-scale precision pays for itself in medicine, while bulk materials need volume, energy economy and infrastructure.
 - via #concept/climate-performance, #domain/cellulose-and-wood, #tension/niche-vs-bulk → [[Cellulose, wood & concrete]]
 - via #barrier/scale-up, #barrier/unit-economics → [[Programmable biopolymers]]
 - via #barrier/scale-up, #barrier/unit-economics → [[Full cost of waste]]
@@ -40,13 +40,13 @@ tags:
 
 ## On the Bookshelf
 
-- *Scale* — Geoffrey West
+- *Scale*, Geoffrey West
 
 ## Tags
 
-- [[Tension — High-value niche ↔ bulk volume]]
-- [[Barrier — Scale-up & infrastructure]]
-- [[Barrier — Unit economics]]
-- [[Domain — Medical & clinical]]
-- [[Domain — Cellulose & wood]]
-- [[Concept — Climate performance]]
+- [[Tension · High-value niche ↔ bulk volume]]
+- [[Barrier · Scale-up & infrastructure]]
+- [[Barrier · Unit economics]]
+- [[Domain · Medical & clinical]]
+- [[Domain · Cellulose & wood]]
+- [[Concept · Climate performance]]

@@ -1,0 +1,4 @@
+# Every piece of wording the map shows, in one place, so Rethink Matters can edit it without touching code.
+# The site reads these by key (e.g. levels.regime.name). Words in {curly brackets} are filled in by the site: keep them.
+# House style: plain words, one idea per sentence, UK spelling, sentence case, and no em dashes.
+_meta: { status: draft, reviewed: null }

@@ -1,8 +1,8 @@
-/* Canvas renderer for the map — the "orbit" layout.
+/* Canvas renderer for the map, the "orbit" layout.
    A fixed, radial composition rather than a force simulation: the question at the centre; the nine themes on an inner orbit; the
    sixty prompts on an outer orbit beside their theme, clockwise in the Bookshelf's reading order, every label horizontal and pointing
    outwards so all of them can be read at once; the connections between prompts drawn as curves that leave through their theme and
-   arrive through the other — faint at rest, lit up when you point at or open a prompt.
+   arrive through the other, faint at rest, lit up when you point at or open a prompt.
    Visual grammar from the 'Map of shared aims' on rethinkmatters.org/about: paper discs with a light accent tint and an accent
    outline, #666 threads, the logo-gradient ring around the question. */
 (function () {
@@ -41,7 +41,7 @@
       this.anim = null;       // camera animation
       this.tween = null;      // node positions gliding to a new layout
       this.mode = "pillar";
-      this.layers = { disc: false, rest: "bridges" };   // rest: connections drawn while nothing is in focus — "none" | "bridges" | "all"
+      this.layers = { disc: false, rest: "bridges" };   // rest: connections drawn while nothing is in focus, "none" | "bridges" | "all"
       this.minScore = D.defaultMinScore;
       this.match = null;
       this.hover = null;
@@ -124,7 +124,7 @@
     }
 
     /* ------------------------------------------------------------------ layout */
-    /* The height of the stage sets the zoom (the columns of prompts have to fit it); the width that is left — beside the panels —
+    /* The height of the stage sets the zoom (the columns of prompts have to fit it); the width that is left, beside the panels , 
        then sets the shape: the orbit is made as wide as it can be without its labels running out of room. Round on a laptop, taller
        on a phone or beside an open note, wider on a big screen. */
     stretch(H, Ry) {
@@ -142,7 +142,7 @@
       // The themes run clockwise from the top: theme 1 heads the right-hand column, the next ones go down it, and the rest come
       // back up the left-hand column. Each column reads top to bottom like a list, prompts in the sheet's order.
       // A chapter's name heads the run of themes that holds its first theme; a run that only carries a chapter on from the other
-      // column gets no second caption — the chapter's coloured band on the ring carries it across.
+      // column gets no second caption, the chapter's coloured band on the ring carries it across.
       const first = new Map();
       for (const th of themes) if (!first.has(th.d.arc)) first.set(th.d.arc, th);
       const opens = (col, i) => i === 0 || col[i - 1].d.arc !== col[i].d.arc;
@@ -630,7 +630,7 @@
       }
       ctx.restore();
     }
-    /* the chapter pointed at or open — a chapter itself (strong), or the chapter of the prompt or theme in focus */
+    /* the chapter pointed at or open, a chapter itself (strong), or the chapter of the prompt or theme in focus */
     focusArc() {
       if (this.thread) return { arc: null, strong: false };
       for (const id of [this.hover, this.sel]) {

@@ -16,17 +16,17 @@ tags:
 
 > Leverage biomacromolecules (nucleotides, amino acids, sugars, lipids) into more programmable, new-to-nature composite polymers
 
-**Theme:** [[Theme 4 — Programming & biofabrication]]  
-**Scale:** micro · **Working group:** WG1 · **Pillar:** design · **Value:** —
+**Theme:** [[Theme 4 · Programming & biofabrication]]  
+**Scale:** micro · **Working group:** WG1 · **Pillar:** design · **Value:** none
 
 ## Discussions behind this
 
-- [[Should other macromolecules be more like DNA (DNA is fancy PEG)]] — RM007
+- [[Should other macromolecules be more like DNA (DNA is fancy PEG)]] (RM007)
 
 ## Linked ideas
 
-- *extends* → [[DNA is fancy PEG]] — If DNA is just a programmable polymer, the practical question is which other biomacromolecules can be made as cheap to synthesise, assemble and sequence — and combined into new composite polymers.
-- *extends* → [[Non-canonical amino acids]] — Non-canonical amino acids and new-to-nature composite polymers both expand chemistry beyond what biology has used.
+- *extends* → [[DNA is fancy PEG]]: If DNA is just a programmable polymer, the practical question is which other biomacromolecules can be made as cheap to synthesise, assemble and sequence, and combined into new composite polymers.
+- *extends* → [[Non-canonical amino acids]]: Non-canonical amino acids and new-to-nature composite polymers both expand chemistry beyond what biology has used.
 - via #concept/new-to-nature, #concept/programmability, #domain/proteins-and-peptides → [[Biosensor design]]
 - via #barrier/scale-up, #barrier/unit-economics → [[Full cost of waste]]
 - via #barrier/scale-up, #barrier/unit-economics → [[Micro vs bulk]]
@@ -38,9 +38,9 @@ tags:
 
 ## Tags
 
-- [[Concept — Programmable matter]]
-- [[Concept — New-to-nature chemistry]]
-- [[Domain — DNA & nucleic acids]]
-- [[Domain — Proteins & peptides]]
-- [[Barrier — Scale-up & infrastructure]]
-- [[Barrier — Unit economics]]
+- [[Concept · Programmable matter]]
+- [[Concept · New-to-nature chemistry]]
+- [[Domain · DNA & nucleic acids]]
+- [[Domain · Proteins & peptides]]
+- [[Barrier · Scale-up & infrastructure]]
+- [[Barrier · Unit economics]]

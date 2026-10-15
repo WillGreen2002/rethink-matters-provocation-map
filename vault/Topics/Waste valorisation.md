@@ -16,17 +16,17 @@ tags:
 
 > Waste valorisation, including protein-based waste.
 
-**Theme:** [[Theme 7 — Circularity & waste]]  
+**Theme:** [[Theme 7 · Circularity & waste]]  
 **Scale:** meso, macro · **Working group:** WG3 (proposed) · **Pillar:** climate · **Value:** sustainability
 
 ## Discussions behind this
 
-- [[Protein-based waste valorisation]] — Proposed
-- [[Waste feedstocks aren't as cheap as they look]] — Proposed
+- [[Protein-based waste valorisation]] (Proposed)
+- [[Waste feedstocks aren't as cheap as they look]] (Proposed)
 
 ## Linked ideas
 
-- *enables* → [[Variable feedstocks]] — Valorising waste only works if bioprocesses can cope with the variable, inconsistent inputs that waste streams are.
+- *enables* → [[Variable feedstocks]]: Valorising waste only works if bioprocesses can cope with the variable, inconsistent inputs that waste streams are.
 - via #barrier/unit-economics, #concept/circularity, #domain/waste-and-feedstocks → [[Full cost of waste]]
 - via #barrier/unit-economics, #domain/waste-and-feedstocks → [[Who captures value]]
 - via #concept/circularity, #domain/waste-and-feedstocks → [[Survive use, degrade after]]
@@ -34,11 +34,11 @@ tags:
 
 ## On the Bookshelf
 
-- *Plastics* — Imari Walker-Franklin and Jenna Jambeck
+- *Plastics*, Imari Walker-Franklin and Jenna Jambeck
 
 ## Tags
 
-- [[Concept — Circularity & reuse]]
-- [[Domain — Waste & feedstocks]]
-- [[Domain — Proteins & peptides]]
-- [[Barrier — Unit economics]]
+- [[Concept · Circularity & reuse]]
+- [[Domain · Waste & feedstocks]]
+- [[Domain · Proteins & peptides]]
+- [[Barrier · Unit economics]]

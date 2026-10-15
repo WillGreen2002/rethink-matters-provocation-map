@@ -1,86 +1,86 @@
 # Threads = guided "synthesis trails" through the map (Luhmann-style sequences of linked notes).
 # Each step cites a topic; 'text' says what that topic contributes to the thread. Drafted by the map's author from the
-# provocations and notes — meant to be edited by the group. 'so_what' ties the thread back to the central question.
+# provocations and notes, meant to be edited by the group. 'so_what' ties the thread back to the central question.
 
 - id: data-bottleneck
   title: "Where will the data come from?"
   value: humility
   intro: "Almost every theme hits the same wall: we cannot predict or design what we cannot measure. This trail follows the data bottleneck from properties we barely understand to the sensors that could supply the missing readout."
   steps:
-    - { topic: emergent-properties, text: "Emergent properties depend on patterning, alignment and signalling, so composition alone is a poor predictor — and we may not understand the logic behind the patterns." }
+    - { topic: emergent-properties, text: "Emergent properties depend on patterning, alignment and signalling, so composition alone is a poor predictor, and we may not understand the logic behind the patterns." }
     - { topic: public-datasets, text: "Useful public datasets need agreement on what to measure and which inputs and outcomes to record." }
     - { topic: ai-and-biological-constraints, text: "Models trained the mainstream way meet their limits where emergent behaviour is the target: a single percentage point of error can separate a working drug from a failed one." }
-    - { topic: world-models, text: "World models and inverse design might predict how multicellular materials develop — but they need experimental feedback to learn from." }
+    - { topic: world-models, text: "World models and inverse design might predict how multicellular materials develop, but they need experimental feedback to learn from." }
     - { topic: screening-decisions, text: "We can build a million variants yet read out only a few hundred samples a day: a millionth of the fitness landscape." }
-    - { topic: biosensor-design, text: "Biosensors that turn molecular binding into a signal could supply the readout — if allostery, evolutionary escape and quantitative detection can be solved." }
+    - { topic: biosensor-design, text: "Biosensors that turn molecular binding into a signal could supply the readout, if allostery, evolutionary escape and quantitative detection can be solved." }
   so_what: "A world we cannot measure is a world we cannot responsibly engineer: data infrastructure is a precondition for humility."
 
 - id: control-or-growth
   title: "Control, or let it grow?"
   value: humility
-  intro: "Machines give control; living and soft matter give growth, hierarchy and emergence. The question running through these notes is how to combine them — and what we are optimising for."
+  intro: "Machines give control; living and soft matter give growth, hierarchy and emergence. The question running through these notes is how to combine them, and what we are optimising for."
   steps:
     - { topic: patterning-and-organs, text: "We can pattern cells and build organoids, but not full-size vascularised organs: the spatial coordination of growth outruns one-dimensional control." }
-    - { topic: signalling-and-crosstalk, text: "Patterns are built from signals; holding them means insulating against crosstalk — and asking how robust is too robust." }
+    - { topic: signalling-and-crosstalk, text: "Patterns are built from signals; holding them means insulating against crosstalk, and asking how robust is too robust." }
     - { topic: printing-meets-growth, text: "A hybrid logic: machines impose boundary conditions while the material organises itself, shifting design from final form to initial conditions." }
     - { topic: fabrication-readiness, text: "Which printing, microfluidic or volumetric methods are actually ready, and for what?" }
     - { topic: material-intelligence, text: "At what point does aligned, hierarchical, self-repairing structure begin to look like a primitive living material?" }
     - { topic: design-principles, text: "If hierarchy, self-assembly and damage tolerance are portable principles, we should design with them rather than copy their parts." }
-  so_what: "How much control is wise? The answer decides whether we design outcomes or design conditions — and how much unpredictability we are prepared to live with."
+  so_what: "How much control is wise? The answer decides whether we design outcomes or design conditions, and how much unpredictability we are prepared to live with."
 
 - id: bio-is-not-a-claim
   title: "“Bio” is not a performance claim"
   value: humility
-  intro: "‘Bio’ describes origin, or contact with tissue — not safety, biodegradability or sustainability. This trail follows that ambiguity from definitions through ventures and hype to long-term evidence."
+  intro: "‘Bio’ describes origin (or contact with tissue), not safety, biodegradability or sustainability. This trail follows that ambiguity from definitions through ventures and hype to long-term evidence."
   steps:
     - { topic: biobased-vs-biomaterial, text: "‘Biomaterial’ can mean use in the body, interaction with living systems, or biological origin." }
     - { topic: bio-is-not-good, text: "Biological origin alone does not establish environmental or ethical value." }
     - { topic: venture-lessons, text: "Investor expectations and sustainability claims are among the tensions the group examined in the last wave of biobased-textile ventures." }
     - { topic: hype-vs-evidence, text: "‘Breakthrough versus hype’ is a false binary; evidence needs plain-language reporting and honest uncertainty." }
     - { topic: chronic-bioelectrodes, text: "Even in medicine, a promising route can be overhyped when long-term stability data is missing." }
-  so_what: "Claims travel faster than evidence. Being exact about what ‘bio’ does and does not promise is a form of humility — and of governance."
+  so_what: "Claims travel faster than evidence. Being exact about what ‘bio’ does and does not promise is a form of humility, and of governance."
 
 - id: follow-the-value
-  title: "Follow the value — and the cost"
+  title: "Follow the value, and the cost"
   value: equity
   intro: "Who pays, who owns and who benefits? These notes ask the same distributive question about waste chains, manufacturing, medicines and intellectual property."
   steps:
     - { topic: full-cost-of-waste, text: "Waste feedstocks look cheap until collection, transport, storage, preprocessing and contamination are counted." }
-    - { topic: value-capture, text: "Who captures the value across a waste-to-material chain — and who carries the cost?" }
+    - { topic: value-capture, text: "Who captures the value across a waste-to-material chain, and who carries the cost?" }
     - { topic: energy-cost-fit, text: "Energy requirements, cost and infrastructure decide which materials can reach scale." }
     - { topic: funding-platform-medicines, text: "Where no market exists, who funds platform medicines and the regulatory path they need?" }
     - { topic: ip-and-biological-design, text: "Ownership of genes and designs shapes who ultimately benefits." }
-    - { topic: care-and-convivial-tech, text: "Convivial technology treats access — who can make, use and repair a thing — as a design requirement." }
+    - { topic: care-and-convivial-tech, text: "Convivial technology treats access (who can make, use and repair a thing) as a design requirement." }
   so_what: "A world worth living in distributes benefits and burdens deliberately; these notes show where the distribution is currently left to chance."
 
 - id: designed-to-die
   title: "Designed to die"
   value: sustainability
-  intro: "Biology always wins — materials degrade, living ones need care, and we have little agency over either. This trail follows end of life from definitions to disposal."
+  intro: "Biology always wins: materials degrade, living ones need care, and we have little agency over either. This trail follows end of life from definitions to disposal."
   steps:
-    - { topic: living-vs-formerly-living, text: "A cotton shirt was once living; a microbial textile with growth halted may still count as living — definitions have consequences." }
+    - { topic: living-vs-formerly-living, text: "A cotton shirt was once living; a microbial textile with growth halted may still count as living. Definitions have consequences." }
     - { topic: hydrated-materials, text: "Water invites life, and so degradation. We have little control over the moment a material stops being functional." }
     - { topic: survive-then-degrade, text: "Materials must survive use and climate extremes yet degrade after disposal: reliable triggers, or dedicated collection systems?" }
     - { topic: discovery-vs-reuse, text: "Every new material creates a future end-of-life problem: do we need more materials, or better reuse of the ones we have?" }
     - { topic: chronic-bioelectrodes, text: "In the body, degradation timelines are a key worry for conductive-polymer electrodes." }
     - { topic: when-to-let-die, text: "For living materials, withholding care is the end-of-life trigger: which living functions justify ongoing moisture, nutrients and care?" }
-  so_what: "Designing a good end of life is part of designing the material — and, for living materials, an ethical choice."
+  so_what: "Designing a good end of life is part of designing the material and, for living materials, an ethical choice."
 
 - id: rebuilding-a-tree
   title: "Rebuilding a tree"
   value: sustainability
   intro: "Wood is already self-assembling, hierarchical, load-bearing, cheap and carbon-storing. Starting from that benchmark, these notes ask what a bio-based material should do instead of imitating the incumbent."
   steps:
-    - { topic: engineered-wood, text: "What would a tree look like if engineered from day one — and what are we missing to predict and design it?" }
+    - { topic: engineered-wood, text: "What would a tree look like if engineered from day one, and what are we missing to predict and design it?" }
     - { topic: cellulose-wood-concrete, text: "Bacterial cellulose as a wood substitute is the trap; the better question is what it can do that wood never could. The same logic applies to biomineral versus concrete." }
     - { topic: hydrated-materials, text: "Bacterial cellulose is 98–99% water: hydration is the barrier to dropping it into the dry world." }
-    - { topic: replacement-vs-new-capability, text: "Biobased materials may win by offering functions incumbents cannot — responsiveness, repair, biodegradation, sensing, local production." }
+    - { topic: replacement-vs-new-capability, text: "Biobased materials may win by offering functions incumbents cannot: responsiveness, repair, biodegradation, sensing, local production." }
     - { topic: micro-vs-bulk, text: "Bulk biomaterials already dominate (agriculture, wood), while micro-scale precision is essential for medicine." }
     - { topic: fabrication-readiness, text: "Cultured wood, anisotropy engineering and volumetric printing: which routes are ready?" }
   so_what: "Learning from nature may mean asking what biology makes possible, not how closely we can copy it."
 
 - id: access-and-responsibility
-  title: "Access, safety — and who is responsible"
+  title: "Access, safety, and who is responsible"
   value: equity
   intro: "Wider access to biotechnology, devices and diagnostics widens exposure to risk. These notes keep asking who is accountable when things go wrong."
   steps:

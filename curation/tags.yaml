@@ -2,26 +2,26 @@
 # Design rules (see docs/TAG-GUIDE.md):
 #   * every tag must be able to connect >= 2 themes (cross-cutting, not a re-labelled theme)
 #   * target 3-12 topics per tag (rarer = no network effect; commoner = hairball)
-#   * a tag is a *reason two notes belong together* — say what that reason is in 'def'
+#   * a tag is a *reason two notes belong together*; say what that reason is in 'def'
 # 'poles' (tensions only) are the two ends of the debate.
 
 tension:
   copy-vs-principles:
     label: "Copy nature's parts ↔ extract its rules"
     poles: ["Copy nature's parts", "Extract nature's rules"]
-    def: "Whether to reproduce biological structures or abstract the principles behind them — and whether those principles are portable, and precise enough to design with."
+    def: "Whether to reproduce biological structures or abstract the principles behind them, and whether those principles are portable, and precise enough to design with."
   control-vs-emergence:
     label: "Imposed control ↔ self-assembly & emergence"
     poles: ["Imposed control", "Self-assembly & emergence"]
-    def: "How much to specify with machines (printing, patterning) versus letting living or soft matter organise itself — and what we are optimising for."
+    def: "How much to specify with machines (printing, patterning) versus letting living or soft matter organise itself, and what we are optimising for."
   robust-vs-adaptable:
     label: "Robust & uniform ↔ adaptive & variable"
     poles: ["Robust & uniform", "Adaptive & variable"]
-    def: "Designing for reliable, uniform outcomes versus tolerating or exploiting variability — in tissues, feedstocks, bioprocesses and materials in service."
+    def: "Designing for reliable, uniform outcomes versus tolerating or exploiting variability: in tissues, feedstocks, bioprocesses and materials in service."
   hype-vs-evidence:
     label: "Breakthrough hype ↔ premature dismissal"
     poles: ["Breakthrough hype", "Premature dismissal"]
-    def: "Telling genuine progress from hype (and from reflexive dismissal) when evidence is incomplete — in claims, benchmarks, ventures and long-term data."
+    def: "Telling genuine progress from hype (and from reflexive dismissal) when evidence is incomplete: in claims, benchmarks, ventures and long-term data."
   replace-vs-reinvent:
     label: "Drop-in replacement ↔ new capability"
     poles: ["Drop-in replacement", "New capability"]
@@ -29,11 +29,11 @@ tension:
   niche-vs-bulk:
     label: "High-value niche ↔ bulk volume"
     poles: ["High-value niche", "Bulk volume"]
-    def: "Micro-scale, high-value uses versus commodity-scale production — and how energy, cost and infrastructure tip the balance."
+    def: "Micro-scale, high-value uses versus commodity-scale production, and how energy, cost and infrastructure tip the balance."
   invent-vs-implement:
     label: "More new solutions ↔ implementing what we have"
     poles: ["More new solutions", "Implementing what we have"]
-    def: "Whether progress is limited by missing technology or by our willingness and ability to deploy existing options — including whether new materials complicate reuse."
+    def: "Whether progress is limited by missing technology or by our willingness and ability to deploy existing options, including whether new materials complicate reuse."
   natural-vs-good:
     label: "Biological origin ↔ demonstrated benefit"
     poles: ["Biological origin", "Demonstrated benefit"]
@@ -41,7 +41,7 @@ tension:
   private-vs-common:
     label: "Private ownership ↔ common good"
     poles: ["Private ownership & markets", "Common good & access"]
-    def: "Who owns, funds and benefits — IP, markets, commons, public data, shared facilities, consumer protection."
+    def: "Who owns, funds and benefits: IP, markets, commons, public data, shared facilities, consumer protection."
   access-vs-safety:
     label: "Open access ↔ safety & misuse"
     poles: ["Open access", "Safety & misuse"]
@@ -49,15 +49,15 @@ tension:
   human-vs-organism:
     label: "Human benefit ↔ duties to other life"
     poles: ["Human benefit", "Duties to other life"]
-    def: "What we owe the organisms and ecosystems we use, engineer or affect — not just through them, but to them."
+    def: "What we owe the organisms and ecosystems we use, engineer or affect: not just through them, but to them."
   general-vs-specific:
     label: "General & portable ↔ specific & contextual"
     poles: ["General & portable", "Specific & contextual"]
-    def: "Abstraction and standardisation versus context-specific precision — in principles, signals, standards, models and platforms."
+    def: "Abstraction and standardisation versus context-specific precision: in principles, signals, standards, models and platforms."
   living-vs-inert:
     label: "Living & maintained ↔ inert & finished"
     poles: ["Living & maintained", "Inert & finished"]
-    def: "Materials that stay alive and need care versus ones that were alive, or are fabricated and finished — and what that means for definition, durability and end of life."
+    def: "Materials that stay alive and need care versus ones that were alive, or are fabricated and finished; and what that means for definition, durability and end of life."
   platform-vs-bespoke:
     label: "Derisk once & reuse ↔ approve case by case"
     poles: ["Derisk once & reuse", "Approve case by case"]
@@ -76,7 +76,7 @@ concept:
     def: "Structure across length scales, modular building blocks, redundancy."
   gradients:
     label: "Gradients"
-    def: "Spatial variation in composition, structure or chemistry — diffusion, porosity, pressure, salinity."
+    def: "Spatial variation in composition, structure or chemistry: diffusion, porosity, pressure, salinity."
   self-assembly:
     label: "Self-assembly & morphogenesis"
     def: "Order that arises spontaneously or through guided growth rather than being imposed."
@@ -88,7 +88,7 @@ concept:
     def: "Materials or processes that sense, respond, repair themselves or adapt."
   signalling:
     label: "Signalling & circuits"
-    def: "Molecular signals, sensors, circuits and crosstalk — including turning binding events into readable outputs."
+    def: "Molecular signals, sensors, circuits and crosstalk, including turning binding events into readable outputs."
   programmability:
     label: "Programmable matter"
     def: "Designing materials or biomolecules like code: encoded, addressable, synthesisable on demand."
@@ -97,7 +97,7 @@ concept:
     def: "Building blocks, polymers and functions that biology has not used."
   hydration:
     label: "Water & hydration"
-    def: "Aqueous materials, humidity, hydrogels — and what water does to materials."
+    def: "Aqueous materials, humidity, hydrogels, and what water does to materials."
   variability:
     label: "Variability & reproducibility"
     def: "Batch, feedstock and biological variation; reproducibility and which parameters to standardise."
@@ -126,7 +126,7 @@ barrier:
     def: "Missing datasets, measurements, long-term data or high-throughput readouts."
   shared-language:
     label: "Definitions & shared language"
-    def: "Terms, taxonomies and vocabularies that differ across fields — or that hide different assumptions."
+    def: "Terms, taxonomies and vocabularies that differ across fields, or that hide different assumptions."
   unit-economics:
     label: "Unit economics"
     def: "Cost, price, margins and product–market fit."
@@ -181,10 +181,10 @@ domain:
 method:
   machine-learning:
     label: "Modelling & AI"
-    def: "Prediction, simulation, generative and inverse design, and world models — including ecosystem and developmental modelling."
+    def: "Prediction, simulation, generative and inverse design, and world models (including ecosystem and developmental modelling)."
   biofabrication:
     label: "Printing & biofabrication"
     def: "3D printing, microfluidics, volumetric and guided-assembly fabrication."
   lca-and-economics:
     label: "Life-cycle & techno-economic analysis"
-    def: "Life-cycle assessment and techno-economic analysis — and the system boundaries and reference points they depend on."
+    def: "Life-cycle assessment and techno-economic analysis, and the system boundaries and reference points they depend on."
