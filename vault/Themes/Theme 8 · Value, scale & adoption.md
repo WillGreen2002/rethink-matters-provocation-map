@@ -7,6 +7,14 @@ tags: [theme/8, arc/technology-to-society]
 
 Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How technology becomes society* · theme 6 in the Bristol retreat sheet
 
+## A future we'd want
+
+A future where biomaterials are valued for new functions as well as for matching old ones, judged on shared, reproducible evidence rather than hype or hasty dismissal, with sustainability claims naming their reference point and rewards for repair and reuse.
+
+*Draft, written from the group's notes for Rethink Matters to rewrite.*
+
+Drawn from: [[Replace or reinvent]], [[Standardising dynamic properties]], [[Hype vs evidence]], [[Lessons from ventures]], [[Societal inertia]]
+
 ## Prompts
 
 - [[Standardising dynamic properties]]

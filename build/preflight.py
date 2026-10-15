@@ -32,7 +32,7 @@ SKIP_CONTENT = {"build/leakcheck.py", "build/preflight.py", "build/local_checks.
 # the public Niche examples: scanned with scope="example" (exact phrases on the private example_ok list are allowed there only)
 EXAMPLE_SCOPE = [r"^curation/niche_examples\.csv$", r"^site/examples-data\.js$", r"^vault/Examples/"]
 # everything the map shows (and its source text) must be free of em dashes
-NO_DASH = [r"^site/", r"^vault/", r"^docs/", r"^curation/"]
+NO_DASH = [r"^site/", r"^vault/", r"^docs/", r"^curation/", r"^README\.md$"]
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")

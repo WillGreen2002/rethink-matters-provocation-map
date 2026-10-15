@@ -7,6 +7,14 @@ tags: [theme/4, arc/life-to-technology]
 
 Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How life becomes technology*
 
+## A future we'd want
+
+A future where biological materials are both printed and grown, the balance of imposed order and self-organisation is chosen openly, randomness is weighed as a source of properties as well as a fault, and fabrication readiness is judged honestly.
+
+*Draft, written from the group's notes for Rethink Matters to rewrite.*
+
+Drawn from: [[Printing meets growth]], [[Signalling & crosstalk]], [[Fabrication readiness]], [[Patterning to organs]]
+
 ## Prompts
 
 - [[Patterning to organs]]

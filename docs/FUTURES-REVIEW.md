@@ -4,4 +4,140 @@
 
 Each theme has one short future, drafted from the group's own prompts and anonymised notes, plus one overall answer to the central question. They are drafts: rewrite them in `curation/futures.yaml` and change `status` to `rm-edited` or `rm-approved`.
 
-*No futures drafted yet.*
+## Overall answer
+
+> A world we would want to live in is one where biological origin is not mistaken for goodness, and materials are judged on shared, reproducible, long-term evidence. Waste feeds bioprocesses with its full costs counted, people keep control of implanted devices, and who captures value, who carries cost and what is owed to organisms are decided openly.
+
+- status: **draft**
+
+| part of the future | rests on |
+|---|---|
+| biological origin is not mistaken for goodness | 'Bio' ≠ good; “Bio” doesn’t make something “good”; Biobased vs biomaterial |
+| materials are judged on shared, reproducible, long-term evidence | Hype vs evidence; Standardising dynamic properties; Public datasets; SpudCells and the “breakthrough versus hype” binary; Chronic bioelectrodes; Designed-peptide risks; Scaffolds, nanoparticles & adhesives |
+| Waste feeds bioprocesses with its full costs counted | Waste valorisation; Variable feedstocks; Full cost of waste |
+| people keep control of implanted devices | Human–machine integration; A transhumanist future? Merging with technology |
+| who captures value, who carries cost | Who captures value |
+| what is owed to organisms are decided openly | Duties to organisms; Being ethical *to* the organisms we work with; When to let materials die |
+
+## Theme 1 · Defining biomaterials
+
+> A future where calling a material bio makes clear which meaning is in play rather than implying it is good, and where medicine and design each state openly what justifies a new material.
+
+- status: **draft**
+
+| part of the future | rests on |
+|---|---|
+| calling a material bio makes clear which meaning is in play | Biobased vs biomaterial; “Bio” doesn’t make something “good” |
+| rather than implying it is good | “Bio” doesn’t make something “good” |
+| medicine and design each state openly what justifies a new material | “Bio” doesn’t make something “good” |
+
+## Theme 2 · Nature's design principles
+
+> A future where biology, materials science, engineering and design share a language and work together on design principles such as gradients and self-assembly, and where what counts as biomimicry, from precise mimicry to looser inspiration, is debated openly.
+
+- status: **draft**
+
+| part of the future | rests on |
+|---|---|
+| biology, materials science, engineering and design share a language | A shared language; Biomimicry is too literal |
+| design principles such as gradients and self-assembly | Portable design principles; Gradients as design; Manufacturing versus self-assembly |
+| work together on design principles | Biomimicry is too literal; A shared language |
+| what counts as biomimicry, from precise mimicry to looser inspiration, is debated openly | Biomimicry is too literal |
+
+## Theme 3 · Prediction, AI & data
+
+> A future where what is measured and recorded is decided openly and shared, where models are tested against biological constraints and emergent behaviour, and where a fast signal counts only when it tracks the product itself.
+
+- status: **draft**
+
+| part of the future | rests on |
+|---|---|
+| what is measured and recorded is decided openly and shared | Public datasets |
+| models are tested against biological constraints and emergent behaviour | AI meets biological constraints; Predicting composites & proteins; Manufacturing versus self-assembly |
+| a fast signal counts only when it tracks the product itself | Biosensor design; Biosensors for continuous evolution: what blocks them?; Variant-library screening |
+
+## Theme 4 · Programming & biofabrication
+
+> A future where biological materials are both printed and grown, the balance of imposed order and self-organisation is chosen openly, randomness is weighed as a source of properties as well as a fault, and fabrication readiness is judged honestly.
+
+- status: **draft**
+
+| part of the future | rests on |
+|---|---|
+| biological materials are both printed and grown | Printing meets growth; Manufacturing versus self-assembly |
+| the balance of imposed order and self-organisation is chosen openly | Printing meets growth; Manufacturing versus self-assembly |
+| randomness is weighed as a source of properties as well as a fault | Manufacturing versus self-assembly |
+| fabrication readiness is judged honestly | Fabrication readiness; Multicellular and cell-lawn patterning: what is it for? |
+
+## Theme 5 · Medical & long-term safety
+
+> A future where medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response, dressing signals are reliable enough to read, and the role of clinical judgement and the funding of genetic medicines without a market are decided openly.
+
+- status: **draft**
+
+| part of the future | rests on |
+|---|---|
+| medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response | Chronic bioelectrodes; Designed-peptide risks; Scaffolds, nanoparticles & adhesives |
+| dressing signals are reliable enough to read | Infection-sensing dressings; Sutures that replace clinical wound assessment? |
+| the role of clinical judgement | Who benefits? Wounds & clinicians; Sutures that replace clinical wound assessment? |
+| the funding of genetic medicines without a market | Funding platform medicines |
+| are decided openly | Funding platform medicines; Sutures that replace clinical wound assessment? |
+
+## Theme 6 · Ocean & extreme environments
+
+> A future where underwater habitation must justify itself beyond research and niche industry; materials that survive extremes are planned to degrade, by trigger or collection, though control is limited; and which living functions justify ongoing care is decided openly.
+
+- status: **draft**
+
+| part of the future | rests on |
+|---|---|
+| underwater habitation must justify itself beyond research and niche industry | Is there a rationale for ocean habitation?; Underwater or space first? |
+| materials that survive extremes are planned to degrade | Survive use, degrade after; Why are most man-made materials “dehydrated”? |
+| by trigger or collection | Survive use, degrade after |
+| though control is limited | Why are most man-made materials “dehydrated”? |
+| which living functions justify ongoing care is decided openly | When to let materials die |
+
+## Theme 7 · Circularity & waste
+
+> A future where waste, protein-based waste included, feeds bioprocesses that tolerate variable feedstocks, the full cost of waste is counted, and who captures value, who carries cost and whether new materials complement or complicate reuse are worked out openly.
+
+- status: **draft**
+
+| part of the future | rests on |
+|---|---|
+| waste, protein-based waste included, feeds bioprocesses | Waste valorisation |
+| that tolerate variable feedstocks | Variable feedstocks |
+| the full cost of waste is counted | Full cost of waste |
+| who captures value, who carries cost | Who captures value |
+| whether new materials complement or complicate reuse | Discovery vs reuse |
+| are worked out openly | Who captures value; Discovery vs reuse |
+
+## Theme 8 · Value, scale & adoption
+
+> A future where biomaterials are valued for new functions as well as for matching old ones, judged on shared, reproducible evidence rather than hype or hasty dismissal, with sustainability claims naming their reference point and rewards for repair and reuse.
+
+- status: **draft**
+
+| part of the future | rests on |
+|---|---|
+| biomaterials are valued for new functions as well as for matching old ones | Replace or reinvent; Biobased materials ≠ drop-in replacements; Bacterial cellulose ≠ wood; Should biomaterials research be limited to the microscale? |
+| judged on shared, reproducible evidence | Biobased materials ≠ drop-in replacements; Standardising dynamic properties |
+| rather than hype or hasty dismissal | Hype vs evidence; SpudCells and the “breakthrough versus hype” binary |
+| sustainability claims naming their reference point | Biobased materials ≠ drop-in replacements; Assessing past biobased-materials start-ups; Lessons from ventures |
+| rewards for repair and reuse | “We don’t need more solutions”; Societal inertia; Should biomaterials research be limited to the microscale? |
+
+## Theme 9 · Ethics, ownership & purpose
+
+> A future where biological origin is not mistaken for goodness, shared tools come with the means to use them safely, people keep control of implanted devices, and duties to organisms and ownership of genes and designs are weighed openly.
+
+- status: **draft**
+
+| part of the future | rests on |
+|---|---|
+| biological origin is not mistaken for goodness | 'Bio' ≠ good; “Bio” doesn’t make something “good” |
+| shared tools come with the means to use them safely | Care & convivial tech; Can a biomaterial be a convivial technology?; “We don’t need more solutions” |
+| people keep control of implanted devices | Human–machine integration; A transhumanist future? Merging with technology |
+| duties to organisms | Duties to organisms; Being ethical *to* the organisms we work with |
+| ownership of genes and designs | IP & biological design |
+| are weighed openly | Being ethical *to* the organisms we work with; “We don’t need more solutions” |
+

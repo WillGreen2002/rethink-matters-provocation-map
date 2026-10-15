@@ -320,6 +320,16 @@ COPY_USED = set()
 for _path in sorted(glob.glob(P("site", "assets", "*.js"))):
     with open(_path, encoding="utf-8") as _f:
         COPY_USED |= set(re.findall(r'\bt\(\s*"([A-Za-z0-9_.]+)"', _f.read()))
+with open(P("site", "index.html"), encoding="utf-8") as _f:   # data-t="key" (text) and data-t-label="key" (aria-label)
+    COPY_USED |= set(re.findall(r'\bdata-t(?:-label)?="([A-Za-z0-9_.]+)"', _f.read()))
+# keys the site builds at run time ("levels." + level + ".name" and the like), checked here by hand
+COPY_USED |= {f"levels.{lv}.{k}" for lv in ("landscape", "regime", "niche") for k in ("name", "short", "explain")}
+COPY_USED |= {"levels.niche.soon", "levels.regime.aria"} | {f"future.badge_{s}" for s in ("draft", "rm_edited", "rm_approved")}
+COPY_USED |= {f"relations.{k}" for k in ("echoes", "tension", "enables", "extends", "enables_rev", "extends_rev", "shared", "shares",
+                                          "same_disc", "also", "shared_prefix")}
+COPY_USED |= {f"kinds.{k}" for k in ("topic", "theme", "tag", "discussion", "book", "arc", "example")}
+COPY_USED |= {f"hints.{lv}{t}" for lv in ("landscape", "regime", "niche") for t in ("", "_touch")}
+COPY_USED = {k for k in COPY_USED if not k.endswith((".", "_"))}   # the stems of keys built at run time
 for _k in sorted(COPY_USED):
     if copy_get(_k) is None:
         err(f"curation/copy.yaml has no entry {_k!r} (used by the site)")
@@ -396,6 +406,15 @@ def check_future(where, f, limit, opening, theme_n=None):
         if num_s not in src_text:
             err(f"{where}: the number {num_s} does not appear in the sources it draws on")
     rec = {"text": txt, "status": status, "approvedOn": f.get("approved_on"), "drawsOn": ["n:" + p for p in prompts]}
+    if f.get("note"):
+        rec["note"] = norm(f["note"])
+    if theme_n is None:   # the overall answer draws on theme futures (sheet numbers; renumbered when the graph is assembled)
+        rec["_sheets"] = []
+        for s in draws.get("themes") or []:
+            if s not in meta["themes"]:
+                err(f"{where}: draws_on theme {s!r} is not a sheet theme number")
+            else:
+                rec["_sheets"].append(s)
     if theme_n is not None:
         grade, n_disc = evidence_grade(theme_n)
         if f.get("evidence") and f["evidence"] != grade:
@@ -497,6 +516,8 @@ for t in topics_cur:
 # 4. Assemble the graph
 # ----------------------------------------------------------------------------------------------------------
 nodes, hier = [], []
+if FUT_CENTER:
+    FUT_CENTER["drawsOn"] = [f"th:{num[s]}" for s in sorted(FUT_CENTER.pop("_sheets"), key=lambda s: num[s])]
 nodes.append({"id": "c", "kind": "center", "label": meta["center"]["label"], "question": meta["center"]["question"],
               "citation": meta["center"]["citation"], "valuesIntro": meta["center"]["values_intro"], "answer": FUT_CENTER})
 theme_topics = defaultdict(list)

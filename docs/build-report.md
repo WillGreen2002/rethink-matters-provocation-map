@@ -1,6 +1,6 @@
 # Build report
 
-Generated 2026-10-15 16:54
+Generated 2026-10-15 17:43
 
 - Themes 9 · topics 60 · discussions 43 (18 with notes) · semantic tags used 53 · books 21
 - Topic↔topic links stored: 301 (73 curated); shown at default threshold (6.0): 105
@@ -136,16 +136,16 @@ Bottom: Designed-peptide risks (2), Duties to organisms (2), 'Bio' ≠ good (2),
 
 ## Futures
 
-- Theme 1: none yet
-- Theme 2: none yet
-- Theme 3: none yet
-- Theme 4: none yet
-- Theme 5: none yet
-- Theme 6: none yet
-- Theme 7: none yet
-- Theme 8: none yet
-- Theme 9: none yet
-- Overall answer: none yet
+- Theme 1: draft, evidence strong, 33 words
+- Theme 2: draft, evidence strong, 38 words
+- Theme 3: draft, evidence partial, 36 words
+- Theme 4: draft, evidence partial, 39 words
+- Theme 5: draft, evidence partial, 40 words
+- Theme 6: draft, evidence partial, 39 words
+- Theme 7: draft, evidence thin, 39 words
+- Theme 8: draft, evidence strong, 40 words
+- Theme 9: draft, evidence strong, 39 words
+- Overall answer: draft, 57 words
 
 ## Deliberate redactions in verbatim provocation text
 

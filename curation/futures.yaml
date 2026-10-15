@@ -1,0 +1,259 @@
+# Drafted futures: answers to the World Economic Forum question, one per theme and one overall.
+#
+# Every future was drafted from the group's own words only (the prompts and the anonymised note digests), then checked clause by
+# clause by an independent reader against those sources. Nothing here is a quotation, and nothing is attributed to anyone.
+#
+# Rethink Matters: edit `text` freely, then set status to rm-edited, or rm-approved with approved_on (YYYY-MM).
+# Keep `theme` (the Bristol sheet number) and `label` as they are: they guard the numbering.
+# Limits the build checks: a theme future starts 'A future where' (40 words at most); the overall answer starts
+# 'A world we would want to live in is one where' (60 words at most); no quotation marks, no attribution, no em dashes,
+# and no number that its sources do not contain. Set show_on_site to false to hide every future from the map.
+
+show_on_site: true
+
+overall:
+  status: draft
+  text: "A world we would want to live in is one where biological origin is not mistaken for goodness, and materials are judged on shared, reproducible, long-term evidence. Waste feeds bioprocesses with its full costs counted, people keep control of implanted devices, and who captures value, who carries cost and what is owed to organisms are decided openly."
+  draws_on:
+    themes: [1, 3, 5, 6, 7, 8, 9]   # sheet numbers of the theme futures it compresses
+  support:
+    - clause: "biological origin is not mistaken for goodness"
+      from: ["n:bio-is-not-good", "d:bio-not-good", "n:biobased-vs-biomaterial"]
+    - clause: "materials are judged on shared, reproducible, long-term evidence"
+      from: ["n:hype-vs-evidence", "n:standardising-dynamic-properties", "n:public-datasets", "d:spudcells-hype", "n:chronic-bioelectrodes", "n:designed-peptide-risks", "n:scaffolds-nanoparticles-adhesives"]
+    - clause: "Waste feeds bioprocesses with its full costs counted"
+      from: ["n:waste-valorisation", "n:variable-feedstocks", "n:full-cost-of-waste"]
+    - clause: "people keep control of implanted devices"
+      from: ["n:human-machine-responsibility", "d:brain-machine-future"]
+    - clause: "who captures value, who carries cost"
+      from: ["n:value-capture"]
+    - clause: "what is owed to organisms are decided openly"
+      from: ["n:duties-to-organisms", "d:organism-ethics", "n:when-to-let-die"]
+  check:
+    verdict: pass
+    partly: ["materials are judged on shared, reproducible, long-term evidence"]
+
+themes:
+  - theme: 1
+    label: "Defining biomaterials"   # theme 1 on the map
+    status: draft
+    text: "A future where calling a material bio makes clear which meaning is in play rather than implying it is good, and where medicine and design each state openly what justifies a new material."
+    draws_on:
+      prompts: ["biobased-vs-biomaterial"]
+      discussions: ["bio-not-good"]
+      threads: ["bio-is-not-a-claim"]
+    support:
+      - clause: "calling a material bio makes clear which meaning is in play"
+        from: ["n:biobased-vs-biomaterial", "d:bio-not-good"]
+      - clause: "rather than implying it is good"
+        from: ["d:bio-not-good"]
+      - clause: "medicine and design each state openly what justifies a new material"
+        from: ["d:bio-not-good"]
+    open_tensions: ["t:tension/natural-vs-good", "t:tension/general-vs-specific"]   # left open on purpose
+    check:
+      verdict: pass
+      partly: ["medicine and design each state openly what justifies a new material"]
+
+  - theme: 2
+    label: "Nature's design principles"   # theme 2 on the map
+    status: draft
+    text: "A future where biology, materials science, engineering and design share a language and work together on design principles such as gradients and self-assembly, and where what counts as biomimicry, from precise mimicry to looser inspiration, is debated openly."
+    draws_on:
+      prompts: ["shared-language", "design-principles", "gradients"]
+      discussions: ["biomimicry-too-literal", "manufacturing-vs-self-assembly"]
+      threads: ["language-before-method"]
+    support:
+      - clause: "biology, materials science, engineering and design share a language"
+        from: ["n:shared-language", "d:biomimicry-too-literal"]
+      - clause: "design principles such as gradients and self-assembly"
+        from: ["n:design-principles", "n:gradients", "d:manufacturing-vs-self-assembly"]
+      - clause: "work together on design principles"
+        from: ["d:biomimicry-too-literal", "n:shared-language"]
+      - clause: "what counts as biomimicry, from precise mimicry to looser inspiration, is debated openly"
+        from: ["d:biomimicry-too-literal"]
+    open_tensions: ["t:tension/copy-vs-principles", "t:tension/general-vs-specific"]   # left open on purpose
+    check:
+      verdict: pass
+      partly: ["work together on design principles"]
+      edited_after_check: "The joint-work clause now follows the group's own call for better collaboration between the sciences (checker note)."
+      recheck: pass   # a second, independent reader checked the edited text
+      recheck_partly: ["work together on design principles"]
+
+  - theme: 3
+    label: "Prediction, AI & data"   # theme 3 on the map
+    status: draft
+    text: "A future where what is measured and recorded is decided openly and shared, where models are tested against biological constraints and emergent behaviour, and where a fast signal counts only when it tracks the product itself."
+    draws_on:
+      prompts: ["public-datasets", "ai-and-biological-constraints", "predicting-properties", "screening-decisions", "biosensor-design"]
+      discussions: ["biosensor-evolution", "manufacturing-vs-self-assembly"]
+      threads: []
+    support:
+      - clause: "what is measured and recorded is decided openly and shared"
+        from: ["n:public-datasets"]
+      - clause: "models are tested against biological constraints and emergent behaviour"
+        from: ["n:ai-and-biological-constraints", "n:predicting-properties", "d:manufacturing-vs-self-assembly"]
+      - clause: "a fast signal counts only when it tracks the product itself"
+        from: ["n:biosensor-design", "d:biosensor-evolution", "n:screening-decisions"]
+    open_tensions: ["t:tension/control-vs-emergence", "t:tension/hype-vs-evidence", "t:tension/private-vs-common", "t:tension/general-vs-specific"]   # left open on purpose
+    check:
+      verdict: pass
+      partly: ["what is measured and recorded is decided openly and shared"]
+
+  - theme: 4
+    label: "Programming & biofabrication"   # theme 4 on the map
+    status: draft
+    text: "A future where biological materials are both printed and grown, the balance of imposed order and self-organisation is chosen openly, randomness is weighed as a source of properties as well as a fault, and fabrication readiness is judged honestly."
+    draws_on:
+      prompts: ["printing-meets-growth", "signalling-and-crosstalk", "fabrication-readiness", "patterning-and-organs"]
+      discussions: ["manufacturing-vs-self-assembly", "cell-patterning-utility"]
+      threads: ["control-or-growth"]
+    support:
+      - clause: "biological materials are both printed and grown"
+        from: ["n:printing-meets-growth", "d:manufacturing-vs-self-assembly"]
+      - clause: "the balance of imposed order and self-organisation is chosen openly"
+        from: ["n:printing-meets-growth", "d:manufacturing-vs-self-assembly"]
+      - clause: "randomness is weighed as a source of properties as well as a fault"
+        from: ["d:manufacturing-vs-self-assembly"]
+      - clause: "fabrication readiness is judged honestly"
+        from: ["n:fabrication-readiness", "d:cell-patterning-utility"]
+    open_tensions: ["t:tension/control-vs-emergence", "t:tension/robust-vs-adaptable", "t:tension/near-vs-far"]   # left open on purpose
+    check:
+      verdict: pass
+      partly: ["the balance of imposed order and self-organisation is chosen openly", "randomness is weighed as a source of properties as well as a fault", "fabrication readiness is judged honestly"]
+      edited_after_check: "Variation became randomness, the word in the notes; readiness now names fabrication methods, as the prompt does (checker notes)."
+      recheck: pass   # a second, independent reader checked the edited text
+      recheck_partly: ["the balance of imposed order and self-organisation is chosen openly", "randomness is weighed as a source of properties as well as a fault", "fabrication readiness is judged honestly"]
+
+  - theme: 7
+    label: "Medical & long-term safety"   # theme 5 on the map
+    status: draft
+    text: "A future where medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response, dressing signals are reliable enough to read, and the role of clinical judgement and the funding of genetic medicines without a market are decided openly."
+    draws_on:
+      prompts: ["chronic-bioelectrodes", "designed-peptide-risks", "scaffolds-nanoparticles-adhesives", "infection-sensing-dressings", "who-benefits-wounds", "funding-platform-medicines"]
+      discussions: ["smart-sutures"]
+      threads: ["bio-is-not-a-claim", "access-and-responsibility", "follow-the-value"]
+    support:
+      - clause: "medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response"
+        from: ["n:chronic-bioelectrodes", "n:designed-peptide-risks", "n:scaffolds-nanoparticles-adhesives"]
+      - clause: "dressing signals are reliable enough to read"
+        from: ["n:infection-sensing-dressings", "d:smart-sutures"]
+      - clause: "the role of clinical judgement"
+        from: ["n:who-benefits-wounds", "d:smart-sutures"]
+      - clause: "the funding of genetic medicines without a market"
+        from: ["n:funding-platform-medicines"]
+      - clause: "are decided openly"
+        from: ["n:funding-platform-medicines", "d:smart-sutures"]
+    open_tensions: ["t:tension/private-vs-common", "t:tension/access-vs-safety", "t:tension/general-vs-specific"]   # left open on purpose
+    check:
+      verdict: pass
+      partly: ["medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response", "the funding of genetic medicines without a market", "are decided openly"]
+      edited_after_check: "Neutral wording on clinical judgement; genetic medicines, closer to the prompt; the signal is the dressing's (checker notes)."
+      recheck: pass   # a second, independent reader checked the edited text
+      recheck_partly: ["medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response", "the funding of genetic medicines without a market", "are decided openly"]
+
+  - theme: 9
+    label: "Ocean & extreme environments"   # theme 6 on the map
+    status: draft
+    text: "A future where underwater habitation must justify itself beyond research and niche industry; materials that survive extremes are planned to degrade, by trigger or collection, though control is limited; and which living functions justify ongoing care is decided openly."
+    draws_on:
+      prompts: ["habitats-first", "survive-then-degrade", "when-to-let-die"]
+      discussions: ["ocean-habitation", "aqueous-materials"]
+      threads: ["designed-to-die"]
+    support:
+      - clause: "underwater habitation must justify itself beyond research and niche industry"
+        from: ["d:ocean-habitation", "n:habitats-first"]
+      - clause: "materials that survive extremes are planned to degrade"
+        from: ["n:survive-then-degrade", "d:aqueous-materials"]
+      - clause: "by trigger or collection"
+        from: ["n:survive-then-degrade"]
+      - clause: "though control is limited"
+        from: ["d:aqueous-materials"]
+      - clause: "which living functions justify ongoing care is decided openly"
+        from: ["n:when-to-let-die"]
+    open_tensions: ["t:tension/human-vs-organism", "t:tension/living-vs-inert", "t:tension/near-vs-far", "t:tension/robust-vs-adaptable"]   # left open on purpose
+    check:
+      verdict: pass
+      partly: []
+
+  - theme: 5
+    label: "Circularity & waste"   # theme 7 on the map
+    status: draft
+    text: "A future where waste, protein-based waste included, feeds bioprocesses that tolerate variable feedstocks, the full cost of waste is counted, and who captures value, who carries cost and whether new materials complement or complicate reuse are worked out openly."
+    note: "Drawn from the prompts only: no session notes sit behind this theme yet."
+    draws_on:
+      prompts: ["waste-valorisation", "variable-feedstocks", "full-cost-of-waste", "value-capture", "discovery-vs-reuse"]
+      discussions: []
+      threads: ["follow-the-value"]
+    support:
+      - clause: "waste, protein-based waste included, feeds bioprocesses"
+        from: ["n:waste-valorisation"]
+      - clause: "that tolerate variable feedstocks"
+        from: ["n:variable-feedstocks"]
+      - clause: "the full cost of waste is counted"
+        from: ["n:full-cost-of-waste"]
+      - clause: "who captures value, who carries cost"
+        from: ["n:value-capture"]
+      - clause: "whether new materials complement or complicate reuse"
+        from: ["n:discovery-vs-reuse"]
+      - clause: "are worked out openly"
+        from: ["n:value-capture", "n:discovery-vs-reuse"]
+    open_tensions: ["t:tension/private-vs-common", "t:tension/invent-vs-implement"]   # left open on purpose
+    check:
+      verdict: pass
+      partly: ["waste, protein-based waste included, feeds bioprocesses", "that tolerate variable feedstocks", "are worked out openly"]
+      edited_after_check: "Keeps waste and variable feedstocks as two prompts rather than joining them (checker note)."
+      recheck: pass   # a second, independent reader checked the edited text
+      recheck_partly: ["waste, protein-based waste included, feeds bioprocesses", "that tolerate variable feedstocks", "are worked out openly"]
+
+  - theme: 6
+    label: "Value, scale & adoption"   # theme 8 on the map
+    status: draft
+    text: "A future where biomaterials are valued for new functions as well as for matching old ones, judged on shared, reproducible evidence rather than hype or hasty dismissal, with sustainability claims naming their reference point and rewards for repair and reuse."
+    draws_on:
+      prompts: ["replacement-vs-new-capability", "standardising-dynamic-properties", "hype-vs-evidence", "venture-lessons", "societal-inertia"]
+      discussions: ["dropin-replacement", "bacterial-cellulose-vs-wood", "micro-vs-bulk", "spudcells-hype", "biobased-startups", "societal-inertia"]
+      threads: ["bio-is-not-a-claim"]
+    support:
+      - clause: "biomaterials are valued for new functions as well as for matching old ones"
+        from: ["n:replacement-vs-new-capability", "d:dropin-replacement", "d:bacterial-cellulose-vs-wood", "d:micro-vs-bulk"]
+      - clause: "judged on shared, reproducible evidence"
+        from: ["d:dropin-replacement", "n:standardising-dynamic-properties"]
+      - clause: "rather than hype or hasty dismissal"
+        from: ["n:hype-vs-evidence", "d:spudcells-hype"]
+      - clause: "sustainability claims naming their reference point"
+        from: ["d:dropin-replacement", "d:biobased-startups", "n:venture-lessons"]
+      - clause: "rewards for repair and reuse"
+        from: ["d:societal-inertia", "n:societal-inertia", "d:micro-vs-bulk"]
+    open_tensions: ["t:tension/replace-vs-reinvent", "t:tension/hype-vs-evidence", "t:tension/invent-vs-implement", "t:tension/general-vs-specific", "t:tension/niche-vs-bulk"]   # left open on purpose
+    check:
+      verdict: pass
+      partly: []
+
+  - theme: 8
+    label: "Ethics, ownership & purpose"   # theme 9 on the map
+    status: draft
+    text: "A future where biological origin is not mistaken for goodness, shared tools come with the means to use them safely, people keep control of implanted devices, and duties to organisms and ownership of genes and designs are weighed openly."
+    draws_on:
+      prompts: ["bio-is-not-good", "care-and-convivial-tech", "human-machine-responsibility", "duties-to-organisms", "ip-and-biological-design"]
+      discussions: ["bio-not-good", "convivial-biomaterial", "societal-inertia", "brain-machine-future", "organism-ethics"]
+      threads: ["bio-is-not-a-claim", "access-and-responsibility"]
+    support:
+      - clause: "biological origin is not mistaken for goodness"
+        from: ["n:bio-is-not-good", "d:bio-not-good"]
+      - clause: "shared tools come with the means to use them safely"
+        from: ["n:care-and-convivial-tech", "d:convivial-biomaterial", "d:societal-inertia"]
+      - clause: "people keep control of implanted devices"
+        from: ["n:human-machine-responsibility", "d:brain-machine-future"]
+      - clause: "duties to organisms"
+        from: ["n:duties-to-organisms", "d:organism-ethics"]
+      - clause: "ownership of genes and designs"
+        from: ["n:ip-and-biological-design"]
+      - clause: "are weighed openly"
+        from: ["d:organism-ethics", "d:societal-inertia"]
+    open_tensions: ["t:tension/human-vs-organism", "t:tension/private-vs-common", "t:tension/access-vs-safety"]   # left open on purpose
+    check:
+      verdict: pass
+      partly: ["shared tools come with the means to use them safely", "are weighed openly"]
+      edited_after_check: "Repairable came from the map's framing, not the notes; genes restored from the prompt (checker notes)."
+      recheck: pass   # a second, independent reader checked the edited text
+      recheck_partly: ["are weighed openly"]
