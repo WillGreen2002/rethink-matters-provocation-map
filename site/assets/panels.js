@@ -183,9 +183,9 @@
     body.append(h("h2", null, "How to read this map"));
     const ol = h("ul", { class: "howto" });
     [
-      "The nine large circles are the themes from the Bristol retreat sheet, arranged clockwise along the Bookshelf’s reading arc — how matter becomes life, how life becomes technology, how technology becomes society — and all pointing back to the question in the middle.",
-      "The sixty small circles are the discussion prompts under them. Click one to open the provocation, what the group said, and why it connects to other prompts. Grey dots (switch on in Layers) are the discussions themselves.",
-      "Threads join prompts that share tags or a discussion. Darker threads are hand-written bridges, each with a one-line reason. Drag the link-strength slider to see more or fewer.",
+      "The question sits in the middle. On the inner ring are the nine themes from the Bristol retreat sheet; on the outer ring, beside each theme, are its discussion prompts — sixty in all, read clockwise from the top along the Bookshelf’s arc: how matter becomes life, how life becomes technology, how technology becomes society.",
+      "Point at a prompt or a theme and its connections light up across the map: teal lines echo, terracotta lines pull in tension, olive lines enable, ochre lines lead on. Dashed lines are links through shared tags or a shared discussion. At rest only the hand-written bridges show, faintly — change that under Connections.",
+      "Click a prompt to open the provocation behind it, what the group said, and why it connects to the others. The map holds still while you read, so you can follow a connection by clicking the prompt at its other end. Grey dots (switch on under Layers) are the discussions themselves.",
       "Colour shows the lens you choose on the left — by default the pillar of the Rethink Matters mission each prompt speaks to. Filter by scale, working group, value or any tag to see how a single idea runs across themes.",
       "Follow a thread (left, second tab) for a guided path that crosses themes and ends where it started: back at the question.",
     ].forEach((t) => ol.append(h("li", null, t)));

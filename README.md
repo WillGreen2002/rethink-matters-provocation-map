@@ -84,11 +84,14 @@ python -I build/build.py      # from this folder; add -I only if your Python has
 
 ## What is on the map
 
+The map is a fixed **orbit** layout (no physics): everything has a set place, so the whole map can be read at once and it never rearranges itself.
+
 * **Centre** — the central question; click it (or the caption above the map) for the citation, the four WEF values, and a "how to read this map" guide.
-* **Themes** — the nine themes, clockwise along the Bookshelf's arc: *how matter becomes life → how life becomes technology → how technology becomes society*.
-* **Prompts** — the 60 bullets under the themes, verbatim from the sheet. Colour = the lens you pick (pillar by default); a ring split in two means two values.
-* **Threads** (grey) — shared tags or shared discussions; **darker threads** are hand-written bridges, each with a one-line reason and a type (echoes · tension · enables · leads on to).
-* **Layers** — discussions (grey dots, with the provocation and notes inside), tags as nodes, suggested reading from the Bookshelf.
+* **Themes** — the nine themes on an inner ring, clockwise along the Bookshelf's arc: *how matter becomes life → how life becomes technology → how technology becomes society*. Each arc's name heads its part of the outer ring.
+* **Prompts** — the 60 bullets under the themes, verbatim from the sheet, on the outer ring beside their theme, every label readable. Colour = the lens you pick (pillar by default); a ring split in two means two values.
+* **Connections** — at rest only the hand-written bridges show, faintly (switch to *Quiet* or *Every link* under Connections). Point at a prompt or theme and all of its connections light up in the colour of the relation — teal *echoes*, terracotta *in tension with*, olive *enables*, ochre *leads on to*; dashed = shared tags or a shared discussion. Lines leave through their own theme and arrive through the other.
+* **Opening a note** keeps the whole map in view beside it and holds it still, so you can follow a connection by clicking the prompt at its other end. Opening a tag, book or discussion lights up the prompts it belongs to.
+* **Discussions layer** — optional grey dots just inside the prompts (the provocation and notes are also in every prompt's note).
 * **Guided threads** — eight curated paths through the map that cross themes and end back at the question.
 * **Index tab** — the same content as a plain list (also the accessible, no-canvas route).
 

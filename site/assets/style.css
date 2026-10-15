@@ -175,8 +175,12 @@ details.facet .seg { margin-bottom: 4px; }
 .icon-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: rgba(255, 253, 246, .92); display: grid; place-items: center; cursor: pointer; transition: all .15s; backdrop-filter: blur(6px); box-shadow: 0 1px 2px rgba(34, 33, 28, .05); }
 .icon-btn:hover { border-color: var(--ink); }
 .icon-btn svg { width: 18px; height: 18px; }
-.zoom { position: absolute; right: 16px; bottom: 16px; z-index: 20; display: flex; flex-direction: column; gap: 8px; transition: right .35s var(--ease); }
-body.right-open .zoom { right: calc(var(--right-w) + 16px); }
+/* zoom: a small row in the open space beneath the orbit, clear of the prompt labels */
+.zoom { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 20; display: flex; gap: 6px; transition: left .35s var(--ease), opacity .2s; }
+.zoom .icon-btn { width: 34px; height: 34px; }
+.zoom .icon-btn svg { width: 16px; height: 16px; }
+body.right-open .zoom { left: calc(50% - var(--right-w) / 2); }
+body.thread-on .zoom { opacity: 0; pointer-events: none; }
 
 .legend {
   position: absolute; left: 16px; bottom: 16px; z-index: 20; max-width: 280px; background: rgba(255, 253, 246, .93); border: 1px solid var(--line); border-radius: 16px;
@@ -188,6 +192,7 @@ body.right-open .zoom { right: calc(var(--right-w) + 16px); }
 .legend-inline li i { width: 11px; height: 11px; border-radius: 50%; background: var(--c); flex: none; }
 .legend-inline .keys { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); display: grid; gap: 5px; color: var(--faint); }
 .legend-inline .keys span { display: flex; align-items: center; gap: 8px; }
+.legend-inline .keys-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 10px; }
 .legend-inline svg { width: 22px; height: 12px; flex: none; }
 .legend h4 { margin: 0 0 7px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
 .legend ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
@@ -234,10 +239,10 @@ body.right-open .threadbar { left: calc(50% - var(--right-w) / 2); width: min(64
 .qcap .q { display: block; font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: 17px; line-height: 1.35; letter-spacing: -.005em; color: var(--ink); }
 .qcap .c { display: block; margin-top: 3px; font-size: 11.5px; color: var(--faint); letter-spacing: .01em; }
 body.right-open .qcap { opacity: 0; pointer-events: none; }
-.notice { position: absolute; left: 50%; bottom: 20px; top: auto; transform: translateX(-50%); z-index: 21; font-size: 12.5px; color: var(--faint); background: rgba(255, 253, 246, .9); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; backdrop-filter: blur(6px); max-width: calc(100% - 140px); text-align: center; pointer-events: none; opacity: 0; transition: opacity .25s; }
+.notice { position: absolute; left: 50%; bottom: 60px; top: auto; transform: translateX(-50%); z-index: 21; font-size: 12.5px; color: var(--faint); background: rgba(255, 253, 246, .9); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; backdrop-filter: blur(6px); max-width: calc(100% - 140px); text-align: center; pointer-events: none; opacity: 0; transition: opacity .25s; }
 .notice.show { opacity: 1; }
 body.right-open .notice { left: calc(50% - var(--right-w) / 2); }
-body.thread-on .notice { bottom: 200px; }
+body.thread-on .notice { bottom: 262px; }
 
 /* ---------------------------------------------------------------- right (note) panel */
 .right {
@@ -328,7 +333,9 @@ body.right-open .right { transform: none; }
   body.left-closed .left { margin-left: 0; }
   .right { top: auto; height: 68%; width: 100%; border-left: 0; border-top: 1px solid var(--line); border-radius: 22px 22px 0 0; transform: translateY(104%); box-shadow: 0 -10px 40px rgba(34, 33, 28, .12); }
   body.right-open .right { transform: none; }
-  body.right-open .zoom { right: 16px; bottom: calc(68% + 12px); }
+  .zoom { left: auto; right: 16px; bottom: 16px; transform: none; flex-direction: column; gap: 8px; }
+  .zoom .icon-btn { width: 40px; height: 40px; }
+  body.right-open .zoom { opacity: 0; pointer-events: none; }   /* pinch still zooms; the buttons would sit on the labels above the note */
   .r-body { padding: 4px 20px 40px; }
   .r-body h1 { font-size: 26px; }
   .legend { display: none; }

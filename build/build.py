@@ -803,16 +803,16 @@ def write_tag_guide():
 
 
 def stamp_assets():
-    """Cache-bust: set ?v=<content hash> on every asset reference in site/index.html."""
+    """Cache-bust: set ?v=<content hash of every stamped asset> on each asset reference in site/index.html."""
     import hashlib
-    h = hashlib.sha1()
-    for rel in ("graph-data.js", "assets/style.css", "assets/util.js", "assets/sim.js", "assets/view.js", "assets/panels.js", "assets/ui.js"):
-        with open(P("site", rel), "rb") as f:
-            h.update(f.read())
-    v = h.hexdigest()[:8]
     path = P("site", "index.html")
     with open(path, encoding="utf-8") as f:
         html = f.read()
+    h = hashlib.sha1()
+    for rel in re.findall(r'(?:src|href)="([^"?#]+)\?v=', html):   # whatever index.html loads with a ?v= stamp
+        with open(P("site", rel), "rb") as f:
+            h.update(f.read())
+    v = h.hexdigest()[:8]
     html2 = re.sub(r"\?v=[A-Za-z0-9]+", "?v=" + v, html)
     if html2 != html:
         with open(path, "w", encoding="utf-8", newline="\n") as f:

@@ -23,8 +23,8 @@
   const S = {
     tab: "explore", mode: "pillar", sel: null, hist: [], thread: null, q: "",
     filters: { scale: new Set(), wg: new Set(), pillar: new Set(), value: new Set(), tags: new Set() },
-    layers: { disc: true, tags: false, books: false, tagFacets: new Set(Object.keys(D.facets)) },
-    minScore: D.defaultMinScore, curatedOnly: false, searchSet: null,
+    layers: { disc: false, rest: "bridges" },
+    minScore: D.defaultMinScore, searchSet: null,
   };
   const FACET_COLOR = { tension: "#A04340", concept: "#48909F", barrier: "#7F8C64", domain: "#D9A441", method: "#8A8577" };
 
@@ -44,7 +44,7 @@
   left.append(
     h("div", { class: "title-block" },
       h("h1", null, "Provocation map"),
-      h("p", null, "Nine themes, sixty prompts and the discussions behind them — all pointing back to one question. Click anything to open its notes."),
+      h("p", null, "Nine themes and sixty prompts orbiting one question. Point at a prompt to see what it connects to; click it to open the notes."),
       h("div", { class: "stats" }, ...[[themes.length, "themes"], [topics.length, "prompts"], [discs.length, "discussions"], [tags.length, "tags"]].map(([n, l]) => h("span", null, h("b", null, n), " " + l)))),
     searchBox, tabsEl, panes.explore, panes.threads, panes.index);
 
@@ -62,7 +62,7 @@
       select(id);
     },
     onHover: (n, px, py) => showTip(n, px, py),
-    onInteract: () => { S.touched = true; },   // once the visitor has moved the map themselves, stop re-fitting it on resize
+    onCamera: () => { S.touched = true; },   // once the visitor has panned or zoomed, stop re-framing the map for them
   });
 
   const app = {
@@ -103,28 +103,28 @@
     renderLegend(); refreshIndexColors();
   }
 
-  // layers
-  const tagFacetRow = h("div", { class: "seg", style: { margin: "4px 0 6px 0", display: "none" } },
-    Object.entries(D.facets).map(([k, f]) => chip(f.label, { color: FACET_COLOR[k], pressed: true, title: f.question, onclick: (e) => {
-      const el = e.currentTarget, on = el.getAttribute("aria-pressed") !== "true";
-      el.setAttribute("aria-pressed", on ? "true" : "false");
-      on ? S.layers.tagFacets.add(k) : S.layers.tagFacets.delete(k);
-      pushLayers();
-    } })));
+  // what the map draws while nothing is in focus (pointing at something always lights up all of its connections)
+  const REST = [["none", "Quiet"], ["bridges", "Bridges"], ["all", "Every link"]];
+  const restBtns = {};
+  const restSeg = h("div", { class: "seg" }, REST.map(([k, label]) => (restBtns[k] = chip(label, { pressed: k === S.layers.rest, onclick: () => setRest(k) }))));
+  function setRest(k) {
+    S.layers.rest = k;
+    for (const [key, el] of Object.entries(restBtns)) el.setAttribute("aria-pressed", key === k ? "true" : "false");
+    pushLayers();
+  }
   function layerRow(key, label, sub, checked) {
-    const input = h("input", { type: "checkbox", id: "lay-" + key, onchange: () => { S.layers[key] = input.checked; if (key === "tags") tagFacetRow.style.display = input.checked ? "flex" : "none"; pushLayers(); } });
+    const input = h("input", { type: "checkbox", id: "lay-" + key, onchange: () => { S.layers[key] = input.checked; pushLayers(); } });
     input.checked = checked;
     return h("div", { class: "row" }, h("label", { for: "lay-" + key }, label, h("small", null, sub)), h("span", { class: "switch" }, input, h("i")));
   }
-  function pushLayers() { view.configure({ layers: { disc: S.layers.disc, tags: S.layers.tags, books: S.layers.books, tagFacets: S.layers.tagFacets } }); updateLinkCount(); }
+  function pushLayers() { view.configure({ layers: { disc: S.layers.disc, rest: S.layers.rest } }); updateLinkCount(); }
 
   // link strength
   const rangeMin = 2.6, rangeMax = 9;
   const slider = h("input", { type: "range", min: rangeMin, max: rangeMax, step: 0.2, value: S.minScore, "aria-label": "Link strength", oninput: () => { S.minScore = +slider.value; view.configure({ minScore: S.minScore }); updateLinkCount(); } });
   const linkCount = h("span");
-  const curOnly = h("input", { type: "checkbox", id: "curonly", onchange: () => { S.curatedOnly = curOnly.checked; view.configure({ curatedOnly: S.curatedOnly }); updateLinkCount(); } });
   function updateLinkCount() {
-    const n = relLinks.filter((l) => S.curatedOnly ? l.curated : (l.curated || l.score >= S.minScore)).length;
+    const n = relLinks.filter((l) => l.curated || l.score >= S.minScore).length;
     linkCount.textContent = `${n} links between prompts`;
   }
 
@@ -149,20 +149,18 @@
   const matchLine = h("div", { class: "matchline" });
   panes.explore.append(
     sec("Colour by", modeSeg, modeHint, legendEl),
-    sec("Layers",
-      layerRow("disc", "Discussions", "Grey dots — each provocation as aired, with its notes", S.layers.disc),
-      layerRow("tags", "Tags as nodes", "See what ties prompts together; switch off to declutter", S.layers.tags),
-      tagFacetRow,
-      layerRow("books", "Bookshelf", "Suggested reading from the group’s shelf", S.layers.books)),
-    sec("Links", h("div", { class: "range-meta" }, h("span", null, "More"), linkCount, h("span", null, "Fewer")), slider,
-      h("div", { class: "row", style: { paddingBottom: 0 } }, h("label", { for: "curonly" }, "Hand-written bridges only", h("small", null, "Each has a one-line reason")), h("span", { class: "switch" }, curOnly, h("i")))),
+    sec("Connections",
+      h("div", { class: "group-h", style: { marginTop: 0 } }, "While nothing is selected, show"),
+      restSeg,
+      h("p", { class: "hint" }, "Bridges are the hand-written links, each with a one-line reason. Point at any prompt or theme and all of its connections light up, whatever is chosen here."),
+      h("div", { class: "range-meta", style: { marginTop: "14px" } }, h("span", null, "More"), linkCount, h("span", null, "Fewer")), slider),
+    sec("Layers", layerRow("disc", "Discussions", "Grey dots just inside the prompts — each provocation as aired, with its notes", S.layers.disc)),
     sec("Filter by lens", ...lensBlocks, h("p", { class: "hint" }, "Within a lens: any of the selected. Across lenses and tag families: all. Everything else dims.")),
     sec("Filter by tag", h("div", null, facetBlocks)),
     matchLine,
     h("div", { style: { display: "flex", gap: "8px", marginTop: "14px", flexWrap: "wrap" } },
       h("button", { class: "btn", onclick: () => { clearFilters(); } }, "Clear filters"),
-      h("button", { class: "btn ghost", onclick: () => view.fit(true) }, "Fit whole map"),
-      h("button", { class: "btn ghost", onclick: () => view.sim.reheat(0.9) }, "Re-settle")));
+      h("button", { class: "btn ghost", onclick: () => { S.touched = false; view.fit(true); } }, "Fit whole map")));
 
   /* ------------------------------------------------------------------ filtering */
   function toggleFilter(lens, key, reveal) {
@@ -203,7 +201,10 @@
       const real = [...set].filter((id) => id !== "__none__");
       matchLine.append(h("span", null, h("b", null, real.length), ` of ${topics.length} prompts match`));
       if (!real.length) matchLine.append(h("span", null, "Try removing a filter."));
-      if (move && real.length) { S.touched = true; notice(`${real.length} prompt${real.length === 1 ? "" : "s"} match — the rest are dimmed`); view.flyToSet(real, 0.3, 1.1); }
+      if (move && real.length) {
+        notice(`${real.length} prompt${real.length === 1 ? "" : "s"} match — the rest are dimmed`);
+        if (mobile()) { S.touched = true; view.fit(true, real); }   // on a phone, frame the matches; elsewhere the whole map stays in view
+      }
     }
   }
   let noticeT;
@@ -301,10 +302,12 @@
     el.replaceChildren();
     if (S.mode === "theme") el.append(h("p", { style: { margin: 0, color: "var(--faint)", lineHeight: 1.4 } }, "Each theme takes a colour from the logo’s gradient, in ring order."));
     else el.append(h("ul", null, Object.values(L.values).map((v) => h("li", null, h("i", { style: { "--c": v.color } }), v.label)), S.mode === "value" ? h("li", { style: { color: "var(--faint)" } }, h("i", { style: { "--c": "#9C978A" } }), "none assigned") : null));
+    const line = (color, label, dash) => h("span", { html: `<svg viewBox="0 0 22 12"><path d="M1 8 Q 11 0 21 6" fill="none" stroke="${color}" stroke-width="${dash ? 1.3 : 1.8}"${dash ? ' stroke-dasharray="3 3"' : ""} stroke-linecap="round"/></svg>${label}` });
     el.append(h("div", { class: "keys" },
-      h("span", { html: '<svg viewBox="0 0 22 12"><path d="M1 8 Q 11 0 21 6" fill="none" stroke="#22211C" stroke-opacity=".6" stroke-width="1.6" stroke-linecap="round"/></svg>Hand-written bridge' }),
-      h("span", { html: '<svg viewBox="0 0 22 12"><path d="M1 8 Q 11 0 21 6" fill="none" stroke="#666" stroke-opacity=".6" stroke-width="1.2" stroke-dasharray="3 3" stroke-linecap="round"/></svg>Shared tags or discussion' }),
-      h("span", { html: '<svg viewBox="0 0 22 12"><circle cx="11" cy="6" r="3.2" fill="#666" stroke="#FAF8F3" stroke-width="1.2"/></svg>Discussion (notes inside)' })));
+      h("span", { style: { color: "var(--ink)", fontWeight: 500 } }, "Lit-up connections"),
+      h("div", { class: "keys-grid" },
+        line("#2F6B63", "echoes"), line("#B65438", "in tension with"), line("#5B6B3C", "enables"), line("#9A6F1F", "leads on to")),
+      line("#6B675C", "shared tags or a discussion", true)));
   }
   const tip = $("#tip");
   function showTip(n, px, py) {
@@ -327,10 +330,11 @@
   const right = $("#right");
   function rightWidth() { return right.getBoundingClientRect().width || 456; }
   function setInsets(open) {
-    const t = mobile() ? 56 : 92, bar = S.thread ? 190 : 0;   // room for the question caption (top) and the thread card (bottom)
-    if (!open) view.setInsets({ r: 0, b: bar, t });
-    else if (mobile()) view.setInsets({ r: 0, b: Math.max(bar, Math.round(view.h * 0.62)), t });
-    else view.setInsets({ r: Math.round(parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--right-w")) || rightWidth()), b: bar, t });
+    // room for the question caption (top) and the thread card (bottom; measured, as its text can wrap to several lines)
+    const t = mobile() ? 56 : 92, card = S.thread ? Math.max(200, $("#threadbar").offsetHeight + 34) : 0;
+    if (!open) view.setInsets({ r: 0, b: card, t });
+    else if (mobile()) view.setInsets({ r: 0, b: Math.max(card, Math.round(view.h * 0.62)), t });
+    else view.setInsets({ r: Math.round(parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--right-w")) || rightWidth()), b: card, t });
   }
   function head(crumb) {
     const acts = h("div", { class: "acts" });
@@ -348,7 +352,6 @@
   function select(id, o = {}) {
     const n = byId.get(id);
     if (!n) return;
-    S.touched = true;
     if (S.sel && S.sel !== id && !o.noPush) { S.hist.push(S.sel); if (S.hist.length > 30) S.hist.shift(); }
     S.sel = id;
     view.setSelected(id);
@@ -360,15 +363,16 @@
     let collapsed = false;
     if (!mobile() && window.innerWidth < 1500 && !body.classList.contains("left-closed")) { body.classList.add("left-closed"); S.autoClosedLeft = true; collapsed = true; }
     setInsets(true);
-    if (o.fly !== false) { flyTo(id); if (collapsed) setTimeout(() => { if (S.sel === id) flyTo(id); }, 420); }   // re-aim once the stage has finished widening
+    if (o.fly !== false) { frame(id); if (collapsed) setTimeout(() => { if (S.sel === id) frame(id); }, 420); }   // re-aim once the stage has finished widening
     try { history.replaceState(null, "", "#" + id); } catch (e) { /* file:// quirks */ }
     if (mobile() && !o.keepLeft) closeLeft();
   }
-  function flyTo(id) {
-    const vn = view.byId.get(id);
-    if (!vn) return;
-    if (vn.vis) view.flyTo(id, vn.kind === "theme" ? 0.75 : 1.0);
-    else view.flyToSet(vn.topicIds, 0.5, 1.2);
+  /* Wide screens: keep the whole map in view beside the note, so every lit-up connection can be followed; the map only moves when
+     the space around it changes. Phones: the note covers most of the screen, so frame the prompt and what it connects to. */
+  function frame(id) {
+    view.relayout(true);   // the room left beside an open note may call for a narrower orbit
+    if (mobile()) { const ids = view.framingIds(id); if (ids && ids.length) view.fit(true, ids); return; }
+    if (S.touched) view.reveal(id); else view.fit(true);
   }
   function back() {
     const prev = S.hist.pop();
@@ -378,8 +382,10 @@
     S.sel = null; S.hist = [];
     view.setSelected(null);
     body.classList.remove("right-open");
-    if (S.autoClosedLeft) { body.classList.remove("left-closed"); S.autoClosedLeft = false; setTimeout(() => { if (!S.sel && !S.thread) view.fit(true); }, 420); }
     setInsets(false);
+    view.relayout(true);
+    if (S.autoClosedLeft) { body.classList.remove("left-closed"); S.autoClosedLeft = false; }   // the stage narrows again; the resize observer re-frames
+    else if (!S.touched && !S.thread) view.fit(true);
     try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { /* ignore */ }
   }
 
@@ -410,16 +416,17 @@
     T.i = u.clamp(i, 0, n);
     const ids = t.steps.map((s) => s.topic);
     view.setThread(ids, Math.min(T.i, n - 1));
+    renderBar();   // first, so the map can make room for the card at its real height
     if (T.i < n) {
       const id = ids[T.i];
       if (body.classList.contains("right-open") && !mobile()) select(id, { fly: false, noPush: true });   // keep reading along if a note is open
       else { S.sel = id; view.setSelected(id); setInsets(false); }
-      view.flyToSet([ids[T.i - 1], ids[T.i], ids[T.i + 1]].filter(Boolean), 0.5, 1.15);
+      if (mobile()) view.flyToSet([ids[T.i - 1], ids[T.i], ids[T.i + 1]].filter(Boolean), 0.5, 1.15);
+      else if (S.touched) view.reveal(id); else view.fit(true);   // the whole path stays in view while you step along it
     } else {
       S.sel = null; view.setSelected(null); body.classList.remove("right-open"); setInsets(false);
-      view.flyToSet(ids, 0.3, 1.0);
+      if (mobile()) view.flyToSet(ids, 0.3, 1.0); else if (!S.touched) view.fit(true);
     }
-    renderBar();
   }
   function renderBar() {
     const T = S.thread;
@@ -445,7 +452,7 @@
     body.classList.remove("thread-on");
     bar.classList.remove("open");
     setInsets(body.classList.contains("right-open"));
-    if (!body.classList.contains("right-open")) { S.sel = null; view.setSelected(null); view.fit(true); }
+    if (!body.classList.contains("right-open")) { S.sel = null; view.setSelected(null); if (!S.touched) view.fit(true); }
   }
 
   /* ------------------------------------------------------------------ keyboard, resize, routing */
@@ -463,9 +470,14 @@
   new ResizeObserver(() => {
     view.resize();
     setInsets(body.classList.contains("right-open"));
-    // window resized / phone rotated / panel animation finished: re-fit the whole map unless the visitor has taken over the camera
+    // window resized / phone rotated / panel opened or closed: re-proportion the orbit if the shape changed a lot, then re-frame —
+    // unless the visitor has taken over the camera
     clearTimeout(refitT);
-    refitT = setTimeout(() => { if (!S.touched && !S.sel && !S.thread) view.fit(false); }, 120);
+    refitT = setTimeout(() => {
+      view.relayout(true);
+      if (S.touched) return;
+      if (mobile() && S.sel) frame(S.sel); else view.fit(true);
+    }, 120);
   }).observe($("#stage"));
   window.addEventListener("hashchange", () => { const id = decodeURIComponent(location.hash.slice(1)); if (id && byId.has(id) && id !== S.sel) select(id); });
 
@@ -477,13 +489,18 @@
   refreshIndexColors();
   // settle the camera; the guide opens when the question (centre or caption) is clicked
   setInsets(false);
+  view.relayout(false);
   view.fit(false);
   const hashId = decodeURIComponent(location.hash.slice(1));
   $("#qcap").addEventListener("click", () => select("c", { fly: false }));
   if (hashId && byId.has(hashId)) select(hashId);
-  else notice(mobile() ? "Tap any circle to open its notes · pinch to zoom" : "Click any circle to open its notes · scroll to zoom · drag to pan");
+  else notice(mobile() ? "Tap a prompt to open its notes · pinch to zoom" : "Point at a prompt to see what it connects to · click to open its notes");
   // web fonts change label widths — refit once they have loaded (unless the visitor has already started exploring)
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { view._lw = null; if (!S.sel && !S.thread) view.fit(false); view.dirty = true; });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
+    view._lw = null; view.dirty = true;
+    view.relayout(false);
+    if (!S.touched && !S.thread && !(mobile() && S.sel)) view.fit(false);
+  });
   RM.app = app;
   document.documentElement.dataset.ready = "1";
 })();
