@@ -139,8 +139,8 @@
       const D = this.D;
       const themes = D.themeOrder.map((n) => this.byId.get("th:" + n));
       const topicsOf = new Map(themes.map((th) => [th, this.nodes.filter((n) => n.kind === "topic" && n.d.theme === th.d.n).sort((a, b) => a.d.order - b.d.order)]));
-      // The themes run clockwise from the top left: theme 1 heads the left-hand column, the next ones go down the right-hand column,
-      // and the rest come back up the left. Each column reads top to bottom like a list, prompts in the sheet's order.
+      // The themes run clockwise from the top: theme 1 heads the right-hand column, the next ones go down it, and the rest come
+      // back up the left-hand column. Each column reads top to bottom like a list, prompts in the sheet's order.
       // A chapter's name heads the run of themes that holds its first theme; a run that only carries a chapter on from the other
       // column gets no second caption — the chapter's coloured band on the ring carries it across.
       const first = new Map();
@@ -153,8 +153,8 @@
       const gapAbove = (col, i) => (!opens(col, i) ? GAP_THEME : captioned(col, i) ? GAP_ARC : i === 0 ? 0 : GAP_SPLIT);
       const rowsOf = (col) => col.reduce((s, th, i) => s + gapAbove(col, i) + topicsOf.get(th).length, 0);
       let best = null;   // how many themes go down the right-hand side: the split that makes the two columns most even
-      for (let k = 1; k < themes.length - 1; k++) {
-        const right = themes.slice(1, k + 1), left = [themes[0], ...themes.slice(k + 1).reverse()];
+      for (let k = 1; k < themes.length; k++) {
+        const right = themes.slice(0, k), left = themes.slice(k).reverse();
         const rows = Math.max(rowsOf(right), rowsOf(left));
         if (!best || rows < best.rows) best = { right, left, rows };
       }

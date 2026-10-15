@@ -327,7 +327,7 @@ for key, c in curated.items():
         warn(f"curated link {key} shares no tag or discussion — consider adding a shared tag")
 
 # ----------------------------------------------------------------------------------------------------------
-# 3b. Theme numbers: on the map the themes are numbered 1-9 in ring order (theme 1 at the top left, then clockwise), so the
+# 3b. Theme numbers: on the map the themes are numbered 1-9 in ring order (theme 1 at the top right, then clockwise), so the
 #     numbers read in order round the map. curation/ keeps the sheet's own numbers; the sheet number travels along as `sheet`.
 # ----------------------------------------------------------------------------------------------------------
 if sorted(meta["theme_order"]) != sorted(bristol):

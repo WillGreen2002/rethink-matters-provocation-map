@@ -174,7 +174,7 @@
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), "Chapter"));
     body.append(h("h1", null, n.label));
     body.append(h("p", { class: "prompt", style: { "--c": color, fontStyle: "normal", fontSize: "17px" } },
-      `One of the three shelves of the Rethink Matters Bookshelf, and one of the three chapters of this map: ${ths.length} themes and ${n.topics.length} prompts, side by side on the ring. The chapters run clockwise from the top left — how matter becomes life, how life becomes technology, how technology becomes society.`));
+      `One of the three shelves of the Rethink Matters Bookshelf, and one of the three chapters of this map: ${ths.length} themes and ${n.topics.length} prompts, side by side on the ring. The chapters run clockwise from the top — how matter becomes life, how life becomes technology, how technology becomes society.`));
     body.append(h("h2", null, "Themes in this chapter"));
     ths.forEach((t) => body.append(h("button", { class: "rel-item", onclick: () => app.select(t.id) },
       h("div", { class: "rt" }, h("i", { style: { "--c": app.colorOf(t.id) } }), h("span", null, `Theme ${t.n} · ${t.title}`),
@@ -215,7 +215,7 @@
     body.append(h("h2", null, "How to read this map"));
     const ol = h("ul", { class: "howto" });
     [
-      "The question sits in the middle. On the inner ring are the nine themes from the Bristol retreat sheet, numbered 1 to 9 clockwise from the top left (each theme’s note gives its number in the sheet); on the outer ring, beside each theme, are its discussion prompts — sixty in all.",
+      "The question sits in the middle. On the inner ring are the nine themes from the Bristol retreat sheet, numbered 1 to 9 clockwise from the top right (each theme’s note gives its number in the sheet); on the outer ring, beside each theme, are its discussion prompts — sixty in all.",
       "The themes fall into three chapters, the three shelves of the Rethink Matters Bookshelf: how matter becomes life, how life becomes technology, how technology becomes society. Each is a coloured band round the ring; point at a chapter’s name to light it up, click it for its themes, its links and its books.",
       "Point at a prompt or a theme and its connections light up across the map: teal lines echo, terracotta lines pull in tension, olive lines enable, ochre lines lead on. Dashed lines are links through shared tags or a shared discussion. At rest only the hand-written bridges show, faintly — change that under Connections.",
       "Click a prompt to open the provocation behind it, what the group said, and why it connects to the others. The map holds still while you read, so you can follow a connection by clicking the prompt at its other end. Grey dots (switch on under Layers) are the discussions themselves.",
