@@ -49,7 +49,7 @@ The level and any focus go in the address; the open note goes after `#`:
 Older links keep working: `#n:…` and `#t:…` open on the Regime (in the prompt's theme); `#d:…`, `#b:…` and `#ex:…` open on the Niche (under the first prompt
 they belong to); `#th:…`, `#arc:…` and `#c` open on the Landscape.
 The browser's Back button goes back up a level, or back across. With the level bar focused, keys **1**, **2** and **3** switch level (the arrow keys move along it; Enter goes); **Esc** ends a
-walk, then closes a note.
+walk, then closes a note, then goes up a level.
 The copy-link button in a note always gives the full-page link (without `embed`).
 
 To update the live site after changing `curation/` (or the code in `site/assets/`):
@@ -128,25 +128,30 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
 
 ## What is on the map
 
+* **Moving down and up.** One click opens a note; a double click goes down a level (a theme to its prompts, a prompt to its sources). The **Up** button at the top
+  left (or **Esc**, once no note is open) goes back up a level and names where it goes: *Landscape* from the Regime, *Theme 8* from the Niche.
 * **The level bar** (top centre; a tab bar at the bottom on a phone) is also the trail: *Landscape › Theme 8 · Value, scale & adoption › Hype vs evidence*. Click a step to go
   back up. The tab at the bottom of the map goes one level down from whatever is open; the arrows at the sides move across, to the next theme or the next prompt in the theme.
+* **Map or list.** The Regime and Niche open as a map (the standard). The **Map / List** switch at the top right shows the same level as a plain list in the same order; the
+  site remembers the choice on that browser.
 * **Words.** A *prompt* is one of the sixty (the sheet's provocation prompts); a *provocation* is what was put to a session, and a *discussion* holds it with what was said;
   a *source* is what sits under a prompt on the Niche (its discussions, examples and books); a *note* is the panel that opens when you choose something.
 * **Landscape.** The question in the middle; the nine themes round it, **numbered 1 to 9 clockwise from the top right**. The numbers follow the ring, not the Bristol sheet (sheet
   theme 7 is map theme 5, and so on; each theme's note gives its sheet number, and `curation/` keeps the sheet's numbers; the ring order is `theme_order` in `curation/meta.yaml`).
   The three chapters, the Bookshelf's shelves (*how matter becomes life, how life becomes technology, how technology becomes society*), are coloured bands with their names in
   the gaps. Dashed lines join themes whose prompts are linked: at rest each theme's strongest tie and any tie of three links or more; point at a theme for all of them, with counts.
-  Click a theme for its note and its draft future; its "N prompts" pill goes down to the Regime on that theme. Click the question for the overall draft answer.
+  Click a theme for its note and its draft future; double-click it (or use its "N prompts" pill) to go down to the Regime on that theme. Click the question for the overall draft answer.
   On a phone the ring becomes a list of cards.
 * **Regime.** One theme in the middle and only its prompts round it (verbatim from the sheet, coloured by the pillar of the Rethink Matters mission each speaks to), with
   the links between them. The other themes they reach sit further out as small numbered discs: point at a prompt and its links light up in the colour of the relation (teal
   *echoes*, terracotta *in tension with*, olive *enables*, ochre *leads on to*; dashed lines share tags or a discussion), together with the themes it reaches; click a theme
-  further out to move across to it. Point at a prompt (or open it, or tab to it) and its "N sources" pill appears; it goes down to the Niche ("links only" when nothing
-  sits under the prompt yet). During a walk, the theme further out that holds the next stop takes you on to it.
+  further out to move across to it. Double-click a prompt to go down to the Niche; or point at it (or open it, or tab to it) and its "N sources" pill appears, which does
+  the same ("links only" when nothing sits under the prompt yet). During a walk, the theme further out that holds the next stop takes you on to it.
 * **Niche.** One prompt in the middle with its sources round it: the discussions where it was aired (open one for the provocation and what the group said), the books
   suggested with it, and examples shaped by type (square paper, triangle company, diamond product, ring pre-clinical, dot clinical, cross other). The prompts it links to sit
   further out, in the colour of the relation; click one to move across.
-* **Narrow screens.** On a phone, and beside an open note when there is no room for a ring, the Regime and Niche become plain lists in the same order.
+* **Narrow screens.** On a phone the Regime and Niche are always plain lists in the same order. On a laptop the ring stays beside an open note, shrinking to fit; only if
+  there is truly no room for one does it fall back to the list.
 * **Guided walks.** Eight curated paths that cross themes and end back at the question, then offer the big picture. They run through the Regime: each stop shows its
   theme with the stop lit, and a gold line leads in from the previous stop and on to the next (through the theme it lies in, when that is another one). Start one from the
   button at the top left, the hero button, the Walks tab, a theme's note or the question's note.

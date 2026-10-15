@@ -84,7 +84,8 @@
     }
   }
 
-  const S = { level: "landscape", theme: null, prompt: null, sel: null, hist: [], thread: null, walkExtras: [], q: "", tab: "explore", opener: null };
+  const S = { level: "landscape", theme: null, prompt: null, sel: null, hist: [], thread: null, walkExtras: [], q: "", tab: "explore", opener: null,
+    view: u.store.get("rm-view") === "list" ? "list" : "map" };   // the Regime and Niche as a map (the standard) or as a list
 
   const app = {
     D, byId, topics, examples, S,
@@ -147,6 +148,7 @@
   };
   const reg = new RM.FocusMap(regEl, fmCallbacks);
   const nic = new RM.FocusMap(nicEl, fmCallbacks);
+  reg.view = nic.view = S.view;
   const MAPS = { landscape: land, regime: reg, niche: nic };
   const PLANE = { landscape: landEl, regime: regEl, niche: nicEl };
 
@@ -224,7 +226,30 @@
       planesIcon(lv, "lv-ico"), h("span", { class: "lv-text" }, h("span", { class: "lv-name" }, u.t("levels." + lv + ".name")), levelWhat[lv]));
     levelbar.append(levelBtns[lv]);
   });
-  const peek = $("#peek"), live = $("#live"), sidePrev = $("#sidePrev"), sideNext = $("#sideNext");
+  const peek = $("#peek"), live = $("#live"), sidePrev = $("#sidePrev"), sideNext = $("#sideNext"), upBtn = $("#btnUp");
+  upBtn.addEventListener("click", () => goUp());
+  // up one level of abstraction: from a prompt's sources to its theme, from a theme to the Landscape
+  function goUp() {
+    if (S.level === "niche") goLevel("regime", { theme: themeOf(S.prompt) });
+    else if (S.level === "regime") goLevel("landscape");
+  }
+  const viewToggle = $("#viewToggle"), viewBtns = {};
+  viewToggle.setAttribute("aria-label", u.t("view.label"));
+  for (const v of ["map", "list"]) {
+    viewBtns[v] = h("button", { type: "button", "aria-pressed": S.view === v ? "true" : "false", onclick: () => setView(v) },
+      h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "1.7", "stroke-linecap": "round", "aria-hidden": "true",
+        html: v === "map" ? '<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8" stroke-dasharray="2 3"/><circle cx="12" cy="4" r="1.6"/><circle cx="19" cy="15" r="1.6"/><circle cx="5" cy="15" r="1.6"/>'
+          : '<path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>' }),
+      h("span", null, u.t("view." + v)));
+    viewToggle.append(viewBtns[v]);
+  }
+  function setView(v) {
+    S.view = v;
+    u.store.set("rm-view", v);
+    for (const [k, b] of Object.entries(viewBtns)) b.setAttribute("aria-pressed", k === v ? "true" : "false");
+    reg.setView(v); nic.setView(v);
+    live.textContent = u.t("view.announce_" + v);
+  }
   peek.addEventListener("click", () => { if (S.sel) drill(S.sel); });
   function sideTargets() {
     if (S.level === "regime" && S.theme) { const i = THEME_IDS.indexOf(S.theme), n = THEME_IDS.length; return [THEME_IDS[(i - 1 + n) % n], THEME_IDS[(i + 1) % n]]; }
@@ -606,6 +631,15 @@
       btn.setAttribute("aria-label", u.t("side." + k + "_" + kind, { short, label: o.label }));
     }
     for (const [id, b] of Object.entries(themeBtns)) b.setAttribute("aria-current", lv !== "landscape" && S.theme === id ? "true" : "false");
+    upBtn.hidden = lv === "landscape";
+    if (lv !== "landscape") {
+      const th = S.theme && byId.get(S.theme), toTheme = lv === "niche" && th;
+      upBtn.replaceChildren(h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "1.9", "stroke-linecap": "round", "stroke-linejoin": "round", "aria-hidden": "true", html: '<path d="M12 19V5M6 11l6-6 6 6"/>' }),
+        h("span", { class: "up-what" }, toTheme ? u.t("up.short_theme", { n: th.n }) : u.t("up.short_landscape")));
+      upBtn.setAttribute("aria-label", toTheme ? u.t("up.to_theme", { n: th.n, label: th.label }) : u.t("up.to_landscape"));
+      upBtn.title = upBtn.getAttribute("aria-label") + " (Esc)";
+    }
+    viewToggle.hidden = lv === "landscape";
     renderLevelNote();
     renderLegend();
     updateInsets();
@@ -660,7 +694,16 @@
   const bar = $("#threadbar");
   function rightWidth() { return Math.round(parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--right-w")) || right.getBoundingClientRect().width || 456); }
   function chromeTop() { return mobile() ? 0 : 14 + (levelbar.offsetHeight || 46) + 12; }
+  // the buttons at the top left fold to their icons when their names would run under the level bar
+  const fab = $(".fab-row");
+  function fitChrome() {
+    body.classList.remove("fab-tight");
+    if (mobile()) return;
+    const a = fab.getBoundingClientRect(), b = levelbar.getBoundingClientRect();
+    if (a.width && b.width && a.right > b.left - 10) body.classList.add("fab-tight");
+  }
   function updateInsets() {
+    fitChrome();
     const open = body.classList.contains("right-open"), m = mobile();
     const r = open && !m ? rightWidth() : 0;
     if (S.level === "landscape") {
@@ -668,7 +711,7 @@
       land.setInsets({ t: m ? 0 : chromeTop() + (q.offsetHeight || 56) + 4, r, b: m ? 0 : 58, l: 0 });
       return;
     }
-    const card = S.thread ? bar.offsetHeight + 28 : 0, pk = peek.hidden ? 14 : 58;
+    const card = S.thread ? bar.offsetHeight + 28 : 0, pk = 58;   // room kept for the peek tab and hints, so the ring does not jump when one shows
     MAPS[S.level].setInsets(m ? { t: 0, r: 0, b: 0, l: 0 } : { t: chromeTop(), b: Math.max(card, pk), l: 70, r: r + 70 });
   }
   function head(crumb) {
@@ -856,7 +899,7 @@
     if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
     const inBar = levelbar.contains(document.activeElement);
     if (e.key === "/") { e.preventDefault(); openLeft(); setTab("explore"); searchInput.focus(); searchInput.select(); }
-    else if (e.key === "Escape") { if (S.thread) endThread(); else if (S.sel) deselect(); else if (mobile()) closeLeft(); }
+    else if (e.key === "Escape") { if (S.thread) endThread(); else if (S.sel) deselect(); else if (mobile() && body.classList.contains("left-open")) closeLeft(); else if (S.level !== "landscape") { goUp(); levelBtns[S.level].focus({ preventScroll: true }); } }
     else if (inBar && /^[123]$/.test(e.key)) { goLevel(LEVELS[+e.key - 1]); levelBtns[S.level].focus(); }
     else if (inBar && (e.key === "ArrowRight" || e.key === "ArrowLeft" || e.key === "Home" || e.key === "End")) {
       e.preventDefault();
@@ -867,6 +910,7 @@
     else if (S.thread && e.key === "ArrowLeft") stepTo(S.thread.i - 1);
   });
   new ResizeObserver(() => updateInsets()).observe($("#stage"));
+  new ResizeObserver(() => fitChrome()).observe(levelbar);
 
   /* ------------------------------------------------------------------ boot */
   const q = byId.get("c");

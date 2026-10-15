@@ -330,6 +330,7 @@ COPY_USED |= {f"relations.{k}" for k in ("echoes", "tension", "enables", "extend
 COPY_USED |= {f"kinds.{k}" for k in ("topic", "theme", "tag", "discussion", "book", "arc", "example")}
 COPY_USED |= {f"hints.{lv}{t}" for lv in ("landscape", "regime", "niche") for t in ("", "_touch")}
 COPY_USED |= {f"side.{k}_{w}" for k in ("prev", "next") for w in ("theme", "prompt")}
+COPY_USED |= {f"view.{k}" for k in ("map", "list", "announce_map", "announce_list")}
 COPY_USED = {k for k in COPY_USED if not k.endswith((".", "_"))}   # the stems of keys built at run time
 for _k in sorted(COPY_USED):
     if copy_get(_k) is None:

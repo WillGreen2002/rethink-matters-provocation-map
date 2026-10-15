@@ -68,7 +68,7 @@
     }
     themeItem(th) {
       const app = this.app, n = th.topics.length, color = app.themeColor(th.n);
-      const disc = h("button", { class: "ls-disc", type: "button", "data-id": th.id, onclick: () => this.cb.select && this.cb.select(th.id) },
+      const disc = h("button", { class: "ls-disc", type: "button", "data-id": th.id, onclick: (e) => RM.press(e, () => this.cb.select && this.cb.select(th.id), () => this.cb.drill && this.cb.drill(th.id)) },
         h("span", { class: "ls-num" }, u.t("landscape.theme_n", { n: th.n })),
         h("span", { class: "ls-label" }, th.label),
         h("span", { class: "ls-lead" }, th.lead));

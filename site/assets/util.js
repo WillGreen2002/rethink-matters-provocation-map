@@ -156,6 +156,16 @@
     return v;
   };
 
+  // one click opens, two go down: a mouse or touch click waits a moment to see whether a second one follows (a keyboard press,
+  // which has no click count, acts at once). Shared by the Landscape's themes and the Regime's prompts.
+  let pressT = null;
+  RM.press = function press(e, one, two) {
+    clearTimeout(pressT);
+    if (!e || !e.detail) { pressT = null; one(); return; }
+    if (e.detail >= 2) { pressT = null; two(); return; }
+    pressT = setTimeout(() => { pressT = null; one(); }, 260);
+  };
+
   u.debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
   u.plural = (n, a, b) => `${n} ${n === 1 ? a : b || a + "s"}`;
   u.store = {

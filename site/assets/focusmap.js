@@ -18,6 +18,7 @@
     constructor(el, cb) {
       this.el = el; this.cb = cb || {};
       this.m = null; this.sel = null; this.hover = null; this.walk = null;
+      this.view = "map";   // "map" (the ring, the standard) or "list" (chosen by the visitor; always on a phone)
       this.insets = { l: 0, r: 0, t: 0, b: 0 };
       this.reduced = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
       new ResizeObserver(() => this.layout()).observe(el);
@@ -66,7 +67,8 @@
         c.kicker ? h("span", { class: "fm-kicker" }, c.kicker) : null, h("span", { class: "fm-title" }, c.title), c.sub ? h("span", { class: "fm-sub" }, c.sub) : null);
       this.bindHover(this.centre, c.id);
       this.items = m.members.map((mb, i) => {
-        const node = h("button", { class: "fm-node", type: "button", "data-id": mb.id, onclick: () => cb.select && cb.select(mb.id) },
+        const node = h("button", { class: "fm-node", type: "button", "data-id": mb.id,
+          onclick: (e) => (mb.down ? RM.press(e, () => cb.select && cb.select(mb.id), () => cb.drill && cb.drill(mb.id)) : cb.select && cb.select(mb.id)) },
           mb.shape ? h("i", { class: "shape shape-" + mb.shape, "aria-hidden": "true" }) : null,
           mb.kicker ? h("span", { class: "fm-kicker" }, mb.kicker) : null,
           h("span", { class: "fm-label" }, mb.label));
@@ -124,6 +126,7 @@
     setSelected(id) { this.sel = id && this.has(id) ? id : null; this.paint(); }
     setHover(id) { if (id !== this.hover) { this.hover = id; this.paint(); } }
     setWalk(w) { this.walk = w; this.paint(); if (this.pos) this.drawWalk(this.pos); }
+    setView(v) { if (v !== this.view) { this.view = v; this.layout(); } }
     setInsets(i) {
       const before = JSON.stringify(this.insets);
       Object.assign(this.insets, i);
@@ -170,11 +173,11 @@
     }
 
     /* ---------------------------------------------------------------- layout */
-    // a list rather than a ring: on a phone, or when the room left (beside an open note, say) is too narrow for a ring to read
+    // a list rather than the ring: when the visitor asks for it, on a phone, or when there is truly no room for a ring
     stacked() {
-      if (window.matchMedia("(max-width: 820px)").matches) return true;
-      const I = this.insets, sw = this.el.clientWidth - I.l - I.r;
-      return sw < (this.m && this.m.style === "niche" ? 700 : 600);
+      if (this.view === "list" || window.matchMedia("(max-width: 820px)").matches) return true;
+      const I = this.insets;
+      return this.el.clientWidth - I.l - I.r < 420;
     }
     layout(cramped) {
       if (!this.m) return;
@@ -197,7 +200,8 @@
       const I = this.insets, sw = Math.max(280, W - I.l - I.r), sh = Math.max(260, H - I.t - I.b);
       const cx = I.l + sw / 2, cy = I.t + sh / 2;
       const niche = this.m.style === "niche", M = this.items.length, N = this.nbs.length;
-      const nbR = niche ? 6 : 19, labW = niche ? 172 : 150;
+      const nbR = niche ? 6 : 19, labW = Math.round(u.clamp(sw * (niche ? 0.2 : 0.17), niche ? 104 : 92, niche ? 172 : 150));   // names wrap when room is short
+      this.el.style.setProperty("--labw", labW + "px");
       // the outer ring holds the neighbours, with room for their names beside them
       const Ry2 = Math.max(80, sh / 2 - nbR - 24);
       // (when the stage is narrow the ring grows taller than wide rather than push the names out of view)
@@ -224,17 +228,23 @@
       const mAng = this.items.map((x, i) => at1(i / Math.max(1, M) + (M % 2 === 0 && M !== 2 ? 0.5 / M : 0)));
       let rc;
       if (niche) {
-        // the middle may be as large as the room the cards leave it; narrow the cards first, and if that is not enough, use the list
+        // the middle may be as large as the room the cards leave it: narrow the cards (their text wraps) before shrinking the middle
+        // cards on the same row must not touch: each is at most as wide as the room between it and the next
+        const P = mAng.map((a) => [Rx1 * Math.cos(a), Ry1 * Math.sin(a)]);
+        for (let i = 0; i < M; i++) for (let j = i + 1; j < M; j++)
+          if (Math.abs(P[i][1] - P[j][1]) < ch + 8) cw = Math.max(96, Math.min(cw, Math.abs(P[i][0] - P[j][0]) - 14));
         const gap = (w) => (M ? Math.min(...mAng.map((a) => Math.hypot(Math.max(Math.abs(Rx1 * Math.cos(a)) - w / 2, 0), Math.max(Math.abs(Ry1 * Math.sin(a)) - ch / 2, 0)))) : Math.min(Rx1, Ry1));
-        while (M && gap(cw) - 14 < 56 && cw > 112) cw -= 8;
-        if (gap(cw) - 14 < 44) return this.layout(true);
-        rc = u.clamp(gap(cw) - 14, 44, 96);
+        while (M && gap(cw) - 14 < 56 && cw > 96) cw -= 8;
+        if (gap(cw) - 14 < 30) return this.layout(true);   // no ring can hold this: the list, this once
+        rc = u.clamp(gap(cw) - 14, 34, 96);
       } else {
-        if (Math.min(Rx1, Ry1) - rm - 20 < 40) return this.layout(true);
-        rc = u.clamp(Math.min(Rx1, Ry1) - rm - 20, 42, 88);
+        // the prompts shrink before they crowd the theme in the middle
+        if (Math.min(Rx1, Ry1) - rm - 20 < 40) rm = Math.max(24, Math.min(Rx1, Ry1) - 60);
+        if (Math.min(Rx1, Ry1) - rm - 20 < 30) return this.layout(true);
+        rc = u.clamp(Math.min(Rx1, Ry1) - rm - 20, 34, 88);
       }
       // neighbours: on the Regime, towards the prompts that link to them; on the Niche, in the gaps between the sources
-      const nAng = niche ? this.gapAngles(mAng, N) : this.towardAngles(mAng, Rx2, Ry2, nbR);
+      const nAng = this.untangle(niche ? this.gapAngles(mAng, N) : this.towardAngles(mAng, Rx2, Ry2, nbR), cx, cy, Rx2, Ry2, nbR, labW, niche);
       this.pos = { cx, cy, Rx1, Ry1, Rx2, Ry2, rm, cw, ch, rc, nbR, niche,
         members: new Map(this.items.map((x, i) => [x.mb.id, [cx + Rx1 * Math.cos(mAng[i]), cy + Ry1 * Math.sin(mAng[i])]])),
         nbs: new Map(this.nbs.map((x, i) => [x.nb.id, [cx + Rx2 * Math.cos(nAng[i]), cy + Ry2 * Math.sin(nAng[i])]])) };
@@ -263,6 +273,37 @@
       }
       const out = [];
       for (const n of list) out[n.i] = n.a;
+      return out;
+    }
+    // the neighbours' names must not touch one another or another neighbour: each takes the room its name needs (a box beside its
+    // disc, on the outward side), and any two that would overlap are eased apart along the ring
+    untangle(angles, cx, cy, Rx2, Ry2, nbR, labW, niche) {
+      const n = angles.length;
+      if (n < 2) return angles;
+      const c = (this._ctx = this._ctx || document.createElement("canvas").getContext("2d"));
+      c.font = `600 ${niche ? 12.5 : 11.5}px Inter, system-ui, sans-serif`;
+      const size = this.nbs.map(({ nb }) => {
+        const w = c.measureText(nb.label).width, lines = Math.min(3, Math.max(1, Math.ceil(w / labW)));
+        return [Math.min(w, labW), lines * (niche ? 15 : 14) + (niche && nb.sub ? 14 : 0)];
+      });
+      const box = (i, a) => {
+        const x = cx + Rx2 * Math.cos(a), y = cy + Ry2 * Math.sin(a), [lw, lh] = size[i], r = x >= cx;
+        return [r ? x - nbR : x - nbR - 8 - lw, Math.min(y - nbR, y - lh / 2), r ? x + nbR + 8 + lw : x + nbR, Math.max(y + nbR, y + lh / 2)];
+      };
+      const hit = (A, B) => A[0] < B[2] + 6 && B[0] < A[2] + 6 && A[1] < B[3] + 4 && B[1] < A[3] + 4;
+      const list = angles.map((a, i) => ({ i, a: Math.atan2(Math.sin(a), Math.cos(a)) }));
+      for (let it = 0; it < 400; it++) {
+        list.sort((p, q) => p.a - q.a);
+        let moved = false;
+        for (let k = 0; k < n; k++) {
+          const p = list[k], q = list[(k + 1) % n];
+          if (p === q || !hit(box(p.i, p.a), box(q.i, q.a))) continue;
+          p.a -= 0.012; q.a += 0.012; moved = true;
+        }
+        if (!moved) break;
+      }
+      const out = [];
+      for (const x of list) out[x.i] = x.a;
       return out;
     }
     // evenly spaced, turned so as to sit as far as possible from the given angles

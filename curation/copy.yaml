@@ -21,12 +21,12 @@ levels:
   landscape:
     name: "Landscape"
     short: "the big picture"
-    explain: "The nine themes and how they tie together. Choose one for its note and a draft future, or follow its arrow down into its prompts."
+    explain: "The nine themes and how they tie together. Click a theme for its note and a draft future; double-click it (or follow its arrow) to go down into its prompts."
   regime:
     name: "Regime"
     short: "one theme's prompts"
     what: "Theme {n} · {label}"
-    explain: "One theme at a time: its prompts round it and the links between them, with the other themes they reach further out. Follow a prompt's arrow down to its sources, or choose a theme outside to move across."
+    explain: "One theme at a time: its prompts round it and the links between them, with the other themes they reach further out. Click a prompt for its note; double-click it to go down to its sources. Choose a theme outside to move across, and Up to go back."
     aria: "Agencies help drive this level: ARIA, for one, through its opportunity spaces."
   niche:
     name: "Niche"
@@ -146,6 +146,19 @@ peek:
   regime_one: "Into {label} · 1 source"
   regime_none: "Into {label} · its links"
 
+up:
+  short_landscape: "Landscape"
+  short_theme: "Theme {n}"
+  to_landscape: "Up to the Landscape"
+  to_theme: "Up to theme {n}: {label}"
+
+view:
+  label: "Show this level as"
+  map: "Map"
+  list: "List"
+  announce_map: "Showing the level as a map"
+  announce_list: "Showing the level as a list"
+
 side:
   prev_theme: "Previous theme: {short}, {label}"
   next_theme: "Next theme: {short}, {label}"
@@ -253,7 +266,7 @@ center:
   answer: "Our draft answer"
   howto: "How to read this map"
   howto_items:
-    - "**Three levels, from the big picture down.** The Landscape shows the nine themes. Step into a theme and the Regime shows its prompts; step into a prompt and the Niche shows what sits under it. The level bar says where you are."
+    - "**Three levels, from the big picture down.** The Landscape shows the nine themes. Double-click a theme and the Regime shows its prompts; double-click a prompt and the Niche shows what sits under it. One click opens a note. Up (or Esc) goes back a level, and the level bar says where you are."
     - "**On the Landscape**, each theme has a draft future and an arrow down to its prompts. On a wide screen, dashed lines join themes whose prompts are linked; the thicker the line, the more links."
     - "**On the Regime**, point at a prompt and its links light up: teal echoes, terracotta pulls in tension, olive enables, ochre leads on; dashed lines share tags or a discussion. The other themes it reaches sit further out: choose one to move across."
     - "**On the Niche**, a prompt's discussions, books and examples sit round it, and the prompts it links to further out. Open a discussion for the provocation and what the group said."
@@ -302,12 +315,12 @@ example:
   checked: "Added by Rethink Matters and checked by a second person before it went up."
 
 hints:
-  landscape: "Point at a theme to see what it ties to · click it for its note"
-  landscape_touch: "Tap a theme for its note · its arrow goes down into its prompts"
-  regime: "Point at a prompt to see its links · its arrow goes down to its sources"
-  regime_touch: "Tap a prompt for its note · its arrow goes down to its sources"
-  niche: "Choose a source for its note · a prompt further out moves you across"
-  niche_touch: "Tap a source for its note · the prompts it links to are below"
+  landscape: "Click a theme for its note · double-click to go down into it"
+  landscape_touch: "Tap a theme for its note · double-tap to go down into it"
+  regime: "Click a prompt for its note · double-click to go down · Up goes back"
+  regime_touch: "Tap a prompt for its note · double-tap to go down · Up goes back"
+  niche: "Click a source for its note · Up goes back to the theme"
+  niche_touch: "Tap a source for its note · Up goes back to the theme"
 
 aria:
   landscape: "Landscape: the nine themes round the question"
