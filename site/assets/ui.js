@@ -1,5 +1,9 @@
-/* Orchestration: the three levels (Landscape, Regime, Niche) and the switcher between them, the left panel (search, explore, guided
-   walks, index), the note panel, guided walks, and the address bar. All wording comes from curation/copy.yaml through u.t(). */
+/* Orchestration. The map is a descent through three levels, each one closer to the ground:
+     Landscape: the question and the nine themes;
+     Regime:    one theme, its prompts and the other themes they reach;
+     Niche:     one prompt, its discussions, examples and books, and the prompts it reaches.
+   This file wires the three planes together, the breadcrumb level bar, the left panel (search, explore, guided walks, index), the
+   note panel, the guided walks and the address bar. All wording comes from curation/copy.yaml through u.t(). */
 (function () {
   const RM = (window.RM = window.RM || {});
   const { u, levels: LV } = RM;
@@ -15,14 +19,13 @@
     D.nodes.push({ id: "arc:" + a.id, kind: "arc", label: a.label, arc: a.id, themes: a.themes, topics: ths.flatMap((t) => t.topics),
       books: D.nodes.filter((b) => b.kind === "book" && b.shelf === a.label).map((b) => b.id) });
   }
-  // The Niche examples ship in their own file (site/examples-data.js); without it the level is simply empty.
+  // The Niche examples ship in their own file (site/examples-data.js); without it there are simply none yet.
   const topicIds = new Set(D.nodes.filter((n) => n.kind === "topic").map((n) => n.id));
   for (const e of ((window.RM_EXAMPLES || {}).examples || [])) {
     if (!e || !/^ex:/.test(e.id) || D.nodes.some((n) => n.id === e.id)) continue;
     const ts = (e.topics || []).filter((t) => topicIds.has(t));
     if (!ts.length) continue;
     D.nodes.push(Object.assign({}, e, { kind: "example", topics: ts }));
-    for (const t of ts) D.links.push({ s: e.id, t, kind: "ex" });
   }
 
   const $ = (s, r) => (r || document).querySelector(s);
@@ -43,40 +46,53 @@
   const exByTopic = new Map();
   for (const e of examples) for (const t of e.topics) (exByTopic.get(t) || exByTopic.set(t, []).get(t)).push(e.id);
   const relLinks = D.links.filter((l) => l.kind === "rel");
+  const shown = (l) => l.curated || l.score >= D.defaultMinScore;   // the links the map draws: every bridge, and strong shared-tag links
   const relBy = new Map();
   for (const l of relLinks) for (const [self, other] of [[l.s, l.t], [l.t, l.s]]) (relBy.get(self) || relBy.set(self, []).get(self)).push({ other, link: l });
   for (const arr of relBy.values()) arr.sort((a, b) => (b.link.curated - a.link.curated) || (b.link.score - a.link.score));
-
-  const S = {
-    level: "landscape", focus: null, tab: "explore", mode: "pillar", sel: null, hist: [], thread: null, q: "",
-    pillars: new Set(), layers: { disc: false, rest: "bridges" }, minScore: D.defaultMinScore, searchSet: null,
-    touched: false, seenRegime: false,
+  const THEME_IDS = D.themeOrder.map((n) => "th:" + n);
+  const promptsOf = (thId) => byId.get(thId).topics.map((id) => byId.get(id)).sort((a, b) => a.order - b.order).map((t) => t.id);
+  const themeOf = (id) => {
+    const n = byId.get(id);
+    if (!n) return null;
+    if (n.kind === "theme") return n.id;
+    if (n.kind === "topic") return "th:" + n.theme;
+    if (n.topics && n.topics.length) return "th:" + byId.get(n.topics[0]).theme;
+    return null;
   };
+  // what sits under a prompt on the Niche: the discussions it came from, its examples on the ground, the books suggested with it
+  const sourcesOf = (tid) => { const t = byId.get(tid); return { discussions: t.sources, examples: exByTopic.get(tid) || [], books: t.reading }; };
+  const sourceCount = (tid) => { const s = sourcesOf(tid); return s.discussions.length + s.examples.length + s.books.length; };
 
-  /* ------------------------------------------------------------------ the map of prompts (Regime and Niche share one canvas) */
-  const cv = $("#cv"), landEl = $("#landscape");
-  const view = new RM.View(cv, D, {
-    onPick: (id) => {
-      if (!id) { if (S.thread) return; deselect(); return; }
-      if (S.thread && !S.thread.t.steps.some((s) => s.topic === id)) endThread();
-      select(id);
-    },
-    onHover: (n, px, py) => showTip(n, px, py),
-    onCamera: () => { S.touched = true; },   // once the visitor has panned or zoomed, stop re-framing the map for them
-  });
+  /* ------------------------------------------------------------------ colours */
+  const NONE = "#9C978A", THREAD = "#666666", FAINT = "#6B675C";
+  const FACET_COLOR = { tension: "#A04340", concept: "#48909F", barrier: "#7F8C64", domain: "#D9A441", method: "#8A8577" };
+  const themeColor = (n) => u.themeColor(D.themeOrder, n);
+  const pillarColors = (t) => (t.pillar || []).map((k) => D.lenses.pillar.values[k].color);
+  function colorOf(id) {
+    const n = byId.get(id);
+    if (!n) return NONE;
+    switch (n.kind) {
+      case "theme": return themeColor(n.n);
+      case "topic": return pillarColors(n)[0] || NONE;
+      case "arc": return u.logoColor(u.CHAPTER_TONE[Math.max(0, D.arcs.findIndex((a) => a.id === n.arc)) % 3]);
+      case "example": return colorOf(n.topics[0]);
+      case "discussion": return THREAD;
+      case "book": return FAINT;
+      case "tag": return FACET_COLOR[n.facet] || FAINT;
+      default: return "#C9963F";
+    }
+  }
+
+  const S = { level: "landscape", theme: null, prompt: null, sel: null, hist: [], thread: null, walkExtras: [], q: "", pillars: new Set(), tab: "explore", opener: null };
 
   const app = {
-    D, byId, topics, examples, view, S,
+    D, byId, topics, examples, S,
     level: () => S.level,
-    themeColor: (n) => view.themeColor(n),
-    colorOf: (id) => {
-      const n = view.byId.get(id);
-      if (!n) return "#9C978A";
-      if (S.level === "landscape" && n.kind === "theme") return view.themeColor(n.d.n);
-      return n.colors[0];
-    },
+    themeColor, colorOf,
     relOf: (id) => relBy.get(id) || [],
     exOf: (id) => exByTopic.get(id) || [],
+    sourceCount,
     select: (id, o) => select(id, o),
     filterBy: (lens, key) => { if (lens === "pillar") togglePillar(key, true); },
     startThread: (id) => startThread(id),
@@ -86,17 +102,17 @@
     themeReach: (n) => {
       const c = {};
       for (const l of relLinks) {
-        if (!(l.curated || l.score >= S.minScore)) continue;
+        if (!shown(l)) continue;
         const a = byId.get(l.s).theme, b = byId.get(l.t).theme;
         if (a === n && b !== n) c[b] = (c[b] || 0) + 1; else if (b === n && a !== n) c[a] = (c[a] || 0) + 1;
       }
       return Object.entries(c).map(([theme, count]) => ({ theme: +theme, count })).sort((x, y) => y.count - x.count);
     },
-    // links between prompts (at the map's default strength) that cross from one theme to another, per pair of themes
+    // links between prompts that cross from one theme to another, per pair of themes (the Landscape's dashed ties)
     themePairs: () => {
       const c = new Map();
       for (const l of relLinks) {
-        if (!(l.curated || l.score >= D.defaultMinScore)) continue;
+        if (!shown(l)) continue;
         const a = byId.get(l.s).theme, b = byId.get(l.t).theme;
         if (a === b) continue;
         const k = Math.min(a, b) + "-" + Math.max(a, b);
@@ -105,12 +121,12 @@
       }
       return [...c.values()].sort((x, y) => y.w - x.w || x.a - y.a || x.b - y.b);
     },
-    // links (at the current strength) inside a chapter, and from it to each of the others
+    // links inside a chapter, and from it to each of the others
     chapterReach: (arc) => {
       const c = {};
       let inside = 0;
       for (const l of relLinks) {
-        if (!(l.curated || l.score >= S.minScore)) continue;
+        if (!shown(l)) continue;
         const a = byId.get(l.s).arc, b = byId.get(l.t).arc;
         if (a === arc && b === arc) inside++;
         else if (a === arc) c[b] = (c[b] || 0) + 1;
@@ -120,36 +136,102 @@
     },
   };
 
-  /* ------------------------------------------------------------------ the Landscape (the nine themes) */
-  const land = new RM.Landscape(landEl, app, {
-    select: (id) => select(id),
+  /* ------------------------------------------------------------------ the three planes */
+  const landEl = $("#landscape"), regEl = $("#regime"), nicEl = $("#niche");
+  const land = new RM.Landscape(landEl, app, { select: (id) => select(id), drill: (id) => drill(id), hover: (id, rect) => showTipAt(id, rect) });
+  const fmCallbacks = {
+    select: (id) => { if (S.thread && !S.thread.t.steps.some((s) => s.topic === id) && id !== S.theme) endThread(); select(id); },
     drill: (id) => drill(id),
+    move: (id) => move(id),
     hover: (id, rect) => showTipAt(id, rect),
-  });
+  };
+  const reg = new RM.FocusMap(regEl, fmCallbacks);
+  const nic = new RM.FocusMap(nicEl, fmCallbacks);
+  const MAPS = { landscape: land, regime: reg, niche: nic };
+  const PLANE = { landscape: landEl, regime: regEl, niche: nicEl };
 
-  /* ------------------------------------------------------------------ level switcher, peek tab, live region */
+  // the Regime: a theme in the middle, its prompts round it, and the themes they reach (plus, during a walk, the themes of the
+  // stops either side of this one)
+  function regimeModel(thId) {
+    const th = byId.get(thId), mine = promptsOf(thId), inTheme = new Set(mine), arc = D.arcs.find((a) => a.id === th.arc);
+    const members = mine.map((id) => {
+      const t = byId.get(id), cs = pillarColors(t), n = sourceCount(id);
+      return { id, kind: "topic", label: t.label, color: cs[0] || NONE, color2: cs[1],
+        down: { label: n === 1 ? u.t("regime.down_one") : u.t("regime.down", { n }), aria: u.t("regime.down_aria", { label: t.label }) } };
+    });
+    const links = [], out = new Map();
+    for (const l of relLinks) {
+      if (!shown(l)) continue;
+      const a = inTheme.has(l.s), b = inTheme.has(l.t);
+      if (a && b) links.push({ a: l.s, b: l.t, type: l.type, curated: !!l.curated });
+      else if (a || b) {
+        const mineId = a ? l.s : l.t, other = "th:" + byId.get(a ? l.t : l.s).theme;
+        const e = out.get(other) || out.set(other, []).get(other);
+        e.push({ member: mineId, type: l.type, curated: !!l.curated });
+      }
+    }
+    const extras = S.thread ? S.walkExtras.filter((x) => x !== thId && !out.has(x)) : [];
+    for (const x of extras) out.set(x, []);
+    const neighbours = THEME_IDS.filter((x) => out.has(x)).map((x) => {
+      const o = byId.get(x), ties = out.get(x), count = ties.length;
+      const sub = count ? (count === 1 ? u.t("regime.nb_one") : u.t("regime.nb_sub", { n: count })) : u.t("regime.nb_walk");
+      return { id: x, num: o.n, label: o.label, sub, color: themeColor(o.n), ties,
+        aria: u.t("regime.nb_aria", { num: o.n, label: o.label, links: sub }) };
+    });
+    return { key: thId + "|" + extras.join(","), style: "regime", members, links, neighbours,
+      centre: { id: thId, kicker: u.t("landscape.theme_n", { n: th.n }), title: th.label, sub: arc ? arc.label : "", color: themeColor(th.n) },
+      membersTitle: u.t("regime.members_title", { n: th.n }), neighboursTitle: u.t("regime.nbs_title") };
+  }
+  // the Niche: a prompt in the middle, what grounds it round it, and the prompts it reaches
+  function nicheModel(tid) {
+    const t = byId.get(tid), s = sourcesOf(tid), R = u.t("relations"), T = D.exampleTypes || {};
+    const when = (d) => d.sessions.map((x) => D.sessions[x].label + (D.sessions[x].date ? " · " + u.fmtDate(D.sessions[x].date) : "")).join(", ");
+    const members = [
+      ...s.discussions.map((id) => { const d = byId.get(id); return { id, kind: "discussion", label: d.label, color: THREAD, shape: d.proposed ? "ring" : "dot",
+        kicker: d.proposed ? u.t("niche.kind_proposed") : u.t("niche.kind_discussion", { when: when(d) }) }; }),
+      ...s.examples.map((id) => { const e = byId.get(id), ty = T[e.type] || {}; return { id, kind: "example", label: e.label, color: colorOf(tid), shape: ty.shape || "dot",
+        kicker: [ty.label || u.t("example.kind"), e.org, e.year].filter(Boolean).join(" · ") }; }),
+      ...s.books.map((id) => { const b = byId.get(id); return { id, kind: "book", label: b.label, color: FAINT, shape: "book", kicker: u.t("niche.kind_book", { author: b.author }) }; }),
+    ];
+    const neighbours = (relBy.get(tid) || []).filter((r) => shown(r.link)).map((r) => {
+      const o = byId.get(r.other), l = r.link, rel = l.curated ? (l.dir === tid ? R[l.type] : R[l.type + "_rev"] || R[l.type]) : R.shares;
+      return { id: o.id, label: o.label, sub: u.t("niche.nb_sub", { n: o.theme, rel }), color: colorOf(o.id),
+        ties: [{ member: null, type: l.type, curated: !!l.curated }], aria: u.t("niche.nb_aria", { label: o.label, n: o.theme, rel }) };
+    });
+    return { key: tid, style: "niche", members, links: [], neighbours,
+      centre: { id: tid, kicker: u.t("niche.centre_kicker", { n: t.theme }), title: t.label, color: colorOf(tid) },
+      membersTitle: u.t("niche.members_title"), neighboursTitle: u.t("niche.nbs_title"),
+      empty: { title: u.t("niche.empty_title"), body: u.t("niche.empty_body") } };
+  }
+  function showRegime(dir) { const m = regimeModel(S.theme); if (!reg.m || reg.m.key !== m.key) reg.show(m, dir); reg.setSelected(S.sel); applyHighlight(); }
+  function showNiche(dir) { const m = nicheModel(S.prompt); if (!nic.m || nic.m.key !== m.key) nic.show(m, dir); nic.setSelected(S.sel); }
+
+  /* ------------------------------------------------------------------ level bar (a breadcrumb), side arrows, peek tab, live region */
   const PLANE_Y = { landscape: 3, regime: 10, niche: 17 };
   function planesIcon(level, cls) {
     const shape = (y, on) => `<path d="M3 ${y + 3.2}L14 ${y}L25 ${y + 3.2}L14 ${y + 6.4}Z" fill="${on ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" opacity="${on ? 1 : 0.55}"/>`;
     return h("svg", { class: cls || "planes", viewBox: "0 0 28 27", "aria-hidden": "true", html: LEVELS.map((lv) => shape(PLANE_Y[lv], lv === level)).join("") });
   }
-  const levelBtns = {};
-  const levelCount = { landscape: themes.length, regime: topics.length, niche: examples.length };
-  const levelbar = $("#levelbar");
+  const levelbar = $("#levelbar"), levelBtns = {}, levelWhat = {};
   levelbar.setAttribute("aria-label", u.t("levels.nav_label"));
   LEVELS.forEach((lv, i) => {
     if (i) levelbar.append(h("i", { class: "lv-sep " + (i === 1 ? "dashed" : "solid"), "aria-hidden": "true" }));
-    const b = (levelBtns[lv] = h("button", { type: "button", "data-level": lv, title: u.t("levels.key_hint", { key: i + 1 }), onclick: () => goLevel(lv) },
-      planesIcon(lv, "lv-ico"),
-      h("span", { class: "lv-name" }, u.t("levels." + lv + ".name")),
-      h("span", { class: "lv-n" }, lv === "niche" && !examples.length ? u.t("levels.niche.soon") : String(levelCount[lv]))));
-    levelbar.append(b);
+    levelWhat[lv] = h("span", { class: "lv-what" });
+    levelBtns[lv] = h("button", { type: "button", "data-level": lv, title: u.t("levels.key_hint", { key: i + 1 }), onclick: () => goLevel(lv) },
+      planesIcon(lv, "lv-ico"), h("span", { class: "lv-text" }, h("span", { class: "lv-name" }, u.t("levels." + lv + ".name")), levelWhat[lv]));
+    levelbar.append(levelBtns[lv]);
   });
-  const peek = $("#peek");
-  peek.addEventListener("click", () => goLevel(S.level === "landscape" ? "regime" : "niche"));
-  const live = $("#live");
-  const focusChip = $("#focuschip");
-  focusChip.addEventListener("click", () => { setFocus(null); rescueFocus(); });
+  const peek = $("#peek"), live = $("#live"), sidePrev = $("#sidePrev"), sideNext = $("#sideNext");
+  peek.addEventListener("click", () => { if (S.sel) drill(S.sel); });
+  function sideTargets() {
+    if (S.level === "regime" && S.theme) { const i = THEME_IDS.indexOf(S.theme), n = THEME_IDS.length; return [THEME_IDS[(i - 1 + n) % n], THEME_IDS[(i + 1) % n]]; }
+    if (S.level === "niche" && S.prompt) {
+      const ids = promptsOf(themeOf(S.prompt)), i = ids.indexOf(S.prompt), n = ids.length;
+      return n > 1 ? [ids[(i - 1 + n) % n], ids[(i + 1) % n]] : [null, null];
+    }
+    return [null, null];
+  }
+  for (const [btn, k] of [[sidePrev, 0], [sideNext, 1]]) btn.addEventListener("click", () => { const id = sideTargets()[k]; if (id) move(id, k ? "right" : "left"); });
 
   /* ------------------------------------------------------------------ left panel scaffolding */
   const left = $("#left");
@@ -201,138 +283,51 @@
         h("ul", { class: "refs" }, u.t("about.refs").map((r) => h("li", null, h("a", { href: r.url, target: "_blank", rel: "noopener noreferrer" }, r.text)))))].filter(Boolean));
   }
 
-  /* ------------------------------------------------------------------ explore pane: show only, colour, more options */
+  /* ------------------------------------------------------------------ explore pane: go to a theme, highlight a pillar, the key */
   const sec = (title, ...kids) => h("section", { class: "sec" }, h("h3", null, title), ...kids);
   const chip = (label, o = {}) => h("button", { type: "button", class: "chip" + (o.cls ? " " + o.cls : ""), "aria-pressed": o.pressed ? "true" : "false", style: o.color ? { "--c": o.color } : null, title: o.title, onclick: o.onclick },
     o.color ? h("i", { class: "dot" }) : null, label, o.count != null ? h("span", { class: "n" }, o.count) : null);
-
-  const focusChips = {};
-  const chapterSeg = h("div", { class: "seg" }, D.arcs.map((a) => (focusChips["arc:" + a.id] = chip(a.label, { onclick: () => pickFocus("arc:" + a.id) }))));
-  const themeSeg = h("div", { class: "seg" }, D.themeOrder.map((n) => {
-    const th = byId.get("th:" + n);
-    return (focusChips[th.id] = chip(h("span", null, h("b", { class: "num" }, n), " " + th.label), { title: th.title, onclick: () => pickFocus(th.id) }));
+  const themeBtns = {};
+  const themeList = h("div", { class: "theme-list" }, THEME_IDS.map((id) => {
+    const th = byId.get(id);
+    return (themeBtns[id] = h("button", { type: "button", class: "theme-go", style: { "--c": themeColor(th.n) }, onclick: () => { goTheme(id); if (mobile()) closeLeft(); } },
+      h("b", { class: "num" }, th.n), h("span", null, th.label), h("small", null, u.t("explore.theme_count", { n: th.topics.length }))));
   }));
   const pillarChips = {};
   const PL = D.lenses.pillar;
   const pillarSeg = h("div", { class: "seg" }, Object.entries(PL.values).map(([k, v]) =>
-    (pillarChips[k] = chip(v.short || v.label, { color: v.color, count: topics.filter((t) => t.pillar.includes(k)).length, title: v.def || v.q, onclick: () => togglePillar(k) }))));
-  const matchLine = h("div", { class: "matchline", "aria-live": "polite" });
-  const clearRow = h("div", { class: "clear-row" },
-    h("button", { class: "btn", type: "button", onclick: () => clearFilters() }, u.t("explore.clear")),
-    h("button", { class: "btn ghost", type: "button", onclick: () => { S.touched = false; view.fit(true); } }, u.t("explore.fit")));
-
-  // colour by: pillar or theme
-  const MODES = [["pillar", u.t("explore.colour_pillar")], ["theme", u.t("explore.colour_theme")]];
-  const modeBtns = {};
-  const modeSeg = h("div", { class: "seg" }, MODES.map(([k, label]) => (modeBtns[k] = chip(label, { pressed: k === S.mode, onclick: () => setMode(k) }))));
+    (pillarChips[k] = chip(v.short || v.label, { color: v.color, title: v.def || v.q, onclick: () => togglePillar(k) }))));
   const legendEl = h("div", { class: "legend-inline", id: "legend", "aria-label": u.t("explore.legend") });
-  function setMode(k) {
-    S.mode = k;
-    for (const [key, el] of Object.entries(modeBtns)) el.setAttribute("aria-pressed", key === k ? "true" : "false");
-    view.configure({ mode: k });
-    renderLegend(); refreshIndexColors();
-  }
-
-  // more options: what shows at rest, link strength, the discussions, fitting the map
-  const REST = [["none", u.t("explore.rest_none")], ["bridges", u.t("explore.rest_bridges")], ["all", u.t("explore.rest_all")]];
-  const restBtns = {};
-  const restSeg = h("div", { class: "seg" }, REST.map(([k, label]) => (restBtns[k] = chip(label, { pressed: k === S.layers.rest, onclick: () => setRest(k) }))));
-  function setRest(k) {
-    S.layers.rest = k;
-    for (const [key, el] of Object.entries(restBtns)) el.setAttribute("aria-pressed", key === k ? "true" : "false");
-    pushLayers();
-  }
-  function layerRow(key, label, sub, checked) {
-    const input = h("input", { type: "checkbox", id: "lay-" + key, onchange: () => { S.layers[key] = input.checked; pushLayers(); } });
-    input.checked = checked;
-    return h("div", { class: "row" }, h("label", { for: "lay-" + key }, label, h("small", null, sub)), h("span", { class: "switch" }, input, h("i")));
-  }
-  function pushLayers() { view.configure({ layers: { disc: S.layers.disc, rest: S.layers.rest } }); updateLinkCount(); }
-  const slider = h("input", { type: "range", min: 2.6, max: 9, step: 0.2, value: S.minScore, "aria-label": u.t("explore.strength"), oninput: () => { S.minScore = +slider.value; view.configure({ minScore: S.minScore }); updateLinkCount(); } });
-  const linkCount = h("span");
-  function updateLinkCount() { linkCount.textContent = u.t("explore.link_count", { n: relLinks.filter((l) => l.curated || l.score >= S.minScore).length }); }
-
   panes.explore.append(
-    h("p", { class: "hint landscape-only" }, u.t("explore.landscape_hint")),
-    sec(u.t("explore.show_title"),
-      h("div", { class: "group-h" }, u.t("explore.chapters")), chapterSeg,
-      h("div", { class: "group-h" }, u.t("explore.themes")), themeSeg,
-      h("div", { class: "not-landscape" }, h("div", { class: "group-h" }, u.t("explore.pillar"), h("small", null, PL.question)), pillarSeg),
-      h("div", { class: "not-landscape" }, matchLine, clearRow)),
-    h("div", { class: "not-landscape" }, sec(u.t("explore.colour_title"), modeSeg, legendEl)),
-    h("details", { class: "more-opts regime-only" },
-      h("summary", null, u.t("explore.more")),
-      h("div", { class: "group-h" }, u.t("explore.rest_title")), restSeg,
-      h("p", { class: "hint" }, u.t("explore.rest_hint")),
-      h("div", { class: "range-meta", style: { marginTop: "14px" } }, h("span", null, u.t("explore.more_links")), linkCount, h("span", null, u.t("explore.fewer_links"))), slider,
-      layerRow("disc", u.t("explore.discussions"), u.t("explore.discussions_sub"), S.layers.disc)));
+    sec(u.t("explore.themes_title"), h("p", { class: "hint" }, u.t("explore.themes_hint")), themeList),
+    h("div", { class: "regime-only" }, sec(u.t("explore.pillar_title"), h("p", { class: "hint" }, PL.question), pillarSeg)),
+    h("div", { class: "not-landscape" }, sec(u.t("explore.legend_title"), legendEl)));
 
-  /* ------------------------------------------------------------------ focus and filters */
-  function pickFocus(id) {
-    if (S.level === "landscape") { drill(id); return; }
-    setFocus(S.focus === id ? null : id);
-  }
-  // show one theme or chapter on the map of prompts; the rest dims but stays in view
-  function setFocus(id, o = {}) {
-    S.focus = id && byId.has(id) ? id : null;
-    applyFilters();
-    renderFocusChip();
-    updateInsets();
-    if (S.sel && /^(th|arc):/.test(S.sel)) renderNote();
-    if (S.level !== "landscape") {
-      if (mobile() && S.focus && !S.sel) { S.touched = true; view.fit(true, byId.get(S.focus).topics); }
-      else if (!S.touched && !S.sel) view.fit(true);
-    }
-    if (o.sync !== false) syncURL(!!o.push);
-  }
-  function renderFocusChip() {
-    const n = S.focus && byId.get(S.focus), on = !!n && S.level !== "landscape";
-    focusChip.hidden = !on;
-    body.classList.toggle("focus-on", on);
-    if (!on) return;
-    const what = n.kind === "theme" ? u.t("focus.theme", { n: n.n, label: n.label }) : u.t("focus.chapter", { label: n.label });
-    focusChip.replaceChildren(h("span", { class: "fc-k" }, u.t("focus.prefix")), h("span", { class: "fc-v" }, what), h("span", { class: "fc-x", "aria-hidden": "true" }, "✕"));
-    focusChip.setAttribute("aria-label", u.t("focus.clear_label", { what }));
-    focusChip.style.setProperty("--c", n.kind === "theme" ? view.themeColor(n.n) : app.colorOf(n.id));
-  }
   function togglePillar(k, reveal) {
     S.pillars.has(k) ? S.pillars.delete(k) : S.pillars.add(k);
     if (reveal) { openLeft(); setTab("explore"); }
-    if (S.level === "landscape") goLevel("regime");
-    applyFilters(true);
+    for (const [key, el] of Object.entries(pillarChips)) el.setAttribute("aria-pressed", S.pillars.has(key) ? "true" : "false");
+    applyHighlight();
   }
-  function clearFilters() {
-    S.pillars.clear(); searchInput.value = ""; S.q = ""; S.searchSet = null; searchBox.classList.remove("has-text"); closeResults();
-    setFocus(null);
-    if (!S.sel && !S.thread) view.fit(true);
+  // a pillar highlight fades the Regime's other prompts (their names stay readable)
+  function applyHighlight() {
+    if (!reg.m) return;
+    const off = new Set();
+    if (S.pillars.size) for (const mb of reg.m.members) if (!byId.get(mb.id).pillar.some((v) => S.pillars.has(v))) off.add(mb.id);
+    reg.setDim(off);
   }
-  function computeMatch() {
-    const focus = S.focus ? new Set(byId.get(S.focus).topics) : null;
-    if (!focus && !S.pillars.size && !S.searchSet) return null;
-    const out = new Set();
-    for (const t of topics) {
-      if (focus && !focus.has(t.id)) continue;
-      if (S.searchSet && !S.searchSet.has(t.id)) continue;
-      if (S.pillars.size && !t.pillar.some((v) => S.pillars.has(v))) continue;
-      out.add(t.id);
-    }
-    return out;
-  }
-  function applyFilters(move) {
-    const set = computeMatch();
-    view.configure({ matchEdge: S.focus && !S.pillars.size && !S.searchSet ? "either" : "both" });
-    view.setMatch(set);
-    for (const [id, el] of Object.entries(focusChips)) el.setAttribute("aria-pressed", S.focus === id ? "true" : "false");
-    for (const [k, el] of Object.entries(pillarChips)) el.setAttribute("aria-pressed", S.pillars.has(k) ? "true" : "false");
-    matchLine.replaceChildren();
-    if (set) {
-      matchLine.append(h("span", null, u.t("explore.match", { n: set.size, total: topics.length })));
-      if (!set.size) matchLine.append(h("span", null, u.t("explore.match_none")));
-      if (move && set.size && S.level !== "landscape") {
-        notice(u.t("explore.match_notice", { n: set.size }));
-        if (mobile()) { S.touched = true; view.fit(true, [...set]); }   // on a phone, frame the matches; elsewhere the whole map stays in view
-      }
-    }
+  function renderLegend() {
+    const el = legendEl, R = u.t("relations");
+    const line = (color, label, dash) => h("span", { html: `<svg viewBox="0 0 22 12"><path d="M1 8 Q 11 0 21 6" fill="none" stroke="${color}" stroke-width="${dash ? 1.3 : 1.8}"${dash ? ' stroke-dasharray="3 3"' : ""} stroke-linecap="round"/></svg>` }, label);
+    const lines = h("div", { class: "keys" }, h("span", { class: "keys-h" }, u.t("explore.legend_lines")),
+      h("div", { class: "keys-grid" }, line("#2F6B63", R.echoes), line("#B65438", R.tension), line("#5B6B3C", R.enables), line("#9A6F1F", R.extends)),
+      line("#6B675C", R.shared, true));
+    if (S.level === "niche") {
+      const T = D.exampleTypes || {};
+      const items = [["dot", u.t("explore.legend_discussion")], ["ring", u.t("explore.legend_proposed")], ["book", u.t("explore.legend_book")],
+        ...Object.values(T).map((v) => [v.shape, v.plural || v.label])];
+      el.replaceChildren(h("ul", { class: "type-key" }, items.map(([s, l]) => h("li", null, h("i", { class: "shape shape-" + s }), l))), lines);
+    } else el.replaceChildren(h("ul", null, Object.values(PL.values).map((v) => h("li", null, h("i", { style: { "--c": v.color } }), v.label))), lines);
   }
   let noticeT;
   function notice(msg) {
@@ -356,7 +351,7 @@
     const q = searchInput.value.trim().toLowerCase();
     S.q = q;
     searchBox.classList.toggle("has-text", !!q);
-    if (!q) { S.searchSet = null; closeResults(); applyFilters(); return; }
+    if (!q) { closeResults(); return; }
     const toks = q.split(/\s+/);
     const hits = [];
     for (const e of searchIndex) {
@@ -369,15 +364,6 @@
       if (ok) hits.push({ e, s: s + ({ topic: 2, theme: 3, tag: 1, example: 1 }[e.kind] || 0) });
     }
     hits.sort((a, b) => b.s - a.s);
-    // map highlight: prompts matched directly, or linked to a matched tag, discussion, book or example
-    const set = new Set();
-    for (const { e } of hits) {
-      const n = byId.get(e.id);
-      if (n.kind === "topic") set.add(n.id);
-      else if (e.s >= 4 || n.kind !== "topic") for (const t of n.topics || []) if (hits.length < 40 || n.kind === "tag") set.add(t);
-    }
-    S.searchSet = set;
-    applyFilters();
     resList = hits.slice(0, 9).map((x) => x.e);
     resIdx = resList.length ? 0 : -1;
     renderResults();
@@ -405,65 +391,39 @@
     h("p", { class: "hint pane-intro" }, u.t("walks.intro")),
     ...D.threads.map((t) => h("button", { class: "thread-card", type: "button", onclick: () => startThread(t.id) },
       h("h4", null, t.title), h("p", null, t.intro),
-      h("div", { class: "meta" }, h("span", { class: "pips" }, t.steps.map((s) => h("i", { style: { "--c": app.colorOf(s.topic) }, "data-t": s.topic }))), h("span", null, u.t("walks.stops", { n: t.steps.length }))))));
-  const indexEls = [];
+      h("div", { class: "meta" }, h("span", { class: "pips" }, t.steps.map((s) => h("i", { style: { "--c": colorOf(s.topic) } }))), h("span", null, u.t("walks.stops", { n: t.steps.length }))))));
   D.arcs.forEach((arc) => {
-    panes.index.append(h("button", { class: "idx-arc", "data-arc": arc.id, onclick: () => { select("arc:" + arc.id); if (mobile()) closeLeft(); } }, arc.label));
+    panes.index.append(h("button", { class: "idx-arc", style: { "--c": colorOf("arc:" + arc.id) }, onclick: () => { select("arc:" + arc.id); if (mobile()) closeLeft(); } }, arc.label));
     for (const n of D.themeOrder.filter((x) => arc.themes.includes(x))) {
       const th = byId.get("th:" + n);
-      const ul = h("ul", null, th.topics.map((id) => byId.get(id)).sort((a, b) => a.order - b.order).map((t) => {
-        const b = h("button", { onclick: () => { select(t.id); if (mobile()) closeLeft(); } }, h("i", { class: "dot", style: { "--c": "#999" }, "data-id": t.id }), t.label);
-        indexEls.push(b);
-        return h("li", null, b);
-      }));
-      panes.index.append(h("div", { class: "idx-theme" }, h("button", { onclick: () => { select(th.id); if (mobile()) closeLeft(); } }, h("i", null, String(n).padStart(2, "0")), th.title), ul));
+      const ul = h("ul", null, promptsOf(th.id).map((id) => byId.get(id)).map((t) =>
+        h("li", null, h("button", { onclick: () => { select(t.id); if (mobile()) closeLeft(); } }, h("i", { class: "dot", style: { "--c": colorOf(t.id) } }), t.label))));
+      panes.index.append(h("div", { class: "idx-theme" }, h("button", { onclick: () => { goTheme(th.id); if (mobile()) closeLeft(); } }, h("i", null, String(n).padStart(2, "0")), th.title), ul));
     }
   });
-  function refreshIndexColors() {
-    for (const b of indexEls) { const dot = $(".dot", b); dot.style.setProperty("--c", app.colorOf(dot.dataset.id)); }
-    for (const el of document.querySelectorAll(".thread-card .pips i")) el.style.setProperty("--c", app.colorOf(el.dataset.t));
-    for (const el of document.querySelectorAll(".idx-arc")) el.style.setProperty("--c", app.colorOf("arc:" + el.dataset.arc));
-  }
 
-  /* ------------------------------------------------------------------ legend + tooltips */
-  function renderLegend() {
-    const el = legendEl, L = D.lenses[S.mode];
-    el.replaceChildren();
-    if (S.mode === "theme") el.append(h("p", { class: "legend-note" }, u.t("explore.colour_theme_hint")));
-    else el.append(h("ul", null, Object.values(L.values).map((v) => h("li", null, h("i", { style: { "--c": v.color } }), v.label))));
-    const line = (color, label, dash) => h("span", { html: `<svg viewBox="0 0 22 12"><path d="M1 8 Q 11 0 21 6" fill="none" stroke="${color}" stroke-width="${dash ? 1.3 : 1.8}"${dash ? ' stroke-dasharray="3 3"' : ""} stroke-linecap="round"/></svg>` }, label);
-    const R = u.t("relations");
-    el.append(h("div", { class: "keys" },
-      h("span", { class: "keys-h" }, u.t("explore.legend_lines")),
-      h("div", { class: "keys-grid" }, line("#2F6B63", R.echoes), line("#B65438", R.tension), line("#5B6B3C", R.enables), line("#9A6F1F", R.extends)),
-      line("#6B675C", R.shared, true)));
-  }
+  /* ------------------------------------------------------------------ tooltips */
   const tip = $("#tip");
   function tipBody(id) {
     const n = byId.get(id);
     if (!n) return null;
-    let sub = "", extra = null;
-    if (n.kind === "topic") sub = u.t("tip.topic", { n: n.theme, label: byId.get("th:" + n.theme).label });
+    let title = n.label, sub = "", extra = null;
+    if (n.kind === "topic") { sub = u.t("tip.topic", { n: n.theme, label: byId.get("th:" + n.theme).label }); extra = h("span", { class: "tip-future" }, n.text); }
     else if (n.kind === "theme") {
-      sub = S.level === "landscape" ? u.t("tip.theme_landscape", { n: n.topics.length }) : u.t("tip.theme", { n: n.n, count: n.topics.length });
-      if (S.level === "landscape" && n.future) extra = h("span", { class: "tip-future" }, n.future.text, h("em", null, " " + u.t("future.badge_" + n.future.status.replace("-", "_"))));
+      title = u.t("tip.theme_title", { n: n.n, label: n.label });
+      if (S.level === "landscape") {
+        sub = u.t("tip.theme_landscape", { n: n.topics.length });
+        if (n.future) extra = h("span", { class: "tip-future" }, n.future.text, h("em", null, " " + u.t("future.badge_" + n.future.status.replace("-", "_"))));
+      } else if (id === S.theme) sub = n.lead;
+      else sub = u.t("tip.theme_move");
     }
     else if (n.kind === "tag") sub = u.t("tip.tag", { facet: D.facets[n.facet].label.replace(/s$/, ""), n: n.topics.length });
     else if (n.kind === "discussion") sub = n.sessions.map((s) => D.sessions[s].label).join(", ");
     else if (n.kind === "book") sub = n.author;
     else if (n.kind === "arc") sub = u.t("tip.arc", { themes: n.themes.length, prompts: n.topics.length });
     else if (n.kind === "example") sub = [(D.exampleTypes[n.type] || {}).label, n.org, n.year].filter(Boolean).join(" · ");
-    else sub = u.t("tip.center");
-    return [h("b", null, n.kind === "center" ? D.center.label : n.kind === "theme" ? u.t("tip.theme_title", { n: n.n, label: n.label }) : n.label), h("small", null, sub), extra];
-  }
-  function showTip(n, px, py) {
-    if (!n || mobile()) { tip.classList.remove("show"); return; }
-    tip.replaceChildren(...tipBody(n.id).filter(Boolean));
-    tip.classList.remove("wide");
-    const stage = $("#stage").getBoundingClientRect();
-    tip.style.left = Math.min(stage.width - 290, Math.max(8, px + 16)) + "px";
-    tip.style.top = Math.max(8, py + 18) + "px";
-    tip.classList.add("show");
+    else { title = D.center.label; sub = u.t("tip.center"); }
+    return [h("b", null, title), h("small", null, sub), extra];
   }
   function showTipAt(id, rect) {
     if (!id || mobile() || !rect) { tip.classList.remove("show"); return; }
@@ -475,157 +435,203 @@
     let x = rect.right - st.left + 10, y = rect.top - st.top + rect.height * 0.25;
     if (x + w > st.width - 8) x = rect.left - st.left - w - 10;
     tip.style.left = u.clamp(x, 8, st.width - w - 8) + "px";
-    tip.style.top = u.clamp(y, 8, st.height - 120) + "px";
+    tip.style.top = u.clamp(y, 8, st.height - 140) + "px";
     tip.classList.add("show");
   }
 
-  /* ------------------------------------------------------------------ levels: switching, planes, chrome */
-  const PLANE = { landscape: landEl, regime: cv, niche: cv };
+  /* ------------------------------------------------------------------ moving between levels */
   let swapT = [];
   function settlePlanes(lv) {
     for (const t of swapT) clearTimeout(t);
     swapT = [];
-    for (const el of [landEl, cv]) el.classList.remove("enter-down", "enter-up", "leave-down", "leave-up");
-    landEl.classList.toggle("off", lv !== "landscape");
-    cv.classList.toggle("off", lv === "landscape");
-    if (lv === "landscape") view.pause();
-  }
-  // the canvas, set up for the level it is about to show (framed before it appears)
-  function prepCanvas(lv) {
-    view.configure({ niche: lv === "niche" });
-    view.resume();
-    if (!S.seenRegime) { S.seenRegime = true; view.replayIntro(); }
-    updateInsets();
-    view.relayout(false);
-    if (mobile() && S.sel) frame(S.sel, false);
-    else if (mobile() && S.focus) view.fit(false, byId.get(S.focus).topics);
-    else if (!S.touched) view.fit(false);
+    for (const [k, el] of Object.entries(PLANE)) { el.classList.remove("enter-down", "enter-up", "leave-down", "leave-up"); el.classList.toggle("off", k !== lv); }
   }
   /* the planes tilt past one another: going down, the one you leave lifts away and the next rises into place */
   function swapPlanes(from, to, instant) {
-    settlePlanes(from);   // finish any swap still running
+    settlePlanes(from);
     const out = PLANE[from], inn = PLANE[to], dir = LEVELS.indexOf(to) > LEVELS.indexOf(from) ? "down" : "up";
-    if (to !== "landscape" && inn !== out) prepCanvas(to);
-    if (instant || reduced) {
-      if (to !== "landscape" && inn === out) prepCanvas(to);
-      settlePlanes(to); return;
-    }
-    const enter = (el) => { el.classList.add("enter-" + dir); el.classList.remove("off"); void el.offsetWidth; el.classList.remove("enter-" + dir); };
-    if (inn !== out) {
-      out.classList.add("leave-" + dir);
-      enter(inn);
-      swapT.push(setTimeout(() => settlePlanes(to), 560));
-    } else {
-      out.classList.add("leave-" + dir);
-      swapT.push(setTimeout(() => { out.classList.remove("leave-" + dir); prepCanvas(to); enter(out); }, 240));
-      swapT.push(setTimeout(() => settlePlanes(to), 800));
-    }
+    if (instant || reduced) { settlePlanes(to); return; }
+    out.classList.add("leave-" + dir);
+    inn.classList.add("enter-" + dir); inn.classList.remove("off"); void inn.offsetWidth; inn.classList.remove("enter-" + dir);
+    swapT.push(setTimeout(() => settlePlanes(to), 560));
   }
-  // going up or down keeps your place where it can: a prompt's theme above it, an example's prompt above that
-  function carryTo(id, lv) {
-    if (!id || LV.shows(lv, id)) return id;
+  // the theme to show on the Regime and the prompt to show on the Niche, when nothing more specific is asked for
+  function themeFor(o, from) {
+    if (o.theme) return o.theme;
+    if (from === "niche" && S.prompt) return themeOf(S.prompt);
+    return (S.sel && themeOf(S.sel)) || S.theme || THEME_IDS[0];
+  }
+  function promptFor(o) {
+    if (o.prompt) return o.prompt;
+    const n = S.sel && byId.get(S.sel);
+    if (n && n.kind === "topic") return n.id;
+    if (n && n.topics && n.kind !== "theme" && n.kind !== "arc" && n.kind !== "tag") return n.topics.includes(S.prompt) ? S.prompt : n.topics[0];
+    if (S.prompt && (!S.theme || themeOf(S.prompt) === S.theme)) return S.prompt;
+    return promptsOf(S.theme || THEME_IDS[0])[0];
+  }
+  // going up or down keeps your place: what was open travels with you if the new level shows it, or its parent does
+  function carryTo(id, lv, from) {
+    if (!id) return null;
     const n = byId.get(id);
     if (!n) return null;
-    if (lv === "landscape") {
-      const t = n.kind === "topic" ? n : n.kind === "example" ? byId.get(n.topics[0]) : null;
-      return t ? "th:" + t.theme : null;
+    if (n.kind === "tag") return id;   // a tag runs across every level: its note stays open
+    if (lv === "landscape") return LV.shows("landscape", id) ? id : themeOf(from === "niche" ? S.prompt || id : id);
+    if (lv === "regime") {
+      if (reg.has(id) || n.kind === "tag") return id;
+      if (from === "niche") return S.prompt;
+      return null;
     }
-    if (lv === "regime" && n.kind === "example") return n.topics[0];
-    return null;
+    return nic.has(id) || n.kind === "tag" ? id : null;
   }
   function goLevel(lv, o = {}) {
     if (!LEVELS.includes(lv)) return;
     const from = S.level;
-    if (lv === from) return;
-    const ae = document.activeElement, stranded = !!ae && ((from === "landscape" && landEl.contains(ae)) || nicheCard.contains(ae) || peek === ae);
+    if (lv === from) {
+      if (lv === "regime" && o.theme && o.theme !== S.theme) setTheme(o.theme, { sync: o.sync });
+      if (lv === "niche" && o.prompt && o.prompt !== S.prompt) setPrompt(o.prompt, { sync: o.sync });
+      return;
+    }
+    const ae = document.activeElement, stranded = !!ae && (PLANE[from].contains(ae) || peek === ae);
     if (S.thread && lv !== "regime") endThread(true);
-    // (when a note is being opened on the new level, its caller takes care of the note)
-    const carried = o.selecting ? S.sel : carryTo(S.sel, lv);
-    if (lv === "landscape") S.focus = null;
-    if (from === "landscape") S.touched = false;
+    if (lv === "regime") S.theme = themeFor(o, from);
+    if (lv === "niche") { S.prompt = promptFor(o); S.theme = themeOf(S.prompt); }
     S.level = lv;
     body.dataset.level = lv;
     tip.classList.remove("show");
-    renderLevelChrome();   // first, so the map is framed for the chrome it will sit under
-    applyFilters();
+    if (lv === "regime") showRegime();
+    if (lv === "niche") showNiche();
+    const carried = o.selecting ? S.sel : carryTo(S.sel, lv, from);
+    renderChrome();
     swapPlanes(from, lv, o.instant);
-    if (carried !== S.sel) { if (carried) select(carried, { noPush: true, sync: false, fly: false }); else deselect({ sync: false }); }
-    else if (S.sel && !o.selecting) renderNote();
-    if (lv === "landscape") land.setSelected(S.sel);
-    else view.setSelected(S.sel);
-    live.textContent = u.t("levels.announce", { name: u.t("levels." + lv + ".name"), what: u.t("levels." + lv + ".short") });
+    if (carried !== S.sel) { if (carried) select(carried, { noPush: true, sync: false }); else deselect({ sync: false }); }
+    else { MAPS[lv].setSelected(S.sel); if (S.sel && !o.selecting) renderNote(); }
+    live.textContent = u.t("levels.announce", { name: u.t("levels." + lv + ".name"), what: levelWhatText(lv) || u.t("levels." + lv + ".short") });
     if (stranded) rescueFocus(true);
     if (o.sync !== false) syncURL(o.push !== false);
   }
-  // keyboard focus left on something that has just gone away: put it somewhere that says where you are
-  function rescueFocus(force) {
-    const ae = document.activeElement;
-    if (!force && ae && ae !== document.body && !(ae === focusChip && focusChip.hidden)) return;
-    const to = !focusChip.hidden ? focusChip : levelBtns[S.level];
-    to.focus({ preventScroll: true });
-  }
-  // from a theme or chapter on the Landscape down to its prompts
-  // (on the map itself, the same button just shows or clears the focus)
+  // one step down from a theme (to its prompts) or from a prompt (to its sources)
   function drill(id) {
-    const down = S.level === "landscape";
-    if (down && S.sel && mobile()) deselect({ sync: false });   // a phone's note would cover the map you came down to see
-    S.focus = id || null;
-    if (down) goLevel("regime", { sync: false });
-    setFocus(S.focus, { sync: false });
-    syncURL(down);
+    const n = byId.get(id);
+    if (!n) return;
+    if (S.thread) endThread(true);
+    if (mobile() && S.sel) deselect({ sync: false });   // a phone's note would cover the level you came down to see
+    if (n.kind === "theme") { if (S.level === "regime") setTheme(id); else goLevel("regime", { theme: id }); }
+    else if (n.kind === "topic") { if (S.level === "niche") setPrompt(id); else goLevel("niche", { prompt: id }); }
   }
-  function renderLevelChrome() {
-    const lv = S.level;
-    for (const [k, b] of Object.entries(levelBtns)) { if (k === lv) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); }
-    peek.hidden = lv === "niche";
-    if (lv !== "niche") {
-      const next = lv === "landscape" ? "regime" : "niche";
-      peek.replaceChildren(planesIcon(next, "lv-ico"), h("span", null, lv === "landscape" ? u.t("peek.landscape", { n: topics.length })
-        : examples.length ? u.t("peek.regime", { n: examples.length }) : u.t("peek.regime_none")), h("span", { "aria-hidden": "true" }, " ↓"));
+  function goTheme(id) { if (S.thread) endThread(true); if (S.level === "regime") setTheme(id); else goLevel("regime", { theme: id }); }
+  // sideways: another theme on the Regime, another prompt on the Niche
+  function move(id, dir) {
+    if (S.thread && !S.thread.t.steps.some((s) => s.topic === id)) endThread(true);
+    if (S.level === "regime") setTheme(id, { dir });
+    else if (S.level === "niche") setPrompt(id, { dir });
+  }
+  const order = (list, a, b) => (list.indexOf(b) >= list.indexOf(a) ? "right" : "left");
+  function setTheme(id, o = {}) {
+    if (!id || (id === S.theme && !o.force)) return;
+    const before = S.theme;
+    S.theme = id;
+    showRegime(o.dir || (before ? order(THEME_IDS, before, id) : null));
+    if (S.sel === before && byId.get(id)) select(id, { noPush: true, sync: false, keepFocus: true });   // the note follows the theme in the middle
+    else if (S.sel && !reg.has(S.sel) && byId.get(S.sel).kind !== "tag") deselect({ sync: false });
+    renderChrome();
+    if (o.sync !== false) syncURL(true);
+  }
+  function setPrompt(id, o = {}) {
+    if (!id || (id === S.prompt && !o.force)) return;
+    const before = S.prompt;
+    S.prompt = id;
+    S.theme = themeOf(id);
+    const all = THEME_IDS.flatMap(promptsOf);
+    showNiche(o.dir || (before ? order(all, before, id) : null));
+    if (S.sel === before) select(id, { noPush: true, sync: false, keepFocus: true });
+    else if (S.sel && !nic.has(S.sel) && byId.get(S.sel).kind !== "tag") deselect({ sync: false });
+    renderChrome();
+    if (o.sync !== false) syncURL(true);
+  }
+  // where an item's note opens: its own level, focused so the item is in view
+  function place(id) {
+    const n = byId.get(id);
+    switch (n.kind) {
+      case "center": case "arc": return { level: "landscape" };
+      case "theme": return S.level === "landscape" ? { level: "landscape" } : { level: "regime", theme: id };
+      case "topic": return S.level === "niche" ? { level: "niche", prompt: id } : { level: "regime", theme: themeOf(id) };
+      case "tag": return { level: S.level };
+      default: return { level: "niche", prompt: S.level === "niche" && n.topics.includes(S.prompt) ? S.prompt : n.topics[0] };
     }
-    renderNicheCard();
-    renderLevelNote();
-    renderFocusChip();
-    updateInsets();
   }
-  const nicheCard = $("#nichecard");
-  function renderNicheCard() {
-    nicheCard.hidden = S.level !== "niche";
-    if (S.level !== "niche") return;
-    const T = D.exampleTypes || {};
-    const key = h("ul", { class: "type-key" }, Object.entries(T).map(([k, v]) => h("li", null, h("i", { class: "shape shape-" + v.shape }), v.plural || v.label)));
-    if (examples.length) { nicheCard.className = "niche-card compact"; nicheCard.replaceChildren(key); return; }
-    nicheCard.className = "niche-card";
-    nicheCard.replaceChildren(
-      h("h2", null, u.t("niche.empty_title")),
-      h("p", null, u.t("niche.empty_body")),
-      key,
-      h("button", { class: "btn", type: "button", onclick: () => goLevel("regime") }, h("span", { "aria-hidden": "true" }, "↑ "), u.t("niche.back")));
+  function levelWhatText(lv) {
+    if (lv === "regime" && S.theme) { const th = byId.get(S.theme); return u.t("levels.regime.what", { n: th.n, label: th.label }); }
+    if (lv === "niche" && S.prompt) return byId.get(S.prompt).label;
+    return "";
+  }
+  function renderChrome() {
+    const lv = S.level;
+    for (const [k, b] of Object.entries(levelBtns)) {
+      if (k === lv) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current");
+      const what = LEVELS.indexOf(k) <= LEVELS.indexOf(lv) || k === "regime" ? levelWhatText(k) : "";
+      levelWhat[k].textContent = what;
+      b.classList.toggle("has-what", !!what);
+    }
+    // the way down from what is open
+    const sel = S.sel && byId.get(S.sel);
+    let down = null;
+    if (lv === "landscape" && sel && sel.kind === "theme") down = u.t("peek.landscape", { n: sel.n, count: sel.topics.length });
+    if (lv === "regime" && sel && sel.kind === "topic") { const c = sourceCount(sel.id); down = c === 1 ? u.t("peek.regime_one", { label: sel.label }) : u.t("peek.regime", { label: sel.label, count: c }); }
+    peek.hidden = !down || !!S.thread;
+    if (down) peek.replaceChildren(planesIcon(lv === "landscape" ? "regime" : "niche", "lv-ico"), h("span", null, down), h("span", { "aria-hidden": "true" }, " ↓"));
+    // sideways
+    const [p, n] = sideTargets(), kind = lv === "regime" ? "theme" : "prompt";
+    for (const [btn, id, k] of [[sidePrev, p, "prev"], [sideNext, n, "next"]]) {
+      btn.hidden = !id;
+      if (!id) continue;
+      const o = byId.get(id), short = kind === "theme" ? u.t("landscape.theme_n", { n: o.n }) : o.label;
+      btn.replaceChildren(h("span", { class: "sa-arrow", "aria-hidden": "true" }, k === "prev" ? "‹" : "›"), h("span", { class: "sa-label" }, short));
+      btn.setAttribute("aria-label", u.t("side." + k + "_" + kind, { label: kind === "theme" ? o.label : o.label }));
+    }
+    for (const [id, b] of Object.entries(themeBtns)) b.setAttribute("aria-current", lv !== "landscape" && S.theme === id ? "true" : "false");
+    renderLevelNote();
+    renderLegend();
+    updateInsets();
   }
 
   /* ------------------------------------------------------------------ address bar */
   function stateHref(forCopy) {
     const T = S.thread, open = body.classList.contains("right-open");
-    return LV.href({ level: S.level, focus: S.focus, walk: T ? T.t.id : null, stop: T ? T.i + 1 : null, id: T && !open ? null : S.sel, embed: embed && !forCopy });
+    const focus = S.level === "regime" ? S.theme : S.level === "niche" ? S.prompt : null;
+    return LV.href({ level: S.level, focus, walk: T ? T.t.id : null, stop: T ? T.i + 1 : null, id: T && !open ? null : S.sel, embed: embed && !forCopy });
   }
   function syncURL(push) {
     const url = location.pathname + stateHref();
     if (url === location.pathname + location.search + location.hash) return;
     try { (push && !embed ? history.pushState : history.replaceState).call(history, null, "", url); } catch (e) { /* file:// quirks */ }
   }
+  // the focus an address asks for, or the one its open item implies
+  function focusFrom(st) {
+    const id = st.id && byId.has(st.id) ? st.id : null;
+    if (st.level === "regime") return { theme: (st.focus && /^th:/.test(st.focus) && byId.has(st.focus) ? st.focus : null) || (id && themeOf(id)) || S.theme || THEME_IDS[0] };
+    if (st.level === "niche") {
+      if (st.focus && /^n:/.test(st.focus) && byId.has(st.focus)) return { prompt: st.focus };
+      const n = id && byId.get(id);
+      return { prompt: n && n.kind === "topic" ? id : n && n.topics && n.topics.length && n.kind !== "theme" && n.kind !== "arc" && n.kind !== "tag" ? n.topics[0] : S.prompt || promptsOf(S.theme || THEME_IDS[0])[0] };
+    }
+    return {};
+  }
   // the address bar has changed under us (Back, Forward, an edited link): follow it
   function fromURL() {
     const st = LV.parse(location.search, location.hash);
     const walk = st.walk && D.threads.some((t) => t.id === st.walk) ? st.walk : null;
     if (S.thread && S.thread.t.id !== walk) endThread(true);
-    if (st.level !== S.level) goLevel(st.level, { sync: false });
-    const focus = st.focus && byId.has(st.focus) ? st.focus : null;
-    if (focus !== S.focus) setFocus(focus, { sync: false });
-    if (walk && !S.thread) startThread(walk, { sync: false, stop: st.stop });
-    else if (walk && (st.stop || 1) - 1 !== S.thread.i) stepTo((st.stop || 1) - 1, { sync: false });
-    let id = st.id && byId.has(st.id) ? st.id : null;
-    if (id) id = carryTo(id, S.level);
-    if (id && (id !== S.sel || !body.classList.contains("right-open"))) select(id, { sync: false, noPush: !!S.thread, fly: !S.thread });
+    if (walk) {
+      if (!S.thread) startThread(walk, { sync: false, stop: st.stop });
+      else if ((st.stop || 1) - 1 !== S.thread.i) stepTo((st.stop || 1) - 1, { sync: false });
+    } else {
+      const f = focusFrom(st);
+      if (st.level !== S.level) goLevel(st.level, Object.assign({ sync: false }, f));
+      else if (f.theme && f.theme !== S.theme && S.level === "regime") setTheme(f.theme, { sync: false });
+      else if (f.prompt && f.prompt !== S.prompt && S.level === "niche") setPrompt(f.prompt, { sync: false });
+    }
+    const id = st.id && byId.has(st.id) ? st.id : null;
+    if (id && (id !== S.sel || !body.classList.contains("right-open"))) select(id, { sync: false, noPush: !!S.thread });
     else if (!id && S.thread && body.classList.contains("right-open")) { body.classList.remove("right-open"); updateInsets(); }
     else if (!id && S.sel && !S.thread) deselect({ sync: false });
   }
@@ -634,13 +640,9 @@
 
   /* ------------------------------------------------------------------ selection + note panel */
   const right = $("#right");
+  const bar = $("#threadbar");
   function rightWidth() { return Math.round(parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--right-w")) || right.getBoundingClientRect().width || 456); }
-  function chromeTop() {
-    if (mobile()) return 56;
-    let t = 14 + (levelbar.offsetHeight || 42) + 10;
-    if (!focusChip.hidden) t += (focusChip.offsetHeight || 32) + 8;
-    return t;
-  }
+  function chromeTop() { return mobile() ? 0 : 14 + (levelbar.offsetHeight || 46) + 12; }
   function updateInsets() {
     const open = body.classList.contains("right-open"), m = mobile();
     const r = open && !m ? rightWidth() : 0;
@@ -649,9 +651,8 @@
       land.setInsets({ t: m ? 0 : chromeTop() + (q.offsetHeight || 56) + 4, r, b: m ? 0 : 58, l: 0 });
       return;
     }
-    const card = S.thread ? Math.max(200, $("#threadbar").offsetHeight + 34) : 0, tabbar = m ? 62 : 0;
-    if (open && m) view.setInsets({ r: 0, b: Math.max(card, Math.round(view.h * 0.62)), t: chromeTop() });
-    else view.setInsets({ r, b: Math.max(card, tabbar), t: chromeTop() });
+    const card = S.thread ? bar.offsetHeight + 28 : 0, pk = peek.hidden ? 14 : 58;
+    MAPS[S.level].setInsets(m ? { t: 0, r: 0, b: 0, l: 0 } : { t: chromeTop(), b: Math.max(card, pk), l: 70, r: r + 70 });
   }
   function head(crumb) {
     const acts = h("div", { class: "acts" });
@@ -681,31 +682,29 @@
   function select(id, o = {}) {
     const n = byId.get(id);
     if (!n) return;
-    // opened from a button, link or the search box (not the canvas, not the address bar): take keyboard focus into the note
-    const ae = document.activeElement, fromControl = o.sync !== false && !!ae && ae !== document.body && !right.contains(ae) && !bar.contains(ae);
+    // opened from a button, link or the search box (not from the address bar): take keyboard focus into the note
+    const ae = document.activeElement, fromControl = o.sync !== false && !o.keepFocus && !!ae && ae !== document.body && !right.contains(ae) && !bar.contains(ae);
     if (fromControl) S.opener = ae;
+    const p = place(id), prevSel = S.sel;
     let pushed = false;
-    if (!LV.shows(S.level, id)) { goLevel(LV.homeLevel(id), { sync: false, selecting: true }); pushed = true; }
-    if (S.sel && S.sel !== id && !o.noPush) { S.hist.push(S.sel); if (S.hist.length > 30) S.hist.shift(); }
+    if (p.level === S.level) {
+      if (p.theme && p.theme !== S.theme) { S.sel = null; setTheme(p.theme, { sync: false }); pushed = true; }
+      if (p.prompt && p.prompt !== S.prompt) { S.sel = null; setPrompt(p.prompt, { sync: false }); pushed = true; }
+    } else {
+      goLevel(p.level, { sync: false, selecting: true, theme: p.theme, prompt: p.prompt });
+      pushed = true;
+    }
+    if (prevSel && prevSel !== id && !o.noPush) { S.hist.push(prevSel); if (S.hist.length > 30) S.hist.shift(); }
     S.sel = id;
-    if (S.level === "landscape") land.setSelected(id); else view.setSelected(id);
+    MAPS[S.level].setSelected(id);
     renderNote();
     body.classList.add("right-open");
     // on laptop-width windows give the map the room: tuck the left panel away while a note is open
-    let collapsed = false;
-    if (!mobile() && window.innerWidth < 1500 && !body.classList.contains("left-closed")) { body.classList.add("left-closed"); S.autoClosedLeft = true; collapsed = true; }
-    updateInsets();
-    if (S.level !== "landscape" && o.fly !== false) { frame(id); if (collapsed) setTimeout(() => { if (S.sel === id) frame(id); }, 420); }   // re-aim once the stage has widened
+    if (!mobile() && window.innerWidth < 1500 && !body.classList.contains("left-closed")) { body.classList.add("left-closed"); S.autoClosedLeft = true; }
+    renderChrome();
     if (o.sync !== false) syncURL(pushed);
     if (mobile() && !o.keepLeft) closeLeft();
     if (fromControl) { const h1 = right.querySelector(".r-body h1"); if (h1) h1.focus({ preventScroll: true }); }
-  }
-  /* Wide screens: keep the whole map in view beside the note, so every lit-up connection can be followed; the map only moves when
-     the space around it changes. Phones: the note covers most of the screen, so frame the prompt and what it connects to. */
-  function frame(id, animate = true) {
-    view.relayout(animate);   // the room left beside an open note may call for a narrower orbit
-    if (mobile()) { const ids = view.framingIds(id); if (ids && ids.length) view.fit(animate, ids); return; }
-    if (S.touched) view.reveal(id); else view.fit(animate);
   }
   function back() {
     const prev = S.hist.pop();
@@ -714,12 +713,10 @@
   function deselect(o = {}) {
     const ae = document.activeElement, inNote = !!ae && right.contains(ae);
     S.sel = null; S.hist = [];
-    view.setSelected(null); land.setSelected(null);
+    for (const m of Object.values(MAPS)) m.setSelected(null);
     body.classList.remove("right-open");
-    updateInsets();
-    if (S.level !== "landscape") view.relayout(true);
-    if (S.autoClosedLeft) { body.classList.remove("left-closed"); S.autoClosedLeft = false; }   // the stage narrows again; the resize observer re-frames
-    else if (S.level !== "landscape" && !S.touched && !S.thread) view.fit(true);
+    if (S.autoClosedLeft) { body.classList.remove("left-closed"); S.autoClosedLeft = false; }
+    renderChrome();
     if (o.sync !== false) syncURL(false);
     // back to whatever opened the note, if it is still there to be seen
     if (inNote) {
@@ -729,6 +726,12 @@
       else rescueFocus(true);
     }
   }
+  // keyboard focus left on something that has just gone away: put it somewhere that says where you are
+  function rescueFocus(force) {
+    const ae = document.activeElement;
+    if (!force && ae && ae !== document.body) return;
+    levelBtns[S.level].focus({ preventScroll: true });
+  }
 
   function openLeft() { S.autoClosedLeft = false; if (mobile()) body.classList.add("left-open"); else body.classList.remove("left-closed"); }
   function closeLeft() { if (mobile()) body.classList.remove("left-open"); }
@@ -737,42 +740,55 @@
     if (mobile()) body.classList.toggle("left-open"); else body.classList.toggle("left-closed");
   });
 
-  /* ------------------------------------------------------------------ guided walks (they run on the Regime) */
-  const bar = $("#threadbar");
+  /* ------------------------------------------------------------------ guided walks: they run through the Regime, theme by theme */
   bar.setAttribute("aria-label", u.t("walks.region"));
   function startThread(id, o = {}) {
     const t = D.threads.find((x) => x.id === id);
     if (!t) return;
     const moved = S.level !== "regime";
-    if (moved) goLevel("regime", { sync: false });
-    if (S.focus) setFocus(null, { sync: false });   // a walk crosses themes: nothing should be dimmed along it
-    S.thread = { t, i: 0 };
+    S.thread = { t, i: -1 };
     body.classList.add("thread-on");
     closeLeft();
     // a walk is map-first: the note panel stays closed until you open a stop from the card
-    S.sel = null; S.hist = []; view.setSelected(null); body.classList.remove("right-open");
+    S.sel = null; S.hist = []; body.classList.remove("right-open");
     stepTo(o.stop ? o.stop - 1 : 0, { sync: false });
     if (o.sync !== false) syncURL(moved);
+  }
+  // the themes of the stops either side of this one, so the way in and the way on can be drawn
+  function walkExtras(i) {
+    const steps = S.thread.t.steps, out = [];
+    for (const j of [i - 1, i + 1]) if (steps[j]) out.push("th:" + byId.get(steps[j].topic).theme);
+    return out;
+  }
+  function walkOverlay() {
+    const T = S.thread, steps = T.t.steps, cur = steps[T.i] && steps[T.i].topic;
+    if (!cur) return null;
+    const stops = new Map();
+    steps.forEach((s, k) => { if (reg.has(s.topic)) stops.set(s.topic, k + 1); });
+    const end = (j) => { const s = steps[j]; if (!s) return null; return { id: reg.has(s.topic) ? s.topic : "th:" + byId.get(s.topic).theme }; };
+    return { cur, stops, prev: end(T.i - 1), next: end(T.i + 1) };
   }
   function stepTo(i, o = {}) {
     const T = S.thread;
     if (!T) return;
-    const t = T.t, n = t.steps.length;
+    const t = T.t, n = t.steps.length, was = T.i;
     T.i = u.clamp(i, 0, n);
-    const ids = t.steps.map((s) => s.topic);
-    view.setThread(ids, Math.min(T.i, n - 1));
     renderBar();   // first, so the map can make room for the card at its real height
     if (T.i < n) {
-      const id = ids[T.i];
-      if (body.classList.contains("right-open") && !mobile()) select(id, { fly: false, noPush: true });   // keep reading along if a note is open
-      else { S.sel = id; view.setSelected(id); updateInsets(); }
-      if (mobile()) view.flyToSet([ids[T.i - 1], ids[T.i], ids[T.i + 1]].filter(Boolean), 0.5, 1.15);
-      else if (S.touched) view.reveal(id); else view.fit(true);   // the whole path stays in view while you step along it
+      const id = t.steps[T.i].topic, th = themeOf(id);
+      S.walkExtras = walkExtras(T.i);
+      const dir = was >= 0 && was !== T.i ? (T.i > was ? "right" : "left") : null;
+      if (S.level !== "regime") goLevel("regime", { theme: th, sync: false });
+      else if (th !== S.theme) setTheme(th, { sync: false, dir });
+      else showRegime();
+      if (body.classList.contains("right-open") && !mobile()) select(id, { noPush: true, sync: false, keepFocus: true });   // keep reading along if a note is open
+      else { S.sel = id; reg.setSelected(id); }
+      reg.setWalk(walkOverlay());
     } else {
-      S.sel = null; view.setSelected(null); body.classList.remove("right-open"); updateInsets();
-      if (mobile()) view.flyToSet(ids, 0.3, 1.0); else if (!S.touched) view.fit(true);
+      S.sel = null; reg.setSelected(null); reg.setWalk(null); body.classList.remove("right-open");
     }
-    live.textContent = T.i < n ? u.t("walks.stop_of", { i: T.i + 1, n }) + ": " + byId.get(ids[T.i]).label : t.title + ": " + u.t("walks.summary");
+    renderChrome();
+    live.textContent = T.i < n ? u.t("walks.stop_of", { i: T.i + 1, n }) + ": " + byId.get(t.steps[T.i].topic).label : t.title + ": " + u.t("walks.summary");
     if (o.sync !== false) syncURL(false);
   }
   function renderBar() {
@@ -801,11 +817,13 @@
   function endThread(silent) {
     if (!S.thread) return;
     const inBar = bar.contains(document.activeElement);
-    S.thread = null; view.setThread(null);
+    S.thread = null; S.walkExtras = [];
     body.classList.remove("thread-on");
     bar.classList.remove("open");
-    updateInsets();
-    if (!body.classList.contains("right-open")) { S.sel = null; view.setSelected(null); if (!S.touched) view.fit(true); }
+    reg.setWalk(null);
+    if (reg.m && S.level === "regime") showRegime();   // drop the themes that were only there for the walk
+    if (!body.classList.contains("right-open")) { S.sel = null; reg.setSelected(null); }
+    renderChrome();
     if (!silent) syncURL(false);
     if (inBar) rescueFocus(true);
   }
@@ -816,7 +834,7 @@
     if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
     const inBar = levelbar.contains(document.activeElement);
     if (e.key === "/") { e.preventDefault(); openLeft(); setTab("explore"); searchInput.focus(); searchInput.select(); }
-    else if (e.key === "Escape") { if (S.thread) endThread(); else if (S.sel) deselect(); else if (S.focus) { setFocus(null); rescueFocus(); } else if (mobile()) closeLeft(); }
+    else if (e.key === "Escape") { if (S.thread) endThread(); else if (S.sel) deselect(); else if (mobile()) closeLeft(); }
     else if (inBar && /^[123]$/.test(e.key)) { goLevel(LEVELS[+e.key - 1]); levelBtns[S.level].focus(); }
     else if (inBar && (e.key === "ArrowRight" || e.key === "ArrowLeft" || e.key === "Home" || e.key === "End")) {
       e.preventDefault();
@@ -826,60 +844,30 @@
     else if (S.thread && e.key === "ArrowRight") stepTo(S.thread.i + 1);
     else if (S.thread && e.key === "ArrowLeft") stepTo(S.thread.i - 1);
   });
-  $("#zIn").onclick = () => { S.touched = true; view.zoomBy(1.4); };
-  $("#zOut").onclick = () => { S.touched = true; view.zoomBy(1 / 1.4); };
-  $("#zFit").onclick = () => { S.touched = false; view.fit(true); };
-  let refitT;
-  new ResizeObserver(() => {
-    view.resize();
-    updateInsets();
-    // window resized / phone rotated / panel opened or closed: re-proportion the orbit if the shape changed a lot, then re-frame,
-    // unless the visitor has taken over the camera
-    clearTimeout(refitT);
-    refitT = setTimeout(() => {
-      updateInsets();
-      if (S.level === "landscape") return;
-      view.relayout(true);
-      if (S.touched) return;
-      if (mobile() && S.sel) frame(S.sel); else view.fit(true);
-    }, 120);
-  }).observe($("#stage"));
+  new ResizeObserver(() => updateInsets()).observe($("#stage"));
 
   /* ------------------------------------------------------------------ boot */
   const q = byId.get("c");
   $("#qcap").replaceChildren(h("span", { class: "q" }, q.question), h("span", { class: "c" }, u.t("qcap.cite")));
   $("#qcap").addEventListener("click", () => select("c"));
-  setMode("pillar");
-  updateLinkCount();
-  renderLegend();
-  refreshIndexColors();
   const st = LV.parse(location.search, location.hash);
+  const walk = st.walk && D.threads.some((t) => t.id === st.walk) ? st.walk : null;
+  const f0 = focusFrom(st);
   S.level = st.level;
   body.dataset.level = S.level;
-  S.focus = st.focus && byId.has(st.focus) ? st.focus : null;
-  if (S.level !== "landscape") S.seenRegime = true;   // the opening sweep is already playing
-  view.configure({ niche: S.level === "niche" });
+  if (f0.theme) S.theme = f0.theme;
+  if (f0.prompt) { S.prompt = f0.prompt; S.theme = themeOf(f0.prompt); }
+  if (S.level === "regime" && !walk) showRegime();
+  if (S.level === "niche") showNiche();
   settlePlanes(S.level);
-  renderLevelChrome();
-  applyFilters();
-  updateInsets();
-  view.relayout(false);
-  if (S.level !== "landscape") { if (mobile() && S.focus) view.fit(false, byId.get(S.focus).topics); else view.fit(false); }
+  renderChrome();
   land.layout(false);
-  const walk = st.walk && D.threads.some((t) => t.id === st.walk) ? st.walk : null;
   if (walk) startThread(walk, { sync: false, stop: st.stop });
-  const first = st.id && byId.has(st.id) ? carryTo(st.id, S.level) : null;
-  if (first) select(first, { sync: false, noPush: !!walk, fly: !walk });
+  const first = st.id && byId.has(st.id) ? st.id : null;
+  if (first) select(first, { sync: false, noPush: !!walk });
   else if (!walk) notice(u.t("hints." + S.level + (mobile() ? "_touch" : "")));
-  // web fonts change label widths: refit once they have loaded (unless the visitor has already started exploring)
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
-    view._lw = null; view.dirty = true;
-    land.layout(false);
-    updateInsets();
-    if (S.level === "landscape") return;
-    view.relayout(false);
-    if (!S.touched && !S.thread && !(mobile() && S.sel)) view.fit(false);
-  });
+  // web fonts change text widths: lay out again once they have loaded
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { land.layout(false); reg.layout(); nic.layout(); updateInsets(); });
   RM.app = app;
   document.documentElement.dataset.ready = "1";
 })();

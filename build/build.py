@@ -324,11 +324,12 @@ with open(P("site", "index.html"), encoding="utf-8") as _f:   # data-t="key" (te
     COPY_USED |= set(re.findall(r'\bdata-t(?:-label)?="([A-Za-z0-9_.]+)"', _f.read()))
 # keys the site builds at run time ("levels." + level + ".name" and the like), checked here by hand
 COPY_USED |= {f"levels.{lv}.{k}" for lv in ("landscape", "regime", "niche") for k in ("name", "short", "explain")}
-COPY_USED |= {"levels.niche.soon", "levels.regime.aria"} | {f"future.badge_{s}" for s in ("draft", "rm_edited", "rm_approved")}
+COPY_USED |= {"levels.regime.aria", "levels.regime.what"} | {f"future.badge_{s}" for s in ("draft", "rm_edited", "rm_approved")}
 COPY_USED |= {f"relations.{k}" for k in ("echoes", "tension", "enables", "extends", "enables_rev", "extends_rev", "shared", "shares",
                                           "same_disc", "also", "shared_prefix")}
 COPY_USED |= {f"kinds.{k}" for k in ("topic", "theme", "tag", "discussion", "book", "arc", "example")}
 COPY_USED |= {f"hints.{lv}{t}" for lv in ("landscape", "regime", "niche") for t in ("", "_touch")}
+COPY_USED |= {f"side.{k}_{w}" for k in ("prev", "next") for w in ("theme", "prompt")}
 COPY_USED = {k for k in COPY_USED if not k.endswith((".", "_"))}   # the stems of keys built at run time
 for _k in sorted(COPY_USED):
     if copy_get(_k) is None:

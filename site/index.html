@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Provocation map · Rethink Matters</title>
-<meta name="description" content="An interactive map of the Rethink Matters provocations, in three levels: the nine themes, the sixty prompts and the links between them, and examples on the ground, all around one question: how do we engineer a living world we want to live in?">
+<meta name="description" content="An interactive map of what Rethink Matters has been discussing, in three levels from the big picture down: the nine themes, each theme's prompts and their links, and each prompt's discussions, examples and books, all around one question: how do we engineer a living world we want to live in?">
 <!-- Remove the next line when the group is happy for search engines to index this page. -->
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#FAF8F3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=a50ca025">
+<link rel="stylesheet" href="assets/style.css?v=16e4a654">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -36,11 +36,12 @@
 
   <section class="stage" id="stage">
     <section class="plane landscape off" id="landscape" aria-label="Landscape: the nine themes" data-t-label="aria.landscape"></section>
-    <canvas class="plane" id="cv" role="img" aria-label="Provocations map: sixty prompts round the question, with the links between them. The Index tab has a text version." data-t-label="aria.canvas"></canvas>
-    <div class="niche-card" id="nichecard" role="note" hidden></div>
+    <section class="plane fmap off" id="regime" aria-label="Regime: one theme and its prompts" data-t-label="aria.regime"></section>
+    <section class="plane fmap off" id="niche" aria-label="Niche: one prompt and its sources" data-t-label="aria.niche"></section>
 
     <nav class="levels" id="levelbar" aria-label="Levels"></nav>
-    <button class="focus-chip" id="focuschip" type="button" hidden></button>
+    <button class="side-arrow prev" id="sidePrev" type="button" hidden></button>
+    <button class="side-arrow next" id="sideNext" type="button" hidden></button>
 
     <div class="fab-row">
       <button class="icon-btn" id="btnPanel" type="button" aria-label="Show or hide the explore panel" title="Explore panel" data-t-label="aria.panel">
@@ -54,11 +55,6 @@
     <button class="qcap" id="qcap" type="button" aria-label="Open the central question and how to read this map" data-t-label="aria.qcap"></button>
     <div class="notice" id="notice" role="status"></div>
 
-    <div class="zoom">
-      <button class="icon-btn" id="zIn" type="button" aria-label="Zoom in" title="Zoom in" data-t-label="aria.zoom_in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
-      <button class="icon-btn" id="zOut" type="button" aria-label="Zoom out" title="Zoom out" data-t-label="aria.zoom_out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
-      <button class="icon-btn" id="zFit" type="button" aria-label="Fit the whole map" title="Fit the whole map" data-t-label="aria.zoom_fit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V5h4M20 9V5h-4M4 15v4h4M20 15v4h-4"/></svg></button>
-    </div>
     <button class="peek" id="peek" type="button"></button>
 
     <div class="tip" id="tip" role="tooltip"></div>
@@ -71,13 +67,13 @@
 
 <noscript><p style="position:fixed;inset:80px 20px auto;max-width:560px;margin:auto;font-family:Georgia,serif;font-size:18px">This map needs JavaScript. Turn it on to explore the themes, prompts and examples.</p></noscript>
 
-<script src="graph-data.js?v=a50ca025"></script>
-<script src="examples-data.js?v=a50ca025"></script>
-<script src="assets/util.js?v=a50ca025"></script>
-<script src="assets/levels.js?v=a50ca025"></script>
-<script src="assets/view.js?v=a50ca025"></script>
-<script src="assets/landscape.js?v=a50ca025"></script>
-<script src="assets/panels.js?v=a50ca025"></script>
-<script src="assets/ui.js?v=a50ca025"></script>
+<script src="graph-data.js?v=16e4a654"></script>
+<script src="examples-data.js?v=16e4a654"></script>
+<script src="assets/util.js?v=16e4a654"></script>
+<script src="assets/levels.js?v=16e4a654"></script>
+<script src="assets/focusmap.js?v=16e4a654"></script>
+<script src="assets/landscape.js?v=16e4a654"></script>
+<script src="assets/panels.js?v=16e4a654"></script>
+<script src="assets/ui.js?v=16e4a654"></script>
 </body>
 </html>

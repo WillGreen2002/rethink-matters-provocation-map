@@ -57,6 +57,29 @@
     return u.LOGO[u.LOGO.length - 1][1];
   };
 
+  // each theme takes a colour from the logo's gradient, in ring order (the same colours on every level)
+  u.themeColor = (order, n) => u.logoColor(0.11 + 0.86 * (Math.max(0, order.indexOf(n)) / Math.max(1, order.length - 1)));
+  u.CHAPTER_TONE = [0.2, 0.6, 0.97];   // the three chapters take three points of the same gradient
+
+  // points spaced evenly along an ellipse (equal angles would crowd the sides of a wide one): fraction of the way round,
+  // clockwise from the top, to the angle that puts a point there
+  u.alongEllipse = function alongEllipse(Rx, Ry) {
+    const M = 720, s = [0];
+    let px = 0, py = -Ry, L = 0;
+    for (let j = 1; j <= M; j++) {
+      const a = -Math.PI / 2 + (2 * Math.PI * j) / M, x = Rx * Math.cos(a), y = Ry * Math.sin(a);
+      L += Math.hypot(x - px, y - py); s.push(L); px = x; py = y;
+    }
+    const at = (f) => {
+      const want = (((f % 1) + 1) % 1) * L;
+      let lo = 0, hi = M;
+      while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (s[mid] <= want) lo = mid; else hi = mid; }
+      return -Math.PI / 2 + (2 * Math.PI * (lo + (want - s[lo]) / (s[lo + 1] - s[lo] || 1))) / M;
+    };
+    at.length = L;
+    return at;
+  };
+
   u.MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   u.fmtDate = (iso) => {
     if (!iso) return "";

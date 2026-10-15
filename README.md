@@ -3,13 +3,13 @@
 An interactive map of what Rethink Matters has been discussing, around one central question
 (*"As we learn to engineer the living world, how can we ensure it is a world in which we want to live?"*, WEF, 2021).
 It sorts the group's discussions into **three levels**, borrowed from Frank Geels' multi-level perspective and used here as a
-snapshot of one point in time, not a model of change:
+snapshot of one point in time, not a model of change. You walk it from the top down, each step less abstract and more specific:
 
 | level | what it shows |
 |---|---|
 | **Landscape** (the big picture, the landing page) | the nine themes on a ring, the three chapters, the ties between themes, and a drafted future for each theme |
-| **Regime** (the prompts) | the sixty prompts and the links between them, with every discussion and note behind them; agencies such as ARIA help drive this level |
-| **Niche** (examples on the ground) | real examples linked to the prompts: papers, companies, products, pre-clinical and clinical work; empty until Rethink Matters adds checked rows |
+| **Regime** (one theme's prompts) | one theme at a time: its prompts and the links between them, with the other themes they reach further out; agencies such as ARIA help drive this level |
+| **Niche** (one prompt's sources) | one prompt at a time: the discussions where it was aired, the books suggested with it and real examples on the ground (papers, companies, products, pre-clinical and clinical work, once Rethink Matters adds checked rows), with the prompts it links to further out |
 
 Styled from rethinkmatters.org (colours, Inter + Spectral, and the visual grammar of the *Map of shared aims* on the About page).
 
@@ -40,14 +40,16 @@ The level and any focus go in the address; the open note goes after `#`:
 |---|---|
 | `…/` | the Landscape |
 | `…/?level=landscape#th:5` | the Landscape with theme 5's note open |
-| `…/?level=regime` | the Regime, all sixty prompts |
-| `…/?level=regime&focus=th:5` | the Regime showing only theme 5 (`focus=arc:matter-to-life` for a chapter) |
-| `…/?level=regime#n:hype-vs-evidence` | the Regime with a prompt's note open |
+| `…/?level=regime&focus=th:5` | the Regime on theme 5 |
+| `…/?level=regime&focus=th:8#n:hype-vs-evidence` | theme 8 with a prompt's note open (the focus can be left out: the prompt implies its theme) |
+| `…/?level=niche&focus=n:hype-vs-evidence` | the Niche on one prompt |
+| `…/?level=niche&focus=n:hype-vs-evidence#d:spudcells-hype` | the same, with a discussion's note open |
 | `…/?level=regime&walk=data-bottleneck` | a guided walk, from its first stop (`&stop=3` for the third) |
-| `…/?level=niche` | the Niche |
 
-Older links keep working: `#n:…`, `#d:…`, `#t:…` and `#b:…` open on the Regime; `#th:…`, `#arc:…` and `#c` open on the Landscape.
-The browser's Back button goes back up a level. With the level bar focused, keys **1**, **2** and **3** (or the arrow keys) switch level; **Esc** ends a walk, then closes a note, then clears a focus.
+Older links keep working: `#n:…` and `#t:…` open on the Regime (in the prompt's theme); `#d:…`, `#b:…` and `#ex:…` open on the Niche (under the first prompt
+they belong to); `#th:…`, `#arc:…` and `#c` open on the Landscape.
+The browser's Back button goes back up a level, or back across. With the level bar focused, keys **1**, **2** and **3** (or the arrow keys) switch level; **Esc** ends a
+walk, then closes a note.
 The copy-link button in a note always gives the full-page link (without `embed`).
 
 To update the live site after changing `curation/` (or the code in `site/assets/`):
@@ -126,23 +128,28 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
 
 ## What is on the map
 
-* **The level switcher** (top centre; a tab bar at the bottom on a phone) moves between the Landscape, the Regime and the Niche. The tab at the bottom of the map goes one level down.
-* **Words.** A *prompt* is one of the sixty (the sheet's provocation prompts); a *provocation* is what was put to a session, and a *discussion* holds it with what was said; a *note* is the panel that opens when you choose something.
+* **The level bar** (top centre; a tab bar at the bottom on a phone) is also the trail: *Landscape › Theme 5 · Medical & long-term safety › Hype vs evidence*. Click a step to go
+  back up. The tab at the bottom of the map goes one level down from whatever is open; the arrows at the sides move across, to the next theme or the next prompt in the theme.
+* **Words.** A *prompt* is one of the sixty (the sheet's provocation prompts); a *provocation* is what was put to a session, and a *discussion* holds it with what was said;
+  a *source* is what sits under a prompt on the Niche (its discussions, examples and books); a *note* is the panel that opens when you choose something.
 * **Landscape.** The question in the middle; the nine themes round it, **numbered 1 to 9 clockwise from the top right**. The numbers follow the ring, not the Bristol sheet (sheet
   theme 7 is map theme 5, and so on; each theme's note gives its sheet number, and `curation/` keeps the sheet's numbers; the ring order is `theme_order` in `curation/meta.yaml`).
   The three chapters, the Bookshelf's shelves (*how matter becomes life, how life becomes technology, how technology becomes society*), are coloured bands with their names in
   the gaps. Dashed lines join themes whose prompts are linked: at rest each theme's strongest tie and any tie of three links or more; point at a theme for all of them, with counts.
-  Click a theme for its note and its draft future; its "N prompts" pill goes down to the Regime showing only that theme. Click the question for the overall draft answer.
+  Click a theme for its note and its draft future; its "N prompts" pill goes down to the Regime on that theme. Click the question for the overall draft answer.
   On a phone the ring becomes a list of cards.
-* **Regime.** The sixty prompts, verbatim from the sheet, on an outer ring beside their theme. Colour shows the pillar (or the theme). At rest only the hand-written bridges
-  show, faintly; point at a prompt or theme and all of its connections light up in the colour of the relation: teal *echoes*, terracotta *in tension with*, olive *enables*,
-  ochre *leads on to*; dashed lines share tags or a discussion. *Show only* (left panel) narrows the map to one chapter, one theme or a pillar; the rest dims but stays in view.
-  More options holds what shows at rest, link strength and the discussions layer.
-* **Niche.** The same ring with the prompts as anchors and the examples hanging inward from them like beads, shaped by type (square paper, triangle company, diamond product,
-  ring pre-clinical, dot clinical, cross other). A prompt's note lists its examples; an example's note gives its source and the prompts it speaks to.
-* **Guided walks.** Eight curated paths that cross themes and end back at the question, then offer the big picture. Start one from the button at the top left, the hero
-  button, the Walks tab, a theme's note or the question's note.
-* **Index tab.** The same content as a plain list (also the accessible, no-canvas route). Every theme on the Landscape is a real button, so it works with a keyboard and a screen reader.
+* **Regime.** One theme in the middle and only its prompts round it (verbatim from the sheet, coloured by the pillar of the Rethink Matters mission each speaks to), with
+  the links between them. The other themes they reach sit further out as small numbered discs: point at a prompt and its links light up in the colour of the relation (teal
+  *echoes*, terracotta *in tension with*, olive *enables*, ochre *leads on to*; dashed lines share tags or a discussion), together with the themes it reaches; click a theme
+  further out to move across to it. Point at a prompt (or open it) and its "N sources" pill appears; it goes down to the Niche. The left panel can highlight one pillar.
+* **Niche.** One prompt in the middle with its sources round it: the discussions where it was aired (open one for the provocation and what the group said), the books
+  suggested with it, and examples shaped by type (square paper, triangle company, diamond product, ring pre-clinical, dot clinical, cross other). The prompts it links to sit
+  further out, in the colour of the relation; click one to move across.
+* **Narrow screens.** On a phone, and beside an open note when there is no room for a ring, the Regime and Niche become plain lists in the same order.
+* **Guided walks.** Eight curated paths that cross themes and end back at the question, then offer the big picture. They run through the Regime: each stop shows its
+  theme with the stop lit, and a gold line leads in from the previous stop and on to the next (through the theme it lies in, when that is another one). Start one from the
+  button at the top left, the hero button, the Walks tab, a theme's note or the question's note.
+* **Index tab.** Every chapter, theme and prompt as a plain list. Everything on every level is a real button, so the map works with a keyboard and a screen reader.
 
 ## Credits and sources
 

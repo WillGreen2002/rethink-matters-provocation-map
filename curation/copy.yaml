@@ -3,13 +3,13 @@
 # House style: plain words, one idea per sentence, UK spelling, sentence case, and no em dashes.
 # Glossary (one word, one meaning): theme = one of the nine; prompt = one of the sixty (the sheet's provocation prompts);
 # provocation = what a provocateur put to a session; discussion = a session's provocation and what was said (its notes);
-# note = the panel that opens when you choose something; chapter = one of the Bookshelf's three shelves;
-# example = a real case on the Niche; walk = a guided walk.
+# source = what sits under a prompt on the Niche (its discussions, examples and books); note = the panel that opens when you
+# choose something; chapter = one of the Bookshelf's three shelves; example = a real case on the Niche; walk = a guided walk.
 _meta: { status: draft, reviewed: null }
 
 hero:
   title: "Provocation map"
-  lede: "What Rethink Matters has been discussing, at three levels: the big picture, the prompts, and examples on the ground."
+  lede: "What Rethink Matters has been discussing, from the big picture down: the themes, each theme's prompts, and what sits under each prompt."
   stat_themes: "themes"
   stat_prompts: "prompts"
   stat_discussions: "discussions"
@@ -21,23 +21,20 @@ levels:
   landscape:
     name: "Landscape"
     short: "the big picture"
-    explain: "The nine themes and how they tie together. Choose one for its note and a draft future, or follow its arrow down to its prompts."
+    explain: "The nine themes and how they tie together. Choose one for its note and a draft future, or follow its arrow down into its prompts."
   regime:
     name: "Regime"
-    short: "the prompts"
-    explain: "The sixty prompts and the links between them. Point at one to light up its connections; click it for its note."
+    short: "one theme's prompts"
+    what: "Theme {n} · {label}"
+    explain: "One theme at a time: its prompts round it and the links between them, with the other themes they reach further out. Follow a prompt's arrow down to its sources, or choose a theme outside to move across."
     aria: "Agencies help drive this level: ARIA, for one, through its opportunity spaces."
   niche:
     name: "Niche"
-    short: "examples on the ground"
-    explain: "Real examples linked to the prompts: papers, companies, products, and pre-clinical and clinical work."
-    soon: "soon"
+    short: "one prompt's sources"
+    explain: "One prompt at a time: the discussions where it was aired, the books suggested with it and real examples on the ground, with the prompts it links to further out."
 
 links:
   bookshelf: "https://rethinkmatters.org/bookshelf"
-
-map:
-  center_lines: ["A world we", "want to", "live in"]   # the question's short name, as it sits in the middle of the Regime
 
 aria_link:
   text: "ARIA's opportunity spaces"
@@ -47,7 +44,7 @@ about:
   summary: "Why three levels?"
   body: |
     The levels borrow Frank Geels' multi-level perspective, which sorts change into a landscape, a regime and niches.
-    Here it is a way to sort the group's discussions at one point in time, a snapshot rather than a timeline.
+    Here it is a way to sort the group's discussions at one point in time, a snapshot rather than a timeline: each step down is less abstract and more specific.
   refs:
     - text: "Geels (2002), Technological transitions as evolutionary reconfiguration processes: a multi-level perspective and a case-study. Research Policy 31(8–9), 1257–1274"
       url: "https://doi.org/10.1016/S0048-7333(02)00062-8"
@@ -78,40 +75,16 @@ kinds:
   example: "Example"
 
 explore:
-  landscape_hint: "Choose a chapter or a theme to go down to its prompts."
-  show_title: "Show only"
-  chapters: "Chapter"
-  themes: "Theme"
-  pillar: "Pillar"
-  match: "{n} of {total} prompts shown"
-  match_none: "Try removing a filter."
-  match_notice: "{n} prompts shown, the rest dimmed"
-  clear: "Show everything"
-  fit: "Fit whole map"
-  colour_title: "Colour by"
-  colour_pillar: "Pillar"
-  colour_theme: "Theme"
-  colour_theme_hint: "Each theme takes a colour from the logo's gradient, in ring order."
-  legend: "Legend"
-  legend_lines: "Lit-up connections"
-  more: "More options"
-  rest_title: "While nothing is selected, show"
-  rest_none: "Quiet"
-  rest_bridges: "Bridges"
-  rest_all: "Every link"
-  rest_hint: "Bridges are the hand-written links, each with a reason. Point at a prompt and all its links light up anyway."
-  strength: "Link strength"
-  more_links: "More"
-  fewer_links: "Fewer"
-  link_count: "{n} links between prompts"
-  discussions: "Discussions"
-  discussions_sub: "Grey dots inside the ring: each provocation as it was aired, with its notes"
-
-focus:
-  prefix: "Showing only"
-  theme: "Theme {n} · {label}"
-  chapter: "{label}"
-  clear_label: "Showing only {what}. Show everything."
+  themes_title: "Go to a theme"
+  themes_hint: "Each opens on the Regime with its prompts."
+  theme_count: "{n} prompts"
+  pillar_title: "Highlight a pillar"
+  legend_title: "Key"
+  legend: "Key"
+  legend_lines: "Lit-up links"
+  legend_discussion: "Discussion"
+  legend_proposed: "Proposed provocation"
+  legend_book: "Book"
 
 relations:
   echoes: "echoes"
@@ -131,6 +104,7 @@ tip:
   theme: "Theme {n} · {count} prompts"
   theme_title: "Theme {n} · {label}"
   theme_landscape: "{n} prompts · click for its note"
+  theme_move: "Click to move to this theme"
   tag: "{facet} tag · {n} prompts"
   arc: "Chapter · {themes} themes, {prompts} prompts · click to open"
   center: "The question, our draft answer, and how to read this map"
@@ -142,18 +116,42 @@ landscape:
   center_question: "The question"
   center_answer: "The question and our draft answer"
 
+regime:
+  members_title: "Prompts in theme {n}"
+  nbs_title: "Themes they link to"
+  down: "{n} sources"
+  down_one: "1 source"
+  down_aria: "Go down to what sits under {label}"
+  nb_sub: "{n} links"
+  nb_one: "1 link"
+  nb_walk: "the walk goes on here"
+  nb_aria: "Theme {num}: {label}, {links}. Move to this theme."
+
+niche:
+  centre_kicker: "Prompt · theme {n}"
+  members_title: "Its sources"
+  nbs_title: "Prompts it links to"
+  kind_discussion: "Discussion · {when}"
+  kind_proposed: "Proposed provocation"
+  kind_book: "Book · {author}"
+  nb_sub: "Theme {n} · {rel}"
+  nb_aria: "{label}, theme {n}, {rel}. Move to this prompt."
+  empty_title: "Nothing gathered here yet"
+  empty_body: "No discussion, book or example sits under this prompt yet. The prompts it links to are further out."
+
 peek:
-  landscape: "Regime · {n} prompts"
-  regime: "Niche · {n} examples"
-  regime_none: "Niche · examples soon"
+  landscape: "Into theme {n} · {count} prompts"
+  regime: "Into {label} · {count} sources"
+  regime_one: "Into {label} · 1 source"
+
+side:
+  prev_theme: "Previous theme: {label}"
+  next_theme: "Next theme: {label}"
+  prev_prompt: "Previous prompt in this theme: {label}"
+  next_prompt: "Next prompt in this theme: {label}"
 
 qcap:
   cite: "World Economic Forum, 2021 · click for the question, our draft answer and how to read this map"
-
-niche:
-  empty_title: "Examples are on their way"
-  empty_body: "This level will hold real cases linked to the prompts. Rethink Matters adds them to a shared spreadsheet; each one goes up once a second person has checked it."
-  back: "Back to the prompts"
 
 ground:
   title: "On the ground"
@@ -173,7 +171,7 @@ future:
 walks:
   button: "Guided walks"
   cta: "Take a guided walk"
-  intro: "A guided walk is the quickest way in: a handful of prompts, in order, each handing on to the next, ending back at the question."
+  intro: "A guided walk is the quickest way in: a handful of prompts, in order, each handing on to the next, ending back at the question. It moves across themes as it goes."
   stops: "{n} stops"
   region: "Guided walk"
   end: "End walk"
@@ -197,8 +195,10 @@ note:
 topic:
   kind: "Prompt"
   crumb: "Theme {n} · {title}"
+  down: "Go down to its {n} sources"
+  down_one: "Go down to its 1 source"
   pillar: "Pillar"
-  pillar_tip: "Show only prompts on this pillar."
+  pillar_tip: "Highlight the prompts on this pillar."
   wg: "Working group"
   wg_proposed: "* proposed by the map: the sheets did not record it"
   value: "Value"
@@ -208,7 +208,7 @@ topic:
   connections_sub: "{cur} bridges · {der} through shared tags"
   also: "Also linked through shared tags and discussions"
   more: "Show {n} more"
-  no_links: "No strong links at the current strength."
+  no_links: "No strong links."
   discussions: "From the discussions"
   discussions_sub: "{n} · open one to read the provocation and what was said"
   no_discussions: "Added for the Bristol retreat; not yet tied to a recorded session."
@@ -219,8 +219,6 @@ theme:
   kind: "Theme {n} · {chapter}"
   crumb: "Chapter · {label}"
   down: "Go down to its {n} prompts"
-  focus_on: "Show only its {n} prompts"
-  focus_off: "Show everything again"
   sheet: "Theme {sheet} in the Bristol retreat sheet. The map numbers the themes in order round the ring."
   prompts: "Prompts"
   prompts_sub: "{n}: open one for its note"
@@ -233,13 +231,12 @@ arc:
   kind: "Chapter"
   crumb: "Chapters · the Bookshelf's three shelves"
   lede: "One of the three shelves of the Rethink Matters Bookshelf, and one of the map's three chapters: {themes} themes and {prompts} prompts, side by side on the ring."
-  down: "Go down to its {n} prompts"
-  focus_on: "Show only its {n} prompts"
   themes: "Themes in this chapter"
   theme_item: "Theme {n} · {title}"
   prompts_n: "{n} prompts"
+  down_theme: "Go down to the prompts in theme {n}: {label}"
   connects: "How it connects"
-  connects_sub: "links between prompts, at the current strength"
+  connects_sub: "links between prompts"
   inside: "{n} within this chapter"
   to: "{n} to {label}"
   shelf: "On this shelf"
@@ -253,12 +250,12 @@ center:
   answer: "Our draft answer"
   howto: "How to read this map"
   howto_items:
-    - "**Three levels, one snapshot.** The Landscape shows the nine themes, the Regime the sixty prompts, and the Niche real examples. Switch with the Landscape, Regime and Niche bar."
+    - "**Three levels, from the big picture down.** The Landscape shows the nine themes. Step into a theme and the Regime shows its prompts; step into a prompt and the Niche shows what sits under it. The bar at the top says where you are."
     - "**On the Landscape**, each theme has a draft future and an arrow down to its prompts. On a wide screen, dashed lines join themes whose prompts are linked; the thicker the line, the more links."
-    - "**On the Regime**, point at a prompt and its links light up: teal echoes, terracotta pulls in tension, olive enables, ochre leads on. Dashed lines share tags or a discussion."
-    - "**Click a prompt** for the provocation behind it, what the group said, and why it connects to the others."
-    - "**Colour** shows each prompt's pillar of the Rethink Matters mission, or its theme. Show only one chapter, theme or pillar from the Explore tab."
-    - "**A guided walk** is the quickest way in: a handful of prompts, in order, ending back at the question."
+    - "**On the Regime**, point at a prompt and its links light up: teal echoes, terracotta pulls in tension, olive enables, ochre leads on; dashed lines share tags or a discussion. The other themes it reaches sit further out: choose one to move across."
+    - "**On the Niche**, a prompt's discussions, books and examples sit round it, and the prompts it links to further out. Open a discussion for the provocation and what the group said."
+    - "**Colour** shows each prompt's pillar of the Rethink Matters mission. Highlight one pillar from the Explore tab."
+    - "**A guided walk** is the quickest way in: a handful of prompts, in order, moving across themes and ending back at the question."
   values: "Four values, one lens"
   values_n: "{n} prompts speak to this value"
   walks: "Guided walks"
@@ -303,17 +300,15 @@ example:
 
 hints:
   landscape: "Point at a theme to see what it ties to · click it for its note"
-  landscape_touch: "Tap a theme for its note · its arrow goes down to its prompts"
-  regime: "Point at a prompt to see what it connects to · click it to open its note"
-  regime_touch: "Tap a prompt to open its note · pinch to zoom"
-  niche: "Point at a prompt to see the examples hanging from it · click one to open it"
-  niche_touch: "Tap a prompt or an example to open it · pinch to zoom"
+  landscape_touch: "Tap a theme for its note · its arrow goes down into its prompts"
+  regime: "Point at a prompt to see its links · its arrow goes down to its sources"
+  regime_touch: "Tap a prompt for its note · its arrow goes down to its sources"
+  niche: "Choose a source for its note · a prompt further out moves you across"
+  niche_touch: "Tap a source for its note · the prompts it links to are below"
 
 aria:
   landscape: "Landscape: the nine themes round the question"
-  canvas: "Map of the sixty prompts round the question, with the links between them. The Index tab has a text version."
+  regime: "Regime: one theme, its prompts and the themes they reach"
+  niche: "Niche: one prompt, its sources and the prompts it reaches"
   panel: "Show or hide the explore panel"
   qcap: "Open the central question, our draft answer and how to read this map"
-  zoom_in: "Zoom in"
-  zoom_out: "Zoom out"
-  zoom_fit: "Fit the whole map"

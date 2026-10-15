@@ -7,27 +7,10 @@
   const { u } = RM;
   const h = u.h;
   const NS = "http://www.w3.org/2000/svg";
-  const CHAPTER_TONE = [0.2, 0.6, 0.97];   // as on the map of prompts
+  const CHAPTER_TONE = u.CHAPTER_TONE;
   const GAP = 0.9;                         // the gap before each chapter, in theme slots (its caption sits there)
   const svg = (tag, attrs) => { const el = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs || {})) el.setAttribute(k, v); return el; };
   const ease = (p) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
-  // positions spaced evenly along an ellipse (equal angles would crowd the sides of a wide one): fraction of the way round,
-  // clockwise from the top, to angle
-  function alongEllipse(Rx, Ry) {
-    const M = 720, s = [0];
-    let px = 0, py = -Ry, L = 0;
-    for (let j = 1; j <= M; j++) {
-      const a = -Math.PI / 2 + (2 * Math.PI * j) / M, x = Rx * Math.cos(a), y = Ry * Math.sin(a);
-      L += Math.hypot(x - px, y - py); s.push(L); px = x; py = y;
-    }
-    return (f) => {
-      const want = (((f % 1) + 1) % 1) * L;
-      let lo = 0, hi = M;
-      while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (s[mid] <= want) lo = mid; else hi = mid; }
-      return -Math.PI / 2 + (2 * Math.PI * (lo + (want - s[lo]) / (s[lo + 1] - s[lo] || 1))) / M;
-    };
-  }
-
   class Landscape {
     constructor(el, app, cb) {
       this.el = el; this.app = app; this.cb = cb || {};
@@ -162,7 +145,7 @@
       const Rx = Math.max(Ry * 0.82, Math.min(sw / 2 - rd - 18, Ry * 1.45, sw / 2 - capW - 26));
       const rc = u.clamp(Math.min(Rx, Ry) * 0.46, 54, 112);
       // clockwise from the top: a gap before each chapter for its name, then one slot per theme, all of equal length round the ring
-      const D = this.app.D, slot = 1 / (this.themes.length + GAP * D.arcs.length), at = alongEllipse(Rx, Ry);
+      const D = this.app.D, slot = 1 / (this.themes.length + GAP * D.arcs.length), at = u.alongEllipse(Rx, Ry);
       let cur = -(GAP * slot) / 2;
       const ang = new Map(), capAng = new Map(), bandAng = new Map();
       for (const a of D.arcs) {
@@ -197,7 +180,7 @@
       if (!this._ww.has(key)) {
         const c = (this._ctx = this._ctx || document.createElement("canvas").getContext("2d"));
         c.font = "600 100px Inter, system-ui, sans-serif";
-        this._ww.set(key, Math.max(...label.split(/\s+/).map((w) => c.measureText(w).width)) / 100);
+        this._ww.set(key, Math.max(...label.split(/\s+|(?<=-)/).map((w) => c.measureText(w).width)) / 100);
       }
       return this._ww.get(key);
     }

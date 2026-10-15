@@ -1,6 +1,6 @@
 # Build report
 
-Generated 2026-10-15 19:58
+Generated 2026-10-15 20:30
 
 - Themes 9 · topics 60 · discussions 43 (18 with notes) · semantic tags used 53 · books 21
 - Topic↔topic links stored: 301 (73 curated); shown at default threshold (6.0): 105

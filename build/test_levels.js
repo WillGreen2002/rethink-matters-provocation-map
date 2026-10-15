@@ -7,9 +7,9 @@ const p = (url) => { const i = url.indexOf("#"), s = i < 0 ? url : url.slice(0, 
 // old links keep working: a bare item opens where it lives
 assert.deepStrictEqual(p(""), { level: "landscape", focus: null, walk: null, stop: null, id: null, embed: false });
 assert.strictEqual(p("#n:hype-vs-evidence").level, "regime");
-assert.strictEqual(p("#d:some-discussion").level, "regime");
+assert.strictEqual(p("#d:some-discussion").level, "niche");
 assert.strictEqual(p("#t:tension/x").level, "regime");
-assert.strictEqual(p("#b:a-book").level, "regime");
+assert.strictEqual(p("#b:a-book").level, "niche");
 assert.strictEqual(p("#th:5").level, "landscape");
 assert.strictEqual(p("#arc:matter-to-life").level, "landscape");
 assert.strictEqual(p("#c").level, "landscape");
@@ -23,6 +23,10 @@ assert.strictEqual(p("?stop=3").stop, null, "a stop needs a walk");
 assert.strictEqual(p("?walk=w&stop=0").stop, null);
 assert.strictEqual(p("?walk=w&stop=x").stop, null);
 assert.strictEqual(p("?level=niche").level, "niche");
+assert.strictEqual(p("?level=niche&focus=n:hype-vs-evidence").focus, "n:hype-vs-evidence", "the Niche focuses on a prompt");
+assert.strictEqual(p("?level=niche&focus=th:5").focus, null, "...not a theme");
+assert.strictEqual(p("?level=regime&focus=n:x").focus, null, "the Regime focuses on a theme");
+assert.strictEqual(p("?level=regime&focus=arc:matter-to-life").focus, null, "chapters stay on the Landscape");
 assert.strictEqual(p("?level=bogus#th:2").level, "landscape");
 assert.strictEqual(p("?level=regime&focus=evil()").focus, null);
 assert.strictEqual(p("?level=landscape&focus=th:5").focus, null, "the Landscape has no focus");
@@ -34,7 +38,7 @@ assert.strictEqual(p("#%E0%A4%A").id, null, "a malformed hash is ignored, not th
 assert.strictEqual(L.href({ level: "landscape" }), "");
 assert.strictEqual(L.href({ level: "landscape", id: "th:5" }), "?level=landscape#th:5");
 assert.strictEqual(L.href({ level: "regime" }), "?level=regime");
-assert.strictEqual(L.href({ level: "regime", focus: "arc:matter-to-life", id: "n:x" }), "?level=regime&focus=arc:matter-to-life#n:x");
+assert.strictEqual(L.href({ level: "niche", focus: "n:x", id: "d:y" }), "?level=niche&focus=n:x#d:y");
 assert.strictEqual(L.href({ level: "landscape", focus: "th:3" }), "", "focus is dropped on the Landscape");
 assert.strictEqual(L.href({ level: "landscape", walk: "w" }), "?level=regime&walk=w");
 assert.strictEqual(L.href({ level: "regime", walk: "w", stop: 1 }), "?level=regime&walk=w", "stop 1 is the default");
@@ -43,7 +47,7 @@ assert.strictEqual(L.href({ level: "regime", stop: 4 }), "?level=regime", "no st
 assert.strictEqual(L.href({ level: "niche", embed: true }), "?level=niche&embed=1");
 
 // round trips
-for (const s of [{ level: "regime", focus: "th:9", id: "n:a" }, { level: "niche", id: "ex:b" }, { level: "landscape", id: "c" }, { level: "regime", walk: "w", stop: 5, id: "n:c" }]) {
+for (const s of [{ level: "regime", focus: "th:9", id: "n:a" }, { level: "niche", focus: "n:a", id: "ex:b" }, { level: "landscape", id: "c" }, { level: "regime", walk: "w", stop: 5, id: "n:c" }]) {
   const url = L.href(s), back = p(url);
   assert.strictEqual(back.level, s.walk ? "regime" : s.level, url);
   assert.strictEqual(back.id, s.id || null, url);
@@ -55,6 +59,6 @@ for (const s of [{ level: "regime", focus: "th:9", id: "n:a" }, { level: "niche"
 // which level can open which note
 assert.ok(L.shows("landscape", "th:1") && L.shows("landscape", "c") && L.shows("landscape", "arc:x"));
 assert.ok(!L.shows("landscape", "n:x") && !L.shows("landscape", "ex:x"));
-assert.ok(L.shows("regime", "n:x") && L.shows("regime", "t:a/b") && L.shows("regime", "th:2") && !L.shows("regime", "ex:x"));
-assert.ok(L.shows("niche", "ex:x") && L.shows("niche", "n:x") && !L.shows("niche", "th:2"));
+assert.ok(L.shows("regime", "n:x") && L.shows("regime", "t:a/b") && L.shows("regime", "th:2") && !L.shows("regime", "ex:x") && !L.shows("regime", "d:x"));
+assert.ok(L.shows("niche", "ex:x") && L.shows("niche", "n:x") && L.shows("niche", "d:x") && L.shows("niche", "b:x") && !L.shows("niche", "th:2"));
 console.log("test_levels: all passed");

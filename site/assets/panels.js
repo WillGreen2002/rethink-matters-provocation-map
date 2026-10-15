@@ -60,7 +60,7 @@
   function examplesLine(app, ids, topicId) {
     const wrap = h("div", { class: "ground" });
     if (!ids.length) { wrap.append(h("p", { class: "md faint" }, u.t("ground.none"))); return wrap; }
-    if (topicId) wrap.append(h("button", { type: "button", class: "btn", onclick: () => { app.goLevel("niche"); app.select(topicId); } }, h("span", { "aria-hidden": "true" }, "↓ "), u.t("ground.some", { n: ids.length })));
+    if (topicId) wrap.append(h("button", { type: "button", class: "btn", onclick: () => app.drill(topicId) }, h("span", { "aria-hidden": "true" }, "↓ "), u.t("ground.some", { n: ids.length })));
     wrap.append(h("div", { class: "chips" }, ids.map((id) => nodeLink(app, id))));
     return wrap;
   }
@@ -111,6 +111,8 @@
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), u.t("topic.kind")));
     body.append(h("h1", null, n.label));
     body.append(h("p", { class: "prompt", style: { "--c": color } }, n.text));
+    if (app.level() === "regime") body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) },
+      h("span", { "aria-hidden": "true" }, "↓ "), app.sourceCount(n.id) === 1 ? u.t("topic.down_one") : u.t("topic.down", { n: app.sourceCount(n.id) })));
     body.append(h("div", { class: "lens-row" }, h("span", null, u.t("topic.pillar")), h("div", { class: "chips" }, n.pillar.map((v) => pillarChip(app, v)))));
     put(body, metaLine(app, n.wg, n.wgProposed, n.value));
 
@@ -159,7 +161,7 @@
 
   /* ---------------------------------------------------------------- theme */
   function theme(app, n) {
-    const arc = app.D.arcs.find((a) => a.id === n.arc), color = app.colorOf(n.id), S = app.S;
+    const arc = app.D.arcs.find((a) => a.id === n.arc), color = app.colorOf(n.id);
     const ts = n.topics.map((id) => app.byId.get(id)).sort((a, b) => a.order - b.order);
     const body = h("div");
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), u.t("theme.kind", { n: n.n, chapter: arc.label })));
@@ -167,8 +169,6 @@
     body.append(h("p", { class: "prompt", style: { "--c": color } }, n.lead));
     // down to its prompts (from the Landscape), or show only them (on the map itself)
     if (app.level() === "landscape") body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) }, h("span", { "aria-hidden": "true" }, "↓ "), u.t("theme.down", { n: ts.length })));
-    else body.append(h("button", { type: "button", class: "btn down-btn" + (S.focus === n.id ? " on" : ""), "data-k": "down", onclick: () => app.drill(S.focus === n.id ? null : n.id) },
-      S.focus === n.id ? u.t("theme.focus_off") : u.t("theme.focus_on", { n: ts.length })));
     put(body, future(app, n.future, u.t("future.title"), n.future && n.future.evidence === "thin" ? u.t("future.theme_note_thin") : u.t("future.theme_note")));
     if (n.sheet && n.sheet !== n.n) body.append(h("p", { class: "cite" }, u.t("theme.sheet", { sheet: n.sheet })));
     body.append(h("h2", null, u.t("theme.prompts"), h("small", null, u.t("theme.prompts_sub", { n: ts.length }))));
@@ -204,19 +204,18 @@
 
   /* ---------------------------------------------------------------- chapter (one of the Bookshelf's three shelves) */
   function arc(app, n) {
-    const body = h("div"), color = app.colorOf(n.id), S = app.S;
+    const body = h("div"), color = app.colorOf(n.id);
     const ths = n.themes.map((x) => app.byId.get("th:" + x)).filter(Boolean);
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), u.t("arc.kind")));
     body.append(h("h1", null, n.label));
     body.append(h("p", { class: "prompt plain", style: { "--c": color } }, u.t("arc.lede", { themes: ths.length, prompts: n.topics.length })));
-    if (app.level() === "landscape") body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) }, h("span", { "aria-hidden": "true" }, "↓ "), u.t("arc.down", { n: n.topics.length })));
-    else body.append(h("button", { type: "button", class: "btn down-btn" + (S.focus === n.id ? " on" : ""), "data-k": "down", onclick: () => app.drill(S.focus === n.id ? null : n.id) },
-      S.focus === n.id ? u.t("theme.focus_off") : u.t("arc.focus_on", { n: n.topics.length })));
     body.append(h("h2", null, u.t("arc.themes")));
-    ths.forEach((t) => body.append(h("button", { type: "button", class: "rel-item", onclick: () => app.select(t.id) },
-      h("div", { class: "rt" }, h("i", { style: { "--c": app.colorOf(t.id) } }), h("span", null, u.t("arc.theme_item", { n: t.n, title: t.title })),
-        h("span", { class: "ty faint" }, u.t("arc.prompts_n", { n: t.topics.length }))),
-      h("p", { class: "why" }, t.lead))));
+    ths.forEach((t) => body.append(h("div", { class: "rel-row" },
+      h("button", { type: "button", class: "rel-item", onclick: () => app.select(t.id) },
+        h("div", { class: "rt" }, h("i", { style: { "--c": app.colorOf(t.id) } }), h("span", null, u.t("arc.theme_item", { n: t.n, title: t.title }))),
+        h("p", { class: "why" }, t.lead)),
+      h("button", { type: "button", class: "btn down-mini", "aria-label": u.t("arc.down_theme", { n: t.n, label: t.label }), onclick: () => app.drill(t.id) },
+        u.t("arc.prompts_n", { n: t.topics.length }), h("span", { "aria-hidden": "true" }, " ↓")))));
     const r = app.chapterReach(n.arc);
     body.append(h("h2", null, u.t("arc.connects"), h("small", null, u.t("arc.connects_sub"))));
     body.append(h("div", { class: "chips" },
