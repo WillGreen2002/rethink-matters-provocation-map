@@ -12,7 +12,7 @@
   const PAPER = "#FAF8F3", INK = "#22211C", FAINT = "#6B675C", THREAD = "#666666", NONE = "#9C978A", GOLD = "#C9963F";
   const FACET_COLOR = { tension: "#A04340", concept: "#48909F", barrier: "#7F8C64", domain: "#D9A441", method: "#8A8577" };
   const REL_COLOR = { echoes: "#2F6B63", tension: "#B65438", enables: "#5B6B3C", extends: "#9A6F1F" };
-  const RANK = { arc: -1, tag: 0, book: 1, discussion: 2, topic: 3, theme: 4, center: 5 };
+  const RANK = { arc: -1, tag: 0, book: 1, discussion: 2, example: 2.5, topic: 3, theme: 4, center: 5 };
   // the three chapters (the Bookshelf's shelves) take three points of the logo's gradient, in reading order
   const CHAPTER_TONE = [0.2, 0.6, 0.97];
 
@@ -22,7 +22,8 @@
   const GAP_ARC = 1.9, GAP_SPLIT = 1.1;    // ... where a chapter opens (room for its name), and where one carries on from the other column
   const SPAN = (62 * Math.PI) / 180;       // the two columns stop this far either side of the horizontal, so the top and bottom stay open
   const HUB_ORBIT = 0.6, DISC_ORBIT = 0.84;
-  const RADIUS = { center: 66, theme: 44, topic: 5.4, discussion: 3.4, tag: 4, book: 4, arc: 0 };
+  const RADIUS = { center: 66, theme: 44, topic: 5.4, discussion: 3.4, tag: 4, book: 4, arc: 0, example: 4.6 };
+  const BEAD = 13.5;                       // pitch between the examples strung inward from a prompt (Niche level)
   const LABEL_GAP = 8;                     // px between a prompt and its label
   const ROOM_MAX = 18.5, ROOM_MIN = 9.5;   // longest prompt label, in ems; on a cramped screen long labels are shortened (…) down to
                                            // ROOM_MIN rather than hidden
@@ -44,6 +45,9 @@
       this.layers = { disc: false, rest: "bridges" };   // rest: connections drawn while nothing is in focus, "none" | "bridges" | "all"
       this.minScore = D.defaultMinScore;
       this.match = null;
+      this.matchEdge = "both";   // under a filter a link stays lit when "both" its ends match, or "either" (focus on a theme or chapter)
+      this.niche = false;        // the Niche level: prompts become anchors with their examples strung inward; themes and links rest
+      this.paused = false;       // another level is showing: no frames are drawn
       this.hover = null;
       this.sel = null;
       this.thread = null;
@@ -63,7 +67,7 @@
       this.fit(false);
       this.born = performance.now();
       this.loop = this.loop.bind(this);
-      requestAnimationFrame(this.loop);
+      this._raf = requestAnimationFrame(this.loop);
     }
 
     /* ------------------------------------------------------------------ graph */
@@ -120,6 +124,7 @@
         else if (n.kind === "arc") n.colors = [this.arcColor(n.d.arc)];
         else n.colors = [INK];
       }
+      for (const n of this.nodes) if (n.kind === "example") { const t = this.byId.get(n.topicIds[0]); n.colors = t ? [t.colors[0]] : [FAINT]; }
       this.dirty = true;
     }
 
@@ -210,6 +215,17 @@
       }
       this.spread(discs, DISC_ORBIT, 2 * RADIUS.discussion + 7);
       for (const d of discs) target.set(d, [DISC_ORBIT * Rx * Math.cos(d.ang), DISC_ORBIT * Ry * Math.sin(d.ang)]);
+      // examples (the Niche level) strung inward from the first prompt they speak to, like beads
+      const strung = new Map();
+      for (const e of this.nodes) {
+        if (e.kind !== "example") continue;
+        const t = this.byId.get(e.topicIds[0]), at = t && target.get(t);
+        if (!at) continue;
+        const i = strung.get(t) || 0, d = Math.hypot(at[0], at[1]) || 1, step = RADIUS.topic + 8 + BEAD * i;
+        strung.set(t, i + 1);
+        target.set(e, [at[0] - (at[0] / d) * step, at[1] - (at[1] / d) * step]);
+        e.side = t.side;
+      }
       // tags and books are not drawn; they sit at the middle of their prompts for framing
       for (const n of this.nodes) {
         if (target.has(n)) continue;
@@ -260,7 +276,7 @@
       themes.forEach((th, i) => { th.delay = 160 + 70 * i; });
       for (const n of this.nodes) {
         if (n.kind === "topic") n.delay = 520 + 13 * n.clock;
-        else if (n.kind === "discussion") n.delay = 1300;
+        else if (n.kind === "discussion" || n.kind === "example") n.delay = 1300;
       }
       for (const l of this.links) l.delay = Math.max(l.a.delay, l.b.delay) + 160;
     }
@@ -271,18 +287,25 @@
       if ("mode" in opts && opts.mode !== this.mode) this.setMode(opts.mode);
       if ("layers" in opts) { Object.assign(this.layers, opts.layers); rebuild = true; }
       if ("minScore" in opts) { this.minScore = opts.minScore; rebuild = true; }
+      if ("niche" in opts && !!opts.niche !== this.niche) { this.niche = !!opts.niche; rebuild = true; }
+      if ("matchEdge" in opts) { this.matchEdge = opts.matchEdge; this._near = null; }
       if (rebuild) this.rebuild();
       this.dirty = true;
     }
     rebuild() {
       const L = this.layers, adj = new Map();
       const link = (a, b) => { (adj.get(a.id) || adj.set(a.id, []).get(a.id)).push(b.id); (adj.get(b.id) || adj.set(b.id, []).get(b.id)).push(a.id); };
-      for (const n of this.nodes) { n.vis = n.kind === "center" || n.kind === "theme" || n.kind === "topic" || (n.kind === "discussion" && L.disc); n.deg = 0; }
+      const N = this.niche;
+      for (const n of this.nodes) {
+        n.vis = N ? n.kind === "topic" || n.kind === "example" : n.kind === "center" || n.kind === "theme" || n.kind === "topic" || (n.kind === "discussion" && L.disc);
+        n.deg = 0;
+      }
       for (const l of this.links) {
         let on = false;
-        if (l.kind === "hier") on = true;
-        else if (l.kind === "rel") on = l.curated || l.score >= this.minScore;
-        else if (l.kind === "src") on = L.disc;
+        if (l.kind === "hier") on = !N;
+        else if (l.kind === "rel") on = !N && (l.curated || l.score >= this.minScore);
+        else if (l.kind === "src") on = !N && L.disc;
+        else if (l.kind === "ex") on = N;
         // tag → prompt and book → prompt links are never drawn: opening a tag or a book lights up its prompts instead
         l.on = on;
         l.vis = on && l.a.vis && l.b.vis;
@@ -292,13 +315,38 @@
       // better-connected prompts are a touch larger
       for (const n of this.nodes) if (n.kind === "topic") n.r = n.base + Math.min(2.4, n.deg * 0.2);
       this.adj = adj;
+      this._near = null;
       this.dirty = true;
     }
 
     /* ------------------------------------------------------------------ state setters + focus */
     setSelected(id) { this.sel = id; this.dirty = true; }
     setHover(id) { if (id !== this.hover) { this.hover = id; this.dirty = true; } }
-    setMatch(set) { this.match = set; this.dirty = true; }
+    setMatch(set) { this.match = set; this._near = null; this.dirty = true; }
+    /* stop drawing while another level shows; at most one animation frame is ever pending */
+    pause() { this.paused = true; }
+    resume() {
+      if (!this.paused) return;
+      this.paused = false; this.dirty = true;
+      if (!this._raf) this._raf = requestAnimationFrame(this.loop);
+    }
+    /* play the opening sweep again (the first time the visitor comes down from the Landscape) */
+    replayIntro() {
+      if (this.reduced) return;
+      this.born = performance.now();
+      for (const n of this.nodes) n.alpha = 0;
+      for (const l of this.links) l.alpha = 0;
+      this.dirty = true;
+    }
+    /* under a focus, what links straight to it stays half-lit */
+    nearMatch() {
+      if (!this.match || this.matchEdge !== "either") return null;
+      if (!this._near) {
+        this._near = new Set();
+        for (const id of this.match) for (const nb of this.adj.get(id) || []) this._near.add(nb);
+      }
+      return this._near;
+    }
     setThread(steps, idx) { this.thread = steps ? { steps, idx: idx || 0 } : null; this.dirty = true; }
     setInsets(i) { Object.assign(this.insets, i); }
     matchOf(n) {
@@ -543,7 +591,8 @@
 
     /* ------------------------------------------------------------------ frame loop */
     loop(now) {
-      requestAnimationFrame(this.loop);
+      if (this.paused) { this._raf = 0; return; }
+      this._raf = requestAnimationFrame(this.loop);
       let busy = false;
       if (this.anim) {
         const a = this.anim, p = u.clamp((now - a.t0) / a.dur, 0, 1), e = ease(p);
@@ -560,11 +609,11 @@
       const age = now - this.born, settled = this.reduced || age > 3200;
       const intro = (d) => (settled ? 1 : ease(u.clamp((age - d) / 460, 0, 1)));
       if (!settled) busy = true;
-      const F = (this._F = this.focusInfo());
+      const F = (this._F = this.focusInfo()), near = this.nearMatch();
       for (const n of this.nodes) {
         let ta = n.vis ? intro(n.delay) : 0;
         if (n.vis && F && !F.nodes.has(n.id)) ta = Math.min(ta, n.kind === "theme" ? 0.4 : 0.14);
-        if (n.vis && this.match && !this.matchOf(n)) ta = Math.min(ta, n.kind === "theme" ? 0.4 : 0.13);
+        if (n.vis && this.match && !this.matchOf(n)) ta = Math.min(ta, n.kind === "theme" ? 0.4 : near && near.has(n.id) ? 0.42 : 0.13);
         const ts = n.id === this.sel ? 1.3 : n.id === this.hover ? 1.22 : 1;
         if (this.reduced) { busy = busy || n.alpha !== ta || n.sc !== ts; n.alpha = ta; n.sc = ts; continue; }   // no fades for reduced motion
         const d = ta - n.alpha;
@@ -573,7 +622,7 @@
       }
       for (const l of this.links) {
         let ta = l.vis ? this.linkTarget(l, F) * intro(l.delay) : 0;
-        if (ta && this.match && !(this.matchOf(l.a) && this.matchOf(l.b))) ta = Math.min(ta, 0.12);
+        if (ta && this.match && !(this.matchEdge === "either" ? this.matchOf(l.a) || this.matchOf(l.b) : this.matchOf(l.a) && this.matchOf(l.b))) ta = Math.min(ta, 0.12);
         if (this.reduced) { busy = busy || l.alpha !== ta; l.alpha = ta; continue; }
         const d = ta - l.alpha;
         if (Math.abs(d) > 0.004) { l.alpha += d * 0.2; busy = true; } else l.alpha = ta;
@@ -675,6 +724,12 @@
         } else if (l.kind === "src") {
           const d = l.a.kind === "discussion" ? l.a : l.b, t = d === l.a ? l.b : l.a;
           ctx.moveTo(d.x, d.y); ctx.lineTo(t.x, t.y); w = 0.8; al *= this.hot(l, F) ? 0.7 : 0.3;
+        } else if (l.kind === "ex") {
+          // the string from a prompt to its beads; an example that also speaks to other prompts reaches them with a bow inwards
+          const e = l.a.kind === "example" ? l.a : l.b, t = e === l.a ? l.b : l.a;
+          if (e.topicIds[0] === t.id) { ctx.moveTo(t.x, t.y); ctx.lineTo(e.x, e.y); w = 1; al *= this.hot(l, F) ? 0.8 : 0.42; }
+          else { ctx.moveTo(e.x, e.y); ctx.quadraticCurveTo((e.x + t.x) * 0.32, (e.y + t.y) * 0.32, t.x, t.y); w = 0.8; al *= this.hot(l, F) ? 0.7 : 0.16; dash = [3, 4]; }
+          col = e.colors[0];
         } else continue;
         ctx.strokeStyle = u.rgba(col, Math.min(1, al));
         ctx.lineWidth = w / k;
@@ -723,6 +778,16 @@
           ctx.fillStyle = u.rgba(n.colors[0], n.id === this.sel ? 0.2 : 0.1); ctx.fill();
           ctx.lineWidth = 2.6; this.ringSegments(ctx, n, r - 1.3, 1);
           if (n.id === this.sel) { ctx.lineWidth = 1.4 / k; ctx.strokeStyle = u.rgba(n.colors[0], 0.5); ctx.beginPath(); ctx.arc(n.x, n.y, r + 5 / k, 0, TAU); ctx.stroke(); }
+        } else if (n.kind === "topic" && this.niche) {
+          // an anchor: the prompt is named, its examples hang from it
+          ctx.globalAlpha = Math.min(1, a * 3);
+          ctx.fillStyle = PAPER; ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, TAU); ctx.fill();
+          ctx.globalAlpha = a; ctx.lineWidth = 1.5; ctx.strokeStyle = u.rgba(n.colors[0], 0.9); ctx.stroke();
+          if (n.id === this.sel) { ctx.lineWidth = 1.4 / k; ctx.strokeStyle = u.rgba(n.colors[0], 0.55); ctx.beginPath(); ctx.arc(n.x, n.y, r + 4.5 / k, 0, TAU); ctx.stroke(); }
+        } else if (n.kind === "example") {
+          ctx.globalAlpha = a;
+          this.bead(ctx, n, r);
+          if (n.id === this.sel) { ctx.lineWidth = 1.4 / k; ctx.strokeStyle = u.rgba(INK, 0.5); ctx.beginPath(); ctx.arc(n.x, n.y, r + 4 / k, 0, TAU); ctx.stroke(); }
         } else if (n.kind === "topic") {
           ctx.globalAlpha = Math.min(1, a * 3);
           ctx.fillStyle = PAPER; ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, TAU); ctx.fill();
@@ -739,6 +804,20 @@
         }
         ctx.globalAlpha = 1;
       }
+    }
+    /* an example's shape says what kind of thing it is (curation/meta.yaml example_types) */
+    bead(ctx, n, r) {
+      const shape = ((this.D.exampleTypes || {})[n.d.type] || {}).shape || "dot", c = n.colors[0], x = n.x, y = n.y;
+      ctx.fillStyle = PAPER; ctx.beginPath(); ctx.arc(x, y, r + 1.2, 0, TAU); ctx.fill();
+      ctx.fillStyle = c; ctx.strokeStyle = c; ctx.lineWidth = 1.4; ctx.lineJoin = "round"; ctx.lineCap = "round";
+      ctx.beginPath();
+      if (shape === "square") { const s = r * 0.86; ctx.rect(x - s, y - s, 2 * s, 2 * s); ctx.fill(); }
+      else if (shape === "diamond") { const s = r * 1.15; ctx.moveTo(x, y - s); ctx.lineTo(x + s, y); ctx.lineTo(x, y + s); ctx.lineTo(x - s, y); ctx.closePath(); ctx.fill(); }
+      else if (shape === "triangle") { const s = r * 1.15; ctx.moveTo(x, y - s); ctx.lineTo(x + s * 0.94, y + s * 0.62); ctx.lineTo(x - s * 0.94, y + s * 0.62); ctx.closePath(); ctx.fill(); }
+      else if (shape === "ring") { ctx.arc(x, y, r - 0.7, 0, TAU); ctx.stroke(); }
+      else if (shape === "cross") { const s = r * 0.8; ctx.moveTo(x - s, y - s); ctx.lineTo(x + s, y + s); ctx.moveTo(x + s, y - s); ctx.lineTo(x - s, y + s); ctx.stroke(); }
+      else { ctx.arc(x, y, r, 0, TAU); ctx.fill(); }
+      ctx.lineCap = "butt";
     }
     drawThreadPath(ctx) {
       if (!this.thread) return;
@@ -862,6 +941,42 @@
           ctx.textAlign = "left";
           ctx.lineWidth = 3.4; ctx.strokeStyle = u.rgba(PAPER, 0.92); ctx.strokeText(text, x, sy);
           ctx.fillStyle = u.rgba(FAINT, n.alpha); ctx.fillText(text, x, sy);
+        }
+      }
+
+      // examples (Niche level): named when pointed at or in focus; the names of the beads on one string are stacked beside its
+      // innermost bead, inward (away from the prompt labels), each joined to its bead by a short leader
+      if (this.niche) {
+        const strings = new Map();
+        for (const n of this.nodes) {
+          if (n.kind !== "example" || !n.vis || n.alpha < 0.3) continue;
+          if (!(n.id === this.hover || n.id === this.sel || (F && F.nodes.has(n.id)))) continue;
+          (strings.get(n.topicIds[0]) || strings.set(n.topicIds[0], []).get(n.topicIds[0])).push(n);
+        }
+        ctx.font = `500 ${Math.max(10.5, fs - 0.5)}px Inter, system-ui, sans-serif`;
+        ctx.textAlign = "left";
+        for (const [tid, list] of strings) {
+          const t = this.byId.get(tid), side = list[0].side, out = (n) => Math.hypot(n.x - t.x, n.y - t.y);
+          list.sort((a, b) => out(a) - out(b));
+          const inner = list[list.length - 1], [ix] = this.toScreen(inner.x, inner.y), r = inner.r * k;
+          const x0 = side > 0 ? ix - r - 12 : ix + r + 12;
+          const ys = list.map((n) => this.toScreen(n.x, n.y)[1]), mid = ys.reduce((s, y) => s + y, 0) / ys.length;
+          list.forEach((n, i) => {
+            const [sx, sy] = this.toScreen(n.x, n.y), y = list.length > 1 ? mid + (i - (list.length - 1) / 2) * 16 : sy;
+            let text = n.d.label;
+            if (ctx.measureText(text).width > 230) { while (text.length > 8 && ctx.measureText(text + "…").width > 230) text = text.slice(0, -1); text = text.trimEnd() + "…"; }
+            const tw = ctx.measureText(text).width, x = side > 0 ? x0 - tw : x0;
+            const rect = { x, y: y - 8, w: tw, h: 16 };
+            if (!free(rect) && n.id !== this.hover && n.id !== this.sel) return;
+            placed.push(rect);
+            this.labelHits.push(Object.assign({ id: n.id }, rect));
+            if (list.length > 1) {
+              ctx.strokeStyle = u.rgba(FAINT, 0.45 * n.alpha); ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(side > 0 ? x0 + 4 : x0 - 4, y); ctx.stroke();
+            }
+            ctx.lineWidth = 3.4; ctx.strokeStyle = u.rgba(PAPER, 0.92); ctx.strokeText(text, x, y);
+            ctx.fillStyle = u.rgba(INK, (n.id === this.sel || n.id === this.hover ? 1 : 0.86) * n.alpha); ctx.fillText(text, x, y);
+          });
         }
       }
 

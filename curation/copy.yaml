@@ -1,4 +1,310 @@
 # Every piece of wording the map shows, in one place, so Rethink Matters can edit it without touching code.
 # The site reads these by key (e.g. levels.regime.name). Words in {curly brackets} are filled in by the site: keep them.
 # House style: plain words, one idea per sentence, UK spelling, sentence case, and no em dashes.
+# Glossary (one word, one meaning): theme = one of the nine; prompt (or provocation) = one of the sixty; chapter = one of the
+# Bookshelf's three shelves; discussion = a session's provocation and notes; example = a real case on the Niche; walk = a guided walk.
 _meta: { status: draft, reviewed: null }
+
+hero:
+  title: "Provocation map"
+  lede: "What Rethink Matters has been discussing, at three levels: the big picture, the provocations, and examples on the ground."
+  stat_themes: "themes"
+  stat_prompts: "prompts"
+  stat_discussions: "discussions"
+
+levels:
+  nav_label: "Levels"
+  key_hint: "Key {key}"
+  announce: "{name}: {what}"
+  landscape:
+    name: "Landscape"
+    short: "the big picture"
+    explain: "The nine themes and how they tie together. Choose one for its note and a draft future, or follow its arrow down to its provocations."
+  regime:
+    name: "Regime"
+    short: "the provocations"
+    explain: "The sixty provocations and the links between them. Point at one to light up its connections; click it for the notes behind it."
+    aria: "Agencies help drive this level: ARIA, for one, through its opportunity spaces."
+  niche:
+    name: "Niche"
+    short: "examples on the ground"
+    explain: "Real examples linked to the provocations: papers, companies, products, and pre-clinical and clinical work."
+    soon: "soon"
+
+aria_link:
+  text: "ARIA's opportunity spaces"
+  url: "https://www.aria.org.uk/opportunity-spaces/"
+
+about:
+  summary: "Why three levels?"
+  body: |
+    The levels borrow Frank Geels' multi-level perspective, which sorts change into a landscape, a regime and niches.
+    Here it is a way to sort the group's discussions at one point in time, a snapshot rather than a timeline.
+  refs:
+    - text: "Geels (2002), Technological transitions as evolutionary reconfiguration processes: a multi-level perspective and a case-study. Research Policy 31(8–9), 1257–1274"
+      url: "https://doi.org/10.1016/S0048-7333(02)00062-8"
+    - text: "Geels (2026), The multi-level perspective on sustainability transitions. In Wesche and Hendriks (eds), Introduction to Sustainability Transitions Research. Cambridge University Press, 15–33"
+      url: "https://doi.org/10.1017/9781009437318.004"
+
+left:
+  label: "Explore the map"
+
+search:
+  placeholder: "Search themes, prompts, tags…"
+  label: "Search the map"
+  clear: "Clear search"
+  none: "Nothing matches. Try a single word."
+
+tabs:
+  explore: "Explore"
+  walks: "Walks ({n})"
+  index: "Index"
+
+kinds:
+  topic: "Prompt"
+  theme: "Theme"
+  tag: "Tag"
+  discussion: "Discussion"
+  book: "Book"
+  arc: "Chapter"
+  example: "Example"
+
+explore:
+  landscape_hint: "Choose a chapter or a theme to go down to its provocations."
+  show_title: "Show only"
+  chapters: "Chapter"
+  themes: "Theme"
+  pillar: "Pillar"
+  match: "{n} of {total} prompts shown"
+  match_none: "Try removing a filter."
+  match_notice: "{n} prompts shown, the rest dimmed"
+  clear: "Show everything"
+  fit: "Fit whole map"
+  colour_title: "Colour by"
+  colour_pillar: "Pillar"
+  colour_theme: "Theme"
+  colour_theme_hint: "Each theme takes a colour from the logo's gradient, in ring order."
+  legend: "Legend"
+  legend_lines: "Lit-up connections"
+  more: "More options"
+  rest_title: "While nothing is selected, show"
+  rest_none: "Quiet"
+  rest_bridges: "Bridges"
+  rest_all: "Every link"
+  rest_hint: "Bridges are the hand-written links, each with a reason. Point at a prompt and all its links light up anyway."
+  strength: "Link strength"
+  more_links: "More"
+  fewer_links: "Fewer"
+  link_count: "{n} links between prompts"
+  discussions: "Discussions"
+  discussions_sub: "Grey dots inside the ring: each provocation as it was aired, with its notes"
+
+focus:
+  prefix: "Showing only"
+  theme: "Theme {n} · {label}"
+  chapter: "{label}"
+  clear_label: "Showing only {what}. Show everything."
+
+relations:
+  echoes: "echoes"
+  tension: "in tension with"
+  enables: "enables"
+  enables_rev: "needs"
+  extends: "leads on to"
+  extends_rev: "builds on"
+  shared: "shared tags or a discussion"
+  shares: "shares tags"
+  same_disc: "same discussion: {label}"
+  also: "Also:"
+  shared_prefix: "Shared:"
+
+tip:
+  topic: "Theme {n} · {label}"
+  theme: "Theme {n} · {count} prompts"
+  theme_title: "Theme {n} · {label}"
+  theme_landscape: "{n} provocations · click for its note"
+  tag: "{facet} tag · {n} prompts"
+  arc: "Chapter · {themes} themes, {prompts} prompts · click to open"
+  center: "The question, our draft answer, and how to read this map"
+
+landscape:
+  theme_n: "Theme {n}"
+  down: "{n} provocations"
+  down_label: "Go down to the {n} provocations in theme {theme}"
+  center_question: "The question"
+  center_answer: "The question and our draft answer"
+
+peek:
+  landscape: "Regime · {n} provocations"
+  regime: "Niche · {n} examples"
+  regime_none: "Niche · examples soon"
+
+qcap:
+  cite: "World Economic Forum, 2021 · click for the question, our draft answer and how to read this map"
+
+niche:
+  empty_title: "Examples are on their way"
+  empty_body: "This level will hold real cases linked to the provocations. Rethink Matters adds them to a shared spreadsheet; each one goes up once a second person has checked it."
+  back: "Back to the provocations"
+
+ground:
+  title: "On the ground"
+  some: "{n} examples on the Niche"
+  none: "No examples linked yet."
+
+future:
+  title: "A future we would want"
+  drawn: "Drawn from"
+  theme_note: "A first draft from the group's own prompts and notes, for Rethink Matters to rewrite."
+  answer_note: "A first draft built from the nine theme futures, for Rethink Matters to rewrite."
+  badge_draft: "Draft"
+  badge_rm_edited: "Edited by Rethink Matters"
+  badge_rm_approved: "Agreed by Rethink Matters"
+
+walks:
+  button: "Guided walks"
+  cta: "Take a guided walk"
+  intro: "A guided walk is the quickest way in: a handful of prompts, in order, each handing on to the next, ending back at the question."
+  stops: "{n} stops"
+  region: "Guided walk"
+  end: "End walk"
+  summary: "Back to the question"
+  stop_of: "Stop {i} of {n}"
+  stop_n: "Stop {n}"
+  back: "Back"
+  next: "Next"
+  finish: "Finish"
+  big_picture: "See the big picture"
+
+note:
+  label: "Note"
+  back: "Back"
+  copy: "Copy link to this note"
+  copied: "Link copied"
+  close: "Close note"
+  close_tip: "Close (Esc)"
+  draft_tags: "Tags and links are a first-draft classification: treat them as proposals."
+
+topic:
+  kind: "Provocation prompt"
+  crumb: "Theme {n} · {title}"
+  pillar: "Pillar"
+  pillar_tip: "Show only prompts on this pillar."
+  wg: "Working group"
+  wg_proposed: "* proposed by the map: the sheets did not record it"
+  value: "Value"
+  tags: "Tags"
+  tags_sub: "click one to see everything that shares it"
+  connections: "Connections"
+  connections_sub: "{cur} bridges · {der} through shared tags"
+  also: "Also linked through shared tags and discussions"
+  more: "Show {n} more"
+  no_links: "No strong links at the current strength."
+  discussions: "From the discussions"
+  discussions_sub: "{n} · open one to read the provocation and what was said"
+  no_discussions: "Added for the Bristol retreat; not yet tied to a recorded session."
+  reading: "On the Bookshelf"
+  reading_sub: "suggested reading"
+
+theme:
+  kind: "Theme {n} · {chapter}"
+  crumb: "Chapter · {label}"
+  down: "Go down to its {n} provocations"
+  focus_on: "Show only its {n} provocations"
+  focus_off: "Show everything again"
+  sheet: "Theme {sheet} in the Bristol retreat sheet. The map numbers the themes in order round the ring."
+  prompts: "Prompts"
+  prompts_sub: "{n}: open one for the notes behind it"
+  reach: "Most connected to"
+  reach_tip: "{n} links between prompts"
+  walks: "Walks through this theme"
+  tags: "Tags that define this theme"
+
+arc:
+  kind: "Chapter"
+  crumb: "Chapters · the Bookshelf's three shelves"
+  lede: "One of the three shelves of the Rethink Matters Bookshelf, and one of the map's three chapters: {themes} themes and {prompts} prompts, side by side on the ring."
+  down: "Go down to its {n} provocations"
+  focus_on: "Show only its {n} provocations"
+  themes: "Themes in this chapter"
+  theme_item: "Theme {n} · {title}"
+  prompts_n: "{n} prompts"
+  connects: "How it connects"
+  connects_sub: "links between prompts, at the current strength"
+  inside: "{n} within this chapter"
+  to: "{n} to {label}"
+  shelf: "On this shelf"
+  shelf_sub: "books the map suggests alongside these prompts"
+  shelf_link: "See the whole shelf on the Rethink Matters Bookshelf ↗"
+  draft: "Which themes sit on which shelf is the map's first draft: the Bookshelf shelves books, not themes."
+
+center:
+  kind: "The question"
+  crumb: "Rethink Matters · provocation map"
+  answer: "Our draft answer"
+  howto: "How to read this map"
+  howto_items:
+    - "**Three levels, one snapshot.** The Landscape shows the nine themes, the Regime the sixty provocations, and the Niche real examples. Switch with the bar at the top, or keys 1, 2 and 3."
+    - "**On the Landscape**, dashed lines join themes whose prompts are linked; the thicker the line, the more links. Each theme has a draft future and an arrow down to its provocations."
+    - "**On the Regime**, point at a prompt and its links light up: teal echoes, terracotta pulls in tension, olive enables, ochre leads on. Dashed lines share tags or a discussion."
+    - "**Click a prompt** for the provocation behind it, what the group said, and why it connects to the others."
+    - "**Colour** shows each prompt's pillar of the Rethink Matters mission, or its theme. Show only one chapter, theme or pillar from the Explore tab."
+    - "**A guided walk** is the quickest way in: a handful of prompts, in order, ending back at the question."
+  values: "Four values, one lens"
+  values_n: "{n} prompts speak to this value"
+  walks: "Guided walks"
+
+disc:
+  kind: "Discussion"
+  kind_proposed: "Proposed provocation"
+  crumb: "Discussion"
+  crumb_proposed: "Proposed"
+  provocation: "Provocation"
+  provocations: "Provocations"
+  points: "Discussion points"
+  said: "What the group said"
+  proposed_note: "Proposed, not yet discussed in a session."
+  no_notes: "Notes from this session have not been added to the map yet."
+  refs: "References"
+  feeds: "Feeds these prompts"
+  notes_n: "notes {n}"
+
+tag:
+  kind: "{facet} tag"
+  crumb: "{facet} · {question}"
+  used: "Used by"
+  used_sub: "{n} prompts across {t} themes"
+  group: "Theme {n} · {label}"
+  often: "Often found with"
+
+book:
+  kind: "On the Bookshelf"
+  crumb: "Reading"
+  shelf: "Shelf:"
+  link: "See the Rethink Matters Bookshelf ↗"
+  alongside: "Suggested alongside these prompts"
+
+example:
+  kind: "Example"
+  crumb: "Niche · examples on the ground"
+  source: "Read the source ↗"
+  speaks: "Speaks to"
+  theme_n: "Theme {n}"
+  checked: "Added by Rethink Matters and checked by a second person before it went up."
+
+hints:
+  landscape: "Point at a theme to see what it ties to · click it for its note"
+  landscape_touch: "Tap a theme for its note · its arrow goes down to its provocations"
+  regime: "Point at a prompt to see what it connects to · click to open its notes"
+  regime_touch: "Tap a prompt to open its notes · pinch to zoom"
+  niche: "Point at a prompt to see the examples hanging from it · click one to open it"
+  niche_touch: "Tap a prompt or an example to open it · pinch to zoom"
+
+aria:
+  landscape: "Landscape: the nine themes round the question"
+  canvas: "Provocations map: sixty prompts round the question, with the links between them. The Index tab has a text version."
+  panel: "Show or hide the explore panel"
+  qcap: "Open the central question, our draft answer and how to read this map"
+  zoom_in: "Zoom in"
+  zoom_out: "Zoom out"
+  zoom_fit: "Fit the whole map"

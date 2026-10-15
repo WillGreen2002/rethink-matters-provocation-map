@@ -125,6 +125,14 @@
     return lines;
   };
 
+  // wording from curation/copy.yaml (published as RM_DATA.copy), by dotted key; {name} placeholders are filled from `vars`
+  u.t = function t(key, vars) {
+    let v = key.split(".").reduce((o, k) => (o && typeof o === "object" ? o[k] : undefined), (window.RM_DATA || {}).copy);
+    if (v == null) { if (window.console) console.warn("copy: missing " + key); return ""; }
+    if (typeof v === "string" && vars) v = v.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? String(vars[k]) : m));
+    return v;
+  };
+
   u.debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
   u.plural = (n, a, b) => `${n} ${n === 1 ? a : b || a + "s"}`;
   u.store = {
