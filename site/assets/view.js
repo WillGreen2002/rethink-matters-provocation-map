@@ -380,6 +380,7 @@
           }
         } else {
           both = true;
+          if (n.kind === "example") primary.add(id);   // so its strings to its prompts count as lit
           for (const t of n.topicIds) { primary.add(t); nodes.add(t); const m = this.byId.get(t); if (m) nodes.add("th:" + m.d.theme); }
         }
       };
@@ -510,8 +511,20 @@
     /* ------------------------------------------------------------------ input (drag pans, nothing is dragged out of place) */
     hit(px, py) {
       const pad = this.touch ? 12 : 4, k = this.t.k;
-      for (let i = this.order.length - 1; i >= 0; i--) {
-        const n = this.order[i];
+      // on the Niche the beads come first (a prompt's hit circle would cover its first bead), and the nearest bead wins (the padded
+      // circles of neighbouring beads overlap on a touch screen)
+      if (this.niche) {
+        let best = null, bd = Infinity;
+        for (const n of this.nodes) {
+          if (n.kind !== "example" || !n.vis || n.alpha < 0.3) continue;
+          const [sx, sy] = this.toScreen(n.x, n.y), d = Math.hypot(sx - px, sy - py);
+          if (d <= n.r * k * n.sc + pad && d < bd) { best = n; bd = d; }
+        }
+        if (best) return best;
+      }
+      const order = this.order;
+      for (let i = order.length - 1; i >= 0; i--) {
+        const n = order[i];
         if (!n.vis || n.alpha < 0.3) continue;
         const [sx, sy] = this.toScreen(n.x, n.y);
         const r = n.r * k * n.sc + pad + (n.kind === "topic" || n.kind === "discussion" ? 3 : 0);
@@ -850,7 +863,8 @@
           if (r >= 28) {
             const f = u.clamp(r * 0.26, 10, 24);
             ctx.font = `500 ${f}px Spectral, Georgia, serif`; ctx.fillStyle = u.rgba(INK, n.alpha);
-            ["A world we", "want to", "live in"].forEach((t, i) => ctx.fillText(t, sx, sy + (i - 1) * f * 1.16));
+            const cl = u.t("map.center_lines"), lines = Array.isArray(cl) && cl.length ? cl : [n.d.label];
+            lines.forEach((t, i) => ctx.fillText(t, sx, sy + (i - (lines.length - 1) / 2) * f * 1.16));
           }
         } else if (r < 21) {
           ctx.font = `700 ${u.clamp(r * 0.9, 9, 15)}px Inter, system-ui, sans-serif`;
@@ -866,7 +880,7 @@
           const top = sy - (capH + lines.length * lh) / 2;
           if (cap) {
             ctx.font = `600 ${capF}px Inter, system-ui, sans-serif`; ctx.fillStyle = u.rgba(FAINT, 0.9 * n.alpha);
-            ctx.fillText("THEME " + n.d.n, sx, top + capH / 2);
+            ctx.fillText(u.t("landscape.theme_n", { n: n.d.n }).toUpperCase(), sx, top + capH / 2);
           }
           ctx.font = `600 ${f}px Inter, system-ui, sans-serif`; ctx.fillStyle = u.rgba(INK, n.alpha);
           lines.forEach((t, i) => ctx.fillText(t, sx, top + capH + lh * (i + 0.5)));
@@ -877,7 +891,7 @@
       // the chapters' names, set like section headings in the columns and in their band's colour:
       // point at one to light the chapter up, click it to open it
       const lab = this.labelsOn(k), fs = this.labelFont(k);
-      if (lab && !this.thread) {
+      if (lab && !this.thread && !this.niche) {
         const hf = this.headFont(k), fa = this.focusArc();
         for (const a of this.arcHeads) {
           const on = fa.arc === a.arc, tone = this.arcColor(a.arc);

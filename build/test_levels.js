@@ -5,7 +5,7 @@ const L = require("../site/assets/levels.js");
 const p = (url) => { const i = url.indexOf("#"), s = i < 0 ? url : url.slice(0, i); return L.parse(s, i < 0 ? "" : url.slice(i)); };
 
 // old links keep working: a bare item opens where it lives
-assert.deepStrictEqual(p(""), { level: "landscape", focus: null, walk: null, id: null, embed: false });
+assert.deepStrictEqual(p(""), { level: "landscape", focus: null, walk: null, stop: null, id: null, embed: false });
 assert.strictEqual(p("#n:hype-vs-evidence").level, "regime");
 assert.strictEqual(p("#d:some-discussion").level, "regime");
 assert.strictEqual(p("#t:tension/x").level, "regime");
@@ -17,7 +17,11 @@ assert.strictEqual(p("#ex:a-paper").level, "niche");
 assert.strictEqual(p("?embed=1#n:x").embed, true);
 
 // explicit levels, focus and walks
-assert.deepStrictEqual(p("?level=regime&focus=th:5#n:hype-vs-evidence"), { level: "regime", focus: "th:5", walk: null, id: "n:hype-vs-evidence", embed: false });
+assert.deepStrictEqual(p("?level=regime&focus=th:5#n:hype-vs-evidence"), { level: "regime", focus: "th:5", walk: null, stop: null, id: "n:hype-vs-evidence", embed: false });
+assert.strictEqual(p("?walk=w&stop=3").stop, 3);
+assert.strictEqual(p("?stop=3").stop, null, "a stop needs a walk");
+assert.strictEqual(p("?walk=w&stop=0").stop, null);
+assert.strictEqual(p("?walk=w&stop=x").stop, null);
 assert.strictEqual(p("?level=niche").level, "niche");
 assert.strictEqual(p("?level=bogus#th:2").level, "landscape");
 assert.strictEqual(p("?level=regime&focus=evil()").focus, null);
@@ -33,15 +37,19 @@ assert.strictEqual(L.href({ level: "regime" }), "?level=regime");
 assert.strictEqual(L.href({ level: "regime", focus: "arc:matter-to-life", id: "n:x" }), "?level=regime&focus=arc:matter-to-life#n:x");
 assert.strictEqual(L.href({ level: "landscape", focus: "th:3" }), "", "focus is dropped on the Landscape");
 assert.strictEqual(L.href({ level: "landscape", walk: "w" }), "?level=regime&walk=w");
+assert.strictEqual(L.href({ level: "regime", walk: "w", stop: 1 }), "?level=regime&walk=w", "stop 1 is the default");
+assert.strictEqual(L.href({ level: "regime", walk: "w", stop: 4 }), "?level=regime&walk=w&stop=4");
+assert.strictEqual(L.href({ level: "regime", stop: 4 }), "?level=regime", "no stop without a walk");
 assert.strictEqual(L.href({ level: "niche", embed: true }), "?level=niche&embed=1");
 
 // round trips
-for (const s of [{ level: "regime", focus: "th:9", id: "n:a" }, { level: "niche", id: "ex:b" }, { level: "landscape", id: "c" }, { level: "regime", walk: "w", id: "n:c" }]) {
+for (const s of [{ level: "regime", focus: "th:9", id: "n:a" }, { level: "niche", id: "ex:b" }, { level: "landscape", id: "c" }, { level: "regime", walk: "w", stop: 5, id: "n:c" }]) {
   const url = L.href(s), back = p(url);
   assert.strictEqual(back.level, s.walk ? "regime" : s.level, url);
   assert.strictEqual(back.id, s.id || null, url);
   assert.strictEqual(back.focus, s.focus || null, url);
   assert.strictEqual(back.walk, s.walk || null, url);
+  assert.strictEqual(back.stop, s.stop || null, url);
 }
 
 // which level can open which note

@@ -53,7 +53,7 @@
     touched: false, seenRegime: false,
   };
 
-  /* ------------------------------------------------------------------ the provocations map (Regime and Niche share one canvas) */
+  /* ------------------------------------------------------------------ the map of prompts (Regime and Niche share one canvas) */
   const cv = $("#cv"), landEl = $("#landscape");
   const view = new RM.View(cv, D, {
     onPick: (id) => {
@@ -149,7 +149,7 @@
   peek.addEventListener("click", () => goLevel(S.level === "landscape" ? "regime" : "niche"));
   const live = $("#live");
   const focusChip = $("#focuschip");
-  focusChip.addEventListener("click", () => setFocus(null));
+  focusChip.addEventListener("click", () => { setFocus(null); rescueFocus(); });
 
   /* ------------------------------------------------------------------ left panel scaffolding */
   const left = $("#left");
@@ -272,12 +272,13 @@
     if (S.level === "landscape") { drill(id); return; }
     setFocus(S.focus === id ? null : id);
   }
-  // show one theme or chapter on the provocations map; the rest dims but stays in view
+  // show one theme or chapter on the map of prompts; the rest dims but stays in view
   function setFocus(id, o = {}) {
     S.focus = id && byId.has(id) ? id : null;
     applyFilters();
     renderFocusChip();
     updateInsets();
+    if (S.sel && /^(th|arc):/.test(S.sel)) renderNote();
     if (S.level !== "landscape") {
       if (mobile() && S.focus && !S.sel) { S.touched = true; view.fit(true, byId.get(S.focus).topics); }
       else if (!S.touched && !S.sel) view.fit(true);
@@ -525,7 +526,10 @@
     if (!id || LV.shows(lv, id)) return id;
     const n = byId.get(id);
     if (!n) return null;
-    if (lv === "landscape") return n.kind === "topic" ? "th:" + n.theme : n.kind === "example" && n.themes && n.themes.length ? "th:" + n.themes[0] : null;
+    if (lv === "landscape") {
+      const t = n.kind === "topic" ? n : n.kind === "example" ? byId.get(n.topics[0]) : null;
+      return t ? "th:" + t.theme : null;
+    }
     if (lv === "regime" && n.kind === "example") return n.topics[0];
     return null;
   }
@@ -533,6 +537,7 @@
     if (!LEVELS.includes(lv)) return;
     const from = S.level;
     if (lv === from) return;
+    const ae = document.activeElement, stranded = !!ae && ((from === "landscape" && landEl.contains(ae)) || nicheCard.contains(ae) || peek === ae);
     if (S.thread && lv !== "regime") endThread(true);
     // (when a note is being opened on the new level, its caller takes care of the note)
     const carried = o.selecting ? S.sel : carryTo(S.sel, lv);
@@ -549,9 +554,17 @@
     if (lv === "landscape") land.setSelected(S.sel);
     else view.setSelected(S.sel);
     live.textContent = u.t("levels.announce", { name: u.t("levels." + lv + ".name"), what: u.t("levels." + lv + ".short") });
+    if (stranded) rescueFocus(true);
     if (o.sync !== false) syncURL(o.push !== false);
   }
-  // from a theme or chapter on the Landscape down to its provocations
+  // keyboard focus left on something that has just gone away: put it somewhere that says where you are
+  function rescueFocus(force) {
+    const ae = document.activeElement;
+    if (!force && ae && ae !== document.body && !(ae === focusChip && focusChip.hidden)) return;
+    const to = !focusChip.hidden ? focusChip : levelBtns[S.level];
+    to.focus({ preventScroll: true });
+  }
+  // from a theme or chapter on the Landscape down to its prompts
   // (on the map itself, the same button just shows or clears the focus)
   function drill(id) {
     const down = S.level === "landscape";
@@ -559,7 +572,6 @@
     S.focus = id || null;
     if (down) goLevel("regime", { sync: false });
     setFocus(S.focus, { sync: false });
-    if (S.sel) renderNote();
     syncURL(down);
   }
   function renderLevelChrome() {
@@ -593,7 +605,8 @@
 
   /* ------------------------------------------------------------------ address bar */
   function stateHref(forCopy) {
-    return LV.href({ level: S.level, focus: S.focus, walk: S.thread ? S.thread.t.id : null, id: S.sel, embed: embed && !forCopy });
+    const T = S.thread, open = body.classList.contains("right-open");
+    return LV.href({ level: S.level, focus: S.focus, walk: T ? T.t.id : null, stop: T ? T.i + 1 : null, id: T && !open ? null : S.sel, embed: embed && !forCopy });
   }
   function syncURL(push) {
     const url = location.pathname + stateHref();
@@ -608,10 +621,12 @@
     if (st.level !== S.level) goLevel(st.level, { sync: false });
     const focus = st.focus && byId.has(st.focus) ? st.focus : null;
     if (focus !== S.focus) setFocus(focus, { sync: false });
-    if (walk && !S.thread) startThread(walk, { sync: false });
+    if (walk && !S.thread) startThread(walk, { sync: false, stop: st.stop });
+    else if (walk && (st.stop || 1) - 1 !== S.thread.i) stepTo((st.stop || 1) - 1, { sync: false });
     let id = st.id && byId.has(st.id) ? st.id : null;
     if (id) id = carryTo(id, S.level);
-    if (id && id !== S.sel) select(id, { sync: false });
+    if (id && (id !== S.sel || !body.classList.contains("right-open"))) select(id, { sync: false, noPush: !!S.thread, fly: !S.thread });
+    else if (!id && S.thread && body.classList.contains("right-open")) { body.classList.remove("right-open"); updateInsets(); }
     else if (!id && S.sel && !S.thread) deselect({ sync: false });
   }
   window.addEventListener("popstate", fromURL);
@@ -656,12 +671,19 @@
     const id = S.sel, n = byId.get(id);
     if (!n) return;
     const r = RM.panels.render(app, id);
+    const ae = document.activeElement, had = !!ae && right.contains(ae), key = had ? ae.getAttribute("data-k") : null;
     right.replaceChildren(head(r.crumb), h("div", { class: "r-body" }, r.body));
     right.setAttribute("aria-label", n.label || u.t("note.label"));
+    const h1 = right.querySelector(".r-body h1");
+    if (h1) h1.tabIndex = -1;
+    if (had) { const el = (key && right.querySelector('[data-k="' + key + '"]')) || h1; if (el) el.focus({ preventScroll: true }); }
   }
   function select(id, o = {}) {
     const n = byId.get(id);
     if (!n) return;
+    // opened from a button, link or the search box (not the canvas, not the address bar): take keyboard focus into the note
+    const ae = document.activeElement, fromControl = o.sync !== false && !!ae && ae !== document.body && !right.contains(ae) && !bar.contains(ae);
+    if (fromControl) S.opener = ae;
     let pushed = false;
     if (!LV.shows(S.level, id)) { goLevel(LV.homeLevel(id), { sync: false, selecting: true }); pushed = true; }
     if (S.sel && S.sel !== id && !o.noPush) { S.hist.push(S.sel); if (S.hist.length > 30) S.hist.shift(); }
@@ -676,6 +698,7 @@
     if (S.level !== "landscape" && o.fly !== false) { frame(id); if (collapsed) setTimeout(() => { if (S.sel === id) frame(id); }, 420); }   // re-aim once the stage has widened
     if (o.sync !== false) syncURL(pushed);
     if (mobile() && !o.keepLeft) closeLeft();
+    if (fromControl) { const h1 = right.querySelector(".r-body h1"); if (h1) h1.focus({ preventScroll: true }); }
   }
   /* Wide screens: keep the whole map in view beside the note, so every lit-up connection can be followed; the map only moves when
      the space around it changes. Phones: the note covers most of the screen, so frame the prompt and what it connects to. */
@@ -689,6 +712,7 @@
     if (prev) select(prev, { noPush: true });
   }
   function deselect(o = {}) {
+    const ae = document.activeElement, inNote = !!ae && right.contains(ae);
     S.sel = null; S.hist = [];
     view.setSelected(null); land.setSelected(null);
     body.classList.remove("right-open");
@@ -697,6 +721,13 @@
     if (S.autoClosedLeft) { body.classList.remove("left-closed"); S.autoClosedLeft = false; }   // the stage narrows again; the resize observer re-frames
     else if (S.level !== "landscape" && !S.touched && !S.thread) view.fit(true);
     if (o.sync !== false) syncURL(false);
+    // back to whatever opened the note, if it is still there to be seen
+    if (inNote) {
+      const el = S.opener;
+      S.opener = null;
+      if (el && el.isConnected && el.getClientRects().length && !el.closest(".off") && getComputedStyle(el).visibility !== "hidden") el.focus({ preventScroll: true });
+      else rescueFocus(true);
+    }
   }
 
   function openLeft() { S.autoClosedLeft = false; if (mobile()) body.classList.add("left-open"); else body.classList.remove("left-closed"); }
@@ -720,10 +751,10 @@
     closeLeft();
     // a walk is map-first: the note panel stays closed until you open a stop from the card
     S.sel = null; S.hist = []; view.setSelected(null); body.classList.remove("right-open");
-    stepTo(0);
+    stepTo(o.stop ? o.stop - 1 : 0, { sync: false });
     if (o.sync !== false) syncURL(moved);
   }
-  function stepTo(i) {
+  function stepTo(i, o = {}) {
     const T = S.thread;
     if (!T) return;
     const t = T.t, n = t.steps.length;
@@ -741,44 +772,57 @@
       S.sel = null; view.setSelected(null); body.classList.remove("right-open"); updateInsets();
       if (mobile()) view.flyToSet(ids, 0.3, 1.0); else if (!S.touched) view.fit(true);
     }
+    live.textContent = T.i < n ? u.t("walks.stop_of", { i: T.i + 1, n }) + ": " + byId.get(ids[T.i]).label : t.title + ": " + u.t("walks.summary");
+    if (o.sync !== false) syncURL(false);
   }
   function renderBar() {
     const T = S.thread;
     if (!T) { bar.classList.remove("open"); return; }
     const t = T.t, n = t.steps.length, last = T.i >= n;
+    const ae = document.activeElement, key = ae && bar.contains(ae) ? ae.getAttribute("data-k") : null;
     bar.replaceChildren(
-      h("div", { class: "t-top" }, h("span", { class: "t-title" }, t.title), h("button", { class: "btn ghost", type: "button", onclick: () => endThread() }, u.t("walks.end"), " ✕")),
+      h("div", { class: "t-top" }, h("span", { class: "t-title" }, t.title), h("button", { class: "btn ghost", type: "button", "data-k": "end", onclick: () => endThread() }, u.t("walks.end"), h("span", { "aria-hidden": "true" }, " ✕"))),
       last
         ? h("div", null, h("div", { class: "t-step" }, u.t("walks.summary")), h("p", { class: "t-sowhat" }, t.soWhat), h("p", { class: "t-text", style: { minHeight: 0 } }, t.intro))
         : h("div", null,
           h("div", { class: "t-step" }, h("span", { class: "num" }, T.i + 1), u.t("walks.stop_of", { i: T.i + 1, n })),
-          h("button", { class: "t-topic", type: "button", onclick: () => select(t.steps[T.i].topic, { noPush: true }) }, byId.get(t.steps[T.i].topic).label),
+          h("button", { class: "t-topic", type: "button", "data-k": "topic", onclick: () => select(t.steps[T.i].topic, { noPush: true }) }, byId.get(t.steps[T.i].topic).label),
           h("p", { class: "t-text" }, t.steps[T.i].text)),
       h("div", { class: "t-nav" },
-        h("button", { class: "btn", type: "button", disabled: T.i === 0, onclick: () => stepTo(T.i - 1) }, "← ", u.t("walks.back")),
-        h("div", { class: "t-dots" }, [...t.steps.map((s, k) => h("button", { type: "button", class: k === T.i ? "on" : "", "aria-label": u.t("walks.stop_n", { n: k + 1 }), onclick: () => stepTo(k) })),
-          h("button", { type: "button", class: last ? "on" : "", "aria-label": u.t("walks.summary"), onclick: () => stepTo(n), style: { borderRadius: "2px" } })]),
-        last ? h("button", { class: "btn solid", type: "button", onclick: () => { endThread(true); goLevel("landscape", { sync: false }); select("c", { sync: false }); syncURL(true); } }, u.t("walks.big_picture"), " ↑")
-          : h("button", { class: "btn solid", type: "button", onclick: () => stepTo(T.i + 1) }, T.i === n - 1 ? u.t("walks.finish") : u.t("walks.next"), " →")));
+        h("button", { class: "btn", type: "button", "data-k": "back", disabled: T.i === 0, onclick: () => stepTo(T.i - 1) }, h("span", { "aria-hidden": "true" }, "← "), u.t("walks.back")),
+        h("div", { class: "t-dots" }, [...t.steps.map((s, k) => h("button", { type: "button", class: k === T.i ? "on" : "", "data-k": "dot" + k, "aria-current": k === T.i ? "step" : null, "aria-label": u.t("walks.stop_n", { n: k + 1 }), onclick: () => stepTo(k) })),
+          h("button", { type: "button", class: last ? "on" : "", "data-k": "dot" + n, "aria-current": last ? "step" : null, "aria-label": u.t("walks.summary"), onclick: () => stepTo(n), style: { borderRadius: "2px" } })]),
+        last ? h("button", { class: "btn solid", type: "button", "data-k": "next", onclick: () => { endThread(true); goLevel("landscape", { sync: false }); select("c", { sync: false }); syncURL(true); const h1 = right.querySelector(".r-body h1"); if (h1) h1.focus({ preventScroll: true }); } }, u.t("walks.big_picture"), h("span", { "aria-hidden": "true" }, " ↑"))
+          : h("button", { class: "btn solid", type: "button", "data-k": "next", onclick: () => stepTo(T.i + 1) }, T.i === n - 1 ? u.t("walks.finish") : u.t("walks.next"), h("span", { "aria-hidden": "true" }, " →"))));
     bar.classList.add("open");
+    // the buttons were rebuilt: keep keyboard focus on the one that was pressed (or Next, if that one is now disabled)
+    if (key) { let el = bar.querySelector('[data-k="' + key + '"]'); if (!el || el.disabled) el = bar.querySelector('[data-k="next"]'); if (el) el.focus({ preventScroll: true }); }
   }
   function endThread(silent) {
     if (!S.thread) return;
+    const inBar = bar.contains(document.activeElement);
     S.thread = null; view.setThread(null);
     body.classList.remove("thread-on");
     bar.classList.remove("open");
     updateInsets();
     if (!body.classList.contains("right-open")) { S.sel = null; view.setSelected(null); if (!S.touched) view.fit(true); }
     if (!silent) syncURL(false);
+    if (inBar) rescueFocus(true);
   }
 
   /* ------------------------------------------------------------------ keyboard, resize */
   document.addEventListener("keydown", (e) => {
     const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
     if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
+    const inBar = levelbar.contains(document.activeElement);
     if (e.key === "/") { e.preventDefault(); openLeft(); setTab("explore"); searchInput.focus(); searchInput.select(); }
-    else if (e.key === "Escape") { if (S.thread) endThread(); else if (S.sel) deselect(); else if (S.focus) setFocus(null); else if (mobile()) closeLeft(); }
-    else if (/^[123]$/.test(e.key)) goLevel(LEVELS[+e.key - 1]);
+    else if (e.key === "Escape") { if (S.thread) endThread(); else if (S.sel) deselect(); else if (S.focus) { setFocus(null); rescueFocus(); } else if (mobile()) closeLeft(); }
+    else if (inBar && /^[123]$/.test(e.key)) { goLevel(LEVELS[+e.key - 1]); levelBtns[S.level].focus(); }
+    else if (inBar && (e.key === "ArrowRight" || e.key === "ArrowLeft" || e.key === "Home" || e.key === "End")) {
+      e.preventDefault();
+      const i = LEVELS.indexOf(document.activeElement.dataset.level), j = e.key === "Home" ? 0 : e.key === "End" ? 2 : u.clamp(i + (e.key === "ArrowRight" ? 1 : -1), 0, 2);
+      levelBtns[LEVELS[j]].focus();
+    }
     else if (S.thread && e.key === "ArrowRight") stepTo(S.thread.i + 1);
     else if (S.thread && e.key === "ArrowLeft") stepTo(S.thread.i - 1);
   });
@@ -823,9 +867,9 @@
   if (S.level !== "landscape") { if (mobile() && S.focus) view.fit(false, byId.get(S.focus).topics); else view.fit(false); }
   land.layout(false);
   const walk = st.walk && D.threads.some((t) => t.id === st.walk) ? st.walk : null;
-  if (walk) startThread(walk, { sync: false });
+  if (walk) startThread(walk, { sync: false, stop: st.stop });
   const first = st.id && byId.has(st.id) ? carryTo(st.id, S.level) : null;
-  if (first) select(first, { sync: false });
+  if (first) select(first, { sync: false, noPush: !!walk, fly: !walk });
   else if (!walk) notice(u.t("hints." + S.level + (mobile() ? "_touch" : "")));
   // web fonts change label widths: refit once they have loaded (unless the visitor has already started exploring)
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {

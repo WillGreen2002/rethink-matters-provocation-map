@@ -787,7 +787,9 @@ def write_vault():
             return f"*Agreed by Rethink Matters ({rec.get('approvedOn')}).*"
         if s == "rm-edited":
             return "*Edited by Rethink Matters, still under review.*"
-        return "*Draft, written from the group's notes for Rethink Matters to rewrite.*"
+        if rec.get("evidence") == "thin":
+            return "*Draft, written from the group's prompts only, for Rethink Matters to rewrite.*"
+        return "*Draft, written from the group's prompts and anonymised notes, for Rethink Matters to rewrite.*"
 
     arc_label = {a["id"]: a["label"] for a in meta["arcs"]}
     ex_types = {k: v["label"] for k, v in EXAMPLE_TYPES.items()}
@@ -1153,7 +1155,7 @@ def write_examples_guide():
          "| `year` | no | year of publication, founding, launch or trial start (four digits) |",
          "| `stage` | no | how far along it is, in its own source's words (e.g. research, prototype, on the market, phase 1) |",
          "| `summary` | no | one plain line: what it is or does, as its public source says. No opinions or 'first/best' claims. |",
-         "| `url` | yes | a public link: a DOI for papers, the organisation's own site, or a trial registry. Links into private storage (Google Drive or Docs, SharePoint, Dropbox and the like) are refused. |",
+         "| `url` | yes | a public link: a DOI for papers, the organisation's own site, or a trial registry. Links into private storage (Google Drive or Docs, SharePoint, Dropbox, iCloud and the like), shortened links, signed links and local addresses are refused. |",
          "| `prompts` | yes | the prompt(s) it speaks to, separated by `;`. Use the prompt id from the table below, the prompt's exact name, or paste a link copied from the map. |",
          "| `status` | yes | `draft` when added; `checked` once a second person has checked it; `hidden` to withdraw it. **Only `checked` rows appear on the map.** |",
          "| `notes` | no | notes for the checker. Public on GitHub, not shown on the map. |", "",
@@ -1163,7 +1165,8 @@ def write_examples_guide():
          "then they set `checked`.", "",
          "## What the build checks", "",
          "Every row needs a type, name, public link, at least one known prompt and a status. Problems are reported by spreadsheet row "
-         "(the header is row 1), with suggestions for misspelled prompts. Rows that start with `#` and empty rows are skipped.", "",
+         "(the header is row 1), with suggestions for misspelled prompts. Rows that start with `#` and empty rows are skipped, but every "
+         "cell of every row, parked ones included, is checked for private links and e-mail addresses, because the whole file is public.", "",
          "## Prompt ids", ""]
     for th_n in meta["theme_order"]:
         th = node_by[f"th:{th_n}"]
@@ -1192,9 +1195,17 @@ def write_futures_review():
         out = [f"## {title}", "", f"> {norm(f.get('text') or '')}", "",
                f"- status: **{f.get('status', 'draft')}**" + (f", evidence: {f['evidence']}" if f.get("evidence") else "")]
         chk = f.get("check") or {}
-        if chk.get("result"):
-            out.append(f"- independent check: **{chk['result']}** ({chk.get('date') or 'undated'})" +
-                       ("; issues: " + "; ".join(chk.get("issues") or []) if chk.get("issues") else ""))
+        if chk.get("verdict"):
+            out.append(f"- independent check, clause by clause against the sources: **{chk['verdict']}**")
+            if chk.get("partly"):
+                out.append("- only partly supported (worth a look): " + "; ".join(f"*{c}*" for c in chk["partly"]))
+            if chk.get("edited_after_check"):
+                out.append("- edited after the check: " + norm(chk["edited_after_check"]))
+            if chk.get("recheck"):
+                out.append(f"- second independent check of the edited text: **{chk['recheck']}**" +
+                           ("; partly supported: " + "; ".join(f"*{c}*" for c in chk.get("recheck_partly") or []) if chk.get("recheck_partly") else ""))
+        if f.get("note"):
+            out.append("- " + norm(f["note"]))
         sup = f.get("support") or []
         if sup:
             out += ["", "| part of the future | rests on |", "|---|---|"]

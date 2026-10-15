@@ -11,7 +11,7 @@ Part of [[00 A world we want to live in|A world we want to live in]] · chapter:
 
 A future where biological origin is not mistaken for goodness, shared tools come with the means to use them safely, people keep control of implanted devices, and duties to organisms and ownership of genes and designs are weighed openly.
 
-*Draft, written from the group's notes for Rethink Matters to rewrite.*
+*Draft, written from the group's prompts and anonymised notes, for Rethink Matters to rewrite.*
 
 Drawn from: [['Bio' ≠ good]], [[Care & convivial tech]], [[Human–machine integration]], [[Duties to organisms]], [[IP & biological design]]
 

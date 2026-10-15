@@ -11,7 +11,7 @@ Part of [[00 A world we want to live in|A world we want to live in]] · chapter:
 
 A future where calling a material bio makes clear which meaning is in play rather than implying it is good, and where medicine and design each state openly what justifies a new material.
 
-*Draft, written from the group's notes for Rethink Matters to rewrite.*
+*Draft, written from the group's prompts and anonymised notes, for Rethink Matters to rewrite.*
 
 Drawn from: [[Biobased vs biomaterial]]
 

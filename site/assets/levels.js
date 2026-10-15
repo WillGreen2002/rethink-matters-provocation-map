@@ -1,8 +1,8 @@
 /* The map's three levels, after Frank Geels' multi-level perspective, used as a snapshot of the discussions rather than a model of
-   change over time: the Landscape (the nine themes), the Regime (the sixty provocations) and the Niche (examples on the ground).
+   change over time: the Landscape (the nine themes), the Regime (the sixty prompts) and the Niche (examples on the ground).
    Pure helpers for reading and writing the address bar; no DOM, so they can be tested under node (build/test_levels.js).
 
-   ?level=regime&focus=th:5&walk=data-bottleneck#n:hype-vs-evidence
+   ?level=regime&focus=th:5#n:hype-vs-evidence      ?level=regime&walk=data-bottleneck&stop=3
    A link with no level opens wherever its item lives: #n:… (and #d:, #t:, #b:) on the Regime, #ex:… on the Niche, and #th:…,
    #arc:… and #c, or nothing at all, on the Landscape. */
 (function (root) {
@@ -31,7 +31,8 @@
     if (!LEVELS.includes(level)) level = homeLevel(id);
     const focus = FOCUS.test(q.get("focus") || "") && level !== "landscape" ? q.get("focus") : null;
     const walk = WALK.test(q.get("walk") || "") ? q.get("walk") : null;
-    return { level: walk ? "regime" : level, focus, walk, id, embed: q.has("embed") };
+    const stop = walk && /^[1-9]\d?$/.test(q.get("stop") || "") ? +q.get("stop") : null;   // 1-based; one past the last is the summary
+    return { level: walk ? "regime" : level, focus, walk, stop, id, embed: q.has("embed") };
   }
   // the query string and hash for a state: "" for the bare Landscape, so the plain address stays the plain address
   function href(s) {
@@ -40,6 +41,7 @@
     if (level !== "landscape" || s.id) q.push("level=" + level);
     if (s.focus && level !== "landscape") q.push("focus=" + s.focus);
     if (s.walk) q.push("walk=" + s.walk);
+    if (s.walk && s.stop > 1) q.push("stop=" + s.stop);
     if (s.embed) q.push("embed=1");
     return (q.length ? "?" + q.join("&") : "") + (s.id ? "#" + s.id : "");
   }

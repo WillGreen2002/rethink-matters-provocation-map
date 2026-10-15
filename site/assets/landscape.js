@@ -1,4 +1,4 @@
-/* The Landscape level: the nine themes round the question, in the same clockwise order as the provocations map below it (theme 1
+/* The Landscape level: the nine themes round the question, in the same clockwise order as the map of prompts below it (theme 1
    at the top right), each chapter heading its run of themes, and dashed lines between themes whose prompts are linked.
    Built from real buttons over a decorative SVG, so it works with a keyboard and a screen reader and needs no second animation loop.
    On a phone the ring becomes a list of cards. */
@@ -7,7 +7,7 @@
   const { u } = RM;
   const h = u.h;
   const NS = "http://www.w3.org/2000/svg";
-  const CHAPTER_TONE = [0.2, 0.6, 0.97];   // as on the provocations map
+  const CHAPTER_TONE = [0.2, 0.6, 0.97];   // as on the map of prompts
   const GAP = 0.9;                         // the gap before each chapter, in theme slots (its caption sits there)
   const svg = (tag, attrs) => { const el = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs || {})) el.setAttribute(k, v); return el; };
   const ease = (p) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
@@ -215,7 +215,7 @@
       for (const [n, { item, th }] of this.items) {
         const [x, y] = g.themes.get(n), d = Math.hypot(x - cx, y - cy) || 1;
         item.style.left = x - rd + "px"; item.style.top = y - rd + "px";
-        // its "N provocations" pill points away from the question, so it never sits between two themes
+        // its "N prompts" pill points away from the question, so it never sits between two themes
         item.style.setProperty("--ux", ((x - cx) / d).toFixed(3));
         item.style.setProperty("--uy", ((y - cy) / d).toFixed(3));
         // the longest word has to fit across the disc ("biofabrication", "environments")

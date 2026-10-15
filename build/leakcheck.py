@@ -18,11 +18,21 @@ LOCAL_PATH = os.path.join(HERE, "local_checks.json")
 # Phrases that legitimately contain a flagged word (e.g. the author of a cited 1973 book).
 ALLOW_PHRASES = ["Ivan Illich"]
 
-# Always checked, with or without a local file: share-links into private folders/docs, e-mail addresses, local file paths.
-GENERIC_PATTERNS = [
-    r"docs\.google\.com",
-    r"drive\.google\.com",
-    r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(?:com|org|net|ac\.uk|edu)\b",
+# Links into private storage (share links, direct downloads), link shorteners that can hide one, and signed links that carry a
+# private access key. Used on every published file (preflight), in the build's leak check, and on every cell of the Niche sheet.
+PRIVATE_LINKS = [
+    r"\bdocs\.google\.com", r"\bdrive\.google\.com", r"googleusercontent\.com", r"usercontent\.google\.com",
+    r"sharepoint\.com", r"\b1drv\.ms\b", r"onedrive\.live\.com", r"dropbox(?:usercontent)?\.com", r"\bdb\.tt/",
+    r"\bbox\.com/s/", r"\bnotion\.(?:so|site)\b", r"wetransfer\.com", r"\bwe\.tl/", r"\bmega\.nz\b", r"\bicloud\.com/",
+    r"teams\.microsoft\.com", r"teams\.live\.com", r"\bbit\.ly/", r"\btinyurl\.com/", r"\bforms\.gle/", r"\bgoo\.gl/",
+    r"(?<![\w.])t\.co/", r"\bow\.ly/", r"\bcutt\.ly/", r"\bshorturl\.at/", r"\brebrand\.ly/", r"\blnkd\.in/",
+    r"[?&](?:X-Amz-Signature|X-Goog-Signature|X-Ms-Signature|sig|signature)=",
+]
+EMAIL = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}\b"   # any domain, not only .com/.org/...
+
+# Always checked, with or without a local file: private links, e-mail addresses, local file paths.
+GENERIC_PATTERNS = PRIVATE_LINKS + [
+    EMAIL,
     r"C:\\Users\\",
     r"OneDrive",
 ]

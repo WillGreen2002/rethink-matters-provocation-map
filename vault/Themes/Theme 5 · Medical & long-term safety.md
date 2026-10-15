@@ -11,7 +11,7 @@ Part of [[00 A world we want to live in|A world we want to live in]] · chapter:
 
 A future where medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response, dressing signals are reliable enough to read, and the role of clinical judgement and the funding of genetic medicines without a market are decided openly.
 
-*Draft, written from the group's notes for Rethink Matters to rewrite.*
+*Draft, written from the group's prompts and anonymised notes, for Rethink Matters to rewrite.*
 
 Drawn from: [[Chronic bioelectrodes]], [[Designed-peptide risks]], [[Scaffolds, nanoparticles & adhesives]], [[Infection-sensing dressings]], [[Who benefits Wounds & clinicians]], [[Funding platform medicines]]
 

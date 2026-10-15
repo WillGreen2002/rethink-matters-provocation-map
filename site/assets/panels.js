@@ -165,11 +165,11 @@
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), u.t("theme.kind", { n: n.n, chapter: arc.label })));
     body.append(h("h1", null, n.title));
     body.append(h("p", { class: "prompt", style: { "--c": color } }, n.lead));
-    // down to its provocations (from the Landscape), or show only them (on the map itself)
-    if (app.level() === "landscape") body.append(h("button", { type: "button", class: "btn solid down-btn", onclick: () => app.drill(n.id) }, h("span", { "aria-hidden": "true" }, "↓ "), u.t("theme.down", { n: ts.length })));
-    else body.append(h("button", { type: "button", class: "btn down-btn", "aria-pressed": S.focus === n.id ? "true" : "false", onclick: () => app.drill(S.focus === n.id ? null : n.id) },
+    // down to its prompts (from the Landscape), or show only them (on the map itself)
+    if (app.level() === "landscape") body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) }, h("span", { "aria-hidden": "true" }, "↓ "), u.t("theme.down", { n: ts.length })));
+    else body.append(h("button", { type: "button", class: "btn down-btn" + (S.focus === n.id ? " on" : ""), "data-k": "down", onclick: () => app.drill(S.focus === n.id ? null : n.id) },
       S.focus === n.id ? u.t("theme.focus_off") : u.t("theme.focus_on", { n: ts.length })));
-    put(body, future(app, n.future, u.t("future.title"), u.t("future.theme_note")));
+    put(body, future(app, n.future, u.t("future.title"), n.future && n.future.evidence === "thin" ? u.t("future.theme_note_thin") : u.t("future.theme_note")));
     if (n.sheet && n.sheet !== n.n) body.append(h("p", { class: "cite" }, u.t("theme.sheet", { sheet: n.sheet })));
     body.append(h("h2", null, u.t("theme.prompts"), h("small", null, u.t("theme.prompts_sub", { n: ts.length }))));
     ts.forEach((t) => body.append(h("button", { type: "button", class: "rel-item", onclick: () => app.select(t.id) },
@@ -209,8 +209,8 @@
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), u.t("arc.kind")));
     body.append(h("h1", null, n.label));
     body.append(h("p", { class: "prompt plain", style: { "--c": color } }, u.t("arc.lede", { themes: ths.length, prompts: n.topics.length })));
-    if (app.level() === "landscape") body.append(h("button", { type: "button", class: "btn solid down-btn", onclick: () => app.drill(n.id) }, h("span", { "aria-hidden": "true" }, "↓ "), u.t("arc.down", { n: n.topics.length })));
-    else body.append(h("button", { type: "button", class: "btn down-btn", "aria-pressed": S.focus === n.id ? "true" : "false", onclick: () => app.drill(S.focus === n.id ? null : n.id) },
+    if (app.level() === "landscape") body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) }, h("span", { "aria-hidden": "true" }, "↓ "), u.t("arc.down", { n: n.topics.length })));
+    else body.append(h("button", { type: "button", class: "btn down-btn" + (S.focus === n.id ? " on" : ""), "data-k": "down", onclick: () => app.drill(S.focus === n.id ? null : n.id) },
       S.focus === n.id ? u.t("theme.focus_off") : u.t("arc.focus_on", { n: n.topics.length })));
     body.append(h("h2", null, u.t("arc.themes")));
     ths.forEach((t) => body.append(h("button", { type: "button", class: "rel-item", onclick: () => app.select(t.id) },
@@ -229,7 +229,7 @@
       body.append(h("h2", null, u.t("arc.shelf"), h("small", null, u.t("arc.shelf_sub"))));
       body.append(h("div", { class: "chips books" }, n.books.map((b) => nodeLink(app, b, app.byId.get(b).label))));
     }
-    body.append(h("p", { class: "md", style: { marginTop: "16px" } }, h("a", { class: "ext", href: "https://rethinkmatters.org/bookshelf", target: "_blank", rel: "noopener noreferrer" }, u.t("arc.shelf_link"))));
+    body.append(h("p", { class: "md", style: { marginTop: "16px" } }, h("a", { class: "ext", href: u.t("links.bookshelf"), target: "_blank", rel: "noopener noreferrer" }, u.t("arc.shelf_link"))));
     body.append(h("p", { class: "cite" }, u.t("arc.draft")));
     body.append(conf(app));
     return { crumb: h("span", null, u.t("arc.crumb")), body };
@@ -308,7 +308,7 @@
     body.append(h("span", { class: "kind", style: { "--c": "#6B675C" } }, h("i"), u.t("book.kind")));
     body.append(h("h1", null, n.label));
     body.append(h("p", { class: "prompt plain" }, n.author));
-    body.append(h("p", { class: "md" }, u.t("book.shelf") + " ", h("em", null, n.shelf), ". ", h("a", { class: "ext", href: "https://rethinkmatters.org/bookshelf", target: "_blank", rel: "noopener noreferrer" }, u.t("book.link"))));
+    body.append(h("p", { class: "md" }, u.t("book.shelf") + " ", h("em", null, n.shelf), ". ", h("a", { class: "ext", href: u.t("links.bookshelf"), target: "_blank", rel: "noopener noreferrer" }, u.t("book.link"))));
     body.append(h("h2", null, u.t("book.alongside")));
     body.append(h("div", { class: "chips" }, n.topics.map((t) => nodeLink(app, t))));
     body.append(conf(app));

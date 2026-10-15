@@ -11,7 +11,7 @@ Part of [[00 A world we want to live in|A world we want to live in]] · chapter:
 
 A future where biology, materials science, engineering and design share a language and work together on design principles such as gradients and self-assembly, and where what counts as biomimicry, from precise mimicry to looser inspiration, is debated openly.
 
-*Draft, written from the group's notes for Rethink Matters to rewrite.*
+*Draft, written from the group's prompts and anonymised notes, for Rethink Matters to rewrite.*
 
 Drawn from: [[A shared language]], [[Portable design principles]], [[Gradients as design]]
 

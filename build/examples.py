@@ -9,6 +9,9 @@ import csv
 import difflib
 import io
 import re
+from urllib.parse import urlsplit
+
+import leakcheck  # the shared private-link and e-mail patterns
 
 COLUMNS = ["id", "type", "name", "organisation", "year", "stage", "summary", "url", "prompts", "status", "notes"]
 REQUIRED = ["type", "name", "url", "prompts", "status"]
@@ -16,10 +19,16 @@ ALIASES = {"organization": "organisation", "org": "organisation", "company": "or
            "prompt": "prompts", "title": "name"}
 STATUSES = ("draft", "checked", "hidden")
 PUBLISHED_STATUS = "checked"
-# share links into private storage are never accepted as a public source
-PRIVATE_HOSTS = [r"docs\.google\.", r"drive\.google\.", r"sharepoint\.com", r"1drv\.ms", r"onedrive\.", r"dropbox\.com",
-                 r"(^|\.)box\.com", r"notion\.(so|site)", r"wetransfer\.com", r"linkedin\.com/in/", r"^localhost", r"^127\.",
-                 r"^192\.168\.", r"^10\."]
+# never accepted as a public source: private or personal storage (by domain, so direct-download hosts count too), link
+# shorteners (they can hide such a link), local or raw-IP addresses, user names in links, and signed links
+PRIVATE_DOMAINS = ("docs.google.com", "drive.google.com", "googleusercontent.com", "usercontent.google.com", "sharepoint.com", "1drv.ms",
+                   "onedrive.live.com", "onedrive.com", "dropbox.com", "dropboxusercontent.com", "db.tt", "box.com", "boxcloud.com",
+                   "notion.so", "notion.site", "wetransfer.com", "we.tl", "mega.nz", "mega.io", "icloud.com", "teams.microsoft.com",
+                   "teams.live.com", "slack.com", "zoom.us")
+SHORTENERS = ("bit.ly", "tinyurl.com", "t.co", "goo.gl", "forms.gle", "ow.ly", "cutt.ly", "shorturl.at", "rebrand.ly", "buff.ly", "is.gd",
+              "lnkd.in")
+SIGNED = re.compile(r"(?:^|&)(?:x-amz-signature|x-goog-signature|x-ms-signature|sig|signature|token|access_token)=", re.I)
+CELL_PATTERNS = [re.compile(p, re.I) for p in leakcheck.PRIVATE_LINKS + [leakcheck.EMAIL]]
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]{1,59}$")
 
 
@@ -82,12 +91,28 @@ def clean_url(u: str):
         return "https://doi.org/" + m.group(1), ""
     if not re.match(r"^https?://", u, re.I):
         return u, "the link must start with https:// (or be a DOI)"
-    host = re.sub(r"^https?://", "", u, flags=re.I).split("/", 1)[0].lower()
-    rest = re.sub(r"^https?://", "", u, flags=re.I).lower()
-    for pat in PRIVATE_HOSTS:
-        if re.search(pat, host) or (pat.startswith("linkedin") and re.search(pat, rest)):
-            return u, "the link points to private or personal storage; use a public page instead"
+    try:
+        parts = urlsplit(u)
+        host = (parts.hostname or "").lower().rstrip(".")
+    except ValueError:
+        return u, "the link could not be read; copy it again from the browser's address bar"
+    on = lambda domains: any(host == d or host.endswith("." + d) for d in domains)  # noqa: E731
+    if "@" in parts.netloc:
+        return u, "the link has a user name or password in it; use the plain public address"
+    if not host or "." not in host or ":" in host or re.fullmatch(r"[\d.]+", host) or host.endswith((".local", ".internal", ".lan")):
+        return u, "the link points to a private or local address, not a public web page"
+    if on(PRIVATE_DOMAINS) or (on(("linkedin.com",)) and parts.path.lower().startswith("/in/")):
+        return u, "the link points to private or personal storage; use a public page instead"
+    if on(SHORTENERS):
+        return u, "use the full address, not a shortened link"
+    if SIGNED.search(parts.query):
+        return u, "the link carries a private access key; use the public address instead"
     return u, ""
+
+
+def private_cells(cells: list[str]) -> bool:
+    """Does any cell hold a private link or an e-mail address? The whole sheet is public on GitHub, notes and parked rows too."""
+    return any(p.search(c) for c in cells for p in CELL_PATTERNS)
 
 
 def parse(raw: bytes, topics: dict[str, str], types: dict[str, str], this_year: int) -> dict:
@@ -122,6 +147,10 @@ def parse(raw: bytes, topics: dict[str, str], types: dict[str, str], this_year: 
         cells = [c.strip() for c in row]
         if not any(cells):
             continue                                   # blank rows (Excel leaves trailing ones)
+        if private_cells(cells):
+            err(f"niche_examples.csv row {rn}: a cell holds a private link or an e-mail address; the whole sheet is public, notes and "
+                "parked rows included")
+            continue
         if cells[0].startswith("#"):
             continue                                   # a row parked by starting it with '#'
         get = lambda k: cells[col[k]] if k in col and col[k] < len(cells) else ""  # noqa: E731

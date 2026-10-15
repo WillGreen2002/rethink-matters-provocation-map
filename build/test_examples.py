@@ -47,6 +47,26 @@ def test_private_url_and_doi():
     assert r["examples"][0]["url"] == "https://doi.org/10.1000/xyz123"
 
 
+def test_private_url_forms():
+    bad = ["https://dl.dropboxusercontent.com/s/x", "https://drive.usercontent.google.com/download?id=1", "https://lh3.googleusercontent.com/x",
+           "https://bit.ly/abc", "https://forms.gle/abc", "https://mega.nz/file/x", "https://teams.microsoft.com/l/x", "https://www.icloud.com/x",
+           "https://x@127.0.0.1/", "https://[::1]/a", "https://172.16.0.4/a", "https://example.org/a?X-Amz-Signature=abc",
+           "https://storage.googleapis.com/b/o?X-Goog-Signature=1", "https://www.linkedin.com/in/someone", "https://intranet.local/a",
+           "https://contoso.sharepoint.com/x", "https://1drv.ms/w/s!x"]
+    for u in bad:
+        assert ex.clean_url(u)[1], u
+    for u in ["https://example.org/a", "https://www.nature.com/articles/x", "https://clinicaltrials.gov/study/NCT0", "https://www.linkedin.com/company/x"]:
+        assert ex.clean_url(u)[1] == "", u
+
+
+def test_private_links_anywhere_in_the_sheet():
+    r = run("g1,paper,Test row,Org,2021,,x,https://example.org/a,hype-vs-evidence,checked,see https://1drv.ms/abc\n"
+            "#g2,paper,Parked,Org,2021,,x,https://example.org/b,hype-vs-evidence,draft,ask someone@nhs.uk\n"
+            "g3,paper,Fine,Org,2021,,x,https://example.org/c,hype-vs-evidence,checked,\n")
+    assert len(r["errors"]) == 2 and all("private link or an e-mail" in e for e in r["errors"]), r["errors"]
+    assert [e["id"] for e in r["examples"]] == ["ex:g3"]
+
+
 def test_semicolon_delimiter_cp1252_and_aliases():
     head = "ID;Type;Title;Organization;Year;Stage;Summary;Link;Prompt;Status;Notes\n"
     body = "e1;Pre-clinical;Test röw;Org;2022;;Café ’quote’;https://example.org/e;Hype vs evidence;checked;\n"

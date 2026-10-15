@@ -1,6 +1,6 @@
 # Rethink Matters: Provocation Map
 
-An interactive map of the Rethink Matters provocations around one central question
+An interactive map of what Rethink Matters has been discussing, around one central question
 (*"As we learn to engineer the living world, how can we ensure it is a world in which we want to live?"*, WEF, 2021).
 It sorts the group's discussions into **three levels**, borrowed from Frank Geels' multi-level perspective and used here as a
 snapshot of one point in time, not a model of change:
@@ -8,7 +8,7 @@ snapshot of one point in time, not a model of change:
 | level | what it shows |
 |---|---|
 | **Landscape** (the big picture, the landing page) | the nine themes on a ring, the three chapters, the ties between themes, and a drafted future for each theme |
-| **Regime** (the provocations) | the sixty prompts and the links between them, with every discussion and note behind them; agencies such as ARIA help drive this level |
+| **Regime** (the prompts) | the sixty prompts and the links between them, with every discussion and note behind them; agencies such as ARIA help drive this level |
 | **Niche** (examples on the ground) | real examples linked to the prompts: papers, companies, products, pre-clinical and clinical work; empty until Rethink Matters adds checked rows |
 
 Styled from rethinkmatters.org (colours, Inter + Spectral, and the visual grammar of the *Map of shared aims* on the About page).
@@ -43,11 +43,11 @@ The level and any focus go in the address; the open note goes after `#`:
 | `…/?level=regime` | the Regime, all sixty prompts |
 | `…/?level=regime&focus=th:5` | the Regime showing only theme 5 (`focus=arc:matter-to-life` for a chapter) |
 | `…/?level=regime#n:hype-vs-evidence` | the Regime with a prompt's note open |
-| `…/?level=regime&walk=data-bottleneck` | a guided walk, from its first stop |
+| `…/?level=regime&walk=data-bottleneck` | a guided walk, from its first stop (`&stop=3` for the third) |
 | `…/?level=niche` | the Niche |
 
 Older links keep working: `#n:…`, `#d:…`, `#t:…` and `#b:…` open on the Regime; `#th:…`, `#arc:…` and `#c` open on the Landscape.
-The browser's Back button goes back up a level. Keys **1**, **2** and **3** switch level; **Esc** ends a walk, then closes a note, then clears a focus.
+The browser's Back button goes back up a level. With the level bar focused, keys **1**, **2** and **3** (or the arrow keys) switch level; **Esc** ends a walk, then closes a note, then clears a focus.
 The copy-link button in a note always gives the full-page link (without `embed`).
 
 To update the live site after changing `curation/` (or the code in `site/assets/`):
@@ -106,7 +106,7 @@ python -I build/build.py             # rebuild
 python -I build/build.py --review    # also write Excel-friendly review sheets to build/_review/ (never published)
 ```
 
-* **Change any wording on the site:** edit `curation/copy.yaml`. Every label, button, hint and explainer is there, by key; words in `{curly brackets}` are filled in by the site.
+* **Change any wording on the site:** edit `curation/copy.yaml`. Every label, button, hint and explainer the site writes itself is there, by key; words in `{curly brackets}` are filled in by the site. Names that come from the data (themes, prompts, chapters, tags, books) are edited in their own `curation/` files.
   The build refuses to run if the site asks for a key the file does not have.
 * **Edit a future:** rewrite its `text` in `curation/futures.yaml` and set `status` to `rm-edited`, or `rm-approved` with `approved_on: YYYY-MM`. Keep `theme` (the Bristol sheet
   number) and `label` as they are: they guard the numbering. Limits the build checks: a theme future starts *A future where* (40 words at most); the overall answer starts
@@ -127,11 +127,12 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
 ## What is on the map
 
 * **The level switcher** (top centre; a tab bar at the bottom on a phone) moves between the Landscape, the Regime and the Niche. The tab at the bottom of the map goes one level down.
+* **Words.** A *prompt* is one of the sixty (the sheet's provocation prompts); a *provocation* is what was put to a session, and a *discussion* holds it with what was said; a *note* is the panel that opens when you choose something.
 * **Landscape.** The question in the middle; the nine themes round it, **numbered 1 to 9 clockwise from the top right**. The numbers follow the ring, not the Bristol sheet (sheet
   theme 7 is map theme 5, and so on; each theme's note gives its sheet number, and `curation/` keeps the sheet's numbers; the ring order is `theme_order` in `curation/meta.yaml`).
   The three chapters, the Bookshelf's shelves (*how matter becomes life, how life becomes technology, how technology becomes society*), are coloured bands with their names in
   the gaps. Dashed lines join themes whose prompts are linked: at rest each theme's strongest tie and any tie of three links or more; point at a theme for all of them, with counts.
-  Click a theme for its note and its draft future; its "N provocations" pill goes down to the Regime showing only that theme. Click the question for the overall draft answer.
+  Click a theme for its note and its draft future; its "N prompts" pill goes down to the Regime showing only that theme. Click the question for the overall draft answer.
   On a phone the ring becomes a list of cards.
 * **Regime.** The sixty prompts, verbatim from the sheet, on an outer ring beside their theme. Colour shows the pillar (or the theme). At rest only the hand-written bridges
   show, faintly; point at a prompt or theme and all of its connections light up in the colour of the relation: teal *echoes*, terracotta *in tension with*, olive *enables*,

@@ -11,7 +11,7 @@ Part of [[00 A world we want to live in|A world we want to live in]] · chapter:
 
 A future where what is measured and recorded is decided openly and shared, where models are tested against biological constraints and emergent behaviour, and where a fast signal counts only when it tracks the product itself.
 
-*Draft, written from the group's notes for Rethink Matters to rewrite.*
+*Draft, written from the group's prompts and anonymised notes, for Rethink Matters to rewrite.*
 
 Drawn from: [[Public datasets]], [[AI meets biological constraints]], [[Predicting composites & proteins]], [[Variant-library screening]], [[Biosensor design]]
 

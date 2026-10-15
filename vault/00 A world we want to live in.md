@@ -11,7 +11,7 @@ tags: [rethink-matters/map]
 
 A world we would want to live in is one where biological origin is not mistaken for goodness, and materials are judged on shared, reproducible, long-term evidence. Waste feeds bioprocesses with its full costs counted, people keep control of implanted devices, and who captures value, who carries cost and what is owed to organisms are decided openly.
 
-*Draft, written from the group's notes for Rethink Matters to rewrite.*
+*Draft, written from the group's prompts and anonymised notes, for Rethink Matters to rewrite.*
 
 The same report looks at synthetic biology through four values that matter for realising its benefits and minimising harm. We use them as one lens on this map.
 

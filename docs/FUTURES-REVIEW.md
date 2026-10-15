@@ -9,6 +9,8 @@ Each theme has one short future, drafted from the group's own prompts and anonym
 > A world we would want to live in is one where biological origin is not mistaken for goodness, and materials are judged on shared, reproducible, long-term evidence. Waste feeds bioprocesses with its full costs counted, people keep control of implanted devices, and who captures value, who carries cost and what is owed to organisms are decided openly.
 
 - status: **draft**
+- independent check, clause by clause against the sources: **pass**
+- only partly supported (worth a look): *materials are judged on shared, reproducible, long-term evidence*
 
 | part of the future | rests on |
 |---|---|
@@ -24,6 +26,8 @@ Each theme has one short future, drafted from the group's own prompts and anonym
 > A future where calling a material bio makes clear which meaning is in play rather than implying it is good, and where medicine and design each state openly what justifies a new material.
 
 - status: **draft**
+- independent check, clause by clause against the sources: **pass**
+- only partly supported (worth a look): *medicine and design each state openly what justifies a new material*
 
 | part of the future | rests on |
 |---|---|
@@ -36,6 +40,10 @@ Each theme has one short future, drafted from the group's own prompts and anonym
 > A future where biology, materials science, engineering and design share a language and work together on design principles such as gradients and self-assembly, and where what counts as biomimicry, from precise mimicry to looser inspiration, is debated openly.
 
 - status: **draft**
+- independent check, clause by clause against the sources: **pass**
+- only partly supported (worth a look): *work together on design principles*
+- edited after the check: The joint-work clause now follows the group's own call for better collaboration between the sciences (checker note).
+- second independent check of the edited text: **pass**; partly supported: *work together on design principles*
 
 | part of the future | rests on |
 |---|---|
@@ -49,6 +57,8 @@ Each theme has one short future, drafted from the group's own prompts and anonym
 > A future where what is measured and recorded is decided openly and shared, where models are tested against biological constraints and emergent behaviour, and where a fast signal counts only when it tracks the product itself.
 
 - status: **draft**
+- independent check, clause by clause against the sources: **pass**
+- only partly supported (worth a look): *what is measured and recorded is decided openly and shared*
 
 | part of the future | rests on |
 |---|---|
@@ -61,6 +71,10 @@ Each theme has one short future, drafted from the group's own prompts and anonym
 > A future where biological materials are both printed and grown, the balance of imposed order and self-organisation is chosen openly, randomness is weighed as a source of properties as well as a fault, and fabrication readiness is judged honestly.
 
 - status: **draft**
+- independent check, clause by clause against the sources: **pass**
+- only partly supported (worth a look): *the balance of imposed order and self-organisation is chosen openly*; *randomness is weighed as a source of properties as well as a fault*; *fabrication readiness is judged honestly*
+- edited after the check: Variation became randomness, the word in the notes; readiness now names fabrication methods, as the prompt does (checker notes).
+- second independent check of the edited text: **pass**; partly supported: *the balance of imposed order and self-organisation is chosen openly*; *randomness is weighed as a source of properties as well as a fault*; *fabrication readiness is judged honestly*
 
 | part of the future | rests on |
 |---|---|
@@ -74,6 +88,10 @@ Each theme has one short future, drafted from the group's own prompts and anonym
 > A future where medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response, dressing signals are reliable enough to read, and the role of clinical judgement and the funding of genetic medicines without a market are decided openly.
 
 - status: **draft**
+- independent check, clause by clause against the sources: **pass**
+- only partly supported (worth a look): *medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response*; *the funding of genetic medicines without a market*; *are decided openly*
+- edited after the check: Neutral wording on clinical judgement; genetic medicines, closer to the prompt; the signal is the dressing's (checker notes).
+- second independent check of the edited text: **pass**; partly supported: *medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response*; *the funding of genetic medicines without a market*; *are decided openly*
 
 | part of the future | rests on |
 |---|---|
@@ -88,6 +106,7 @@ Each theme has one short future, drafted from the group's own prompts and anonym
 > A future where underwater habitation must justify itself beyond research and niche industry; materials that survive extremes are planned to degrade, by trigger or collection, though control is limited; and which living functions justify ongoing care is decided openly.
 
 - status: **draft**
+- independent check, clause by clause against the sources: **pass**
 
 | part of the future | rests on |
 |---|---|
@@ -102,6 +121,11 @@ Each theme has one short future, drafted from the group's own prompts and anonym
 > A future where waste, protein-based waste included, feeds bioprocesses that tolerate variable feedstocks, the full cost of waste is counted, and who captures value, who carries cost and whether new materials complement or complicate reuse are worked out openly.
 
 - status: **draft**
+- independent check, clause by clause against the sources: **pass**
+- only partly supported (worth a look): *waste, protein-based waste included, feeds bioprocesses*; *that tolerate variable feedstocks*; *are worked out openly*
+- edited after the check: Keeps waste and variable feedstocks as two prompts rather than joining them (checker note).
+- second independent check of the edited text: **pass**; partly supported: *waste, protein-based waste included, feeds bioprocesses*; *that tolerate variable feedstocks*; *are worked out openly*
+- Drawn from the prompts only: no session notes sit behind this theme yet.
 
 | part of the future | rests on |
 |---|---|
@@ -117,6 +141,7 @@ Each theme has one short future, drafted from the group's own prompts and anonym
 > A future where biomaterials are valued for new functions as well as for matching old ones, judged on shared, reproducible evidence rather than hype or hasty dismissal, with sustainability claims naming their reference point and rewards for repair and reuse.
 
 - status: **draft**
+- independent check, clause by clause against the sources: **pass**
 
 | part of the future | rests on |
 |---|---|
@@ -131,6 +156,10 @@ Each theme has one short future, drafted from the group's own prompts and anonym
 > A future where biological origin is not mistaken for goodness, shared tools come with the means to use them safely, people keep control of implanted devices, and duties to organisms and ownership of genes and designs are weighed openly.
 
 - status: **draft**
+- independent check, clause by clause against the sources: **pass**
+- only partly supported (worth a look): *shared tools come with the means to use them safely*; *are weighed openly*
+- edited after the check: Repairable came from the map's framing, not the notes; genes restored from the prompt (checker notes).
+- second independent check of the edited text: **pass**; partly supported: *are weighed openly*
 
 | part of the future | rests on |
 |---|---|

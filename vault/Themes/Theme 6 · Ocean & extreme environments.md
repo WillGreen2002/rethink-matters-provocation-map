@@ -11,7 +11,7 @@ Part of [[00 A world we want to live in|A world we want to live in]] · chapter:
 
 A future where underwater habitation must justify itself beyond research and niche industry; materials that survive extremes are planned to degrade, by trigger or collection, though control is limited; and which living functions justify ongoing care is decided openly.
 
-*Draft, written from the group's notes for Rethink Matters to rewrite.*
+*Draft, written from the group's prompts and anonymised notes, for Rethink Matters to rewrite.*
 
 Drawn from: [[Underwater or space first]], [[Survive use, degrade after]], [[When to let materials die]]
 
