@@ -365,9 +365,9 @@
         grow(x - r, y - r, x + r, y + r);
         if (n.kind === "topic" && (lab || (keep && keep.has(n.id)))) {
           topics++;
-          // the prompt in focus is set in bold and never shortened
-          const st = strong && strong.has(n.id), f = lab ? fs : 11.5;
-          const w = r * 1.3 + LABEL_GAP + Math.min((st ? ROOM_MAX + 4 : room) * f, (this.labelWidth(n) * f * (st ? 1.06 : 1)) / 11.5);
+          // what is in focus (and the prompts it connects to) is never shortened; the prompt itself is set in bold
+          const st = strong && strong.has(n.id), full = st || (keep && keep.has(n.id)), f = lab ? fs : 11.5;
+          const w = r * 1.3 + LABEL_GAP + Math.min((full ? ROOM_MAX + 4 : room) * f, (this.labelWidth(n) * f * (st ? 1.06 : 1)) / 11.5);
           if (n.side > 0) grow(x, y - f * 0.75, x + w, y + f * 0.75); else grow(x - w, y - f * 0.75, x, y + f * 0.75);
         }
       }
@@ -777,7 +777,7 @@
       cands.sort((a, b) => b.pri - a.pri);
       for (const { n, strong } of cands) {
         const [sx, sy] = this.toScreen(n.x, n.y), r = n.r * k * n.sc;
-        const f = lab ? fs : 11.5, room = (strong ? ROOM_MAX + 4 : this.room) * f;
+        const f = lab ? fs : 11.5, room = (strong || (F && F.nodes.has(n.id)) ? ROOM_MAX + 4 : this.room) * f;
         ctx.font = `${strong ? 600 : 500} ${f}px Inter, system-ui, sans-serif`;
         let text = n.d.label;
         if (ctx.measureText(text).width > room) { while (text.length > 6 && ctx.measureText(text + "…").width > room) text = text.slice(0, -1); text = text.trimEnd() + "…"; }
