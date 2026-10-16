@@ -128,12 +128,14 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
 
 ## What is on the map
 
-* **Moving down and up.** One click opens a note; a double click goes down a level (a theme to its prompts, a prompt to its sources). The **Up** button at the top
-  left (or **Esc**, once no note is open) goes back up a level and names where it goes: *Landscape* from the Regime, *Theme 8* from the Niche.
+* **Moving down and up.** One click opens a note; a double click goes down a level (a theme to its prompts, a prompt to its sources), and so does the arrow
+  pill on each theme and prompt (the way down from the keyboard). A double click acts only on what its first click hit, so a map that moves when the note
+  opens never sends you somewhere else. The **Up** button (the upward arrow at the top left, which on a wide screen also names where it goes: *Landscape*
+  from the Regime, *Theme 8* from the Niche) goes back up a level, as does **Esc** once no note or walk is open. During a walk, Up ends the walk.
 * **The level bar** (top centre; a tab bar at the bottom on a phone) is also the trail: *Landscape › Theme 8 · Value, scale & adoption › Hype vs evidence*. Click a step to go
   back up. The tab at the bottom of the map goes one level down from whatever is open; the arrows at the sides move across, to the next theme or the next prompt in the theme.
 * **Map or list.** The Regime and Niche open as a map (the standard). The **Map / List** switch at the top right shows the same level as a plain list in the same order; the
-  site remembers the choice on that browser.
+  site remembers the choice on that browser. Where a window is too small for the map (a short window during a walk, say), List shows as on and Map says why.
 * **Words.** A *prompt* is one of the sixty (the sheet's provocation prompts); a *provocation* is what was put to a session, and a *discussion* holds it with what was said;
   a *source* is what sits under a prompt on the Niche (its discussions, examples and books); a *note* is the panel that opens when you choose something.
 * **Landscape.** The question in the middle; the nine themes round it, **numbered 1 to 9 clockwise from the top right**. The numbers follow the ring, not the Bristol sheet (sheet
@@ -150,8 +152,11 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
 * **Niche.** One prompt in the middle with its sources round it: the discussions where it was aired (open one for the provocation and what the group said), the books
   suggested with it, and examples shaped by type (square paper, triangle company, diamond product, ring pre-clinical, dot clinical, cross other). The prompts it links to sit
   further out, in the colour of the relation; click one to move across.
-* **Narrow screens.** On a phone the Regime and Niche are always plain lists in the same order. On a laptop the ring stays beside an open note, shrinking to fit; only if
-  there is truly no room for one does it fall back to the list.
+* **Narrow screens.** On a phone the Regime and Niche are always plain lists in the same order. On a laptop the ring stays beside an open note: it shrinks to fit
+  (its discs never smaller than their names need, its middle never smaller than its title), then tightens the gaps between its rings, sets the outer themes' names
+  above and below them, and lets the side arrows step aside. On a small laptop, going down folds the left panel away if the ring still has no room beside it (it
+  comes back on the Landscape). Only if none of that is enough does the level fall back to the list, and the Map / List switch then says so. The top row's buttons
+  fold to icons when space is short, and opening the left panel where there is no room beside a note closes the note.
 * **Guided walks.** Eight curated paths that cross themes and end back at the question, then offer the big picture. They run through the Regime: each stop shows its
   theme with the stop lit, and a gold line leads in from the previous stop and on to the next (through the theme it lies in, when that is another one). Start one from the
   button at the top left, the hero button, the Walks tab, a theme's note or the question's note.

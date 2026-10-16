@@ -145,6 +145,7 @@
     drill: (id) => drill(id),
     move: (id) => move(id),
     hover: (id, rect) => showTipAt(id, rect),
+    laidOut: (fm) => { if (fm === MAPS[S.level]) { syncToggle(); body.classList.toggle("no-arrows", !!fm.noArrows); } },
   };
   const reg = new RM.FocusMap(regEl, fmCallbacks);
   const nic = new RM.FocusMap(nicEl, fmCallbacks);
@@ -244,11 +245,21 @@
     viewToggle.append(viewBtns[v]);
   }
   function setView(v) {
+    const fm = MAPS[S.level];
+    if (v === "map" && fm && fm.fellBack && S.view === "map") { live.textContent = u.t("view.no_room"); return; }   // nothing to switch to
     S.view = v;
     u.store.set("rm-view", v);
-    for (const [k, b] of Object.entries(viewBtns)) b.setAttribute("aria-pressed", k === v ? "true" : "false");
     reg.setView(v); nic.setView(v);
-    live.textContent = u.t("view.announce_" + v);
+    syncToggle();
+    live.textContent = fm && fm.fellBack && v === "map" ? u.t("view.no_room") : u.t("view.announce_" + v);
+  }
+  // the switch shows what is drawn: List is on when the visitor chose it, and also when the ring had no room (Map then says why)
+  function syncToggle() {
+    const fm = MAPS[S.level], noRoom = !!(fm && fm.fellBack);
+    viewBtns.map.setAttribute("aria-pressed", S.view === "map" && !noRoom ? "true" : "false");
+    viewBtns.list.setAttribute("aria-pressed", S.view === "list" || noRoom ? "true" : "false");
+    if (noRoom) { viewBtns.map.setAttribute("aria-disabled", "true"); viewBtns.map.title = u.t("view.no_room"); }
+    else { viewBtns.map.removeAttribute("aria-disabled"); viewBtns.map.removeAttribute("title"); }
   }
   peek.addEventListener("click", () => { if (S.sel) drill(S.sel); });
   function sideTargets() {
@@ -259,7 +270,7 @@
     }
     return [null, null];
   }
-  for (const [btn, k] of [[sidePrev, 0], [sideNext, 1]]) btn.addEventListener("click", () => { const id = sideTargets()[k]; if (id) move(id, k ? "right" : "left"); });
+  for (const [btn, k] of [[sidePrev, 0], [sideNext, 1]]) btn.addEventListener("click", (e) => { if (e.detail > 1) return; const id = sideTargets()[k]; if (id) move(id, k ? "right" : "left"); });
 
   /* ------------------------------------------------------------------ left panel scaffolding */
   const left = $("#left");
@@ -392,7 +403,7 @@
     if (ev.key === "ArrowDown" && resList.length) { ev.preventDefault(); resIdx = (resIdx + 1) % resList.length; renderResults(); }
     else if (ev.key === "ArrowUp" && resList.length) { ev.preventDefault(); resIdx = (resIdx - 1 + resList.length) % resList.length; renderResults(); }
     else if (ev.key === "Enter" && resList[resIdx]) { ev.preventDefault(); pickResult(resList[resIdx]); }
-    else if (ev.key === "Escape") { if (searchInput.value) { searchInput.value = ""; onSearch(); } else searchInput.blur(); }
+    else if (ev.key === "Escape") { ev.stopPropagation(); if (searchInput.value) { searchInput.value = ""; onSearch(); } else searchInput.blur(); }
   });
   searchInput.addEventListener("blur", () => setTimeout(closeResults, 120));
   searchInput.addEventListener("focus", () => { if (S.q && resList.length) renderResults(); });
@@ -505,13 +516,14 @@
   }
   function goLevel(lv, o = {}) {
     if (!LEVELS.includes(lv)) return;
+    RM.press.cancel();
     const from = S.level;
     if (lv === from) {
       if (lv === "regime" && o.theme && o.theme !== S.theme) setTheme(o.theme, { sync: o.sync });
       if (lv === "niche" && o.prompt && o.prompt !== S.prompt) setPrompt(o.prompt, { sync: o.sync });
       return;
     }
-    const ae = document.activeElement, stranded = !!ae && (PLANE[from].contains(ae) || peek === ae || right.contains(ae));
+    const ae = document.activeElement, stranded = !!ae && (PLANE[from].contains(ae) || peek === ae || right.contains(ae) || (ae === upBtn && lv === "landscape"));
     if (S.thread && lv !== "regime") endThread(true);
     if (lv === "regime") S.theme = themeFor(o, from);
     if (lv === "niche") { S.prompt = promptFor(o); S.theme = themeOf(S.prompt); }
@@ -522,6 +534,8 @@
     if (lv === "niche") showNiche();
     const carried = o.selecting ? S.sel : carryTo(S.sel, lv, from);
     renderChrome();
+    if (lv !== "landscape") makeRoom();
+    else if (S.autoClosedLeft === "level") { body.classList.remove("left-closed"); S.autoClosedLeft = false; updateInsets(); }
     swapPlanes(from, lv, o.instant);
     if (carried !== S.sel) { if (carried) select(carried, { noPush: true, sync: false, keepFocus: true }); else deselect({ sync: false, keepFocus: true }); }
     else { MAPS[lv].setSelected(S.sel); if (S.sel && !o.selecting) renderNote(); }
@@ -538,6 +552,13 @@
     if (mobile() && S.sel) deselect({ sync: false });   // a phone's note would cover the level you came down to see
     if (n.kind === "theme") { if (S.level === "regime") setTheme(id); else goLevel("regime", { theme: id }); }
     else if (n.kind === "topic") { if (S.level === "niche") setPrompt(id); else goLevel("niche", { prompt: id }); }
+  }
+  // on a small laptop the left panel folds away when the map going down (or across) has no room for its ring beside it
+  function makeRoom() {
+    const fm = MAPS[S.level];
+    if (mobile() || S.view !== "map" || !fm || !fm.fellBack || body.classList.contains("left-closed")) return;
+    body.classList.add("left-closed"); S.autoClosedLeft = "level";
+    updateInsets();
   }
   function goTheme(id) { if (S.thread) endThread(true); if (S.level === "regime") setTheme(id); else goLevel("regime", { theme: id }); }
   // sideways: another theme on the Regime, another prompt on the Niche
@@ -560,6 +581,7 @@
   }
   const order = (list, a, b) => (list.indexOf(b) >= list.indexOf(a) ? "right" : "left");
   function setTheme(id, o = {}) {
+    RM.press.cancel();
     if (!id || (id === S.theme && !o.force)) return;
     const before = S.theme;
     S.theme = id;
@@ -567,10 +589,12 @@
     if (S.sel === before && byId.get(id)) select(id, { noPush: true, sync: false, keepFocus: true });   // the note follows the theme in the middle
     else if (S.sel && !reg.holds(S.sel)) deselect({ sync: false, keepFocus: true });
     renderChrome();
+    makeRoom();
     if (!o.quiet) announce();
     if (o.sync !== false) syncURL(true);
   }
   function setPrompt(id, o = {}) {
+    RM.press.cancel();
     if (!id || (id === S.prompt && !o.force)) return;
     const before = S.prompt;
     S.prompt = id;
@@ -580,6 +604,7 @@
     if (S.sel === before) select(id, { noPush: true, sync: false, keepFocus: true });
     else if (S.sel && !nic.holds(S.sel)) deselect({ sync: false, keepFocus: true });
     renderChrome();
+    makeRoom();
     if (!o.quiet) announce();
     if (o.sync !== false) syncURL(true);
   }
@@ -637,9 +662,8 @@
       upBtn.replaceChildren(h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "1.9", "stroke-linecap": "round", "stroke-linejoin": "round", "aria-hidden": "true", html: '<path d="M12 19V5M6 11l6-6 6 6"/>' }),
         h("span", { class: "up-what" }, toTheme ? u.t("up.short_theme", { n: th.n }) : u.t("up.short_landscape")));
       upBtn.setAttribute("aria-label", toTheme ? u.t("up.to_theme", { n: th.n, label: th.label }) : u.t("up.to_landscape"));
-      upBtn.title = upBtn.getAttribute("aria-label") + " (Esc)";
+      upBtn.title = upBtn.getAttribute("aria-label");
     }
-    viewToggle.hidden = lv === "landscape";
     renderLevelNote();
     renderLegend();
     updateInsets();
@@ -693,26 +717,70 @@
   const right = $("#right");
   const bar = $("#threadbar");
   function rightWidth() { return Math.round(parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--right-w")) || right.getBoundingClientRect().width || 456); }
-  function chromeTop() { return mobile() ? 0 : 14 + (levelbar.offsetHeight || 46) + 12; }
-  // the buttons at the top left fold to their icons when their names would run under the level bar
-  const fab = $(".fab-row");
+  function chromeTop() { return mobile() ? 0 : 14 + (levelbar.offsetHeight || 46) + 12 + (body.classList.contains("lv-row2") ? 50 : 0); }
+  // the top row (buttons at the left, level bar in the middle, map/list switch at the right) must never overlap. In turn: the
+  // buttons fold to their icons, the switch folds to its icons, the level bar's names shorten, and last of all the level bar
+  // takes just the room between them. Positions are worked out from the layout rather than read back, since the level bar and
+  // the switch slide (a transition) when a note opens or closes.
+  const fab = $(".fab-row"), stage = $("#stage");
+  // is there room beside an open note (and the left panel) for a ring at all? Below this the Regime and Niche are lists, with no
+  // side arrows, and the map/list switch has nothing to switch
+  function leftWidth() { return Math.round(parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--left-w")) || 328); }
+  // the stage's width once the left panel has finished opening or closing (the live width lags behind it by a third of a second)
+  function stageWidth() {
+    if (mobile()) return stage.clientWidth;
+    const left = $(".left"), shown = !body.classList.contains("left-closed") && getComputedStyle(left).display !== "none";
+    return document.documentElement.clientWidth - (shown ? leftWidth() : 0);
+  }
+  function cramped() { return !mobile() && stageWidth() - (body.classList.contains("right-open") ? rightWidth() : 0) < 560; }
   function fitChrome() {
-    body.classList.remove("fab-tight");
-    if (mobile()) return;
-    const a = fab.getBoundingClientRect(), b = levelbar.getBoundingClientRect();
-    if (a.width && b.width && a.right > b.left - 10) body.classList.add("fab-tight");
+    body.classList.remove("fab-tight", "vt-tight", "lv-tight", "lv-icons", "lv-row2");
+    levelbar.style.left = levelbar.style.maxWidth = "";
+    const W = stageWidth();   // (all in the stage's own coordinates)
+    const shift = body.classList.contains("right-open") && !mobile() ? rightWidth() : 0, gap = 10;
+    body.classList.toggle("cramped", cramped());
+    // the switch shows where it can do something: on the Regime and Niche, with room for a ring
+    viewToggle.hidden = S.level === "landscape" || mobile() || cramped();
+    syncToggle();
+    if (mobile() || !W) return;
+    const lo = () => fab.offsetLeft + fab.offsetWidth + gap;
+    const hi = () => (viewToggle.hidden ? W - shift - 12 : W - shift - 16 - viewToggle.offsetWidth - gap);
+    const mid = (W - shift) / 2;
+    const fits = () => { const w = levelbar.offsetWidth; return mid - w / 2 >= lo() && mid + w / 2 <= hi(); };
+    if (fits()) return;
+    if (mid - levelbar.offsetWidth / 2 < lo()) body.classList.add("fab-tight");
+    if (fits()) return;
+    if (!viewToggle.hidden && mid + levelbar.offsetWidth / 2 > hi()) body.classList.add("vt-tight");
+    if (fits()) return;
+    body.classList.add("lv-tight");
+    if (fits()) return;
+    body.classList.add("lv-icons");   // the levels you are not on keep only their icons (and their names for screen readers)
+    if (fits()) return;
+    const L = lo(), H = hi();
+    if (H - L >= 200) {
+      levelbar.style.maxWidth = H - L + "px";
+      levelbar.style.left = Math.round((L + H) / 2) + "px";
+      return;
+    }
+    // no room beside the buttons at all: the level bar takes a row of its own beneath them, kept inside the visible strip
+    body.classList.add("lv-row2");
+    const room = Math.max(120, W - shift - 24);
+    levelbar.style.maxWidth = room + "px";
+    levelbar.style.left = Math.round(Math.max(12 + Math.min(levelbar.offsetWidth, room) / 2, (W - shift) / 2)) + "px";
   }
   function updateInsets() {
     fitChrome();
     const open = body.classList.contains("right-open"), m = mobile();
     const r = open && !m ? rightWidth() : 0;
     if (S.level === "landscape") {
-      const q = $("#qcap");
-      land.setInsets({ t: m ? 0 : chromeTop() + (q.offsetHeight || 56) + 4, r, b: m ? 0 : 58, l: 0 });
+      const q = $("#qcap"), ins = (qh) => ({ t: m ? 0 : chromeTop() + qh + 4, r, b: m ? 0 : 58, l: 0, w: m ? 0 : stageWidth() });
+      land.setInsets(ins(q.offsetHeight || 56));
+      if (land.el.classList.contains("stack")) land.setInsets(ins(0));   // as cards, the question heads the list instead of the caption
       return;
     }
     const card = S.thread ? bar.offsetHeight + 28 : 0, pk = 58;   // room kept for the peek tab and hints, so the ring does not jump when one shows
-    MAPS[S.level].setInsets(m ? { t: 0, r: 0, b: 0, l: 0 } : { t: chromeTop(), b: Math.max(card, pk), l: 70, r: r + 70 });
+    const c = cramped();   // (no side arrows then, so no room kept for them)
+    MAPS[S.level].setInsets(m ? { t: 0, r: 0, b: 0, l: 0, side: 0, cramp: false, w: 0 } : { t: chromeTop(), b: Math.max(card, pk), l: 0, r, side: c ? 0 : 70, cramp: c, w: stageWidth() });
   }
   function head(crumb) {
     const acts = h("div", { class: "acts" });
@@ -764,7 +832,7 @@
     renderNote();
     body.classList.add("right-open");
     // on laptop-width windows give the map the room: tuck the left panel away while a note is open
-    if (!mobile() && window.innerWidth < 1500 && !body.classList.contains("left-closed")) { body.classList.add("left-closed"); S.autoClosedLeft = true; }
+    if (!mobile() && window.innerWidth < 1500 && !body.classList.contains("left-closed")) { body.classList.add("left-closed"); S.autoClosedLeft = "note"; }
     renderChrome();
     if (o.sync !== false) syncURL(pushed);
     if (mobile() && !o.keepLeft) closeLeft();
@@ -779,7 +847,7 @@
     S.sel = null; S.hist = [];
     for (const m of Object.values(MAPS)) m.setSelected(null);
     body.classList.remove("right-open");
-    if (S.autoClosedLeft) { body.classList.remove("left-closed"); S.autoClosedLeft = false; }
+    if (S.autoClosedLeft === "note") { body.classList.remove("left-closed"); S.autoClosedLeft = false; }
     renderChrome();
     if (o.sync !== false) syncURL(false);
     // back to whatever opened the note, if it is still there to be seen
@@ -800,8 +868,11 @@
   function openLeft() { S.autoClosedLeft = false; if (mobile()) body.classList.add("left-open"); else body.classList.remove("left-closed"); }
   function closeLeft() { if (mobile()) body.classList.remove("left-open"); }
   $("#btnPanel").addEventListener("click", () => {
-    S.autoClosedLeft = false;
-    if (mobile()) body.classList.toggle("left-open"); else body.classList.toggle("left-closed");
+    S.autoClosedLeft = false; S.userPanel = true;
+    if (mobile()) { body.classList.toggle("left-open"); return; }
+    const opening = body.classList.contains("left-closed");
+    if (opening && body.classList.contains("right-open") && document.documentElement.clientWidth - leftWidth() - rightWidth() < 380) { endThread(true); deselect(); }
+    body.classList.toggle("left-closed");
   });
 
   /* ------------------------------------------------------------------ guided walks: they run through the Regime, theme by theme */
@@ -899,7 +970,7 @@
     if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
     const inBar = levelbar.contains(document.activeElement);
     if (e.key === "/") { e.preventDefault(); openLeft(); setTab("explore"); searchInput.focus(); searchInput.select(); }
-    else if (e.key === "Escape") { if (S.thread) endThread(); else if (S.sel) deselect(); else if (mobile() && body.classList.contains("left-open")) closeLeft(); else if (S.level !== "landscape") { goUp(); levelBtns[S.level].focus({ preventScroll: true }); } }
+    else if (e.key === "Escape") { RM.press.cancel(); if (S.thread) endThread(); else if (S.sel) deselect(); else if (mobile() && body.classList.contains("left-open")) closeLeft(); else if (S.level !== "landscape") { goUp(); levelBtns[S.level].focus({ preventScroll: true }); } }
     else if (inBar && /^[123]$/.test(e.key)) { goLevel(LEVELS[+e.key - 1]); levelBtns[S.level].focus(); }
     else if (inBar && (e.key === "ArrowRight" || e.key === "ArrowLeft" || e.key === "Home" || e.key === "End")) {
       e.preventDefault();
@@ -910,7 +981,9 @@
     else if (S.thread && e.key === "ArrowLeft") stepTo(S.thread.i - 1);
   });
   new ResizeObserver(() => updateInsets()).observe($("#stage"));
-  new ResizeObserver(() => fitChrome()).observe(levelbar);
+  // (a frame later: changing the level bar's size inside its own resize callback would loop)
+  let fitRaf = 0;
+  new ResizeObserver(() => { cancelAnimationFrame(fitRaf); fitRaf = requestAnimationFrame(() => updateInsets()); }).observe(levelbar);
 
   /* ------------------------------------------------------------------ boot */
   const q = byId.get("c");
@@ -927,13 +1000,14 @@
   if (S.level === "niche") showNiche();
   settlePlanes(S.level);
   renderChrome();
+  if (S.level !== "landscape") makeRoom();   // a link straight to a theme or prompt on a small laptop: the map gets the room
   land.layout(false);
   if (walk) startThread(walk, { sync: false, stop: st.stop });
   const first = st.id && byId.has(st.id) ? st.id : null;
   if (first) select(first, { sync: false, noPush: !!walk });
   else if (!walk) notice(u.t("hints." + S.level + (mobile() ? "_touch" : "")));
   // web fonts change text widths: lay out again once they have loaded
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { land.layout(false); reg.layout(); nic.layout(); updateInsets(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { land.layout(false); reg.layout(); nic.layout(); updateInsets(); if (!S.userPanel && S.level !== "landscape") makeRoom(); });
   RM.app = app;
   document.documentElement.dataset.ready = "1";
 })();

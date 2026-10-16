@@ -26,7 +26,7 @@ levels:
     name: "Regime"
     short: "one theme's prompts"
     what: "Theme {n} · {label}"
-    explain: "One theme at a time: its prompts round it and the links between them, with the other themes they reach further out. Click a prompt for its note; double-click it to go down to its sources. Choose a theme outside to move across, and Up to go back."
+    explain: "One theme at a time: its prompts round it and the links between them, with the other themes they reach further out. Click a prompt for its note; double-click it (or follow its arrow) to go down to its sources. Choose a theme outside to move across, and Up to go back."
     aria: "Agencies help drive this level: ARIA, for one, through its opportunity spaces."
   niche:
     name: "Niche"
@@ -158,6 +158,7 @@ view:
   list: "List"
   announce_map: "Showing the level as a map"
   announce_list: "Showing the level as a list"
+  no_room: "No room for the map here: close the note, open a wider window, or turn the screen"
 
 side:
   prev_theme: "Previous theme: {short}, {label}"
@@ -266,7 +267,7 @@ center:
   answer: "Our draft answer"
   howto: "How to read this map"
   howto_items:
-    - "**Three levels, from the big picture down.** The Landscape shows the nine themes. Double-click a theme and the Regime shows its prompts; double-click a prompt and the Niche shows what sits under it. One click opens a note. Up (or Esc) goes back a level, and the level bar says where you are."
+    - "**Three levels, from the big picture down.** The Landscape shows the nine themes. Double-click a theme (or follow its arrow) and the Regime shows its prompts; double-click a prompt (or follow its arrow) and the Niche shows what sits under it. One click opens a note. Up (or Esc) goes back a level, and the level bar says where you are."
     - "**On the Landscape**, each theme has a draft future and an arrow down to its prompts. On a wide screen, dashed lines join themes whose prompts are linked; the thicker the line, the more links."
     - "**On the Regime**, point at a prompt and its links light up: teal echoes, terracotta pulls in tension, olive enables, ochre leads on; dashed lines share tags or a discussion. The other themes it reaches sit further out: choose one to move across."
     - "**On the Niche**, a prompt's discussions, books and examples sit round it, and the prompts it links to further out. Open a discussion for the provocation and what the group said."
@@ -315,10 +316,10 @@ example:
   checked: "Added by Rethink Matters and checked by a second person before it went up."
 
 hints:
-  landscape: "Click a theme for its note · double-click to go down into it"
-  landscape_touch: "Tap a theme for its note · double-tap to go down into it"
-  regime: "Click a prompt for its note · double-click to go down · Up goes back"
-  regime_touch: "Tap a prompt for its note · double-tap to go down · Up goes back"
+  landscape: "Click a theme for its note · double-click or its arrow goes down"
+  landscape_touch: "Tap a theme for its note · its arrow (or a double tap) goes down"
+  regime: "Click a prompt for its note · double-click or its arrow goes down · Up goes back"
+  regime_touch: "Tap a prompt for its note · its arrow (or a double tap) goes down"
   niche: "Click a source for its note · Up goes back to the theme"
   niche_touch: "Tap a source for its note · Up goes back to the theme"
 

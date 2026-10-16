@@ -124,28 +124,42 @@
     }
 
     /* ---------------------------------------------------------------- layout */
-    stacked() { return this.el.clientWidth < 620 || window.matchMedia("(max-width: 820px)").matches; }
+    // cards rather than the ring: on a phone, or when the room left beside an open note (and the left panel) is too narrow for it
+    // (the width is the one the stage is heading for, insets.w, so a side panel still sliding does not flash the cards)
+    stacked() { const I = this.insets || {}, W = I.w || this.el.clientWidth; return W < 620 || W - (I.l || 0) - (I.r || 0) < 520 || window.matchMedia("(max-width: 820px)").matches; }
     layout(animate) {
-      const W = this.el.clientWidth, H = this.el.clientHeight;
+      const W = this.insets.w || this.el.clientWidth, H = this.el.clientHeight;
       if (!W || !H) return;
       const stack = this.stacked();
       this.el.classList.toggle("stack", stack);
       if (stack) {
+        cancelAnimationFrame(this._raf);   // a ring still easing into place must not write over the cards
         for (const el of [this.center, ...this.chapters.map((c) => c.el), ...[...this.items.values()].map((x) => x.item)]) el.removeAttribute("style");
         for (const { th, item } of this.items.values()) { item.style.setProperty("--c", this.app.themeColor(th.n)); item.style.setProperty("--i", this.themes.indexOf(th)); }
         this.chapters.forEach((c, i) => c.el.style.setProperty("--c", u.logoColor(CHAPTER_TONE[i % 3])));
+        const I = this.insets || {}, phone = window.matchMedia("(max-width: 820px)").matches;
+        this.el.style.padding = phone ? "" : `${(I.t || 0) + 4}px ${(I.r || 0) + 14}px ${(I.b || 0) + 24}px ${(I.l || 0) + 14}px`;
         this.pos = null;
         this.paint();
         return;
       }
+      this.el.style.padding = "";
       const I = this.insets, sw = Math.max(200, W - I.l - I.r), sh = Math.max(200, H - I.t - I.b);
       const cx = I.l + sw / 2, cy = I.t + sh / 2;
-      const rd = u.clamp(Math.min(sw, sh) * 0.088, 36, 62), pill = 30, capW = 172;
-      const Ry = Math.max(rd * 2.2, sh / 2 - rd - pill);
-      const Rx = Math.max(Ry * 0.82, Math.min(sw / 2 - rd - 18, Ry * 1.45, sw / 2 - capW - 26));
+      const rd0 = u.clamp(Math.min(sw, sh) * 0.088, 36, 62), pill = 30;
+      // the chapters' names sit beside the ring (wrapping when room is short), and each theme's "N prompts" pill points outwards:
+      // the ring is never wider than they allow, and in a narrow room it grows less tall rather than push them out of view
+      const capW = Math.round(u.clamp(sw * 0.2, 112, 172));
+      this.el.style.setProperty("--capw", capW + "px");
+      const RxMax = Math.min(sw / 2 - rd0 - 102, sw / 2 - capW - 26);
+      let Ry = Math.max(rd0 * 2.2, sh / 2 - rd0 - pill);
+      if (Ry * 0.82 > RxMax) Ry = Math.max(rd0 * 2.2, RxMax / 0.82);
+      const Rx = Math.max(Ry * 0.82, Math.min(sw / 2 - rd0 - 18, Ry * 1.45, RxMax));
+      const D = this.app.D, slot = 1 / (this.themes.length + GAP * D.arcs.length), at = u.alongEllipse(Rx, Ry);
+      // each theme's slot round the ring holds its disc with a little air between neighbours
+      const rd = Math.max(26, Math.min(rd0, (at.total * slot) / 2.3));
       const rc = u.clamp(Math.min(Rx, Ry) * 0.46, 54, 112);
       // clockwise from the top: a gap before each chapter for its name, then one slot per theme, all of equal length round the ring
-      const D = this.app.D, slot = 1 / (this.themes.length + GAP * D.arcs.length), at = u.alongEllipse(Rx, Ry);
       let cur = -(GAP * slot) / 2;
       const ang = new Map(), capAng = new Map(), bandAng = new Map();
       for (const a of D.arcs) {
@@ -180,7 +194,7 @@
       if (!this._ww.has(key)) {
         const c = (this._ctx = this._ctx || document.createElement("canvas").getContext("2d"));
         c.font = "600 100px Inter, system-ui, sans-serif";
-        this._ww.set(key, Math.max(...label.split(/\s+|(?<=-)/).map((w) => c.measureText(w).width)) / 100);
+        this._ww.set(key, Math.max(...label.split(/\s+|(?<=[-–])/).map((w) => c.measureText(w).width)) / 100);
       }
       return this._ww.get(key);
     }
@@ -204,14 +218,34 @@
         // the longest word has to fit across the disc ("biofabrication", "environments")
         item.style.setProperty("--fs", u.clamp(Math.min(rd * 0.232, (1.62 * rd - 6) / this.widest(th.label)), 9, 15.5).toFixed(2) + "px");
       }
-      // a chapter's name sits in the gap before its first theme, outside the ring
+      // a chapter's name sits in the gap before its first theme, outside the ring, and is eased further out if it would touch
+      // a theme or a theme's "N prompts" pill (a compact ring, on a small screen or beside an open note)
+      const pills = [];
+      for (const [n, { item }] of this.items) {
+        const d = item.querySelector(".ls-down");
+        if (!d || !d.offsetWidth) continue;
+        const [x, y] = g.themes.get(n), q = Math.hypot(x - cx, y - cy) || 1, ux = (x - cx) / q, uy = (y - cy) / q, w = d.offsetWidth, hh = d.offsetHeight;
+        const px = x + ux * (rd + 6) + (ux * w) / 2, py = y + uy * (rd + 6) + (uy * hh) / 2;
+        pills.push([px - w / 2, py - hh / 2, px + w / 2, py + hh / 2]);
+      }
+      const discs = [...g.themes.values()];
       for (const c of this.chapters) {
         const a = g.caps.get(c.arc), [x, y] = P(a), co = Math.cos(a), el = c.el;
         el.classList.remove("cap-l", "cap-r", "cap-t", "cap-b");
-        if (co > 0.35) { el.classList.add("cap-r"); Object.assign(el.style, { left: x + 14 + "px", top: y + "px" }); }
-        else if (co < -0.35) { el.classList.add("cap-l"); Object.assign(el.style, { left: x - 14 + "px", top: y + "px" }); }
-        else if (Math.sin(a) < 0) { el.classList.add("cap-t"); Object.assign(el.style, { left: x + "px", top: y - 12 + "px" }); }
-        else { el.classList.add("cap-b"); Object.assign(el.style, { left: x + "px", top: y + 12 + "px" }); }
+        const side = co > 0.35 ? "r" : co < -0.35 ? "l" : Math.sin(a) < 0 ? "t" : "b";
+        el.classList.add("cap-" + side);
+        const w = el.offsetWidth, hh = el.offsetHeight;
+        // its box for a given push outwards, and the push that clears every pill it would touch
+        const box = (k) => (side === "r" ? [x + 14 + k, y - hh / 2, x + 14 + k + w, y + hh / 2] : side === "l" ? [x - 14 - k - w, y - hh / 2, x - 14 - k, y + hh / 2]
+          : side === "t" ? [x - w / 2, y - 12 - k - hh, x + w / 2, y - 12 - k] : [x - w / 2, y + 12 + k, x + w / 2, y + 12 + k + hh]);
+        const hit = (B) => pills.some((p) => B[0] < p[2] + 4 && p[0] < B[2] + 4 && B[1] < p[3] + 3 && p[1] < B[3] + 3)
+          || discs.some(([dx, dy]) => Math.hypot(Math.max(B[0] - dx, 0, dx - B[2]), Math.max(B[1] - dy, 0, dy - B[3])) < rd + 4);
+        let k = 0;
+        while (k < 120 && hit(box(k))) k += 3;
+        if (side === "r") Object.assign(el.style, { left: x + 14 + k + "px", top: y + "px" });
+        else if (side === "l") Object.assign(el.style, { left: x - 14 - k + "px", top: y + "px" });
+        else if (side === "t") Object.assign(el.style, { left: x + "px", top: y - 12 - k + "px" });
+        else Object.assign(el.style, { left: x + "px", top: y + 12 + k + "px" });
       }
       // the ties between themes bow towards the question
       for (const p of this.links) {

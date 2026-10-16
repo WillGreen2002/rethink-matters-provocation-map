@@ -343,7 +343,7 @@ body.right-open .right { transform: none; visibility: visible; transition: trans
   .notice { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  * { transition: none !important; animation-duration: .01ms !important; }   /* none at all: sizes must change at once, or the top row measures stale widths */
 }
 
 /* ================================================================ the three levels */
@@ -392,7 +392,7 @@ body.thread-on .peek { opacity: 0; pointer-events: none; visibility: hidden; }
 }
 .pill-btn svg { width: 18px; height: 18px; color: var(--gold); flex: none; }
 .pill-btn:hover { border-color: var(--ink); }
-body.thread-on .pill-btn { display: none; }
+body.thread-on #btnWalks { display: none; }   /* (Up stays: it ends the walk and goes up a level) */
 
 /* ---------------------------------------------------------------- Landscape: the nine themes on a ring */
 .landscape { overflow: hidden; touch-action: manipulation; }
@@ -424,7 +424,7 @@ body.thread-on .pill-btn { display: none; }
 .ls-chapter { display: contents; }
 .ls-arc {
   position: absolute; z-index: 2; border: 0; background: transparent; padding: 2px 4px; cursor: pointer; font-family: var(--font-serif); font-style: italic; font-weight: 500;
-  font-size: 16px; line-height: 1.2; color: var(--faint); color: color-mix(in srgb, var(--c) 40%, var(--ink)); max-width: 172px; text-align: left;
+  font-size: 16px; line-height: 1.2; color: var(--faint); color: color-mix(in srgb, var(--c) 40%, var(--ink)); max-width: var(--capw, 172px); text-align: left;
 }
 .ls-arc.cap-r { transform: translate(0, -50%); }
 .ls-arc.cap-l { transform: translate(-100%, -50%); text-align: right; }
@@ -653,6 +653,9 @@ body:not([data-level="landscape"]) .landscape-only { display: none; }
 .fmap[data-style="niche"] .fm-nblabel { max-width: 172px; }
 .fm-nb.side-r .fm-nblabel { left: calc(100% + 8px); }
 .fm-nb.side-l .fm-nblabel { right: calc(100% + 8px); text-align: right; }
+.fm-nb.side-t .fm-nblabel, .fm-nb.side-b .fm-nblabel { left: 50%; transform: translateX(-50%); text-align: center; }   /* a narrow stage: names above and below */
+.fm-nb.side-t .fm-nblabel { top: auto; bottom: calc(100% + 4px); }
+.fm-nb.side-b .fm-nblabel { top: calc(100% + 4px); }
 .fm-nblabel small { display: block; font-weight: 400; font-size: 11px; color: var(--faint); margin-top: 1px; }
 .fm-nb:hover .fm-nbdot, .fm-nb.on .fm-nbdot { transform: scale(1.14); }
 .fm-nb:hover .fm-nbname { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--c); }
@@ -742,6 +745,29 @@ body.right-open .pill-btn span, body.fab-tight .pill-btn span { position: absolu
 .view-toggle button:hover { color: var(--ink); }
 .view-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 body.right-open .view-toggle { right: calc(var(--right-w) + 16px); }
-.fm-nblabel, .fmap[data-style="regime"]:not(.stack) .fm-nblabel, .fmap[data-style="niche"] .fm-nblabel { max-width: var(--labw, 150px); }
+.fm-nblabel, .fmap[data-style="regime"]:not(.stack) .fm-nblabel, .fmap[data-style="niche"]:not(.stack) .fm-nblabel { max-width: var(--labw, 150px); }
 @media (max-width: 1080px) { .up-btn .up-what { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } .up-btn { width: 40px; padding: 0; justify-content: center; } }
 @media (max-width: 820px) { .view-toggle { display: none; } }
+/* a crowded top row (see fitChrome in ui.js): the map/list switch folds to its icons, then the level bar's names shorten */
+body.vt-tight .view-toggle button { padding: 5px 8px; }
+body.vt-tight .view-toggle button span, body.lv-tight .levels button:not([aria-current]) .lv-what { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+body.lv-tight .levels button:not([aria-current]).has-what .lv-name { font-size: 13px; font-weight: 500; letter-spacing: 0; text-transform: none; }
+body.lv-tight .levels button:not([aria-current]).has-what { padding-top: 6px; padding-bottom: 6px; }
+body.lv-tight .levels button { padding-left: 8px; padding-right: 10px; gap: 6px; }
+body.lv-tight:not(.right-open) .levels .lv-what { max-width: 150px; }
+.levels button { min-width: 0; }
+body.lv-tight .levels button:not([aria-current]) { flex-shrink: 0; }
+body.lv-tight .levels .lv-text { overflow: hidden; }
+body.lv-row2 .levels { top: 62px; }
+body.lv-row2 .qcap { top: 112px; }
+/* no room for a ring beside an open note and the left panel: a narrow list, no side arrows, each card's way down under its name */
+body.cramped .side-arrow { display: none; }
+body.cramped .fmap.stack[data-style="regime"] .fm-node { padding: 12px 14px 40px; }
+body.cramped .fmap.stack .fm-down { top: auto; bottom: 9px; transform: none; }
+body.lv-icons .levels button:not([aria-current]) .lv-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+body.lv-icons .levels button:not([aria-current]) { padding: 6px 8px; }
+.landscape.stack ~ .qcap { display: none; }   /* as cards (no room for the ring), the question heads the list instead */
+/* the map/list switch when the ring has no room here: Map is unavailable (and says why), List shows as on */
+.view-toggle button[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+.view-toggle button[aria-disabled="true"]:hover { color: var(--faint); }
+body.no-arrows .side-arrow { display: none; }   /* the ring needed their room (the themes further out still move you across) */

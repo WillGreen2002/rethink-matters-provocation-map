@@ -76,7 +76,7 @@
       while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (s[mid] <= want) lo = mid; else hi = mid; }
       return -Math.PI / 2 + (2 * Math.PI * (lo + (want - s[lo]) / (s[lo + 1] - s[lo] || 1))) / M;
     };
-    at.length = L;
+    at.total = L;   // the ellipse's length (a function's own .length cannot be set)
     return at;
   };
 
@@ -157,14 +157,25 @@
   };
 
   // one click opens, two go down: a mouse or touch click waits a moment to see whether a second one follows (a keyboard press,
-  // which has no click count, acts at once). Shared by the Landscape's themes and the Regime's prompts.
+  // which has no click count, acts at once). Shared by the Landscape's themes and the Regime's prompts. A third click does nothing.
   let pressT = null;
   RM.press = function press(e, one, two) {
     clearTimeout(pressT);
     if (!e || !e.detail) { pressT = null; one(); return; }
-    if (e.detail >= 2) { pressT = null; two(); return; }
+    if (e.detail === 2) { pressT = null; two(); return; }
+    if (e.detail > 2) { pressT = null; return; }
     pressT = setTimeout(() => { pressT = null; one(); }, 260);
   };
+  // anything else that moves the map (a key, Up, Back, the level bar) drops a single click still waiting to act
+  RM.press.cancel = () => { clearTimeout(pressT); pressT = null; };
+  // a double click counts only on what its first click hit. Opening a note (or moving across) shifts the map between the two
+  // clicks, so a slow second click can land on another prompt or theme: it must not act there.
+  const hitOf = (t) => (t && t.closest ? t.closest("button, a, summary, input, label, [role=button]") : null) || t;
+  let firstHit = null;
+  document.addEventListener("click", (e) => {
+    if (e.detail <= 1) { firstHit = e.detail === 1 ? hitOf(e.target) : null; return; }
+    if (hitOf(e.target) !== firstHit) { e.stopImmediatePropagation(); e.preventDefault(); }
+  }, true);
 
   u.debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
   u.plural = (n, a, b) => `${n} ${n === 1 ? a : b || a + "s"}`;
