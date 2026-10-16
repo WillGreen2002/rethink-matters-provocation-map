@@ -163,6 +163,38 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
   button at the top left, the hero button, the Walks tab, a theme's note or the question's note.
 * **Index tab.** Every chapter, theme and prompt as a plain list. Everything on every level is a real button, so the map works with a keyboard and a screen reader.
 
+## The committee's review copy
+
+`site/review.html` (live at `.../rethink-matters-provocation-map/review.html`, not linked from the map, not indexed) is the committee's private working
+copy. It is the same map, with:
+
+* **Edit** under each main block of text: a theme's question and its future, the overall answer, each prompt, what the group said in each
+  discussion, and the three level explainers. **Save** shares the change with the whole committee at once; **History** keeps every earlier
+  version (with the editor's initials and time) and can bring one back.
+* **Add to this prompt** in every prompt's note, for after a provocation: a note from the discussion, a paper, a company, a product, a book
+  or a link. It appears on the prompt's Niche straight away; a second person ticks **I have checked this**.
+* **Freeze** (top right) stops editing for everyone; **Unfreeze** reopens it.
+
+**How it works.** Changes are sent through a Google Form that the owner makes (a personal Google account; five short questions:
+*key, text, action, who, extra*) into the Form's Sheet, and every copy reads that Sheet back every half minute. The Form and Sheet
+addresses are never written into this repository: the owner pastes their links once into the setup screen (which opens on
+`review.html` in a browser that has no review link yet), the page sends a test row and reads it back, then gives the link to send. The
+addresses travel inside that link's `#k=...` part, which browsers do not send to any server; each person's browser remembers it
+after the first visit. Anyone with the link (or the Sheet's link) can read and change the review text, so keep it within the committee.
+The Sheet itself is the full record: one row per change.
+
+**From the frozen review to the public map.** Press **Freeze**, then (from the project folder):
+
+```bash
+python -I build/review_import.py --sheet "<the Sheet's link>"
+```
+
+(or download the Sheet as CSV and use `--csv responses.csv`). It writes the latest text of every edited block to
+`curation/review_edits.yaml`, which `build.py` applies to the published map before its leak and house-style checks; additions with a
+public link become rows in `curation/niche_examples.csv` (`checked` if a second person ticked them, otherwise `draft`, which is not
+published); notes without a link go to `curation/review_notes.yaml`, to be folded into the anonymised discussion notes by hand. Initials
+stay in the Sheet. Then build, preflight, commit and push as usual.
+
 ## Credits and sources
 
 Visual language: rethinkmatters.org (tokens and the logo gradient were read from the live site). Central question and the four values: *Revisiting and Realizing the Promises of
