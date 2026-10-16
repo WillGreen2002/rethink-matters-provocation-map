@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Bring the committee's frozen review into the map's curation files.
+"""Publish the committee's edits: bring them from the edit Sheet into the map's curation files.
 
     python -I build/review_import.py --csv  responses.csv        # the Sheet, downloaded (File > Download > CSV)
     python -I build/review_import.py --sheet "<the Sheet's link>" # or read it straight from the Sheet (shared: anyone with the link)
@@ -24,7 +24,7 @@ import urllib.parse
 import urllib.request
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-EDIT = re.compile(r"^(theme:th:\d+:(lead|future)|centre:answer|prompt:n:[a-z0-9-]+:text|disc:d:[a-z0-9-]+:notes|copy:levels\.(landscape|regime|niche)\.explain)$")
+EDIT = re.compile(r"^(theme:th:\d+:(title|lead|future)|centre:answer|prompt:n:[a-z0-9-]+:(label|text)|disc:d:[a-z0-9-]+:(label|notes)|copy:(levels\.(landscape|regime|niche)\.explain|hero\.lede))$")
 EX_TYPES = {"paper": "paper", "company": "company", "product": "product", "preclinical": "preclinical", "clinical": "clinical",
             "note": "other", "book": "other", "link": "other", "other": "other"}
 EX_COLS = ["id", "type", "name", "organisation", "year", "stage", "summary", "url", "prompts", "status", "notes"]
@@ -95,11 +95,11 @@ def main():
     src = ap.add_mutually_exclusive_group(required=True)
     src.add_argument("--csv", help="the Sheet downloaded as CSV")
     src.add_argument("--sheet", help="the Sheet's share link")
-    ap.add_argument("--anyway", action="store_true", help="import even though the review is not frozen")
+    ap.add_argument("--anyway", action="store_true", help="publish even though the edits are not frozen")
     args = ap.parse_args()
     edits, adds, frozen = derive(read_rows(args))
     if not frozen and not args.anyway:
-        sys.exit("The review is not frozen: press Freeze in the review copy first (or pass --anyway to import a snapshot).")
+        sys.exit("The edits are not frozen: press Freeze in edit mode first (or pass --anyway to publish them as they stand).")
     # the edits: one file, applied by build.py on top of everything else
     # (JSON-quoted strings are valid YAML: no YAML library needed here)
     path = os.path.join(ROOT, "curation", "review_edits.yaml")

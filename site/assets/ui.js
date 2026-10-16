@@ -99,8 +99,15 @@
     startThread: (id) => startThread(id),
     drill: (id) => drill(id),
     goLevel: (lv, o) => goLevel(lv, o),
-    // the committee's review copy: show text that changed, and additions as they arrive
-    refresh: () => { if (S.sel && byId.has(S.sel)) renderNote(); renderLevelNote(); if (S.level === "niche") { nic.m = null; showNiche(); } updateInsets(); },
+    // edit mode (review.js): show text that changed, and additions as they arrive
+    refresh: (o = {}) => {
+      if (S.sel && byId.has(S.sel)) renderNote();
+      renderLevelNote(); renderHero();
+      // names drawn on the map changed: draw the level again (not during a walk, which keeps its own overlay)
+      if (o.maps && S.level === "regime" && !S.thread) { reg.m = null; showRegime(); }
+      if (S.level === "niche") { nic.m = null; showNiche(); }
+      renderChrome();
+    },
     addExample: (e) => {
       const n = Object.assign({}, e, { kind: "example", topics: (e.topics || []).filter((x) => byId.has(x)) });
       if (!n.topics.length || byId.has(n.id)) return;
@@ -302,12 +309,15 @@
     ...[["explore", u.t("tabs.explore")], ["walks", u.t("tabs.walks", { n: D.threads.length })], ["index", u.t("tabs.index")]].map(([k, label]) =>
       (tabBtns[k] = h("button", { role: "tab", "aria-selected": k === "explore" ? "true" : "false", onclick: () => setTab(k) }, label))));
   const heroIcon = h("span", { class: "hero-ico" });
+  const heroLede = h("div", { class: "hero-lede" });
+  const renderHero = () => heroLede.replaceChildren(RM.review ? RM.review.editable(h("p", null, u.t("hero.lede")), "copy:hero.lede", { inline: true }) : h("p", null, u.t("hero.lede")));
+  renderHero();
   const levelNote = h("div", { class: "level-note" });
   left.append(
     h("div", { class: "title-block" },
       heroIcon,
       h("h1", null, u.t("hero.title")),
-      h("p", null, u.t("hero.lede")),
+      heroLede,
       h("div", { class: "stats" }, ...[[themes.length, u.t("hero.stat_themes")], [topics.length, u.t("hero.stat_prompts")], [discs.length, u.t("hero.stat_discussions")]].map(([n, l]) => h("span", null, h("b", null, n), " " + l))),
       h("button", { class: "btn solid walk-cta", type: "button", onclick: () => openWalks() },
         h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "1.7", "stroke-linecap": "round", "stroke-linejoin": "round", "aria-hidden": "true", html: '<circle cx="5" cy="18" r="2"/><circle cx="19" cy="6" r="2"/><path d="M7 18h6a3 3 0 0 0 0-6h-2a3 3 0 0 1 0-6h6"/>' }),
@@ -991,7 +1001,7 @@
 
   /* ------------------------------------------------------------------ keyboard, resize */
   document.addEventListener("keydown", (e) => {
-    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) || document.activeElement.isContentEditable;
     if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
     const inBar = levelbar.contains(document.activeElement);
     if (e.key === "/") { e.preventDefault(); openLeft(); setTab("explore"); searchInput.focus(); searchInput.select(); }

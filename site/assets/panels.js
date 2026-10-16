@@ -4,7 +4,7 @@
   const { u } = RM;
   const h = u.h;
   const put = (el, ...kids) => { for (const k of kids) if (k) el.append(k); };   // append what exists (append(null) would print "null")
-  // in the committee's review copy (review.html), a text block that can be edited; on the public map, the block as it is
+  // in edit mode (with the edit link: review.js), a text block that can be clicked into and changed; otherwise the block as it is
   const ed = (el, key, o) => (RM.review ? RM.review.editable(el, key, o) : el);
   const FACET_COLOR = { tension: "#A04340", concept: "#48909F", barrier: "#7F8C64", domain: "#D9A441", method: "#8A8577" };
 
@@ -109,7 +109,7 @@
     const th = app.byId.get("th:" + n.theme), color = app.colorOf(n.id);
     const body = h("div");
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), u.t("topic.kind")));
-    body.append(h("h1", null, n.label));
+    body.append(ed(h("h1", null, n.label), "prompt:" + n.id + ":label"));
     body.append(ed(h("p", { class: "prompt", style: { "--c": color } }, n.text), "prompt:" + n.id + ":text"));
     if (app.level() === "regime") {
       const c = app.sourceCount(n.id);
@@ -154,7 +154,7 @@
     body.append(h("h2", null, u.t("topic.discussions"), h("small", null, ds.length ? u.t("topic.discussions_sub", { n: ds.length }) : "")));
     if (ds.length) ds.forEach((d, i) => body.append(discItem(app, d, ds.length === 1 || (i === 0 && !!d.notes))));
     else body.append(h("p", { class: "md faint" }, u.t("topic.no_discussions")));
-    if (RM.review) body.append(RM.review.contributions(app, n.id));   // what the committee has added since
+    if (RM.review) put(body, RM.review.contributions(app, n.id));   // in edit mode: what the committee has added since
 
     if (n.reading.length) {
       body.append(h("h2", null, u.t("topic.reading"), h("small", null, u.t("topic.reading_sub"))));
@@ -170,7 +170,7 @@
     const ts = n.topics.map((id) => app.byId.get(id)).sort((a, b) => a.order - b.order);
     const body = h("div");
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), u.t("theme.kind", { n: n.n, chapter: arc.label })));
-    body.append(h("h1", null, n.title));
+    body.append(ed(h("h1", null, n.title), "theme:" + n.id + ":title"));
     body.append(ed(h("p", { class: "prompt", style: { "--c": color } }, n.lead), "theme:" + n.id + ":lead"));
     // down to its prompts (from the Landscape; on the Regime the theme is already in the middle)
     if (app.level() === "landscape") body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) }, h("span", { "aria-hidden": "true" }, "↓ "), u.t("theme.down", { n: ts.length })));
@@ -265,7 +265,7 @@
   function discussion(app, n) {
     const body = h("div");
     body.append(h("span", { class: "kind", style: { "--c": "#666666" } }, h("i"), n.proposed ? u.t("disc.kind_proposed") : u.t("disc.kind")));
-    body.append(h("h1", null, n.label));
+    body.append(ed(h("h1", null, n.label), "disc:" + n.id + ":label"));
     body.append(h("div", { class: "chips", style: { marginBottom: "6px" } }, sessionMeta(app, n).map((x) => h("span", { class: "chip sm static" + (x.className.includes("proposed") ? " dashed" : "") }, x.textContent))));
     put(body, metaLine(app, n.wg, [], []));
     const d = discBody(app, n);

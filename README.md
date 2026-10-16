@@ -163,37 +163,59 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
   button at the top left, the hero button, the Walks tab, a theme's note or the question's note.
 * **Index tab.** Every chapter, theme and prompt as a plain list. Everything on every level is a real button, so the map works with a keyboard and a screen reader.
 
-## The committee's review copy
+## Editing the map (the edit link)
 
-`site/review.html` (live at `.../rethink-matters-provocation-map/review.html`, not linked from the map, not indexed) is the committee's private working
-copy. It is the same map, with:
+The map itself can be edited by anyone who has its **edit link**. Without the link, the site is exactly as published.
 
-* **Edit** under each main block of text: a theme's question and its future, the overall answer, each prompt, what the group said in each
-  discussion, and the three level explainers. **Save** shares the change with the whole committee at once; **History** keeps every earlier
-  version (with the editor's initials and time) and can bring one back.
-* **Add to this prompt** in every prompt's note, for after a provocation: a note from the discussion, a paper, a company, a product, a book
-  or a link. It appears on the prompt's Niche straight away; a second person ticks **I have checked this**.
-* **Freeze** (top right) stops editing for everyone; **Unfreeze** reopens it.
+* **Opening the edit link once** sets that browser up (it remembers it). The map then starts with everyone's latest changes and shows an
+  **Edit** switch in the header.
+* **With Edit on**, everything that can be changed is outlined: theme titles, questions and futures, the overall answer, prompts (names and
+  text), discussions (names and what the group said), the level explainers and the introduction. **Click into the text and type; click
+  away (or press Enter) to save**, Esc to undo. Changes reach everyone with the link at once; **History** under a changed text keeps every
+  earlier version, with initials and time, and can bring one back. Renaming a prompt renames its disc on the map.
+* **Add to this prompt** (in a prompt's note, in edit mode), for after a provocation: a note from the discussion, a paper, a company, a
+  product, a book or a link. It appears on the prompt's Niche straight away; a second person ticks **I have checked this**.
+* **Freeze** stops editing for everyone; **Unfreeze** reopens it. **Done editing** turns the outlines off.
 
-**How it works.** Changes are sent through a Google Form that the owner makes (a personal Google account; five short questions:
-*key, text, action, who, extra*) into the Form's Sheet, and every copy reads that Sheet back every half minute. The Form and Sheet
-addresses are never written into this repository: the owner pastes their links once into the setup screen (which opens on
-`review.html` in a browser that has no review link yet), the page sends a test row and reads it back, then gives the link to send. The
-addresses travel inside that link's `#k=...` part, which browsers do not send to any server; each person's browser remembers it
-after the first visit. Anyone with the link (or the Sheet's link) can read and change the review text, so keep it within the committee.
-The Sheet itself is the full record: one row per change.
+**The public map changes only when you publish** (below): everyone else keeps seeing the published text until then, and publishing runs
+the Chatham House name check and the other checks first.
 
-**From the frozen review to the public map.** Press **Freeze**, then (from the project folder):
+**Setting it up (once, about five minutes).** Open the map with `?setup` on the end
+(`https://willgreen2002.github.io/rethink-matters-provocation-map/?setup`) and follow the steps: make a Google Form in a personal Google
+account (five short questions: *key, text, action, who, extra*), link it to a Sheet, share the Sheet with *anyone with the link, viewer*,
+and paste the two links in. The page sends a test row through the Form, reads it back from the Sheet, and gives you the edit link. The
+Form and Sheet addresses are never written into this repository: they travel inside the edit link's `#k=...` part, which browsers do
+not send to any server. Anyone with the edit link (or the Sheet's link) can read and change the text, so share it only with the people
+who should edit. Making it members-only is a later step.
+
+**Publishing.** From the project folder (ideally after **Freeze**):
 
 ```bash
 python -I build/review_import.py --sheet "<the Sheet's link>"
 ```
 
-(or download the Sheet as CSV and use `--csv responses.csv`). It writes the latest text of every edited block to
-`curation/review_edits.yaml`, which `build.py` applies to the published map before its leak and house-style checks; additions with a
-public link become rows in `curation/niche_examples.csv` (`checked` if a second person ticked them, otherwise `draft`, which is not
-published); notes without a link go to `curation/review_notes.yaml`, to be folded into the anonymised discussion notes by hand. Initials
-stay in the Sheet. Then build, preflight, commit and push as usual.
+(or download the Sheet as CSV and use `--csv responses.csv`; add `--anyway` to publish without freezing). It writes the latest text of
+every edited block to `curation/review_edits.yaml`, which `build.py` applies to the published map before its leak and house-style checks;
+additions with a public link become rows in `curation/niche_examples.csv` (`checked` if a second person ticked them, otherwise `draft`,
+which is not published); notes without a link go to `curation/review_notes.yaml`, to be folded into the anonymised discussion notes by
+hand. Initials stay in the Sheet. Then build, preflight, commit and push as usual.
+
+## Backups
+
+The whole map as published on 16 October 2026, before editing began, is kept on GitHub as the tag **`map-backup-2026-10-16`** (and the
+branch `backup/map-2026-10-16`). To look at it, or to put the live site back to it:
+
+```bash
+git checkout map-backup-2026-10-16
+```
+
+```bash
+git push --force origin map-backup-2026-10-16:main
+```
+
+(the second replaces the live site with the backup: everything after it stays in the repository's history and in the edit Sheet). Every
+change made in edit mode is also a row in the Sheet, so any single text can be brought back with **History**. Before each publish, a
+new tag of the same kind keeps the previous public map recoverable.
 
 ## Credits and sources
 

@@ -1,10 +1,15 @@
-/* The committee's review copy (site/review.html): the same map, where the main text can be edited and anything can be added to a
-   prompt after a discussion. Changes are sent through the committee's own Google Form into its Sheet, and every copy reads the
-   Sheet back, so everyone sees the same text. Freezing stops editing; the frozen text then reaches the public map through
-   build/review_import.py and the usual checks. The public map (index.html) never loads this file.
+/* Edit mode: the map itself, editable by anyone who has the edit link. It loads before the map (ui.js) and, without the link, simply
+   starts the map as it is: visitors see the published text, untouched.
 
-   The Form and Sheet addresses are never written into this repository: the owner pastes their links once (the setup screen), and
-   they travel to the committee inside the review link's #k=... part, which browsers keep to themselves. */
+   With the link (opened once; the browser then remembers it), the map starts with the committee's latest text and shows an Edit
+   switch in the header. With Edit on, the main text can be changed by clicking into it: theme titles, questions and futures, the
+   overall answer, prompts, discussions and what the group said, the explainers. Leaving the text saves it for everyone with the
+   link; History keeps every earlier version. Any prompt can take additions after a provocation; Freeze stops editing.
+
+   Changes go through the committee's own Google Form into its Sheet, and every copy with the link reads the Sheet back. The public
+   map changes only when the owner publishes (build/review_import.py, then the usual build and checks). The Form and Sheet addresses
+   are never written into this repository: the owner pastes their links once on the setup screen (index.html?setup), and they travel
+   inside the edit link's #k=... part, which browsers keep to themselves. */
 (function () {
   "use strict";
   const RM = (window.RM = window.RM || {});
@@ -14,6 +19,7 @@
   const STORE = { key: "rm-review-key", who: "rm-review-who", seen: "rm-review-welcome", demo: "rm-review-demo-log" };
   const POLL = 30000;
   const store = { get: (k) => u.store.get(k), set: (k, v) => u.store.set(k, v) };
+  const scriptEl = document.currentScript;
 
   /* ------------------------------------------------------------------ the key: where to send changes and where to read them */
   const b64e = (s) => { let x = ""; new TextEncoder().encode(s).forEach((c) => (x += String.fromCharCode(c))); return btoa(x).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
@@ -99,8 +105,10 @@
   }
 
   /* ------------------------------------------------------------------ what the log of changes adds up to */
-  const EDIT = /^(theme:th:\d+:(lead|future)|centre:answer|prompt:n:[a-z0-9-]+:text|disc:d:[a-z0-9-]+:notes|copy:levels\.(landscape|regime|niche)\.explain)$/;
-  const S = { cfg: null, be: null, log: [], pending: [], edits: new Map(), adds: new Map(), frozen: null, base: new Map(), synced: 0, error: null, booted: false };
+  const EDIT = /^(theme:th:\d+:(title|lead|future)|centre:answer|prompt:n:[a-z0-9-]+:(label|text)|disc:d:[a-z0-9-]+:(label|notes)|copy:(levels\.(landscape|regime|niche)\.explain|hero\.lede))$/;
+  const LABEL = /^(prompt:n:[a-z0-9-]+:label|disc:d:[a-z0-9-]+:label)$/;   // names drawn on the map itself
+  const S = { cfg: null, be: null, log: [], pending: [], edits: new Map(), adds: new Map(), frozen: null, base: new Map(), synced: 0, error: null,
+    booted: false, editing: false, later: false };
   const node = (id) => (RM.app ? RM.app.byId.get(id) : D.nodes.find((n) => n.id === id));
   const parseExtra = (s) => { try { const x = JSON.parse(s || "{}"); return x && typeof x === "object" ? x : {}; } catch (e) { return {}; } };
   // (the Sheet may hand text back with different line endings or edges)
@@ -129,29 +137,33 @@
   /* ------------------------------------------------------------------ where each editable text lives in the map's data */
   function slot(key) {
     let m;
-    if ((m = /^theme:(th:\d+):(lead|future)$/.exec(key))) { const n = node(m[1]); if (!n) return null; return m[2] === "lead" ? [n, "lead"] : n.future ? [n.future, "text"] : null; }
+    if ((m = /^theme:(th:\d+):(title|lead|future)$/.exec(key))) { const n = node(m[1]); if (!n) return null; return m[2] === "future" ? (n.future ? [n.future, "text"] : null) : [n, m[2]]; }
     if (key === "centre:answer") { const c = node("c"); return c && c.answer ? [c.answer, "text"] : null; }
-    if ((m = /^prompt:(n:[a-z0-9-]+):text$/.exec(key))) { const n = node(m[1]); return n && n.kind === "topic" ? [n, "text"] : null; }
-    if ((m = /^disc:(d:[a-z0-9-]+):notes$/.exec(key))) { const n = node(m[1]); return n && n.kind === "discussion" ? [n, "notes"] : null; }
-    if ((m = /^copy:(levels\.(landscape|regime|niche)\.explain)$/.exec(key))) { const p = m[1].split("."), o = p.slice(0, -1).reduce((x, k) => (x ? x[k] : null), D.copy); return o ? [o, p[p.length - 1]] : null; }
+    if ((m = /^prompt:(n:[a-z0-9-]+):(label|text)$/.exec(key))) { const n = node(m[1]); return n && n.kind === "topic" ? [n, m[2]] : null; }
+    if ((m = /^disc:(d:[a-z0-9-]+):(label|notes)$/.exec(key))) { const n = node(m[1]); return n && n.kind === "discussion" ? [n, m[2]] : null; }
+    if ((m = /^copy:(levels\.(landscape|regime|niche)\.explain|hero\.lede)$/.exec(key))) { const p = m[1].split("."), o = p.slice(0, -1).reduce((x, k) => (x ? x[k] : null), D.copy); return o ? [o, p[p.length - 1]] : null; }
     return null;
   }
   const current = (key) => { const s = slot(key); return s ? s[0][s[1]] || "" : ""; };
+  // returns whether a name drawn on the map changed (the map is then drawn again)
   function applyEdits() {
+    let labels = false;
     for (const [key, list] of S.edits) {
       const s = slot(key);
       if (!s) continue;
       if (!S.base.has(key)) S.base.set(key, s[0][s[1]] || "");
-      s[0][s[1]] = list[list.length - 1].text;
+      const v = list[list.length - 1].text;
+      if (s[0][s[1]] !== v) { if (LABEL.test(key)) labels = true; s[0][s[1]] = v; }
     }
+    return labels;
   }
 
   /* ------------------------------------------------------------------ additions: shown on the Niche as cards, like the examples */
   const TYPES = { note: { shape: "dot" }, paper: { shape: "square" }, company: { shape: "triangle" }, product: { shape: "diamond" },
     preclinical: { shape: "ring" }, clinical: { shape: "dot" }, book: { shape: "book" }, link: { shape: "cross" }, other: { shape: "cross" } };
-  for (const [k, v] of Object.entries(TYPES)) {
+  function registerTypes() {
     D.exampleTypes = D.exampleTypes || {};
-    if (!D.exampleTypes[k]) D.exampleTypes[k] = { label: t("review.type." + k), plural: t("review.type." + k), shape: v.shape };
+    for (const [k, v] of Object.entries(TYPES)) if (!D.exampleTypes[k]) D.exampleTypes[k] = { label: t("review.type." + k), plural: t("review.type." + k), shape: v.shape };
   }
   const exId = (a) => "ex:rv-" + a.id;
   const safeUrl = (s) => (/^https?:\/\//i.test(String(s).trim()) ? String(s).trim() : "");
@@ -173,8 +185,8 @@
   function send(rec) {
     rec = Object.assign({ who: who(), extra: "" }, rec);
     rec.text = String(rec.text == null ? "" : rec.text);
-    S.pending.push(Object.assign({ at: Date.now(), sent: Date.now() }, rec));
-    derive(); applyEdits(); applyAdds(); refresh();
+    S.pending.push(Object.assign({ at: Date.now() }, rec));
+    derive(); const labels = applyEdits(); applyAdds(); refresh(labels);
     return S.be.send(rec).then(() => setTimeout(sync, S.be.demo ? 50 : 2500), () => { S.error = t("review.status.send_failed"); renderBar(); });
   }
   let syncing = false;
@@ -187,22 +199,31 @@
       const theirs = rows.slice(before).filter((r) => r.action !== "ping" && !S.pending.some((p) => same(r, p))).length;
       S.log = rows; S.synced = Date.now(); S.error = null;
       S.pending = S.pending.filter((p) => !rows.some((r) => same(r, p)));
-      derive(); applyEdits(); applyAdds();
-      if (S.booted && rows.length !== before) { refresh(); if (before && theirs) toast(theirs === 1 ? t("review.status.new_one") : t("review.status.new", { n: theirs })); }
+      derive(); const labels = applyEdits(); applyAdds();
+      if (S.booted && rows.length !== before) { refresh(labels); if (before && theirs) toast(theirs === 1 ? t("review.status.new_one") : t("review.status.new", { n: theirs })); }
       else renderBar();
-    }, (e) => { S.error = t("review.status.offline"); renderBar(); }).then(() => { syncing = false; });
+    }, () => { S.error = t("review.status.offline"); renderBar(); }).then(() => { syncing = false; });
   }
-  function refresh() { if (!S.booted) return; renderBar(); if (RM.app && RM.app.refresh) RM.app.refresh(); }
+  // draw the note and panels again with the latest text; never while someone is typing in a field (it waits until they leave it)
+  function refresh(labels) {
+    if (!S.booted) return;
+    renderBar();
+    const ae = document.activeElement;
+    if (ae && ae.classList && ae.classList.contains("rv-field")) { if (labels) S.later = "maps"; else S.later = S.later || "note"; return; }
+    if (RM.app && RM.app.refresh) RM.app.refresh({ maps: !!labels });
+  }
 
-  /* ------------------------------------------------------------------ the bar in the site's header */
+  /* ------------------------------------------------------------------ the header: the Edit switch, and the review's state */
   let bar = null;
   function renderBar() {
     if (!bar) return;
     const n = [...S.edits.values()].reduce((s, l) => s + l.length, 0) + S.adds.size;
     const status = S.error ? S.error : S.be && S.be.demo ? t("review.status.demo") : S.synced ? t("review.status.synced", { time: clock(S.synced) }) : t("review.status.loading");
     const waiting = S.pending.filter((p) => !S.log.some((r) => same(r, p))).length;
-    bar.replaceChildren(
-      h("span", { class: "rv-tag" }, t("review.bar.tag")),
+    const toggle = h("button", { type: "button", class: "rv-btn rv-toggle", "aria-pressed": S.editing ? "true" : "false", onclick: () => setEditing(!S.editing) },
+      h("span", { "aria-hidden": "true" }, "✎ "), S.editing ? t("review.bar.done") : t("review.bar.edit"));
+    const kids = [toggle];
+    if (S.editing) kids.push(
       h("span", { class: "rv-count" }, n === 1 ? t("review.bar.count_one") : t("review.bar.count", { n }), waiting ? " · " + t("review.status.saving_n", { n: waiting }) : ""),
       h("span", { class: "rv-sync" + (S.error ? " bad" : "") }, status),
       h("button", { type: "button", class: "rv-btn", title: t("review.bar.refresh"), "aria-label": t("review.bar.refresh"), onclick: () => sync() }, "⟳"),
@@ -211,20 +232,31 @@
         ? h("button", { type: "button", class: "rv-btn rv-frozen", onclick: () => confirmBox(t("review.unfreeze.title"), t("review.unfreeze.body"), t("review.unfreeze.ok"), () => send({ action: "unfreeze", key: "*" })) },
           "❄ ", t("review.bar.frozen", { date: S.frozen.at ? u.fmtDate(new Date(S.frozen.at).toISOString().slice(0, 10)) : "" }))
         : h("button", { type: "button", class: "rv-btn rv-freeze", onclick: () => confirmBox(t("review.freeze.title"), t("review.freeze.body"), t("review.freeze.ok"), () => send({ action: "freeze", key: "*" })) }, t("review.bar.freeze")));
+    else if (S.error) kids.push(h("span", { class: "rv-sync bad" }, status));
+    else if (S.frozen) kids.push(h("span", { class: "rv-sync" }, "❄ ", t("review.bar.frozen", { date: "" })));
+    bar.replaceChildren(...kids);
     document.body.classList.toggle("rv-is-frozen", frozen());
+    document.body.classList.toggle("rv-editing", S.editing);
+  }
+  function setEditing(on) {
+    S.editing = !!on && !!S.be;
+    renderBar();
+    if (RM.app && RM.app.refresh) RM.app.refresh({ maps: false });
+    if (S.editing) welcome(false);
+    toast(S.editing ? t("review.edit_on") : t("review.edit_off"));
   }
   const clock = (ms) => { const d = new Date(ms); return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); };
   const when = (ms) => (ms ? u.fmtDate(new Date(ms).toISOString().slice(0, 10)) + " " + clock(ms) : "");
   function toast(msg) {
     const el = h("div", { class: "rv-toast", role: "status" }, msg);
     document.body.append(el);
-    setTimeout(() => el.classList.add("out"), 3600);
-    setTimeout(() => el.remove(), 4200);
+    setTimeout(() => el.classList.add("out"), 3000);
+    setTimeout(() => el.remove(), 3600);
   }
 
   /* ------------------------------------------------------------------ dialogs */
   function modal(title, ...kids) {
-    const close = () => { wrap.remove(); if (opener) opener.focus({ preventScroll: true }); };
+    const close = () => { wrap.remove(); if (opener && opener.focus) opener.focus({ preventScroll: true }); };
     const opener = document.activeElement;
     const box = h("div", { class: "rv-modal", role: "dialog", "aria-modal": "true", "aria-label": title },
       h("button", { type: "button", class: "rv-x", "aria-label": t("review.close"), onclick: () => close() }, "✕"), h("h2", null, title), ...kids);
@@ -232,7 +264,7 @@
     wrap.addEventListener("keydown", (e) => { if (e.key === "Escape") { e.stopPropagation(); close(); } });
     document.body.append(wrap);
     const f = box.querySelector("textarea, input, select, button:not(.rv-x)");
-    (f || box).focus && (f || box).focus({ preventScroll: true });
+    if (f) f.focus({ preventScroll: true });
     return close;
   }
   function confirmBox(title, body, ok, then) {
@@ -243,55 +275,60 @@
   function welcome(force) {
     if (!force && store.get(STORE.seen)) return;
     store.set(STORE.seen, "1");
-    modal(t("review.welcome.title"), h("p", null, t("review.welcome.lede")),
+    const close = modal(t("review.welcome.title"), h("p", null, t("review.welcome.lede")),
       h("ul", { class: "rv-list" }, t("review.welcome.items").map((x) => h("li", null, ...u.inline(x)))),
       h("p", { class: "rv-rule" }, t("review.rule")),
-      h("div", { class: "rv-actions" }, h("button", { type: "button", class: "btn solid", onclick: (e) => e.target.closest(".rv-overlay").remove() }, t("review.welcome.ok"))));
+      h("div", { class: "rv-actions" }, whoField(), h("button", { type: "button", class: "btn solid", onclick: () => close() }, t("review.welcome.ok"))));
   }
-  // initials, asked once: only the committee sees them (they are not carried to the public map)
-  const whoField = () => {
-    const i = h("input", { type: "text", class: "rv-who", maxlength: "12", value: who(), placeholder: t("review.who_placeholder"), "aria-label": t("review.who_label") });
-    i.addEventListener("change", () => store.set(STORE.who, i.value.trim().slice(0, 12)));
+  // initials: only the committee sees them (they are not carried to the public map)
+  function whoField() {
+    const i = h("input", { type: "text", class: "rv-who", maxlength: "12", value: who(), placeholder: t("review.who_placeholder"), "aria-label": t("review.who_label"), title: t("review.who_label") });
+    i.addEventListener("input", () => store.set(STORE.who, i.value.trim().slice(0, 12)));
     return i;
-  };
+  }
 
-  /* ------------------------------------------------------------------ editing a text block */
-  const tidy = (s) => String(s).replace(/\r/g, "").replace(/[\u2014\u2015]/g, "\u2013").replace(/[ \t]+\n/g, "\n").trim();   // (the map uses no em dashes)
+  /* ------------------------------------------------------------------ editing in place: click into the text, type, click away */
+  const PLAIN = (() => { const d = document.createElement("div"); try { d.contentEditable = "plaintext-only"; } catch (e) { return "true"; } return d.contentEditable === "plaintext-only" ? "plaintext-only" : "true"; })();
+  const tidy = (s) => String(s).replace(/\r/g, "").replace(/\u00a0/g, " ").replace(/[\u2014\u2015]/g, "\u2013").replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();   // (the map uses no em dashes)
   function editable(el, key, opts) {
     opts = opts || {};
-    if (!slot(key)) return el;
-    const wrap = h("div", { class: "rv-block" + (opts.inline ? " inline" : "") }, el);
-    const meta = h("div", { class: "rv-meta" });
-    const list = S.edits.get(key) || [];
-    if (!frozen()) meta.append(h("button", { type: "button", class: "rv-edit", onclick: () => openEditor(wrap, key, opts) }, h("span", { "aria-hidden": "true" }, "✎ "), t("review.edit")));
-    if (isPending((p) => p.action === "edit" && p.key === key)) meta.append(h("span", { class: "rv-saving" }, t("review.status.saving")));
-    else if (list.length) {
-      const last = list[list.length - 1];
-      meta.append(h("span", { class: "rv-by" }, t("review.edited", { who: last.who || t("review.someone"), when: when(last.at) })));
+    if (!S.be || !slot(key) || !S.editing || frozen()) return el;
+    let field = el;
+    if (opts.md) {   // what the group said: edited as written (lines starting "- " are bullets), shown as such once saved
+      field = h("div", { class: "rv-md" });
+      field.textContent = current(key);
     }
+    field.classList.add("rv-field");
+    field.setAttribute("contenteditable", PLAIN);
+    field.setAttribute("role", "textbox");
+    field.setAttribute("aria-label", t("review.field_label"));
+    if (opts.md) field.setAttribute("aria-multiline", "true");
+    field.spellcheck = true;
+    field.dataset.editKey = key;
+    let before = null;
+    const value = () => tidy(field.innerText);
+    field.addEventListener("focus", () => { before = value(); field.classList.add("on"); });
+    field.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); field.textContent = opts.md ? current(key) : before; before = null; field.blur(); return; }
+      if (e.key === "Enter" && (!opts.md || e.ctrlKey || e.metaKey)) { e.preventDefault(); field.blur(); }   // one-paragraph texts: Enter saves
+      e.stopPropagation();   // (the map's own keys stay quiet while typing)
+    });
+    field.addEventListener("blur", () => {
+      field.classList.remove("on");
+      const text = value();
+      if (before !== null && text !== before) {
+        if (!text && !opts.md) { field.textContent = before; toast(t("review.empty")); }
+        else send({ action: "edit", key, text });
+      }
+      before = null;
+      if (S.later) { const maps = S.later === "maps"; S.later = false; setTimeout(() => { if (RM.app) RM.app.refresh({ maps }); }, 0); }
+    });
+    const list = S.edits.get(key) || [];
+    const meta = h("div", { class: "rv-meta" });
+    if (isPending((p) => p.action === "edit" && p.key === key)) meta.append(h("span", { class: "rv-saving" }, t("review.status.saving")));
+    else if (list.length) { const last = list[list.length - 1]; meta.append(h("span", { class: "rv-by" }, t("review.edited", { who: last.who || t("review.someone"), when: when(last.at) }))); }
     if (list.length) meta.append(h("button", { type: "button", class: "rv-hist", onclick: () => openHistory(key, opts) }, t("review.history", { n: list.length })));
-    wrap.append(meta);
-    return wrap;
-  }
-  function openEditor(wrap, key, opts) {
-    const ta = h("textarea", { class: "rv-ta", rows: opts.md ? 10 : 4, "aria-label": t("review.edit_label") });
-    ta.value = current(key);
-    const grow = () => { ta.style.height = "auto"; ta.style.height = Math.min(520, ta.scrollHeight + 4) + "px"; };
-    ta.addEventListener("input", grow);
-    const msg = h("p", { class: "rv-hint" }, opts.md ? t("review.md_hint") : t("review.plain_hint"));
-    const ed = h("div", { class: "rv-editor" }, ta, msg, h("p", { class: "rv-rule" }, t("review.rule")),
-      h("div", { class: "rv-actions" }, whoField(),
-        h("button", { type: "button", class: "btn", onclick: () => { ed.replaceWith(wrap); } }, t("review.cancel")),
-        h("button", { type: "button", class: "btn solid", onclick: () => {
-          const text = tidy(ta.value);
-          if (!text && !opts.md) { msg.textContent = t("review.empty"); return; }
-          if (text === tidy(current(key))) { ed.replaceWith(wrap); return; }
-          send({ action: "edit", key, text });
-        } }, t("review.save"))));
-    ta.addEventListener("keydown", (e) => { if (e.key === "Escape") { e.stopPropagation(); ed.replaceWith(wrap); } });
-    wrap.replaceWith(ed);
-    grow();
-    ta.focus({ preventScroll: true });
+    return meta.childNodes.length ? h("div", { class: "rv-block" + (opts.inline ? " inline" : "") }, field, meta) : field;
   }
   function openHistory(key, opts) {
     const list = (S.edits.get(key) || []).slice().reverse();
@@ -328,13 +365,14 @@
   const byLine = (a) => t("review.added_by", { who: a.who || t("review.someone"), when: when(a.at) });
   const checkLine = (a) => (a.checked ? t("review.checked_by", { who: a.checked }) : t("review.unchecked"));
   function contribActions(a) {
-    if (frozen()) return null;
+    if (frozen() || !S.editing) return null;
     return h("div", { class: "rv-actions left" },
       a.checked ? null : h("button", { type: "button", class: "btn sm", onclick: () => send({ action: "check", key: a.id, text: "" }) }, t("review.check")),
       h("button", { type: "button", class: "btn sm ghost", onclick: () => confirmBox(t("review.remove_title"), t("review.remove_body"), t("review.remove_ok"), () => send({ action: "remove", key: a.id, text: "" })) }, t("review.remove")));
   }
-  // the section at the foot of a prompt's note
+  // the section at the foot of a prompt's note, in edit mode
   function contributions(app, tid) {
+    if (!S.be || !S.editing) return null;
     const list = [...S.adds.values()].filter((a) => a.prompt === tid);
     const sec = h("section", { class: "rv-contrib" }, h("h2", null, t("review.added.title"), h("small", null, list.length ? t("review.added.n", { n: list.length }) : t("review.added.none"))));
     for (const a of list) sec.append(h("div", { class: "rv-card" },
@@ -348,10 +386,10 @@
   function exampleFooter(app, n) {
     const a = S.adds.get(n.review.id);
     if (!a) return null;
-    return h("div", { class: "rv-foot" }, h("p", { class: "cite" }, byLine(a), " · ", checkLine(a)), contribActions(a));
+    return h("div", { class: "rv-foot" }, h("p", { class: "cite" }, byLine(a), " · ", checkLine(a), " · ", t("review.not_public")), contribActions(a));
   }
 
-  /* ------------------------------------------------------------------ setup (the owner, once): the Form and Sheet links */
+  /* ------------------------------------------------------------------ setup (the owner, once, at index.html?setup) */
   function setupScreen() {
     document.body.classList.add("rv-setup-on");
     const fi = h("input", { type: "url", class: "rv-in", placeholder: t("review.setup.form_ph"), "aria-label": t("review.setup.form") });
@@ -381,48 +419,48 @@
       out.replaceChildren(h("p", { class: "good" }, t("review.setup.ok")), box,
         h("div", { class: "rv-actions left" },
           h("button", { type: "button", class: "btn solid", onclick: () => { box.select(); (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(() => toast(t("review.setup.copied")), () => document.execCommand("copy")); } }, t("review.setup.copy")),
-          h("a", { class: "btn", href: link, onclick: () => setTimeout(() => location.reload(), 30) }, t("review.setup.open"))),
+          h("a", { class: "btn", href: link }, t("review.setup.open"))),
         h("p", { class: "rv-hint" }, t("review.setup.send")));
     }
-    const demo = h("button", { type: "button", class: "btn", onclick: () => { store.set(STORE.key, b64e(JSON.stringify({ demo: 1 }))); location.reload(); } }, t("review.setup.demo"));
+    const demo = h("button", { type: "button", class: "btn", onclick: () => { location.href = location.pathname + "#k=" + b64e(JSON.stringify({ demo: 1 })); } }, t("review.setup.demo"));
     const page = h("div", { class: "rv-setup" },
       h("h1", null, t("review.setup.title")),
       h("p", { class: "rv-lede" }, t("review.setup.lede")),
-      h("p", { class: "rv-hint" }, t("review.setup.member")),
       h("ol", { class: "rv-steps" }, t("review.setup.steps").map((x) => h("li", null, ...u.inline(x)))),
       h("label", { class: "rv-lab" }, t("review.setup.form"), fi), h("label", { class: "rv-lab" }, t("review.setup.sheet"), si),
       h("div", { class: "rv-actions left" }, go, demo), out);
     document.getElementById("app").replaceChildren(page);
   }
 
-  /* ------------------------------------------------------------------ start: read the Sheet, then start the map with its text */
-  function startMap() {
+  /* ------------------------------------------------------------------ start: (with the edit link) read the Sheet, then start the map */
+  function startMap(after) {
     const ui = document.createElement("script");
     ui.src = (scriptEl && scriptEl.dataset.ui) || "assets/ui.js";
-    ui.onload = () => {
-      S.booted = true;
-      bar = h("div", { class: "rv-bar", role: "region", "aria-label": t("review.bar.region") });
-      const nav = document.querySelector("#siteHeader .nav");
-      if (nav) nav.replaceWith(bar); else document.body.prepend(bar);
-      renderBar();
-      welcome(false);
-      setInterval(() => { if (!document.hidden) sync(); }, POLL);
-      document.addEventListener("visibilitychange", () => { if (!document.hidden) sync(); });
-    };
+    if (after) ui.onload = after;
     document.body.append(ui);
   }
-  const scriptEl = document.currentScript;
-  document.title = t("review.title");
-  S.cfg = readKey();
-  RM.review = { editable, contributions, exampleFooter, active: () => !!S.be, frozen, refresh: () => refresh() };
-  // the review link opened in a tab that already shows this page changes only its #part: start again with it
+  function editorStart() {
+    S.booted = true;
+    bar = h("div", { class: "rv-bar", role: "region", "aria-label": t("review.bar.region") });
+    const nav = document.querySelector("#siteHeader .nav");
+    if (nav) nav.before(bar); else document.body.prepend(bar);
+    renderBar();
+    setInterval(() => { if (!document.hidden) sync(); }, POLL);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) sync(); });
+  }
+  // the edit link opened in a tab that already shows the map changes only its #part: start again with it
   window.addEventListener("hashchange", () => { if (/^#k=/.test(location.hash)) location.reload(); });
-  if (!S.cfg) { RM.review = null; setupScreen(); return; }
+  RM.review = null;
+  if (/[?&]setup\b/.test(location.search)) { readKey(); setupScreen(); return; }
+  S.cfg = readKey();
+  if (!S.cfg) { startMap(); return; }   // no edit link: the public map, exactly as published
   S.be = backend(S.cfg);
-  // the map waits a few seconds for the Sheet, so that it starts with the committee's text; if the Sheet cannot be reached, it
-  // starts with the published text and says so
+  registerTypes();
+  RM.review = { editable, contributions, exampleFooter, editing: () => S.editing, frozen };
+  // the map waits a few seconds for the Sheet, so that it starts with the committee's latest text; if the Sheet cannot be reached,
+  // it starts with the published text and says so
   let started = false;
-  const begin = () => { if (started) return; started = true; startMap(); };
+  const begin = () => { if (started) return; started = true; startMap(editorStart); };
   sync().then(begin);
-  setTimeout(begin, 6000);
+  setTimeout(begin, 5000);
 })();
