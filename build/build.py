@@ -324,13 +324,14 @@ with open(P("site", "index.html"), encoding="utf-8") as _f:   # data-t="key" (te
     COPY_USED |= set(re.findall(r'\bdata-t(?:-label)?="([A-Za-z0-9_.]+)"', _f.read()))
 # keys the site builds at run time ("levels." + level + ".name" and the like), checked here by hand
 COPY_USED |= {f"levels.{lv}.{k}" for lv in ("landscape", "regime", "niche") for k in ("name", "short", "explain")}
-COPY_USED |= {"levels.regime.aria", "levels.regime.what"} | {f"future.badge_{s}" for s in ("draft", "rm_edited", "rm_approved")}
+COPY_USED |= {"levels.regime.aria", "levels.regime.what"}
 COPY_USED |= {f"relations.{k}" for k in ("echoes", "tension", "enables", "extends", "enables_rev", "extends_rev", "shared", "shares",
                                           "same_disc", "also", "shared_prefix")}
 COPY_USED |= {f"kinds.{k}" for k in ("topic", "theme", "tag", "discussion", "book", "arc", "example")}
 COPY_USED |= {f"hints.{lv}{t}" for lv in ("landscape", "regime", "niche") for t in ("", "_touch")}
 COPY_USED |= {f"side.{k}_{w}" for k in ("prev", "next") for w in ("theme", "prompt")}
 COPY_USED |= {f"view.{k}" for k in ("map", "list", "announce_map", "announce_list")}
+COPY_USED |= {f"review.type.{k}" for k in ("note", "paper", "company", "product", "preclinical", "clinical", "book", "link", "other")}
 COPY_USED = {k for k in COPY_USED if not k.endswith((".", "_"))}   # the stems of keys built at run time
 for _k in sorted(COPY_USED):
     if copy_get(_k) is None:
@@ -714,6 +715,42 @@ stats = {
     "books": len(book_nodes), "relLinks": len(links), "relDefault": len(rel_default), "curated": sum(1 for l in links if l["curated"]),
     "examples": len(example_nodes),
 }
+# ---- the committee's review: text it froze in the review copy (site/review.html), brought in by build/review_import.py.
+# Applied to the published data before the leak and house-style checks below, so it passes the same tests as everything else.
+REVIEW_EDITS = {}
+_rpath = P("curation", "review_edits.yaml")
+if os.path.exists(_rpath):
+    REVIEW_EDITS = (load_yaml(_rpath) or {}).get("edits") or {}
+_nodes_by_id = {n["id"]: n for n in nodes}
+for _key, _text in REVIEW_EDITS.items():
+    _text = str(_text).strip()
+    _m = re.fullmatch(r"(theme):(th:\d+):(lead|future)|(centre):answer|(prompt):(n:[a-z0-9-]+):text|(disc):(d:[a-z0-9-]+):notes|copy:levels\.(landscape|regime|niche)\.explain", _key)
+    if not _m or not _text:
+        err(f"curation/review_edits.yaml: cannot apply {_key!r}")
+        continue
+    if _m.group(1):
+        _n = _nodes_by_id.get(_m.group(2))
+        if _n and _m.group(3) == "lead":
+            _n["lead"] = _text
+        elif _n and _n.get("future"):
+            _n["future"] = dict(_n["future"], text=_text)
+        else:
+            err(f"curation/review_edits.yaml: no theme (or no future) for {_key!r}")
+    elif _m.group(4):
+        _n = _nodes_by_id.get("c")
+        if _n and _n.get("answer"):
+            _n["answer"] = dict(_n["answer"], text=_text)
+    elif _m.group(5) or _m.group(7):
+        _n = _nodes_by_id.get(_m.group(6) or _m.group(8))
+        if not _n:
+            err(f"curation/review_edits.yaml: no node for {_key!r}")
+        else:
+            _n["text" if _m.group(5) else "notes"] = _text
+    else:
+        copy_text["levels"][_m.group(9)]["explain"] = _text
+if REVIEW_EDITS:
+    dash_check(REVIEW_EDITS, "curation/review_edits.yaml")
+
 published = {
     "generated": _dt.date.today().isoformat(),
     "site": meta["site"], "center": meta["center"], "arcs": meta["arcs"], "themeOrder": meta["theme_order"],
@@ -1051,14 +1088,18 @@ def write_tag_guide():
     OUT.append((P("docs", "TAG-GUIDE.md"), "\n".join(L) + "\n"))
 
 
+REVIEW_ASSETS = ("assets/review.js", "assets/review.css")
+
+
 def stamp_assets():
-    """Cache-bust: set ?v=<content hash of every stamped asset> on each asset reference in site/index.html."""
+    """Cache-bust: set ?v=<content hash of every stamped asset> on each asset reference in site/index.html, then write the
+    committee's review copy (site/review.html) from it: the same page, plus the review script and styles."""
     import hashlib
     path = P("site", "index.html")
     with open(path, encoding="utf-8") as f:
         html = f.read()
     h = hashlib.sha1()
-    for rel in re.findall(r'(?:src|href)="([^"?#]+)\?v=', html):   # whatever index.html loads with a ?v= stamp
+    for rel in re.findall(r'(?:src|href)="([^"?#]+)\?v=', html) + [r for r in REVIEW_ASSETS if os.path.exists(P("site", r))]:
         with open(P("site", rel), "rb") as f:
             h.update(f.read())
     v = h.hexdigest()[:8]
@@ -1066,6 +1107,18 @@ def stamp_assets():
     if html2 != html:
         with open(path, "w", encoding="utf-8", newline="\n") as f:
             f.write(html2)
+    if all(os.path.exists(P("site", r)) for r in REVIEW_ASSETS):
+        rv = html2
+        rv = re.sub(r"<title>[^<]*</title>", "<title>Review copy · Provocation map · Rethink Matters</title>", rv, count=1)
+        rv = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="The Rethink Matters committee\'s private working copy of the provocation map.">\n<meta name="referrer" content="no-referrer">', rv, count=1)
+        rv = rv.replace(f'<link rel="stylesheet" href="assets/style.css?v={v}">', f'<link rel="stylesheet" href="assets/style.css?v={v}">\n<link rel="stylesheet" href="assets/review.css?v={v}">', 1)
+        ui_tag = f'<script src="assets/ui.js?v={v}"></script>'
+        if ui_tag not in rv or "assets/review.css" not in rv:
+            print(" ! site/review.html: could not find where to add the review script and styles in index.html")
+        rv = rv.replace(ui_tag, f'<script src="assets/review.js?v={v}" data-ui="assets/ui.js?v={v}"></script>', 1)
+        rv = rv.replace("<!doctype html>", "<!doctype html>\n<!-- Generated by build/build.py from index.html: the committee's review copy. Do not edit by hand. -->", 1)
+        with open(P("site", "review.html"), "w", encoding="utf-8", newline="\n") as f:
+            f.write(rv)
     return v
 
 

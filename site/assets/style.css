@@ -215,6 +215,7 @@ body.legend-hidden .legend { display: none; }
 .threadbar.open { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); visibility: visible; transition: opacity .3s var(--ease), transform .3s var(--ease), left .3s var(--ease), width .3s var(--ease), visibility 0s; }
 body.right-open .threadbar { left: calc(50% - var(--right-w) / 2); width: min(640px, calc(100% - var(--right-w) - 32px)); }
 .threadbar .t-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.threadbar .t-top .btn { white-space: nowrap; flex: none; }
 .threadbar .t-title { font-family: var(--font-serif); font-weight: 500; font-size: 19px; letter-spacing: -.01em; }
 .threadbar .t-step { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); margin: 8px 0 3px; display: flex; align-items: center; gap: 8px; }
 .threadbar .t-step .num { width: 20px; height: 20px; border-radius: 50%; background: var(--ink); color: var(--paper); display: inline-grid; place-items: center; font-size: 11px; letter-spacing: 0; }
@@ -416,7 +417,7 @@ body.thread-on #btnWalks { display: none; }   /* (Up stays: it ends the walk and
   background: linear-gradient(var(--paper), var(--paper)) padding-box, linear-gradient(135deg, #e7cfab, #eab55c 20%, #a04340 35%, #983836 50%, #aa6336 65%, #7f8c64 80%, #48909f) border-box;
   transition: box-shadow .2s;
 }
-.ls-center .ls-q { font-family: var(--font-serif); font-weight: 500; font-size: max(13px, calc(var(--rc, 80px) * .2)); line-height: 1.12; letter-spacing: -.01em; }
+.ls-center .ls-q { font-family: var(--font-serif); font-weight: 500; font-size: var(--fsq, max(13px, calc(var(--rc, 80px) * .2))); line-height: 1.12; letter-spacing: -.01em; }
 .ls-center .ls-full { display: none; }
 .ls-center .ls-sub { margin-top: 6px; font-size: 11px; color: var(--faint); max-width: 84%; line-height: 1.25; }
 .ls-center:hover, .ls-center.sel { box-shadow: 0 0 0 7px rgba(201, 150, 63, .15); }
@@ -440,7 +441,7 @@ body.thread-on #btnWalks { display: none; }   /* (Up stays: it ends the walk and
   transition: transform .2s var(--ease), box-shadow .2s, background .2s;
 }
 .ls-num { font-size: max(8.5px, calc(var(--rd, 44px) * .165)); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #5A564C; }
-.ls-label { font-size: var(--fs, 11px); font-weight: 600; line-height: 1.15; margin-top: 2px; hyphens: auto; -webkit-hyphens: auto; text-wrap: balance; }
+.ls-label { font-size: var(--fsl, 11px); font-weight: 600; line-height: 1.15; margin-top: 2px; hyphens: auto; -webkit-hyphens: auto; text-wrap: balance; }
 .ls-lead { display: none; }
 .ls-theme:hover .ls-disc, .ls-theme.on .ls-disc { transform: scale(1.06); background: color-mix(in srgb, var(--c) 20%, var(--paper)); }
 .ls-theme.sel .ls-disc { box-shadow: 0 0 0 5px var(--paper), 0 0 0 6.5px var(--c); }
@@ -611,7 +612,7 @@ body:not([data-level="landscape"]) .landscape-only { display: none; }
   background: var(--paper); background: color-mix(in srgb, var(--c) 10%, var(--paper)); cursor: pointer; display: flex; align-items: center; justify-content: center;
   text-align: center; padding: 0 calc(var(--rm, 40px) * .13); transition: transform .2s var(--ease), background .2s, border-color .2s;
 }
-.fmap[data-style="regime"] .fm-label { font-size: var(--fs, 12px); font-weight: 600; line-height: 1.15; hyphens: auto; -webkit-hyphens: auto; text-wrap: balance; }
+.fmap[data-style="regime"] .fm-label { font-size: var(--fsm, 12px); font-weight: 600; line-height: 1.15; hyphens: auto; -webkit-hyphens: auto; text-wrap: balance; }
 .fmap[data-style="regime"] .fm-member.on .fm-node, .fmap[data-style="regime"] .fm-node:hover { transform: scale(1.06); background: color-mix(in srgb, var(--c) 20%, var(--paper)); }
 .fmap[data-style="regime"] .fm-member.sel .fm-node { box-shadow: 0 0 0 4px var(--paper), 0 0 0 6px var(--c); }
 .fmap[data-style="regime"].focused .fm-member.dim .fm-node { border-color: color-mix(in srgb, var(--c) 35%, var(--paper)); background: var(--paper); box-shadow: 0 0 0 2px var(--paper); }
@@ -766,8 +767,17 @@ body.cramped .fmap.stack[data-style="regime"] .fm-node { padding: 12px 14px 40px
 body.cramped .fmap.stack .fm-down { top: auto; bottom: 9px; transform: none; }
 body.lv-icons .levels button:not([aria-current]) .lv-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 body.lv-icons .levels button:not([aria-current]) { padding: 6px 8px; }
-.landscape.stack ~ .qcap { display: none; }   /* as cards (no room for the ring), the question heads the list instead */
+.landscape.stack ~ .qcap { visibility: hidden; }   /* as cards (no room for the ring), the question heads the list instead */
 /* the map/list switch when the ring has no room here: Map is unavailable (and says why), List shows as on */
 .view-toggle button[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
 .view-toggle button[aria-disabled="true"]:hover { color: var(--faint); }
 body.no-arrows .side-arrow { display: none; }   /* the ring needed their room (the themes further out still move you across) */
+.ls-center.tight .ls-sub { display: none; }   /* a small middle keeps only the question */
+.fm-centre.bare .fm-kicker, .fm-centre.bare .fm-sub { display: none; }
+/* a guided walk beside the ring: the card docks at the left of the map, under the top row */
+body.walk-dock .threadbar, body.walk-dock.right-open .threadbar { left: 16px; top: var(--walk-top, 76px); bottom: auto; width: 300px; max-height: calc(100% - var(--walk-top, 76px) - 16px); overflow-y: auto; transform: translate(-12px, 0); }
+body.walk-dock .threadbar.open { transform: none; }
+body.walk-dock .threadbar .t-nav { flex-wrap: wrap; row-gap: 10px; }
+body.walk-dock .threadbar .t-dots { order: 3; width: 100%; justify-content: center; }
+body.thread-on .view-toggle { display: none; }   /* a walk is always a map */
+@media (max-height: 780px) { .qcap .c { display: none; } }   /* a short window: the question without its citation line */

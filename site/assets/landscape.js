@@ -127,10 +127,10 @@
     // cards rather than the ring: on a phone, or when the room left beside an open note (and the left panel) is too narrow for it
     // (the width is the one the stage is heading for, insets.w, so a side panel still sliding does not flash the cards)
     stacked() { const I = this.insets || {}, W = I.w || this.el.clientWidth; return W < 620 || W - (I.l || 0) - (I.r || 0) < 520 || window.matchMedia("(max-width: 820px)").matches; }
-    layout(animate) {
+    layout(animate, noRoom) {
       const W = this.insets.w || this.el.clientWidth, H = this.el.clientHeight;
       if (!W || !H) return;
-      const stack = this.stacked();
+      const stack = noRoom || this.stacked();
       this.el.classList.toggle("stack", stack);
       if (stack) {
         cancelAnimationFrame(this._raf);   // a ring still easing into place must not write over the cards
@@ -138,7 +138,7 @@
         for (const { th, item } of this.items.values()) { item.style.setProperty("--c", this.app.themeColor(th.n)); item.style.setProperty("--i", this.themes.indexOf(th)); }
         this.chapters.forEach((c, i) => c.el.style.setProperty("--c", u.logoColor(CHAPTER_TONE[i % 3])));
         const I = this.insets || {}, phone = window.matchMedia("(max-width: 820px)").matches;
-        this.el.style.padding = phone ? "" : `${(I.t || 0) + 4}px ${(I.r || 0) + 14}px ${(I.b || 0) + 24}px ${(I.l || 0) + 14}px`;
+        this.el.style.padding = phone ? "" : `${(I.tc != null ? I.tc : I.t || 0) + 4}px ${(I.r || 0) + 14}px ${(I.b || 0) + 24}px ${(I.l || 0) + 14}px`;
         this.pos = null;
         this.paint();
         return;
@@ -146,7 +146,8 @@
       this.el.style.padding = "";
       const I = this.insets, sw = Math.max(200, W - I.l - I.r), sh = Math.max(200, H - I.t - I.b);
       const cx = I.l + sw / 2, cy = I.t + sh / 2;
-      const rd0 = u.clamp(Math.min(sw, sh) * 0.088, 36, 62), pill = 30;
+      const need = this.labelFit();   // the smallest disc the names fit in
+      const rd0 = Math.max(u.clamp(Math.min(sw, sh) * 0.088, 36, 62), need), pill = 30;
       // the chapters' names sit beside the ring (wrapping when room is short), and each theme's "N prompts" pill points outwards:
       // the ring is never wider than they allow, and in a narrow room it grows less tall rather than push them out of view
       const capW = Math.round(u.clamp(sw * 0.2, 112, 172));
@@ -154,10 +155,15 @@
       const RxMax = Math.min(sw / 2 - rd0 - 102, sw / 2 - capW - 26);
       let Ry = Math.max(rd0 * 2.2, sh / 2 - rd0 - pill);
       if (Ry * 0.82 > RxMax) Ry = Math.max(rd0 * 2.2, RxMax / 0.82);
-      const Rx = Math.max(Ry * 0.82, Math.min(sw / 2 - rd0 - 18, Ry * 1.45, RxMax));
-      const D = this.app.D, slot = 1 / (this.themes.length + GAP * D.arcs.length), at = u.alongEllipse(Rx, Ry);
-      // each theme's slot round the ring holds its disc with a little air between neighbours
+      let Rx = Math.max(Ry * 0.82, Math.min(sw / 2 - rd0 - 18, Ry * 1.45, RxMax));
+      const D = this.app.D, slot = 1 / (this.themes.length + GAP * D.arcs.length);
+      let at = u.alongEllipse(Rx, Ry);
+      // a short window: the ring grows wider (up to twice as wide as tall) rather than shrink its discs below their names
+      const RxTop = Math.min(RxMax, sw / 2 - rd0 - 18, Ry * 2);
+      while ((at.total * slot) / 2.3 < need && Rx < RxTop - 0.5) { Rx = Math.min(Rx + 8, RxTop); at = u.alongEllipse(Rx, Ry); }
+      // each theme's slot round the ring holds its disc with a little air between neighbours; and no smaller than the names need
       const rd = Math.max(26, Math.min(rd0, (at.total * slot) / 2.3));
+      if (rd < need - 0.01) return this.layout(animate, true);
       const rc = u.clamp(Math.min(Rx, Ry) * 0.46, 54, 112);
       // clockwise from the top: a gap before each chapter for its name, then one slot per theme, all of equal length round the ring
       let cur = -(GAP * slot) / 2;
@@ -182,9 +188,10 @@
             caps: target.caps, bands: target.bands,
           });
           if (p < 1) this._raf = requestAnimationFrame(step);
+          else this.fitText(target);
         };
         this._raf = requestAnimationFrame(step);
-      } else this.apply(target);
+      } else { this.apply(target); this.fitText(target); }
       this.pos = target;
       this.paint();
     }
@@ -197,6 +204,37 @@
         this._ww.set(key, Math.max(...label.split(/\s+|(?<=[-–])/).map((w) => c.measureText(w).width)) / 100);
       }
       return this._ww.get(key);
+    }
+    // the smallest disc radius at which every theme's name fits at 9px under its THEME N line (pieces break at spaces, hyphens and
+    // en dashes): a ring with smaller discs would spill its names, so the Landscape shows cards instead
+    labelFit() {
+      const k = document.fonts ? document.fonts.status : "";
+      if (this._fitK === k) return this._fit;
+      const c = (this._ctx = this._ctx || document.createElement("canvas").getContext("2d"));
+      c.font = "600 100px Inter, system-ui, sans-serif";
+      const sp = c.measureText(" ").width / 100;
+      const names = [...this.items.values()].map(({ th }) => String(th.label).split(/\s+/).flatMap((w) => w.split(/(?<=[-\u2013])/).map((p, i) => [c.measureText(p).width / 100, !i])));
+      const fits = (ws, r) => {
+        const inner = 1.62 * r - 6, fs = 8.5;
+        if (Math.max(...ws.map(([w]) => w)) * fs > inner) return false;
+        let lines = 1, line = 0;
+        for (const [w, spaced] of ws) { const add = (line && spaced ? sp : 0) + w; if (line && (line + add) * fs > inner) { lines++; line = w; } else line += add; }
+        return lines * fs * 1.15 + Math.max(8.5, r * 0.165) * 1.3 + 2 <= 1.5 * r;
+      };
+      let r = 26;
+      while (r < 62 && !names.every((ws) => fits(ws, r))) r++;
+      this._fitK = k; this._fit = r;
+      return r;
+    }
+    // once the ring has settled: every theme's name in one size, stepped down until each sits inside its disc as the page draws it,
+    // and the question in the middle likewise
+    fitText(g) {
+      const { rd, rc } = g;
+      const fs0 = u.clamp(Math.min(rd * 0.232, ...[...this.items.values()].map(({ th }) => (1.62 * rd - 6) / this.widest(th.label))), 9, 15.5);
+      const pairs = [...this.items.values()].map(({ disc }) => [disc, disc]);
+      u.shrinkToFit(pairs, (fs) => this.el.style.setProperty("--fsl", fs.toFixed(2) + "px"), fs0, 8);
+      this.center.classList.toggle("tight", rc < 70);
+      u.shrinkToFit([[this.center, this.center]], (fs) => this.el.style.setProperty("--fsq", fs.toFixed(1) + "px"), Math.max(13, rc * 0.2), 10);
     }
     apply(g) {
       const { cx, cy, Rx, Ry, rd, rc } = g;
@@ -215,8 +253,6 @@
         // its "N prompts" pill points away from the question, so it never sits between two themes
         item.style.setProperty("--ux", ((x - cx) / d).toFixed(3));
         item.style.setProperty("--uy", ((y - cy) / d).toFixed(3));
-        // the longest word has to fit across the disc ("biofabrication", "environments")
-        item.style.setProperty("--fs", u.clamp(Math.min(rd * 0.232, (1.62 * rd - 6) / this.widest(th.label)), 9, 15.5).toFixed(2) + "px");
       }
       // a chapter's name sits in the gap before its first theme, outside the ring, and is eased further out if it would touch
       // a theme or a theme's "N prompts" pill (a compact ring, on a small screen or beside an open note)

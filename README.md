@@ -94,7 +94,8 @@ then open <http://localhost:8766>.
 3. **Only scale and working group come from your sheets.** Pillar, value, every semantic tag, every bridge and every walk are first drafts by the map's author; working-group
    assignments the sheets did not record are marked with an asterisk.
 4. **The futures are drafts.** Each was drafted only from the group's own prompts and anonymised notes, then checked clause by clause by an independent reader; theme 7
-   (circularity and waste) has no session notes yet, so its future is drawn from its prompts only and says so. Every one shows a *Draft* badge until you change its status.
+   (circularity and waste) has no session notes yet, so its future is drawn from its prompts only. The site no longer labels them as drafts; their `status` in
+   `curation/futures.yaml` still records where each stands.
    `docs/FUTURES-REVIEW.md` lists what each clause rests on.
 5. **Niche examples go live only when a row is marked `checked`**, by someone other than the person who added it. Everything in that spreadsheet that is published is public.
 6. Notes mention a few companies and products by name where the group did. Digests avoid stating unverified facts about them; check you are comfortable with the remainder.
@@ -142,7 +143,7 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
   theme 7 is map theme 5, and so on; each theme's note gives its sheet number, and `curation/` keeps the sheet's numbers; the ring order is `theme_order` in `curation/meta.yaml`).
   The three chapters, the Bookshelf's shelves (*how matter becomes life, how life becomes technology, how technology becomes society*), are coloured bands with their names in
   the gaps. Dashed lines join themes whose prompts are linked: at rest each theme's strongest tie and any tie of three links or more; point at a theme for all of them, with counts.
-  Click a theme for its note and its draft future; double-click it (or use its "N prompts" pill) to go down to the Regime on that theme. Click the question for the overall draft answer.
+  Click a theme for its note and its future; double-click it (or use its "N prompts" pill) to go down to the Regime on that theme. Click the question for the overall answer.
   On a phone the ring becomes a list of cards.
 * **Regime.** One theme in the middle and only its prompts round it (verbatim from the sheet, coloured by the pillar of the Rethink Matters mission each speaks to), with
   the links between them. The other themes they reach sit further out as small numbered discs: point at a prompt and its links light up in the colour of the relation (teal

@@ -99,6 +99,21 @@
     startThread: (id) => startThread(id),
     drill: (id) => drill(id),
     goLevel: (lv, o) => goLevel(lv, o),
+    // the committee's review copy: show text that changed, and additions as they arrive
+    refresh: () => { if (S.sel && byId.has(S.sel)) renderNote(); renderLevelNote(); if (S.level === "niche") { nic.m = null; showNiche(); } updateInsets(); },
+    addExample: (e) => {
+      const n = Object.assign({}, e, { kind: "example", topics: (e.topics || []).filter((x) => byId.has(x)) });
+      if (!n.topics.length || byId.has(n.id)) return;
+      D.nodes.push(n); byId.set(n.id, n); examples.push(n);
+      for (const x of n.topics) (exByTopic.get(x) || exByTopic.set(x, []).get(x)).push(n.id);
+    },
+    removeExample: (id) => {
+      const n = byId.get(id);
+      if (!n) return;
+      byId.delete(id);
+      for (const x of n.topics || []) exByTopic.set(x, (exByTopic.get(x) || []).filter((y) => y !== id));
+      if (S.sel === id) deselect({ sync: false });
+    },
     walksThrough: (n) => D.threads.filter((t) => t.steps.some((s) => (byId.get(s.topic) || {}).theme === n)),
     themeReach: (n) => {
       const c = {};
@@ -255,9 +270,9 @@
   }
   // the switch shows what is drawn: List is on when the visitor chose it, and also when the ring had no room (Map then says why)
   function syncToggle() {
-    const fm = MAPS[S.level], noRoom = !!(fm && fm.fellBack);
-    viewBtns.map.setAttribute("aria-pressed", S.view === "map" && !noRoom ? "true" : "false");
-    viewBtns.list.setAttribute("aria-pressed", S.view === "list" || noRoom ? "true" : "false");
+    const fm = MAPS[S.level], noRoom = !!(fm && fm.fellBack), ring = !!(fm && fm.el && fm.m && !fm.el.classList.contains("stack"));
+    viewBtns.map.setAttribute("aria-pressed", ring ? "true" : "false");
+    viewBtns.list.setAttribute("aria-pressed", ring ? "false" : "true");
     if (noRoom) { viewBtns.map.setAttribute("aria-disabled", "true"); viewBtns.map.title = u.t("view.no_room"); }
     else { viewBtns.map.removeAttribute("aria-disabled"); viewBtns.map.removeAttribute("title"); }
   }
@@ -314,7 +329,7 @@
     heroIcon.replaceChildren(planesIcon(lv));
     levelNote.replaceChildren(...[
       h("div", { class: "ln-head" }, h("b", null, u.t("levels." + lv + ".name")), h("span", null, u.t("levels." + lv + ".short"))),
-      h("p", null, u.t("levels." + lv + ".explain")),
+      RM.review ? RM.review.editable(h("p", null, u.t("levels." + lv + ".explain")), "copy:levels." + lv + ".explain", { inline: true }) : h("p", null, u.t("levels." + lv + ".explain")),
       lv === "regime" ? h("p", { class: "ln-aria" }, u.t("levels.regime.aria"), " ", h("a", { class: "ext", href: A.url, target: "_blank", rel: "noopener noreferrer" }, A.text)) : null,
       h("details", { class: "about-levels" },
         h("summary", null, u.t("about.summary")),
@@ -435,7 +450,7 @@
       title = u.t("tip.theme_title", { n: n.n, label: n.label });
       if (S.level === "landscape") {
         sub = u.t("tip.theme_landscape", { n: n.topics.length });
-        if (n.future) extra = h("span", { class: "tip-future" }, n.future.text, h("em", null, " " + u.t("future.badge_" + n.future.status.replace("-", "_"))));
+        if (n.future) extra = h("span", { class: "tip-future" }, n.future.text);
       } else if (id === S.theme) sub = n.lead;
       else sub = u.t("tip.theme_move");
     }
@@ -732,6 +747,8 @@
     const left = $(".left"), shown = !body.classList.contains("left-closed") && getComputedStyle(left).display !== "none";
     return document.documentElement.clientWidth - (shown ? leftWidth() : 0);
   }
+  const WALK_W = 300;
+  function walkDock() { return !!S.thread && !mobile() && stageWidth() - (body.classList.contains("right-open") ? rightWidth() : 0) - WALK_W - 32 >= 600; }
   function cramped() { return !mobile() && stageWidth() - (body.classList.contains("right-open") ? rightWidth() : 0) < 560; }
   function fitChrome() {
     body.classList.remove("fab-tight", "vt-tight", "lv-tight", "lv-icons", "lv-row2");
@@ -773,14 +790,18 @@
     const open = body.classList.contains("right-open"), m = mobile();
     const r = open && !m ? rightWidth() : 0;
     if (S.level === "landscape") {
-      const q = $("#qcap"), ins = (qh) => ({ t: m ? 0 : chromeTop() + qh + 4, r, b: m ? 0 : 58, l: 0, w: m ? 0 : stageWidth() });
-      land.setInsets(ins(q.offsetHeight || 56));
-      if (land.el.classList.contains("stack")) land.setInsets(ins(0));   // as cards, the question heads the list instead of the caption
+      // the ring sits below the question's caption; as cards (the question heading the list), just below the top row
+      const q = $("#qcap");
+      land.setInsets({ t: m ? 0 : chromeTop() + (q.offsetHeight || 56) + 4, tc: m ? 0 : chromeTop() + 4, r, b: m ? 0 : 58, l: 0, w: m ? 0 : stageWidth() });
       return;
     }
-    const card = S.thread ? bar.offsetHeight + 28 : 0, pk = 58;   // room kept for the peek tab and hints, so the ring does not jump when one shows
-    const c = cramped();   // (no side arrows then, so no room kept for them)
-    MAPS[S.level].setInsets(m ? { t: 0, r: 0, b: 0, l: 0, side: 0, cramp: false, w: 0 } : { t: chromeTop(), b: Math.max(card, pk), l: 0, r, side: c ? 0 : 70, cramp: c, w: stageWidth() });
+    const dock = walkDock();
+    body.classList.toggle("walk-dock", dock);
+    document.documentElement.style.setProperty("--walk-top", chromeTop() + "px");
+    const card = S.thread && !dock ? bar.offsetHeight + 28 : 0, pk = 58;   // room kept for the peek tab and hints, so the ring does not jump when one shows
+    const c = cramped();   // (no side arrows then, so no room kept for them; nor during a walk, which has none)
+    MAPS[S.level].setInsets(m ? { t: 0, r: 0, b: 0, l: 0, side: 0, cramp: false, w: 0 }
+      : { t: chromeTop(), b: Math.max(card, pk), l: dock ? WALK_W + 32 : 0, r, side: c || S.thread ? 0 : 70, cramp: c, w: stageWidth() });
   }
   function head(crumb) {
     const acts = h("div", { class: "acts" });
@@ -883,7 +904,9 @@
     const moved = S.level !== "regime";
     S.thread = { t, i: -1 };
     body.classList.add("thread-on");
+    reg.forceRing = true;
     closeLeft();
+    if (!mobile() && !body.classList.contains("left-closed")) { body.classList.add("left-closed"); S.autoClosedLeft = "walk"; }
     // a walk is map-first: the note panel stays closed until you open a stop from the card
     S.sel = null; S.hist = []; body.classList.remove("right-open");
     stepTo(o.stop ? o.stop - 1 : 0, { sync: false });
@@ -954,7 +977,9 @@
     if (!S.thread) return;
     const inBar = bar.contains(document.activeElement);
     S.thread = null; S.walkExtras = [];
-    body.classList.remove("thread-on");
+    body.classList.remove("thread-on", "walk-dock");
+    reg.forceRing = false;
+    if (S.autoClosedLeft === "walk") { body.classList.remove("left-closed"); S.autoClosedLeft = false; }
     bar.classList.remove("open");
     reg.setWalk(null);
     if (reg.m && S.level === "regime") showRegime();   // drop the themes that were only there for the walk

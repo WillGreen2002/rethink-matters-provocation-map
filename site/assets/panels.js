@@ -4,6 +4,8 @@
   const { u } = RM;
   const h = u.h;
   const put = (el, ...kids) => { for (const k of kids) if (k) el.append(k); };   // append what exists (append(null) would print "null")
+  // in the committee's review copy (review.html), a text block that can be edited; on the public map, the block as it is
+  const ed = (el, key, o) => (RM.review ? RM.review.editable(el, key, o) : el);
   const FACET_COLOR = { tension: "#A04340", concept: "#48909F", barrier: "#7F8C64", domain: "#D9A441", method: "#8A8577" };
 
   function relLabel(type, forward) {
@@ -37,8 +39,7 @@
     if (!list || !list.length) return null;
     return h("ul", { class: "refs" }, list.map((r) => h("li", null, h("a", { href: r.url, target: "_blank", rel: "noopener noreferrer" }, r.label))));
   }
-  function conf(app) { return h("p", { class: "conf" }, app.D.site.chatham, " ", u.t("note.draft_tags")); }
-  function badge(status) { return h("span", { class: "badge " + status }, u.t("future.badge_" + String(status).replace("-", "_"))); }
+  function conf(app) { return h("p", { class: "conf" }, app.D.site.chatham); }
   function sessionMeta(app, d) {
     const S = app.D.sessions, out = [];
     for (const s of d.sessions) {
@@ -48,15 +49,14 @@
     for (const n of d.noteIds) out.push(h("span", { class: "tagm" }, u.t("disc.notes_n", { n })));
     return out;
   }
-  // a drafted future (or the overall answer): its words, a Draft badge, and what it was drawn from
-  function future(app, f, title, note) {
+  // a future (or the overall answer): its words and what it was drawn from
+  function future(app, f, title, key) {
     if (!f) return null;
     return h("section", { class: "future" },
-      h("h2", null, title, badge(f.status)),
-      h("p", { class: "future-text" }, f.text),
+      h("h2", null, title),
+      ed(h("p", { class: "future-text" }, f.text), key),
       f.note ? h("p", { class: "future-note" }, f.note) : null,
-      f.drawsOn && f.drawsOn.length ? h("div", { class: "drawn" }, h("span", { class: "drawn-k" }, u.t("future.drawn")), h("div", { class: "chips" }, f.drawsOn.map((id) => nodeLink(app, id)))) : null,
-      h("p", { class: "cite" }, note));
+      f.drawsOn && f.drawsOn.length ? h("div", { class: "drawn" }, h("span", { class: "drawn-k" }, u.t("future.drawn")), h("div", { class: "chips" }, f.drawsOn.map((id) => nodeLink(app, id)))) : null);
   }
   function examplesLine(app, ids, topicId) {
     const wrap = h("div", { class: "ground" });
@@ -79,8 +79,7 @@
       wrap.append(h("ul", { class: "qs" }, d.questions.map((q) => h("li", null, q))));
     }
     wrap.append(h("h3", null, u.t("disc.said")));
-    if (d.notes) wrap.append(u.md(d.notes));
-    else wrap.append(h("p", { class: "md faint", style: { fontStyle: "italic", margin: 0 } }, d.proposed ? u.t("disc.proposed_note") : u.t("disc.no_notes")));
+    wrap.append(ed(d.notes ? u.md(d.notes) : h("p", { class: "md faint", style: { fontStyle: "italic", margin: 0 } }, d.proposed ? u.t("disc.proposed_note") : u.t("disc.no_notes")), "disc:" + d.id + ":notes", { md: true }));
     const r = refs(d.refs);
     if (r) { wrap.append(h("h3", null, u.t("disc.refs"))); wrap.append(r); }
     return wrap;
@@ -111,7 +110,7 @@
     const body = h("div");
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), u.t("topic.kind")));
     body.append(h("h1", null, n.label));
-    body.append(h("p", { class: "prompt", style: { "--c": color } }, n.text));
+    body.append(ed(h("p", { class: "prompt", style: { "--c": color } }, n.text), "prompt:" + n.id + ":text"));
     if (app.level() === "regime") {
       const c = app.sourceCount(n.id);
       body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) },
@@ -155,6 +154,7 @@
     body.append(h("h2", null, u.t("topic.discussions"), h("small", null, ds.length ? u.t("topic.discussions_sub", { n: ds.length }) : "")));
     if (ds.length) ds.forEach((d, i) => body.append(discItem(app, d, ds.length === 1 || (i === 0 && !!d.notes))));
     else body.append(h("p", { class: "md faint" }, u.t("topic.no_discussions")));
+    if (RM.review) body.append(RM.review.contributions(app, n.id));   // what the committee has added since
 
     if (n.reading.length) {
       body.append(h("h2", null, u.t("topic.reading"), h("small", null, u.t("topic.reading_sub"))));
@@ -171,10 +171,10 @@
     const body = h("div");
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), u.t("theme.kind", { n: n.n, chapter: arc.label })));
     body.append(h("h1", null, n.title));
-    body.append(h("p", { class: "prompt", style: { "--c": color } }, n.lead));
+    body.append(ed(h("p", { class: "prompt", style: { "--c": color } }, n.lead), "theme:" + n.id + ":lead"));
     // down to its prompts (from the Landscape; on the Regime the theme is already in the middle)
     if (app.level() === "landscape") body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) }, h("span", { "aria-hidden": "true" }, "↓ "), u.t("theme.down", { n: ts.length })));
-    put(body, future(app, n.future, u.t("future.title"), n.future && n.future.evidence === "thin" ? u.t("future.theme_note_thin") : u.t("future.theme_note")));
+    put(body, future(app, n.future, u.t("future.title"), "theme:" + n.id + ":future"));
     if (n.sheet && n.sheet !== n.n) body.append(h("p", { class: "cite" }, u.t("theme.sheet", { sheet: n.sheet })));
     body.append(h("h2", null, u.t("theme.prompts"), h("small", null, u.t("theme.prompts_sub", { n: ts.length }))));
     ts.forEach((t) => body.append(h("button", { type: "button", class: "rel-item", onclick: () => app.select(t.id) },
@@ -234,7 +234,6 @@
       body.append(h("div", { class: "chips books" }, n.books.map((b) => nodeLink(app, b, app.byId.get(b).label))));
     }
     body.append(h("p", { class: "md", style: { marginTop: "16px" } }, h("a", { class: "ext", href: u.t("links.bookshelf"), target: "_blank", rel: "noopener noreferrer" }, u.t("arc.shelf_link"))));
-    body.append(h("p", { class: "cite" }, u.t("arc.draft")));
     body.append(conf(app));
     return { crumb: h("span", null, u.t("arc.crumb")), body };
   }
@@ -245,7 +244,7 @@
     body.append(h("span", { class: "kind", style: { "--c": "#C9963F" } }, h("i"), u.t("center.kind")));
     body.append(h("h1", { class: "q-title" }, n.question));
     body.append(h("p", { class: "cite" }, h("a", { class: "ext", href: n.citation.url, target: "_blank", rel: "noopener noreferrer" }, n.citation.text)));
-    put(body, future(app, n.answer, u.t("center.answer"), u.t("future.answer_note")));
+    put(body, future(app, n.answer, u.t("center.answer"), "centre:answer"));
     body.append(h("h2", null, u.t("center.howto")));
     body.append(h("ul", { class: "howto" }, u.t("center.howto_items").map((t) => h("li", null, ...u.inline(t)))));
     body.append(h("h2", null, u.t("center.values")));
@@ -336,7 +335,7 @@
         h("div", { class: "rt" }, h("i", { style: { "--c": app.colorOf(id) } }), h("span", null, t.label), h("span", { class: "ty faint" }, u.t("example.theme_n", { n: t.theme }))),
         h("p", { class: "why" }, t.text)));
     });
-    body.append(h("p", { class: "cite" }, u.t("example.checked")));
+    body.append(n.review && RM.review ? RM.review.exampleFooter(app, n) || h("span") : h("p", { class: "cite" }, u.t("example.checked")));
     body.append(conf(app));
     return { crumb: h("span", null, u.t("example.crumb")), body };
   }

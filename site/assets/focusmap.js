@@ -176,7 +176,9 @@
     // a list rather than the ring: when the visitor asks for it, on a phone, or when there is truly no room for a ring. The width
     // is the one the stage is heading for (insets.w), so a side panel still sliding does not flash the list.
     stacked() {
-      if (this.view === "list" || this.insets.cramp || window.matchMedia("(max-width: 820px)").matches) return true;
+      if (window.matchMedia("(max-width: 820px)").matches) return true;
+      if (this.forceRing) return false;   // a guided walk reads best as a map: the visitor's List choice waits until it ends
+      if (this.view === "list" || this.insets.cramp) return true;
       const I = this.insets;
       return (I.w || this.el.clientWidth) - I.l - I.r < 420;
     }
@@ -238,7 +240,7 @@
       // tight: smaller gaps between the rings; s: the room left for each side arrow
       // the middle must hold its title's longest word at the smallest type it is set in (10.5px, see apply)
       const rcMin = Math.max(34, (10.5 * this.widest(this.m.centre.title, 500, "Spectral, Georgia, serif") + 8) / 1.55);
-      const fit = (vert, s, tight) => {
+      const fit = (vert, s, tight, relax) => {
         const sw = Math.max(280, W - I.l - I.r - 2 * s);
         const labW = vert ? Math.round(u.clamp(sw * 0.17, 84, niche ? 140 : 124)) : Math.round(u.clamp(sw * (niche ? 0.2 : 0.17), niche ? 104 : 92, niche ? 172 : 150));   // names wrap when room is short
         const labH = vert && N ? Math.max(...this.labelSizes(labW, niche).map(([, h]) => h)) : 0;
@@ -259,7 +261,7 @@
           };
           // the discs are as large as the room allows: round the ring without touching, leaving the theme in the middle its room.
           // Each smaller disc gives the ring back a little room, so it is worked out again.
-          const rmMin = this.labelFit();
+          const rmMin = relax ? 24 : this.labelFit();
           rm = Math.max(u.clamp(sh * 0.08, 30, 56), rmMin);   // never start below what the names need
           for (let k = 0; k < 40; k++) {
             [Rx1, Ry1] = ring(rm);
@@ -268,9 +270,9 @@
             rm = Math.max(rmMin, r);
           }
           // no ring if a name would spill out of its disc, the discs would touch, or the theme in the middle would be squeezed
-          if (rm < rmMin - 0.01 || perimeter(Rx1, Ry1) / Math.max(M, 3) < 2.2 * rm || Math.min(Rx1, Ry1) - rm - 20 < rcMin) return null;
+          if (rm < rmMin - 0.01 || perimeter(Rx1, Ry1) / Math.max(M, 3) < 2.2 * rm || Math.min(Rx1, Ry1) - rm - 20 < (relax ? 30 : rcMin)) return null;
           mAng = placeOn(Rx1, Ry1);
-          rc = u.clamp(Math.min(Rx1, Ry1) - rm - 20, rcMin, 88);
+          rc = u.clamp(Math.min(Rx1, Ry1) - rm - 20, relax ? 30 : rcMin, 88);
         } else {
           ch = 64;   // a card's least height (most are taller: they are measured below)
           Ry1 = N ? Ry2 - ch / 2 - nbR - (tight ? 16 : 34) : sh / 2 - ch / 2 - 18;
@@ -312,6 +314,8 @@
       };
       // the usual first; then, while it still does not fit, tighter gaps, the names above and below, the side arrows stepping aside
       const tries = [[false, side, false], [false, side, true], [true, side, true], [false, 0, true], [true, 0, true]].filter((t, i) => side || i < 3);
+      // during a walk, one last try with the smallest discs the page can still fit names into (the names are shrunk to fit below)
+      if (this.forceRing) tries.push([false, 0, true, true], [true, 0, true, true]);
       // neighbours: on the Regime, towards the prompts that link to them; on the Niche, in the gaps between the sources
       // (the members are in the way too: a disc on the Regime, a card on the Niche, as tall as its text)
       const spread = (g) => {
@@ -324,8 +328,8 @@
       };
       // the first layout whose names all sit clear; failing that, the one with fewest touching
       let G = null, best = null;
-      for (const [vert, s, tight] of tries) {
-        const g = fit(vert, s, tight);
+      for (const [vert, s, tight, relax] of tries) {
+        const g = fit(vert, s, tight, relax);
         if (!g) continue;
         g.nAng = spread(g);
         if (!g.nAng.clash) { G = g; break; }
@@ -471,18 +475,27 @@
       this.ring2.style.display = this.nbs.length ? "" : "none";
       Object.assign(this.centre.style, { left: cx - rc + "px", top: cy - rc + "px", width: 2 * rc + "px", height: 2 * rc + "px" });
       if (this.emptyEl) Object.assign(this.emptyEl.style, { left: cx + "px", top: cy + rc + 18 + "px" });
-      // the longest word of the label in the middle has to fit across it
-      this.centre.style.setProperty("--fs", u.clamp(Math.min(rc * 0.2, (1.55 * rc - 8) / this.widest(this.m.centre.title, 500, "Spectral, Georgia, serif")), 10.5, 24).toFixed(1) + "px");
+      // the longest word of the label in the middle has to fit across it (and then every line has to sit inside the circle)
       this.centre.classList.toggle("tight", rc < 66);   // a small middle keeps only its kicker and title
+      this.centre.classList.remove("bare");
+      const fsC = u.clamp(Math.min(rc * 0.2, (1.55 * rc - 8) / this.widest(this.m.centre.title, 500, "Spectral, Georgia, serif")), 10.5, 24);
+      const setC = (fs) => this.centre.style.setProperty("--fs", fs.toFixed(1) + "px");
+      u.shrinkToFit([[this.centre, this.centre]], setC, fsC, 9);
+      // still too much for a small middle: the title alone (its kicker, "Prompt · Theme 5", is in the level bar and the note)
+      if (!u.textInCircle(this.centre, this.centre)) { this.centre.classList.add("bare"); u.shrinkToFit([[this.centre, this.centre]], setC, fsC, 8.5); }
       for (const { mb, item } of this.items) {
         const [x, y] = g.members.get(mb.id), d = Math.hypot(x - cx, y - cy) || 1;
         if (niche) Object.assign(item.style, { left: x + "px", top: y + "px", width: cw + "px", height: "" });
-        else {
-          Object.assign(item.style, { left: x - rm + "px", top: y - rm + "px", width: 2 * rm + "px", height: 2 * rm + "px" });
-          item.style.setProperty("--fs", u.clamp(Math.min(rm * 0.27, (1.6 * rm - 6) / this.widest(mb.label, 600, "Inter, system-ui, sans-serif")), 9, 14).toFixed(2) + "px");
-        }
+        else Object.assign(item.style, { left: x - rm + "px", top: y - rm + "px", width: 2 * rm + "px", height: 2 * rm + "px" });
         item.style.setProperty("--ux", ((x - cx) / d).toFixed(3));
         item.style.setProperty("--uy", ((y - cy) / d).toFixed(3));
+      }
+      // every prompt's name in one size: the largest at which every name's longest word fits across its disc, then stepped down
+      // until each name sits inside its circle as the page actually draws it
+      if (!niche && this.items.length) {
+        const fs0 = u.clamp(Math.min(rm * 0.27, ...this.items.map(({ mb }) => (1.6 * rm - 6) / this.widest(mb.label, 600, "Inter, system-ui, sans-serif"))), 9, 14);
+        const pairs = this.items.map(({ item }) => [item.querySelector(".fm-node"), item.querySelector(".fm-label")]);
+        u.shrinkToFit(pairs, (fs) => this.el.style.setProperty("--fsm", fs.toFixed(2) + "px"), fs0, 8);
       }
       for (const { nb, btn } of this.nbs) {
         const [x, y] = g.nbs.get(nb.id);

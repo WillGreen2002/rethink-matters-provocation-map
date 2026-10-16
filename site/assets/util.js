@@ -177,6 +177,30 @@
     if (hitOf(e.target) !== firstHit) { e.stopImmediatePropagation(); e.preventDefault(); }
   }, true);
 
+  // ---- text inside a circle, checked on the page itself (fonts, zoom and hyphenation all change how wide words are drawn):
+  // every line must sit within the circle at its own height, both ends, top and bottom
+  u.textInCircle = function textInCircle(circle, text, pad) {
+    const c = circle.getBoundingClientRect();
+    if (!c.width) return true;
+    const cx = c.left + c.width / 2, cy = c.top + c.height / 2, r = c.width / 2 - (pad == null ? 3 : pad);
+    const range = document.createRange();
+    range.selectNodeContents(text);
+    for (const L of range.getClientRects()) {
+      if (!L.width || !L.height) continue;
+      const dy = Math.max(Math.abs(L.top - cy), Math.abs(L.bottom - cy));
+      if (dy > r) return false;
+      const half = Math.sqrt(r * r - dy * dy);
+      if (L.left < cx - half - 0.5 || L.right > cx + half + 0.5) return false;
+    }
+    return true;
+  };
+  // one type size for a set of circles: start at fs, and step down (to a floor) until every text sits inside its circle
+  u.shrinkToFit = function shrinkToFit(pairs, set, fs, min) {
+    set(fs);
+    while (fs > min && pairs.some(([c, t]) => !u.textInCircle(c, t))) { fs = Math.max(min, fs - 0.5); set(fs); }
+    return fs;
+  };
+
   u.debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
   u.plural = (n, a, b) => `${n} ${n === 1 ? a : b || a + "s"}`;
   u.store = {
