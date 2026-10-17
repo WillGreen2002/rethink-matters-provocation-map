@@ -180,9 +180,8 @@
   function regimeModel(thId) {
     const th = byId.get(thId), mine = promptsOf(thId), inTheme = new Set(mine), arc = D.arcs.find((a) => a.id === th.arc);
     const members = mine.map((id) => {
-      const t = byId.get(id), cs = pillarColors(t), n = sourceCount(id);
-      const label = n === 0 ? u.t("regime.down_none") : n === 1 ? u.t("regime.down_one") : u.t("regime.down", { n });
-      return { id, kind: "topic", label: t.label, color: cs[0] || NONE, color2: cs[1], down: { label, aria: u.t("regime.down_aria", { what: label, label: t.label }) } };
+      const t = byId.get(id), cs = pillarColors(t);
+      return { id, kind: "topic", label: t.label, color: cs[0] || NONE, color2: cs[1], down: { aria: u.t("regime.down_aria", { label: t.label }) } };
     });
     const links = [], out = new Map();
     for (const l of relLinks) {

@@ -406,10 +406,6 @@ body.thread-on #btnWalks { display: none; }   /* (Up stays: it ends the walk and
 .ls-link.rest { opacity: .34; }
 .ls-link.faint { opacity: .08; }
 .ls-link.lit { opacity: .9; stroke: var(--ink); }
-.ls-count { opacity: 0; transition: opacity .22s; }
-.ls-count.lit { opacity: 1; }
-.ls-count circle { fill: var(--card); stroke: var(--ink); stroke-width: 1; }
-.ls-count text { font: 600 10.5px var(--font-ui); fill: var(--ink); }
 
 .ls-center {
   position: absolute; border-radius: 50%; padding: 0 10px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
@@ -468,11 +464,11 @@ body.thread-on #btnWalks { display: none; }   /* (Up stays: it ends the walk and
 .landscape.stack .ls-arc { position: relative; transform: none; max-width: none; white-space: normal; text-align: left; margin: 0 0 8px; padding: 0 0 0 26px; font-size: 17px; }
 .landscape.stack .ls-arc::before { content: ""; position: absolute; left: 0; top: 50%; width: 18px; height: 3px; border-radius: 2px; background: var(--c); }
 .landscape.stack .ls-theme { position: relative; width: auto; height: auto; margin: 0 0 8px; }
-.landscape.stack .ls-disc { position: relative; inset: auto; width: 100%; border-radius: 16px; border: 1px solid var(--line); border-left: 4px solid var(--c); align-items: flex-start; text-align: left; padding: 11px 14px 42px; transform: none; }
+.landscape.stack .ls-disc { position: relative; inset: auto; width: 100%; border-radius: 16px; border: 1px solid var(--line); border-left: 4px solid var(--c); align-items: flex-start; text-align: left; padding: 11px 56px 11px 14px; transform: none; }
 .landscape.stack .ls-num { font-size: 10.5px; }
 .landscape.stack .ls-label { font-size: 16px; margin: 2px 0 4px; hyphens: manual; }
 .landscape.stack .ls-lead { display: block; font-size: 13px; line-height: 1.4; color: var(--faint); font-weight: 400; }
-.landscape.stack .ls-down { left: auto; right: 12px; top: auto; bottom: 10px; transform: none; font-size: 12.5px; padding: 3px 12px; }
+.landscape.stack .ls-down { left: auto; right: 12px; top: 50%; bottom: auto; transform: translateY(-50%); font-size: 12.5px; padding: 3px 12px; }
 .landscape.stack.focused .ls-theme.dim .ls-disc { border-color: var(--line); border-left-color: var(--c); background: color-mix(in srgb, var(--c) 11%, var(--paper)); }
 
 /* ---------------------------------------------------------------- Niche */
@@ -691,7 +687,7 @@ body.right-open .side-arrow.next { right: calc(var(--right-w) + 10px); }
 .fmap.stack .fm-centre .fm-title { font-size: 22px; }
 .fmap.stack .fm-h { margin: 18px 0 8px; font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--faint); }
 .fmap.stack .fm-member { position: relative; transform: none; margin: 0 0 8px; }
-.fmap.stack[data-style="regime"] .fm-node { position: relative; inset: auto; width: 100%; min-height: 54px; border-radius: 14px; border-width: 1px; border-left-width: 4px; box-shadow: none; justify-content: flex-start; text-align: left; padding: 12px 118px 12px 14px; transform: none; }
+.fmap.stack[data-style="regime"] .fm-node { position: relative; inset: auto; width: 100%; min-height: 54px; border-radius: 14px; border-width: 1px; border-left-width: 4px; box-shadow: none; justify-content: flex-start; text-align: left; padding: 12px 56px 12px 14px; transform: none; }
 .fmap.stack[data-style="regime"] .fm-label { font-size: 15px; }
 .fmap.stack .fm-down { left: auto; right: 10px; top: 50%; transform: translateY(-50%); font-size: 12.5px; padding: 3px 11px; }
 .fmap.stack .fm-badge { left: -6px; top: -6px; }
@@ -763,8 +759,6 @@ body.lv-row2 .levels { top: 62px; }
 body.lv-row2 .qcap { top: 112px; }
 /* no room for a ring beside an open note and the left panel: a narrow list, no side arrows, each card's way down under its name */
 body.cramped .side-arrow { display: none; }
-body.cramped .fmap.stack[data-style="regime"] .fm-node { padding: 12px 14px 40px; }
-body.cramped .fmap.stack .fm-down { top: auto; bottom: 9px; transform: none; }
 body.lv-icons .levels button:not([aria-current]) .lv-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 body.lv-icons .levels button:not([aria-current]) { padding: 6px 8px; }
 .landscape.stack ~ .qcap { visibility: hidden; }   /* as cards (no room for the ring), the question heads the list instead */
@@ -781,3 +775,6 @@ body.walk-dock .threadbar .t-nav { flex-wrap: wrap; row-gap: 10px; }
 body.walk-dock .threadbar .t-dots { order: 3; width: 100%; justify-content: center; }
 body.thread-on .view-toggle { display: none; }   /* a walk is always a map */
 @media (max-height: 780px) { .qcap .c { display: none; } }   /* a short window: the question without its citation line */
+/* no counts on the map: no way-down pills on the rings (a double click, or Go down in a note), no numbers on the Landscape's ties */
+.landscape:not(.stack) .ls-down, .fmap:not(.stack) .fm-down { display: none; }
+.landscape.stack .ls-down, .fmap.stack .fm-down { min-width: 34px; padding: 3px 10px; font-size: 14px; text-align: center; }

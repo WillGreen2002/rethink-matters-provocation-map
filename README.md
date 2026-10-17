@@ -129,9 +129,10 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
 
 ## What is on the map
 
-* **Moving down and up.** One click opens a note; a double click goes down a level (a theme to its prompts, a prompt to its sources), and so does the arrow
-  pill on each theme and prompt (the way down from the keyboard). A double click acts only on what its first click hit, so a map that moves when the note
-  opens never sends you somewhere else. The **Up** button (the upward arrow at the top left, which on a wide screen also names where it goes: *Landscape*
+* **Moving down and up.** One click opens a note; a double click goes down a level (a theme to its prompts, a prompt to its sources), and so does
+  **Go down** in the note (the way down from the keyboard). The rings carry no way-down pills and the Landscape's lines no numbers; in a list (on a
+  phone, or with List chosen), each card's ↓ goes down. A double click acts only on what its first click hit, so a map that moves when the note opens
+  never sends you somewhere else. The **Up** button (the upward arrow at the top left, which on a wide screen also names where it goes: *Landscape*
   from the Regime, *Theme 8* from the Niche) goes back up a level, as does **Esc** once no note or walk is open. During a walk, Up ends the walk.
 * **The level bar** (top centre; a tab bar at the bottom on a phone) is also the trail: *Landscape › Theme 8 · Value, scale & adoption › Hype vs evidence*. Click a step to go
   back up. The tab at the bottom of the map goes one level down from whatever is open; the arrows at the sides move across, to the next theme or the next prompt in the theme.
@@ -142,14 +143,14 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
 * **Landscape.** The question in the middle; the nine themes round it, **numbered 1 to 9 clockwise from the top right**. The numbers follow the ring, not the Bristol sheet (sheet
   theme 7 is map theme 5, and so on; each theme's note gives its sheet number, and `curation/` keeps the sheet's numbers; the ring order is `theme_order` in `curation/meta.yaml`).
   The three chapters, the Bookshelf's shelves (*how matter becomes life, how life becomes technology, how technology becomes society*), are coloured bands with their names in
-  the gaps. Dashed lines join themes whose prompts are linked: at rest each theme's strongest tie and any tie of three links or more; point at a theme for all of them, with counts.
-  Click a theme for its note and its future; double-click it (or use its "N prompts" pill) to go down to the Regime on that theme. Click the question for the overall answer.
+  the gaps. Dashed lines join themes whose prompts are linked: at rest each theme's strongest tie and any tie of three links or more; point at a theme for all of them (the thicker the line, the more links).
+  Click a theme for its note and its future; double-click it (or use Go down in its note) to go down to the Regime on that theme. Click the question for the overall answer.
   On a phone the ring becomes a list of cards.
 * **Regime.** One theme in the middle and only its prompts round it (verbatim from the sheet, coloured by the pillar of the Rethink Matters mission each speaks to), with
   the links between them. The other themes they reach sit further out as small numbered discs: point at a prompt and its links light up in the colour of the relation (teal
   *echoes*, terracotta *in tension with*, olive *enables*, ochre *leads on to*; dashed lines share tags or a discussion), together with the themes it reaches; click a theme
-  further out to move across to it. Double-click a prompt to go down to the Niche; or point at it (or open it, or tab to it) and its "N sources" pill appears, which does
-  the same ("links only" when nothing sits under the prompt yet). During a walk, the theme further out that holds the next stop takes you on to it.
+  further out to move across to it. Double-click a prompt to go down to the Niche, or use Go down in its note (which says how many
+  sources sit under it). During a walk, the theme further out that holds the next stop takes you on to it.
 * **Niche.** One prompt in the middle with its sources round it: the discussions where it was aired (open one for the provocation and what the group said), the books
   suggested with it, and examples shaped by type (square paper, triangle company, diamond product, ring pre-clinical, dot clinical, cross other). The prompts it links to sit
   further out, in the colour of the relation; click one to move across.

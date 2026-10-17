@@ -21,12 +21,12 @@ levels:
   landscape:
     name: "Landscape"
     short: "the big picture"
-    explain: "The nine themes and how they tie together. Click a theme for its note and a future we would want; double-click it (or follow its arrow) to go down into its prompts."
+    explain: "The nine themes and how they tie together. Click a theme for its note and a future we would want; double-click it (or use Go down in its note) to go down into its prompts."
   regime:
     name: "Regime"
     short: "one theme's prompts"
     what: "Theme {n} · {label}"
-    explain: "One theme at a time: its prompts round it and the links between them, with the other themes they reach further out. Click a prompt for its note; double-click it (or follow its arrow) to go down to its sources. Choose a theme outside to move across, and Up to go back."
+    explain: "One theme at a time: its prompts round it and the links between them, with the other themes they reach further out. Click a prompt for its note; double-click it (or use Go down in its note) to go down to its sources. Choose a theme outside to move across, and Up to go back."
     aria: "Agencies help drive this level: ARIA, for one, through its opportunity spaces."
   niche:
     name: "Niche"
@@ -109,18 +109,14 @@ tip:
 
 landscape:
   theme_n: "Theme {n}"
-  down: "{n} prompts"
-  down_label: "Go down to the {n} prompts in theme {theme}"
+  down_label: "Go down to the prompts in theme {theme}"
   center_question: "The question"
   center_answer: "The question and our answer"
 
 regime:
   members_title: "Prompts in theme {n}"
   nbs_title: "Themes they link to"
-  down: "{n} sources"
-  down_one: "1 source"
-  down_aria: "{what}: go down to what sits under {label}"
-  down_none: "links only"
+  down_aria: "Go down to what sits under {label}"
   nb_sub: "{n} links"
   nb_one: "1 link"
   nb_walk_next: "the walk's next stop"
@@ -141,10 +137,10 @@ niche:
   empty_body: "No discussion, book or example sits under this prompt yet. The prompts it links to are further out."
 
 peek:
-  landscape: "Into theme {n} · {count} prompts"
-  regime: "Into {label} · {count} sources"
-  regime_one: "Into {label} · 1 source"
-  regime_none: "Into {label} · its links"
+  landscape: "Into theme {n}"
+  regime: "Into {label}"
+  regime_one: "Into {label}"
+  regime_none: "Into {label}"
 
 up:
   short_landscape: "Landscape"
@@ -259,8 +255,8 @@ center:
   answer: "Our answer"
   howto: "How to read this map"
   howto_items:
-    - "**Three levels, from the big picture down.** The Landscape shows the nine themes. Double-click a theme (or follow its arrow) and the Regime shows its prompts; double-click a prompt (or follow its arrow) and the Niche shows what sits under it. One click opens a note. Up (or Esc) goes back a level, and the level bar says where you are."
-    - "**On the Landscape**, each theme has a future we would want and an arrow down to its prompts. On a wide screen, dashed lines join themes whose prompts are linked; the thicker the line, the more links."
+    - "**Three levels, from the big picture down.** The Landscape shows the nine themes. Double-click a theme and the Regime shows its prompts; double-click a prompt and the Niche shows what sits under it (or use Go down in a note). One click opens a note. Up (or Esc) goes back a level, and the level bar says where you are."
+    - "**On the Landscape**, each theme has a future we would want in its note. On a wide screen, dashed lines join themes whose prompts are linked; the thicker the line, the more links."
     - "**On the Regime**, point at a prompt and its links light up: teal echoes, terracotta pulls in tension, olive enables, ochre leads on; dashed lines share tags or a discussion. The other themes it reaches sit further out: choose one to move across."
     - "**On the Niche**, a prompt's discussions, books and examples sit round it, and the prompts it links to further out. Open a discussion for the provocation and what the group said."
     - "**Colour** shows each prompt's pillar of the Rethink Matters mission; the key in the Explore tab names them."
@@ -308,10 +304,10 @@ example:
   checked: "Added by Rethink Matters and checked by a second person before it went up."
 
 hints:
-  landscape: "Click a theme for its note · double-click or its arrow goes down"
-  landscape_touch: "Tap a theme for its note · its arrow (or a double tap) goes down"
-  regime: "Click a prompt for its note · double-click or its arrow goes down · Up goes back"
-  regime_touch: "Tap a prompt for its note · its arrow (or a double tap) goes down"
+  landscape: "Click a theme for its note · double-click to go down"
+  landscape_touch: "Tap a theme for its note · its ↓ goes down"
+  regime: "Click a prompt for its note · double-click to go down · Up goes back"
+  regime_touch: "Tap a prompt for its note · its ↓ goes down"
   niche: "Click a source for its note · Up goes back to the theme"
   niche_touch: "Tap a source for its note · Up goes back to the theme"
 

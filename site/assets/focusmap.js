@@ -72,8 +72,9 @@
           mb.shape ? h("i", { class: "shape shape-" + mb.shape, "aria-hidden": "true" }) : null,
           mb.kicker ? h("span", { class: "fm-kicker" }, mb.kicker) : null,
           h("span", { class: "fm-label" }, mb.label));
-        const down = mb.down ? h("button", { class: "fm-down", type: "button", "aria-label": mb.down.aria, onclick: () => cb.drill && cb.drill(mb.id) },
-          mb.down.label, h("span", { "aria-hidden": "true" }, " ↓")) : null;
+        // (the list's way down; the ring has none: a double click, or Go down in the prompt's note)
+        const down = mb.down ? h("button", { class: "fm-down", type: "button", "aria-label": mb.down.aria, title: mb.down.aria, onclick: () => cb.drill && cb.drill(mb.id) },
+          h("span", { "aria-hidden": "true" }, "↓")) : null;
         const badge = h("span", { class: "fm-badge", "aria-hidden": "true" });
         const item = h("div", { class: "fm-member k-" + mb.kind, style: { "--c": mb.color, "--c2": mb.color2 || "transparent", "--i": i + 1 }, "data-id": mb.id }, node, down, badge);
         this.bindHover(node, mb.id);
@@ -209,6 +210,8 @@
       if (!W || !H) return;
       const phone = window.matchMedia("(max-width: 820px)").matches;
       const stack = cramped || this.stacked();
+      const ae = document.activeElement;
+      if (!stack && ae && this.el.contains(ae) && ae.matches(".fm-down")) { const n = ae.closest(".fm-member").querySelector(".fm-node"); if (n) n.focus({ preventScroll: true }); }
       this.el.classList.toggle("stack", stack);
       // the ring was wanted but had no room: the map/list switch says so rather than show Map as on
       this.fellBack = stack && this.view !== "list" && !phone;

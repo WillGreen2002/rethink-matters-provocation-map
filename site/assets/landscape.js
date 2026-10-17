@@ -1,5 +1,5 @@
 /* The Landscape level, the top of the descent: the nine themes round the question, clockwise from theme 1 at the top right, each
-   chapter heading its run of themes, and dashed lines between themes whose prompts are linked. A theme's arrow goes down to it.
+   chapter heading its run of themes, and dashed lines between themes whose prompts are linked. A double click (or Go down in its note) goes down to it.
    Built from real buttons over a decorative SVG, so it works with a keyboard and a screen reader and needs no second animation loop.
    On a phone the ring becomes a list of cards. */
 (function () {
@@ -38,12 +38,9 @@
       this.bands = D.arcs.map((a, i) => svg("path", { class: "ls-band", stroke: u.logoColor(CHAPTER_TONE[i % 3]), "data-arc": a.id }));
       this.links = this.pairs.map((p) => {
         const path = svg("path", { class: "ls-link", "stroke-width": (1.1 + 2.4 * (p.w / maxW)).toFixed(2) });
-        const g = svg("g", { class: "ls-count" }), c = svg("circle", { r: 9 }), t = svg("text", { "text-anchor": "middle", dy: "0.35em" });
-        t.textContent = p.w;
-        g.append(c, t);
-        return Object.assign(p, { path, g });
+        return Object.assign(p, { path });
       });
-      this.svg.append(this.ring, ...this.bands, ...this.links.map((p) => p.path), ...this.links.map((p) => p.g));
+      this.svg.append(this.ring, ...this.bands, ...this.links.map((p) => p.path));   // (how many links a tie stands for shows in its thickness, not a number)
 
       const c = byId.get("c");
       this.center = h("button", { class: "ls-center", type: "button", "data-id": "c", onclick: () => this.cb.select && this.cb.select("c") },
@@ -67,13 +64,14 @@
       setTimeout(() => this.el.classList.remove("intro"), 2000);
     }
     themeItem(th) {
-      const app = this.app, n = th.topics.length, color = app.themeColor(th.n);
+      const app = this.app, color = app.themeColor(th.n);
       const disc = h("button", { class: "ls-disc", type: "button", "data-id": th.id, onclick: (e) => RM.press(e, () => this.cb.select && this.cb.select(th.id), () => this.cb.drill && this.cb.drill(th.id)) },
         h("span", { class: "ls-num" }, u.t("landscape.theme_n", { n: th.n })),
         h("span", { class: "ls-label" }, th.label),
         h("span", { class: "ls-lead" }, th.lead));
-      const down = h("button", { class: "ls-down", type: "button", "aria-label": u.t("landscape.down_label", { n, theme: th.n }),
-        onclick: () => this.cb.drill && this.cb.drill(th.id) }, u.t("landscape.down", { n }), h("span", { "aria-hidden": "true" }, " ↓"));
+      // (the cards' way down; the ring has none: a double click, or Go down in the theme's note)
+      const down = h("button", { class: "ls-down", type: "button", "aria-label": u.t("landscape.down_label", { theme: th.n }), title: u.t("landscape.down_label", { theme: th.n }),
+        onclick: () => this.cb.drill && this.cb.drill(th.id) }, h("span", { "aria-hidden": "true" }, "↓"));
       this.bindHover(disc, th.id);
       this.bindHover(down, th.id);
       const item = h("div", { class: "ls-theme", style: { "--c": color, "--i": this.themes.indexOf(th) }, "data-n": th.n }, disc, down);
@@ -119,7 +117,6 @@
       for (const p of this.links) {
         const lit = !!F && (F.has(p.a) || F.has(p.b));
         p.path.setAttribute("class", "ls-link" + (lit ? " lit" : F ? (p.rest ? " faint" : "") : p.rest ? " rest" : ""));
-        p.g.setAttribute("class", "ls-count" + (lit ? " lit" : ""));
       }
     }
 
@@ -131,6 +128,8 @@
       const W = this.insets.w || this.el.clientWidth, H = this.el.clientHeight;
       if (!W || !H) return;
       const stack = noRoom || this.stacked();
+      const ae = document.activeElement;
+      if (!stack && ae && this.el.contains(ae) && ae.matches(".ls-down")) { const d = ae.closest(".ls-theme").querySelector(".ls-disc"); if (d) d.focus({ preventScroll: true }); }
       this.el.classList.toggle("stack", stack);
       if (stack) {
         cancelAnimationFrame(this._raf);   // a ring still easing into place must not write over the cards
@@ -147,12 +146,12 @@
       const I = this.insets, sw = Math.max(200, W - I.l - I.r), sh = Math.max(200, H - I.t - I.b);
       const cx = I.l + sw / 2, cy = I.t + sh / 2;
       const need = this.labelFit();   // the smallest disc the names fit in
-      const rd0 = Math.max(u.clamp(Math.min(sw, sh) * 0.088, 36, 62), need), pill = 30;
-      // the chapters' names sit beside the ring (wrapping when room is short), and each theme's "N prompts" pill points outwards:
-      // the ring is never wider than they allow, and in a narrow room it grows less tall rather than push them out of view
+      const rd0 = Math.max(u.clamp(Math.min(sw, sh) * 0.088, 36, 62), need), pill = 10;
+      // the chapters' names sit beside the ring (wrapping when room is short): the ring is never wider than they allow, and in a
+      // narrow room it grows less tall rather than push them out of view
       const capW = Math.round(u.clamp(sw * 0.2, 112, 172));
       this.el.style.setProperty("--capw", capW + "px");
-      const RxMax = Math.min(sw / 2 - rd0 - 102, sw / 2 - capW - 26);
+      const RxMax = Math.min(sw / 2 - rd0 - 18, sw / 2 - capW - 26);
       let Ry = Math.max(rd0 * 2.2, sh / 2 - rd0 - pill);
       if (Ry * 0.82 > RxMax) Ry = Math.max(rd0 * 2.2, RxMax / 0.82);
       let Rx = Math.max(Ry * 0.82, Math.min(sw / 2 - rd0 - 18, Ry * 1.45, RxMax));
@@ -250,12 +249,12 @@
       for (const [n, { item, th }] of this.items) {
         const [x, y] = g.themes.get(n), d = Math.hypot(x - cx, y - cy) || 1;
         item.style.left = x - rd + "px"; item.style.top = y - rd + "px";
-        // its "N prompts" pill points away from the question, so it never sits between two themes
+        // (which way is outward from the question, for anything set beside the disc)
         item.style.setProperty("--ux", ((x - cx) / d).toFixed(3));
         item.style.setProperty("--uy", ((y - cy) / d).toFixed(3));
       }
       // a chapter's name sits in the gap before its first theme, outside the ring, and is eased further out if it would touch
-      // a theme or a theme's "N prompts" pill (a compact ring, on a small screen or beside an open note)
+      // a theme (a compact ring, on a small screen or beside an open note)
       const pills = [];
       for (const [n, { item }] of this.items) {
         const d = item.querySelector(".ls-down");
@@ -288,7 +287,6 @@
         const [ax, ay] = g.themes.get(p.a), [bx, by] = g.themes.get(p.b);
         const mx = (ax + bx) / 2, my = (ay + by) / 2, qx = cx + (mx - cx) * 0.3, qy = cy + (my - cy) * 0.3;
         p.path.setAttribute("d", `M${ax.toFixed(1)},${ay.toFixed(1)} Q${qx.toFixed(1)},${qy.toFixed(1)} ${bx.toFixed(1)},${by.toFixed(1)}`);
-        p.g.setAttribute("transform", `translate(${(0.25 * ax + 0.5 * qx + 0.25 * bx).toFixed(1)},${(0.25 * ay + 0.5 * qy + 0.25 * by).toFixed(1)})`);
       }
     }
   }
