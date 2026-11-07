@@ -444,7 +444,7 @@
     results.classList.add("open");
     const on = results.querySelector(".active");
     if (on) on.scrollIntoView({ block: "nearest" });
-    if (S.q || resIdx >= 0) live.textContent = resList[resIdx] ? resList[resIdx].label : u.t("search.none");
+    if (S.q || resIdx >= 0) { const e = resList[resIdx]; live.textContent = e ? u.t("kinds")[e.kind] + ": " + e.label : u.t("search.none"); }
   }
   // nothing typed yet: the keywords used most, as a start
   function trySome() {

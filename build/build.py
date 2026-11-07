@@ -747,7 +747,7 @@ if os.path.exists(_rpath):
     REVIEW_EDITS = (load_yaml(_rpath) or {}).get("edits") or {}
 _nodes_by_id = {n["id"]: n for n in nodes}
 for _key, _text in REVIEW_EDITS.items():
-    _text = str(_text).strip()
+    _text = "" if _text is None else str(_text).strip()
     _m = re.fullmatch(r"(theme):(th:\d+):(title|lead|future)|(centre):answer|(prompt):(n:[a-z0-9-]+):(label|text)|(disc):(d:[a-z0-9-]+):(label|notes)|copy:(levels\.(?:landscape|regime|niche)\.explain|hero\.lede|about\.conflicts)", _key)
     if not _m or (not _text and not _key.endswith(":notes")):  # what the group said can be cleared; nothing else can
         err(f"curation/review_edits.yaml: cannot apply {_key!r}")
@@ -770,6 +770,10 @@ for _key, _text in REVIEW_EDITS.items():
             err(f"curation/review_edits.yaml: no node for {_key!r}")
         else:
             _n[_m.group(7) or _m.group(10)] = _text
+            if _m.group(10) == "notes" and not _text:   # the check on a future's sources ran before this edit
+                for _f in futures_cur.get("themes") or []:
+                    if not _f.get("hold") and _m.group(9)[2:] in ((_f.get("draws_on") or {}).get("discussions") or []):
+                        err(f"curation/review_edits.yaml: {_key} clears notes that the future for sheet theme {_f.get('theme')} draws on")
     else:
         _p = _m.group(11).split(".")
         _o = copy_text

@@ -253,7 +253,7 @@
     const el = h("div", { class: "rv-toast", role: "status" }, msg);
     document.body.append(el);
     const live = document.getElementById("live");   // the toast's own role is often missed, and focus may be moving
-    if (live) setTimeout(() => { live.textContent = msg; }, 200);
+    if (live) { const was = live.textContent; setTimeout(() => { live.textContent = live.textContent === was ? msg : live.textContent + " " + msg; }, 200); }
     setTimeout(() => el.classList.add("out"), 3000);
     setTimeout(() => el.remove(), 3600);
   }
