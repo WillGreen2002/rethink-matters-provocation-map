@@ -30,10 +30,9 @@ tags:
 - *echoes* → [[Signalling & crosstalk]]: Engineering a signal and shielding against unwanted crosstalk are two halves of signalling control.
 - *echoes* → [[Infection-sensing dressings]]: The same move at different scales: turning a molecular event into a readable output (fluorescence for screening, colour change for infection).
 - via #concept/new-to-nature, #concept/programmability, #domain/proteins-and-peptides → [[Programmable biopolymers]]
-- via #concept/new-to-nature, #concept/programmability, #domain/proteins-and-peptides → [[Non-canonical amino acids]]
 - via #barrier/data-gaps, #concept/new-to-nature, #domain/proteins-and-peptides → [[Designed-peptide risks]]
+- via #concept/programmability, #domain/engineered-cells, #domain/proteins-and-peptides → [[Classifying materials]]
 - via #barrier/data-gaps, #concept/signalling → [[Emergent properties]]
-- via #concept/programmability, #domain/proteins-and-peptides → [[DNA is fancy PEG]]
 - via #concept/new-to-nature, #domain/proteins-and-peptides → [[Scaffolds, nanoparticles & adhesives]]
 - via #barrier/data-gaps, #domain/engineered-cells → [[Salt tolerance & ecosystems]]
 - via #barrier/data-gaps, #domain/proteins-and-peptides → [[Predicting composites & proteins]]

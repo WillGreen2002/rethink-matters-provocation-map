@@ -18,7 +18,7 @@ tags:
 
 > Which materials would be useful for underwater habitation?
 
-**Theme:** [[Theme 6 · Ocean & extreme environments]]  
+**Theme:** [[Theme 6 · Extreme & constrained environments]]  
 **Scale:** meso · **Working group:** WG3 · **Pillar:** climate, design · **Value:** sustainability
 
 ## Discussions behind this
@@ -29,11 +29,11 @@ tags:
 
 - *echoes* → [[Hydrated materials]]: Underwater, hydrated materials are the default rather than the exception: hydrogels, biomineralisation and biofouling become design variables.
 - *extends* → [[Underwater or space first]]: If habitats come first underwater, the question becomes which materials can survive pressure, darkness and biofouling.
-- via #concept/hydration, #domain/construction-and-minerals, #domain/marine-and-ocean → [[Cellulose, wood & concrete]]
 - via #concept/hydration, #domain/living-materials, #domain/marine-and-ocean → [[Living interfaces]]
+- via #concept/hydration, #domain/construction-and-minerals, #domain/marine-and-ocean → [[Cellulose, wood & concrete]]
 - via #concept/hydration, #method/biofabrication → [[Scaffolds, nanoparticles & adhesives]]
-- via #domain/marine-and-ocean → [[Salt tolerance & ecosystems]]
 - via #concept/degradation, #domain/living-materials → [[When to let materials die]]
+- via #domain/marine-and-ocean → [[Salt tolerance & ecosystems]]
 - via #domain/construction-and-minerals, #domain/marine-and-ocean → [[Seabed structures & farms]]
 
 ## Tags

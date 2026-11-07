@@ -24,7 +24,7 @@ import urllib.parse
 import urllib.request
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-EDIT = re.compile(r"^(theme:th:\d+:(title|lead|future)|centre:answer|prompt:n:[a-z0-9-]+:(label|text)|disc:d:[a-z0-9-]+:(label|notes)|copy:(levels\.(landscape|regime|niche)\.explain|hero\.lede))$")
+EDIT = re.compile(r"^(theme:th:\d+:(title|lead|future)|centre:answer|prompt:n:[a-z0-9-]+:(label|text)|disc:d:[a-z0-9-]+:(label|notes)|copy:(levels\.(landscape|regime|niche)\.explain|hero\.lede|about\.conflicts))$")
 EX_TYPES = {"paper": "paper", "company": "company", "product": "product", "preclinical": "preclinical", "clinical": "clinical",
             "note": "other", "book": "other", "link": "other", "other": "other"}
 EX_COLS = ["id", "type", "name", "organisation", "year", "stage", "summary", "url", "prompts", "status", "notes"]
@@ -45,8 +45,9 @@ def read_rows(args):
         if not m or not u.netloc.endswith("google.com"):
             sys.exit("--sheet: that is not a Google Sheets link")
         gid = (re.search(r"gid=(\d+)", args.sheet) or [None, "0"])[1]
-        url = f"{u.scheme}://{u.netloc}/spreadsheets/d/{m.group(1)}/export?format=csv&gid={gid}"
-        with urllib.request.urlopen(url, timeout=30) as r:
+        # (the same read the map itself uses: Google refuses the plain CSV export for a link-shared Sheet)
+        url = f"{u.scheme}://{u.netloc}/spreadsheets/d/{m.group(1)}/gviz/tq?tqx=out:csv&gid={gid}&headers=1"
+        with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"}), timeout=30) as r:
             text = r.read().decode("utf-8-sig")
     rows = list(csv.reader(io.StringIO(text)))
     if not rows:
@@ -62,7 +63,7 @@ def read_rows(args):
 
 
 def derive(rows):
-    edits, adds, frozen = {}, {}, False
+    edits, adds, frozen, thoughts = {}, {}, False, []
     for r in rows:
         a, key = r["action"].lower(), r["key"]
         if a == "edit" and EDIT.match(key):
@@ -83,7 +84,9 @@ def derive(rows):
             frozen = True
         elif a == "unfreeze":
             frozen = False
-    return edits, adds, frozen
+        elif a == "thought":
+            thoughts.append(r)
+    return edits, adds, frozen, thoughts
 
 
 def slug(s):
@@ -97,9 +100,19 @@ def main():
     src.add_argument("--sheet", help="the Sheet's share link")
     ap.add_argument("--anyway", action="store_true", help="publish even though the edits are not frozen")
     args = ap.parse_args()
-    edits, adds, frozen = derive(read_rows(args))
+    edits, adds, frozen, thoughts = derive(read_rows(args))
     if not frozen and not args.anyway:
         sys.exit("The edits are not frozen: press Freeze in edit mode first (or pass --anyway to publish them as they stand).")
+    # rows about a prompt or discussion that has since left the map stay in the Sheet, but cannot be applied
+    with open(os.path.join(ROOT, "site", "graph-data.js"), encoding="utf-8") as f:
+        live = set(re.findall(r'"id":"((?:n|d):[a-z0-9-]+)"', f.read()))
+    gone = [k for k in edits if (m := re.match(r"(?:prompt|disc):((?:n|d):[a-z0-9-]+):", k)) and m.group(1) not in live]
+    gone += [i for i, a in adds.items() if a["prompt"] not in live]
+    for k in gone:
+        edits.pop(k, None)
+        adds.pop(k, None)
+    if gone:
+        print(f"skipped {len(gone)} rows about things no longer on the map: {', '.join(gone)}")
     # the edits: one file, applied by build.py on top of everything else
     # (JSON-quoted strings are valid YAML: no YAML library needed here)
     path = os.path.join(ROOT, "curation", "review_edits.yaml")
@@ -140,6 +153,14 @@ def main():
         for a in notes:
             f.write(f"  - prompt: {json.dumps(a['prompt'])}\n    title: {json.dumps(a['title'], ensure_ascii=False)}\n"
                     f"    checked: {'true' if a['checked'] else 'false'}\n    text: {json.dumps(a['text'], ensure_ascii=False)}\n")
+    # thoughts sent from a note: they may say anything, so they stay on this machine (build/_review/ is git-ignored)
+    if thoughts:
+        os.makedirs(os.path.join(ROOT, "build", "_review"), exist_ok=True)
+        with open(os.path.join(ROOT, "build", "_review", "thoughts.csv"), "w", encoding="utf-8-sig", newline="") as f:
+            w = csv.writer(f)
+            w.writerow(["when", "note", "thought"])
+            w.writerows([r["timestamp"], r["key"], r["text"]] for r in thoughts)
+        print(f"{len(thoughts)} thoughts from notes written to build/_review/thoughts.csv (never published).")
     print(f"review import: {len(edits)} edited blocks written to curation/review_edits.yaml; "
           f"{len(new)} additions with a source appended to curation/niche_examples.csv ({sum(r['status'] == 'checked' for r in new)} checked); "
           f"{len(notes)} notes without a source written to curation/review_notes.yaml.")

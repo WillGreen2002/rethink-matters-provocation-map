@@ -59,8 +59,8 @@ tension:
     poles: ["Living & maintained", "Inert & finished"]
     def: "Materials that stay alive and need care versus ones that were alive, or are fabricated and finished; and what that means for definition, durability and end of life."
   platform-vs-bespoke:
-    label: "Derisk once & reuse ↔ approve case by case"
-    poles: ["Derisk once & reuse", "Approve case by case"]
+    label: "Reuse a proven platform ↔ approve case by case"
+    poles: ["Reuse a proven platform", "Approve case by case"]
     def: "Whether a validated platform can be reused across products or indications, or each application needs its own evidence and approval."
   near-vs-far:
     label: "Near-term utility ↔ long-term & speculative"

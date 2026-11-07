@@ -18,7 +18,7 @@ tags:
 
 > Seabed-grown structures and drifting material farms.
 
-**Theme:** [[Theme 6 · Ocean & extreme environments]]  
+**Theme:** [[Theme 6 · Extreme & constrained environments]]  
 **Scale:** micro, macro · **Working group:** WG3 · **Pillar:** design, climate · **Value:** sustainability
 
 ## Discussions behind this
@@ -40,6 +40,7 @@ tags:
 - via #tension/near-vs-far → [[Classifying materials]]
 - via #tension/near-vs-far → [[Unexplored biological features]]
 - via #tension/near-vs-far → [[Patterning to organs]]
+- via #tension/near-vs-far → [[Current tech & manufacturing]]
 
 ## Tags
 

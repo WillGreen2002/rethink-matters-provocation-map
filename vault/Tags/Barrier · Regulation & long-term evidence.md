@@ -5,14 +5,12 @@ tags: [tag-hub, barrier/regulation-and-evidence]
 
 Approval pathways, standards, and the long-term evidence regulators and clinicians need.
 
-Used by 12 topics across 5 themes:
+Used by 10 topics across 5 themes:
 
 - [[Biobased vs biomaterial]]
-- [[Non-canonical amino acids]]
+- [[Programmable biopolymers]]
 - [[Standardising dynamic properties]]
 - [[Funding platform medicines]]
-- [[Derisk once gene delivery]]
-- [[Derisk once synthesis platform]]
 - [[Infection-sensing dressings]]
 - [[Who benefits Wounds & clinicians]]
 - [[Chronic bioelectrodes]]

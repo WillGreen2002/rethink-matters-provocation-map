@@ -1,1 +1,2 @@
 ﻿id,type,name,organisation,year,stage,summary,url,prompts,status,notes
+mrna-vaccine-phase-3,clinical,Safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine,The New England Journal of Medicine,2020,phase 3,A phase 3 trial of a lipid-nanoparticle mRNA vaccine: two doses conferred 95% protection against Covid-19.,https://doi.org/10.1056/NEJMoa2034577,replacement-vs-new-capability,draft,"Committee idea for Theme 8: something new, in action. A second person to check it, and that this is the example the committee wants."

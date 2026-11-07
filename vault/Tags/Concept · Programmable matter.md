@@ -5,10 +5,9 @@ tags: [tag-hub, concept/programmability]
 
 Designing materials or biomolecules like code: encoded, addressable, synthesisable on demand.
 
-Used by 5 topics across 3 themes:
+Used by 4 topics across 3 themes:
 
-- [[DNA is fancy PEG]]
+- [[Classifying materials]]
 - [[Biosensor design]]
 - [[Signalling & crosstalk]]
 - [[Programmable biopolymers]]
-- [[Non-canonical amino acids]]

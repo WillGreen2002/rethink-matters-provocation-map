@@ -28,10 +28,15 @@ tags:
 - *echoes* → [[Hype vs evidence]]: The same discipline of evidence in a different field: is the conductive-polymer route to chronic bioelectrodes overhyped, and what long-term data would settle it?
 - *echoes* → [[Survive use, degrade after]]: Implanted conductive polymers can degrade on timescales similar to metal electrodes: designing something that lasts long enough in the body, then yields, mirrors the durable-then-degradable problem.
 - *echoes* → [[Public datasets]]: Both turn on what to record and for how long: public datasets for composites, long-term stability data for implanted electrodes.
-- via #barrier/data-gaps, #tension/hype-vs-evidence → [[AI meets biological constraints]]
+- via #barrier/data-gaps, #tension/hype-vs-evidence → [[AI and biological constraints]]
 - via #barrier/data-gaps, #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Who benefits Wounds & clinicians]]
 - via #tension/hype-vs-evidence → [[Lessons from ventures]]
 - via #barrier/data-gaps, #barrier/regulation-and-evidence → [[Designed-peptide risks]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Biobased vs biomaterial]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Programmable biopolymers]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Funding platform medicines]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Infection-sensing dressings]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Human–machine integration]]
 
 ## Tags
 

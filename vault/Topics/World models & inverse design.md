@@ -27,16 +27,15 @@ tags:
 
 ## Linked ideas
 
-- *enables* → [[Printing meets growth]]: World models would predict how multicellular systems evolve under imposed constraints, turning 'design the initial conditions' into inverse design.
+- *enables* → [[Printing and growth]]: World models would predict how multicellular systems evolve under imposed constraints, turning 'design the initial conditions' into inverse design.
 - *enables* → [[Salt tolerance & ecosystems]]: Ecosystem modelling for marine interventions is the same world-model idea applied to consequences rather than to material formation.
 - via #barrier/data-gaps, #concept/emergence, #concept/patterning, #method/machine-learning → [[Emergent properties]]
 - via #concept/patterning, #tension/control-vs-emergence → [[Patterning to organs]]
 - via #barrier/data-gaps, #method/machine-learning → [[Engineering a tree]]
 - via #barrier/data-gaps, #method/machine-learning → [[Public datasets]]
-- via #barrier/data-gaps, #concept/emergence, #method/machine-learning → [[AI meets biological constraints]]
+- via #barrier/data-gaps, #concept/emergence, #method/machine-learning → [[AI and biological constraints]]
 - via #barrier/data-gaps, #concept/emergence, #method/machine-learning → [[Predicting composites & proteins]]
 - via #concept/emergence → [[Material 'intelligence']]
-- via #barrier/data-gaps, #concept/emergence → [[Expansion microscopy]]
 - via #barrier/data-gaps, #method/machine-learning → [[Variant-library screening]]
 
 ## Tags

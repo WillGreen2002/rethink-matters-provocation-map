@@ -7,14 +7,12 @@ Abstraction and standardisation versus context-specific precision: in principles
 
 Poles: **General & portable** ↔ **Specific & contextual**
 
-Used by 9 topics across 5 themes:
+Used by 7 topics across 5 themes:
 
 - [[Classifying materials]]
-- [[DNA is fancy PEG]]
 - [[Portable design principles]]
 - [[A shared language]]
-- [[AI meets biological constraints]]
+- [[AI and biological constraints]]
 - [[Standardising dynamic properties]]
-- [[Derisk once synthesis platform]]
 - [[Infection-sensing dressings]]
 - [[Who benefits Wounds & clinicians]]

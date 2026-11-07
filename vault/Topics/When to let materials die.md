@@ -20,7 +20,7 @@ tags:
 
 > Which living functions justify ongoing moisture, nutrients and care, and when should we let materials die after growing them?
 
-**Theme:** [[Theme 6 · Ocean & extreme environments]]  
+**Theme:** [[Theme 6 · Extreme & constrained environments]]  
 **Scale:** macro · **Working group:** WG3 (proposed), WG2 (proposed) · **Pillar:** climate, governance · **Value:** sustainability, solidarity
 
 ## Discussions behind this

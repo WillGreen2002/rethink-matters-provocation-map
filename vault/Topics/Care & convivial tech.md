@@ -31,8 +31,8 @@ tags:
 - *echoes* → [[Theory of change]]: One theory of change is bottom-up: technology people can use, adapt and repair, rather than a market or regulatory push from above.
 - via #barrier/regulation-and-evidence, #tension/access-vs-safety → [[Infection-sensing dressings]]
 - via #barrier/regulation-and-evidence, #tension/access-vs-safety → [[Who benefits Wounds & clinicians]]
-- via #barrier/safety-and-misuse, #concept/care-and-maintenance → [[Duties to organisms]]
 - via #barrier/regulation-and-evidence, #tension/private-vs-common → [[Funding platform medicines]]
+- via #barrier/safety-and-misuse, #concept/care-and-maintenance → [[Duties to organisms]]
 - via #tension/private-vs-common → [[Public datasets]]
 - via #tension/private-vs-common → [[Who captures value]]
 - via #tension/private-vs-common → [[IP & biological design]]

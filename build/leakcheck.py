@@ -15,8 +15,8 @@ import re
 HERE = os.path.dirname(os.path.abspath(__file__))
 LOCAL_PATH = os.path.join(HERE, "local_checks.json")
 
-# Phrases that legitimately contain a flagged word (e.g. the author of a cited 1973 book).
-ALLOW_PHRASES = ["Ivan Illich"]
+# Phrases that legitimately contain a flagged word (the author of a cited 1973 book; the group's own public address, from its website).
+ALLOW_PHRASES = ["Ivan Illich", "hello@rethinkmatters.org"]
 
 # Links into private storage (share links, direct downloads), link shorteners that can hide one, and signed links that carry a
 # private access key. Used on every published file (preflight), in the build's leak check, and on every cell of the Niche sheet.

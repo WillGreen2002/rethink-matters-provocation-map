@@ -5,10 +5,11 @@ tags: [tag-hub, method/biofabrication]
 
 3D printing, microfluidics, volumetric and guided-assembly fabrication.
 
-Used by 5 topics across 3 themes:
+Used by 6 topics across 3 themes:
 
 - [[Patterning to organs]]
-- [[Printing meets growth]]
+- [[Printing and growth]]
 - [[Fabrication readiness]]
+- [[Current tech & manufacturing]]
 - [[Scaffolds, nanoparticles & adhesives]]
 - [[Underwater materials]]

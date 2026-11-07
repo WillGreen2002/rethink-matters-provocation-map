@@ -7,8 +7,8 @@ snapshot of one point in time, not a model of change. You walk it from the top d
 
 | level | what it shows |
 |---|---|
-| **Landscape** (the big picture, the landing page) | the nine themes on a ring, the three chapters, the ties between themes, and a drafted future for each theme |
-| **Regime** (one theme's prompts) | one theme at a time: its prompts and the links between them, with the other themes they reach further out; agencies such as ARIA help drive this level |
+| **Landscape** (the big picture, the landing page) | the nine themes on a ring, the three chapters, the ties between themes, and a drafted future for each theme except theme 3, which the group is to write |
+| **Prompts** (one theme's prompts; Geels' regime, and still `regime` in links and in `curation/`) | one theme at a time: its prompts and the links between them, with the other themes they reach further out; in Geels' terms this level is the regime, which agencies such as ARIA help drive |
 | **Niche** (one prompt's sources) | one prompt at a time: the discussions where it was aired, the books suggested with it and real examples on the ground (papers, companies, products, pre-clinical and clinical work, once Rethink Matters adds checked rows), with the prompts it links to further out |
 
 Styled from rethinkmatters.org (colours, Inter + Spectral, and the visual grammar of the *Map of shared aims* on the About page).
@@ -40,13 +40,13 @@ The level and any focus go in the address; the open note goes after `#`:
 |---|---|
 | `…/` | the Landscape |
 | `…/?level=landscape#th:5` | the Landscape with theme 5's note open |
-| `…/?level=regime&focus=th:5` | the Regime on theme 5 |
+| `…/?level=regime&focus=th:5` | the Prompts level on theme 5 |
 | `…/?level=regime&focus=th:8#n:hype-vs-evidence` | theme 8 with a prompt's note open (the focus can be left out: the prompt implies its theme) |
 | `…/?level=niche&focus=n:hype-vs-evidence` | the Niche on one prompt |
 | `…/?level=niche&focus=n:hype-vs-evidence#d:spudcells-hype` | the same, with a discussion's note open |
 | `…/?level=regime&walk=data-bottleneck` | a guided walk, from its first stop (`&stop=3` for the third) |
 
-Older links keep working: `#n:…` and `#t:…` open on the Regime (in the prompt's theme); `#d:…`, `#b:…` and `#ex:…` open on the Niche (under the first prompt
+Older links keep working: `#n:…` and `#t:…` open on the Prompts level (in the prompt's theme); `#d:…`, `#b:…` and `#ex:…` open on the Niche (under the first prompt
 they belong to); `#th:…`, `#arc:…` and `#c` open on the Landscape.
 The browser's Back button goes back up a level, or back across. With the level bar focused, keys **1**, **2** and **3** switch level (the arrow keys move along it; Enter goes); **Esc** ends a
 walk, then closes a note, then goes up a level.
@@ -88,14 +88,15 @@ then open <http://localhost:8766>.
 
 1. **Chatham House.** All provocateur and joiner names are removed; note digests are anonymised; named people appear only as cited authors
    (book authors on your Bookshelf, one 1973 book's author, and Frank Geels for the levels). `build.py` *refuses to build*, and `build/preflight.py` *refuses to publish*, if any participant name,
-   Google Drive or Docs link, e-mail address, local path, em dash or a term on the private list (`build/local_checks.json`) shows up. That is a safety net, not a substitute for
+   Google Drive or Docs link, e-mail address (bar the group's own public one, used by the thoughts button), local path, em dash or a term on the private list (`build/local_checks.json`) shows up. That is a safety net, not a substitute for
    reading the digests in `curation/discussions_*.yaml` once yourselves.
 2. **Links to the group's Google-Doc notes are deliberately not included** (they are share-links; on a public page they could expose the full notes).
-3. **Only scale and working group come from your sheets.** Pillar, value, every semantic tag, every bridge and every walk are first drafts by the map's author; working-group
-   assignments the sheets did not record are marked with an asterisk.
+3. **Only scale and working group come from your sheets.** Pillar, value, every semantic tag, every bridge and every walk are first drafts by the map's author. The committee
+   took pillar and working group off the site in its review (they remain in `curation/` and the vault), and tags now work behind the scenes as search keywords.
 4. **The futures are drafts.** Each was drafted only from the group's own prompts and anonymised notes, then checked clause by clause by an independent reader; theme 7
    (circularity and waste) has no session notes yet, so its future is drawn from its prompts only. The site no longer labels them as drafts; their `status` in
-   `curation/futures.yaml` still records where each stands.
+   `curation/futures.yaml` still records where each stands. A future marked `hold` (theme 3) is one the committee wants the group to write: the map says so, and it can be written in edit mode.
+   The future for extreme and constrained environments is the committee's own wording, from the edit Sheet, and was not checked again; it lives in `curation/review_edits.yaml`, which overrides `futures.yaml` on the map.
    `docs/FUTURES-REVIEW.md` lists what each clause rests on.
 5. **Niche examples go live only when a row is marked `checked`**, by someone other than the person who added it. Everything in that spreadsheet that is published is public.
 6. Notes mention a few companies and products by name where the group did. Digests avoid stating unverified facts about them; check you are comfortable with the remainder.
@@ -114,14 +115,15 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
 * **Edit a future:** rewrite its `text` in `curation/futures.yaml` and set `status` to `rm-edited`, or `rm-approved` with `approved_on: YYYY-MM`. Keep `theme` (the Bristol sheet
   number) and `label` as they are: they guard the numbering. Limits the build checks: a theme future starts *A future where* (40 words at most); the overall answer starts
   *A world we would want to live in is one where* (60 words at most); no quotation marks, no attribution, no em dashes, and no number its sources do not contain.
-  Set `show_on_site: false` to hide them all.
+  Set `show_on_site: false` to hide them all. `hold: <reason>` keeps one off the map and shows that the group has still to write it.
 * **Add examples to the Niche:** open `curation/niche_examples.csv` in Excel, add a row per example (type, name, organisation, year, stage, a one-line summary, a public
   `https://` link, and the prompts it speaks to), save as **CSV UTF-8**, and rebuild. Rows go live only once `status` is `checked`. `docs/NICHE-EXAMPLES.md` has the details and
   the list of prompt ids.
 * **Gather wider feedback:** `--review` writes `copy_review.csv`, `futures_review.csv` and `categories_review.csv` to `build/_review/` for people to comment on in Excel;
   apply the agreed changes in `curation/`.
 * **Reword a theme or prompt:** edit the Bristol sheet, copy it over `source_data/bristol_retreat.xlsx`, rebuild. A prompt that no longer matches is reported as an error; a *new* prompt is
-  reported as "not covered" until you add it to `curation/topics_*.yaml`.
+  reported as "not covered" until you add it to `curation/topics_*.yaml`. A prompt's `override_text` or a theme's `title` in `curation/meta.yaml` replaces the sheet's wording on the map; a discussion's `override_text` does the same for its provocation.
+* **Take a prompt or discussion off the map:** add `cut: <reason>` to its entry in `curation/` (a prompt must also come out of other prompts' `links`, the walks in `curation/threads.yaml` and any future's `draws_on`; a discussion must come out of its prompts' `sources`). It stays there, so it can be brought back by deleting that line. **Add a prompt after the retreat:** give it `added: true` and a `text` in place of `match`. A prompt can carry `refs` (links shown under its text) and `source_why` (why a discussion sits under it).
 * **Add a provocation or session:** add a discussion to `curation/discussions_*.yaml` (the `texts:` entry says where to pull the verbatim provocation from), write its note digest
   under `notes:`, then attach it to the prompt(s) it feeds via `sources:` in `curation/topics_*.yaml`.
 * **Add a tag:** define it in `curation/tags.yaml` (one-line meaning; poles for tensions) and apply it to at least three prompts across at least two themes.
@@ -129,37 +131,39 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
 
 ## What is on the map
 
+* **The middle of the Landscape** is a way in: click it for a question or an answer from somewhere on the map, like a magic 8 ball, and **Ask again** for another. Its note also says how to read the map, what the words mean, what is still missing and where to add it.
 * **Moving down and up.** One click opens a note; a double click goes down a level (a theme to its prompts, a prompt to its sources), and so does
   **Go down** in the note (the way down from the keyboard). The rings carry no way-down pills and the Landscape's lines no numbers; in a list (on a
   phone, or with List chosen), each card's ↓ goes down. A double click acts only on what its first click hit, so a map that moves when the note opens
   never sends you somewhere else. The **Up** button (the upward arrow at the top left, which on a wide screen also names where it goes: *Landscape*
-  from the Regime, *Theme 8* from the Niche) goes back up a level, as does **Esc** once no note or walk is open. During a walk, Up ends the walk.
+  from the Prompts level, *Theme 8* from the Niche) goes back up a level, as does **Esc** once no note or walk is open. During a walk, Up ends the walk.
 * **The level bar** (top centre; a tab bar at the bottom on a phone) is also the trail: *Landscape › Theme 8 · Value, scale & adoption › Hype vs evidence*. Click a step to go
   back up. The tab at the bottom of the map goes one level down from whatever is open; the arrows at the sides move across, to the next theme or the next prompt in the theme.
-* **Map or list.** The Regime and Niche open as a map (the standard). The **Map / List** switch at the top right shows the same level as a plain list in the same order; the
+* **Map or list.** The Prompts level and the Niche open as a map (the standard). The **Map / List** switch at the top right shows the same level as a plain list in the same order; the
   site remembers the choice on that browser. Where a window is too small for the map (a short window during a walk, say), List shows as on and Map says why.
-* **Words.** A *prompt* is one of the sixty (the sheet's provocation prompts); a *provocation* is what was put to a session, and a *discussion* holds it with what was said;
+* **Words.** A *prompt* is a question or topic under a theme (mostly the sheet's provocation prompts); a *provocation* is what was put to a session, and a *discussion* holds it with what was said;
   a *source* is what sits under a prompt on the Niche (its discussions, examples and books); a *note* is the panel that opens when you choose something.
 * **Landscape.** The question in the middle; the nine themes round it, **numbered 1 to 9 clockwise from the top right**. The numbers follow the ring, not the Bristol sheet (sheet
-  theme 7 is map theme 5, and so on; each theme's note gives its sheet number, and `curation/` keeps the sheet's numbers; the ring order is `theme_order` in `curation/meta.yaml`).
+  theme 7 is map theme 5, and so on; `curation/` keeps the sheet's numbers; the ring order is `theme_order` in `curation/meta.yaml`).
   The three chapters, the Bookshelf's shelves (*how matter becomes life, how life becomes technology, how technology becomes society*), are coloured bands with their names in
-  the gaps. Dashed lines join themes whose prompts are linked: at rest each theme's strongest tie and any tie of three links or more; point at a theme for all of them (the thicker the line, the more links).
-  Click a theme for its note and its future; double-click it (or use Go down in its note) to go down to the Regime on that theme. Click the question for the overall answer.
+  the gaps. Dashed lines join themes whose prompts are linked: at rest each theme's strongest tie and any tie of three links or more; point at a theme for all of them. All lines have one weight: the committee found strengths arbitrary.
+  Click a theme for its note (with its future, where there is one); double-click it (or use Go down in its note) to go down to its prompts. A theme's note names the themes it is most connected to, from three links up (or its strongest ties, if none reaches three). Click the middle for a question or an answer.
   On a phone the ring becomes a list of cards.
-* **Regime.** One theme in the middle and only its prompts round it (verbatim from the sheet, coloured by the pillar of the Rethink Matters mission each speaks to), with
+* **Prompts.** One theme in the middle and only its prompts round it (mostly verbatim from the sheet), all in the theme's one colour; a dashed disc is an open question that no session has discussed yet. Lines show
   the links between them. The other themes they reach sit further out as small numbered discs: point at a prompt and its links light up in the colour of the relation (teal
-  *echoes*, terracotta *in tension with*, olive *enables*, ochre *leads on to*; dashed lines share tags or a discussion), together with the themes it reaches; click a theme
+  *echoes*, terracotta *in tension with*, olive *enables*, ochre *leads on to*; dashed lines share keywords or a discussion), together with the themes it reaches; click a theme
   further out to move across to it. Double-click a prompt to go down to the Niche, or use Go down in its note (which says how many
   sources sit under it). During a walk, the theme further out that holds the next stop takes you on to it.
 * **Niche.** One prompt in the middle with its sources round it: the discussions where it was aired (open one for the provocation and what the group said), the books
   suggested with it, and examples shaped by type (square paper, triangle company, diamond product, ring pre-clinical, dot clinical, cross other). The prompts it links to sit
   further out, in the colour of the relation; click one to move across.
-* **Narrow screens.** On a phone the Regime and Niche are always plain lists in the same order. On a laptop the ring stays beside an open note: it shrinks to fit
+* **Notes.** A prompt's note leads with its discussions, then its cross-references (the hand-written links, each with its reason), any examples and books. Every note ends with **Let us know your thoughts**: with the edit link it goes to the committee's Sheet, otherwise it opens an email to the group's public address.
+* **Narrow screens.** On a phone the Prompts level and the Niche are always plain lists in the same order. On a laptop the ring stays beside an open note: it shrinks to fit
   (its discs never smaller than their names need, its middle never smaller than its title), then tightens the gaps between its rings, sets the outer themes' names
   above and below them, and lets the side arrows step aside. On a small laptop, going down folds the left panel away if the ring still has no room beside it (it
   comes back on the Landscape). Only if none of that is enough does the level fall back to the list, and the Map / List switch then says so. The top row's buttons
   fold to icons when space is short, and opening the left panel where there is no room beside a note closes the note.
-* **Guided walks.** Eight curated paths that cross themes and end back at the question, then offer the big picture. They run through the Regime: each stop shows its
+* **Guided walks.** Eight curated paths that cross themes and end on what they add up to, then offer the next walk and the big picture. Point at a walk in the Walks tab and its route shows in gold round the Landscape. They run through the Prompts level: each stop shows its
   theme with the stop lit, and a gold line leads in from the previous stop and on to the next (through the theme it lies in, when that is another one). Start one from the
   button at the top left, the hero button, the Walks tab, a theme's note or the question's note.
 * **Index tab.** Every chapter, theme and prompt as a plain list. Everything on every level is a real button, so the map works with a keyboard and a screen reader.
@@ -171,7 +175,7 @@ The map itself can be edited by anyone who has its **edit link**. Without the li
 * **Opening the edit link once** sets that browser up (it remembers it). The map then starts with everyone's latest changes and shows an
   **Edit** switch in the header.
 * **With Edit on**, everything that can be changed is outlined: theme titles, questions and futures, the overall answer, prompts (names and
-  text), discussions (names and what the group said), the level explainers and the introduction. **Click into the text and type; click
+  text), discussions (names and what the group said), the level explainers, the introduction and the conflicts statement. **Click into the text and type; click
   away (or press Enter) to save**, Esc to undo. Changes reach everyone with the link at once; **History** under a changed text keeps every
   earlier version, with initials and time, and can bring one back. Renaming a prompt renames its disc on the map.
 * **Add to this prompt** (in a prompt's note, in edit mode), for after a provocation: a note from the discussion, a paper, a company, a
@@ -199,7 +203,7 @@ python -I build/review_import.py --sheet "<the Sheet's link>"
 every edited block to `curation/review_edits.yaml`, which `build.py` applies to the published map before its leak and house-style checks;
 additions with a public link become rows in `curation/niche_examples.csv` (`checked` if a second person ticked them, otherwise `draft`,
 which is not published); notes without a link go to `curation/review_notes.yaml`, to be folded into the anonymised discussion notes by
-hand. Initials stay in the Sheet. Then build, preflight, commit and push as usual.
+hand; thoughts sent from a note go to `build/_review/thoughts.csv`, which is git-ignored. Initials stay in the Sheet. Then build, preflight, commit and push as usual.
 
 ## Backups
 

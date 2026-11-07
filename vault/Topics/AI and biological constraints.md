@@ -13,7 +13,7 @@ tags:
   - tension/hype-vs-evidence
   - tension/general-vs-specific
 ---
-# AI meets biological constraints
+# AI and biological constraints
 
 > Will AI/ML approaches be able to adequately capture biological constraints and emergent behaviour?
 
@@ -35,11 +35,11 @@ tags:
 - via #barrier/data-gaps, #concept/emergence, #method/machine-learning → [[World models & inverse design]]
 - via #barrier/data-gaps, #tension/general-vs-specific → [[Who benefits Wounds & clinicians]]
 - via #tension/hype-vs-evidence → [[Lessons from ventures]]
-- via #barrier/data-gaps, #concept/emergence → [[Expansion microscopy]]
-- via #barrier/data-gaps, #method/machine-learning → [[Engineering a tree]]
-- via #barrier/data-gaps, #method/machine-learning → [[Salt tolerance & ecosystems]]
 - via #tension/general-vs-specific → [[Classifying materials]]
-- via #tension/general-vs-specific → [[DNA is fancy PEG]]
+- via #tension/general-vs-specific → [[Portable design principles]]
+- via #tension/general-vs-specific → [[A shared language]]
+- via #tension/general-vs-specific → [[Standardising dynamic properties]]
+- via #tension/general-vs-specific → [[Infection-sensing dressings]]
 
 ## Tags
 

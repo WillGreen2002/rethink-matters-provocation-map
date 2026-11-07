@@ -30,12 +30,12 @@ tags:
 
 - *echoes* → [['Bio' ≠ good]]: Sustainability claims can lean on 'bio' origin; origin alone does not establish environmental value.
 - *echoes* → [[Hype vs evidence]]: Investor expectations and sustainability claims feed the same breakthrough-versus-hype cycle that surrounds any bold result.
-- *echoes* → [[Energy, cost & fit]]: Product–market fit, cost and energy are where the ventures in the next topic ran aground.
+- *echoes* → [[Energy, cost & fit]]: Product–market fit and cost return in the next topic, on lessons from ventures.
 - via #domain/textiles-and-fashion, #tension/natural-vs-good → [[Biobased vs biomaterial]]
 - via #barrier/unit-economics, #concept/climate-performance, #method/lca-and-economics → [[Replace or reinvent]]
 - via #barrier/funding-and-incentives, #barrier/unit-economics → [[Who captures value]]
+- via #tension/hype-vs-evidence → [[AI and biological constraints]]
 - via #barrier/unit-economics, #method/lca-and-economics → [[Full cost of waste]]
-- via #tension/hype-vs-evidence → [[AI meets biological constraints]]
 - via #tension/hype-vs-evidence → [[Chronic bioelectrodes]]
 - via #barrier/unit-economics, #concept/climate-performance → [[Micro vs bulk]]
 - via #concept/climate-performance, #method/lca-and-economics → [[Cellulose, wood & concrete]]

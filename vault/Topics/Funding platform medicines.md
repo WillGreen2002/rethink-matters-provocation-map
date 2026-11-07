@@ -24,22 +24,25 @@ tags:
 
 ## Linked ideas
 
-- *extends* → [[Derisk once gene delivery]]: If a platform can be derisked once, the funding question changes: the cost of proving safety is shared across every disease it later serves.
 - *echoes* → [[Who captures value]]: Who captures the value, who carries the cost and who funds what the market will not: the same distributive question in waste chains and in platform genetic medicines.
-- via #barrier/regulation-and-evidence, #domain/dna-and-nucleic-acids, #domain/medical-and-clinical, #tension/platform-vs-bespoke → [[Derisk once synthesis platform]]
 - via #concept/true-cost, #domain/dna-and-nucleic-acids, #tension/private-vs-common → [[IP & biological design]]
-- via #barrier/regulation-and-evidence, #domain/medical-and-clinical, #tension/private-vs-common → [[Human–machine integration]]
 - via #barrier/regulation-and-evidence, #tension/platform-vs-bespoke → [[Standardising dynamic properties]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical, #tension/private-vs-common → [[Human–machine integration]]
 - via #barrier/funding-and-incentives, #tension/private-vs-common → [[Public datasets]]
 - via #barrier/funding-and-incentives, #tension/private-vs-common → [[Theory of change]]
 - via #barrier/regulation-and-evidence, #tension/private-vs-common → [[Care & convivial tech]]
+- via #barrier/regulation-and-evidence, #domain/dna-and-nucleic-acids, #domain/medical-and-clinical → [[Programmable biopolymers]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Biobased vs biomaterial]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Infection-sensing dressings]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Who benefits Wounds & clinicians]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Chronic bioelectrodes]]
 
 ## Tags
 
 - [[Barrier · Funding & incentives]]
 - [[Tension · Private ownership ↔ common good]]
 - [[Barrier · Regulation & long-term evidence]]
-- [[Tension · Derisk once & reuse ↔ approve case by case]]
+- [[Tension · Reuse a proven platform ↔ approve case by case]]
 - [[Domain · Medical & clinical]]
 - [[Domain · DNA & nucleic acids]]
 - [[Concept · True cost & value capture]]

@@ -15,7 +15,7 @@ Used by 12 topics across 6 themes:
 - [[Unexplored biological features]]
 - [[A shared language]]
 - [[Public datasets]]
-- [[Non-canonical amino acids]]
+- [[Programmable biopolymers]]
 - [[Standardising dynamic properties]]
 - [[Hype vs evidence]]
 - [['Bio' ≠ good]]

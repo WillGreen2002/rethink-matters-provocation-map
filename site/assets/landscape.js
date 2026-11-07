@@ -31,22 +31,22 @@
       const top = new Set();
       for (const th of this.themes) this.pairs.filter((p) => p.a === th.n || p.b === th.n).slice(0, 1).forEach((p) => top.add(p));
       for (const p of this.pairs) p.rest = top.has(p) || p.w >= 3;
-      const maxW = Math.max(1, ...this.pairs.map((p) => p.w));
 
       this.svg = svg("svg", { class: "ls-lines", "aria-hidden": "true" });
       this.ring = svg("ellipse", { class: "ls-ring" });
       this.bands = D.arcs.map((a, i) => svg("path", { class: "ls-band", stroke: u.logoColor(CHAPTER_TONE[i % 3]), "data-arc": a.id }));
       this.links = this.pairs.map((p) => {
-        const path = svg("path", { class: "ls-link", "stroke-width": (1.1 + 2.4 * (p.w / maxW)).toFixed(2) });
+        const path = svg("path", { class: "ls-link" });
         return Object.assign(p, { path });
       });
-      this.svg.append(this.ring, ...this.bands, ...this.links.map((p) => p.path));   // (how many links a tie stands for shows in its thickness, not a number)
+      this.routePath = svg("path", { class: "ls-route" });
+      this.svg.append(this.ring, ...this.bands, ...this.links.map((p) => p.path), this.routePath);   // (a tie says only that themes are linked: no weights)
 
       const c = byId.get("c");
       this.center = h("button", { class: "ls-center", type: "button", "data-id": "c", onclick: () => this.cb.select && this.cb.select("c") },
         h("span", { class: "ls-q" }, c.label),
         h("span", { class: "ls-full" }, c.question),
-        h("span", { class: "ls-sub" }, c.answer ? u.t("landscape.center_answer") : u.t("landscape.center_question")));
+        h("span", { class: "ls-sub" }, u.t("landscape.center_ask")));
       this.bindHover(this.center, "c");
 
       this.chapters = [];
@@ -95,8 +95,28 @@
       Object.assign(this.insets, i);
       if (JSON.stringify(this.insets) !== before) this.layout(true);
     }
-    // which themes are in focus: the one pointed at (or open), or a chapter's themes
+    // a guided walk's way round the ring, in gold (pointing at a walk in the Walks tab): the themes in order, or null to clear it
+    setRoute(list) {
+      const r = list && list.length > 1 ? list : null;
+      if (r === this.route || (!r && !this.route)) return;
+      this.route = r;
+      this.el.classList.toggle("routing", !!r);
+      this.paint();
+      this.drawRoute(this.pos);
+    }
+    drawRoute(g) {
+      if (!this.routePath) return;
+      if (!g || !this.route) { this.routePath.removeAttribute("d"); return; }
+      const pts = this.route.map((n) => g.themes.get(n));
+      this.routePath.setAttribute("d", pts.map(([x, y], i) => {
+        if (!i) return `M${x.toFixed(1)},${y.toFixed(1)}`;
+        const [px, py] = pts[i - 1], mx = (px + x) / 2, my = (py + y) / 2;
+        return `Q${(g.cx + (mx - g.cx) * 0.55).toFixed(1)},${(g.cy + (my - g.cy) * 0.55).toFixed(1)} ${x.toFixed(1)},${y.toFixed(1)}`;
+      }).join(" "));
+    }
+    // which themes are in focus: the ones a walk passes through, the one pointed at (or open), or a chapter's themes
     focusSet() {
+      if (this.route) return new Set(this.route);
       const id = this.hover || this.sel;
       if (!id || id === "c") return null;
       if (id.startsWith("th:")) return new Set([+id.slice(3)]);
@@ -115,7 +135,7 @@
       for (const b of this.bands) b.classList.toggle("on", !!F && this.chapters.find((c) => c.arc === b.dataset.arc).themes.some((n) => F.has(n)));
       this.el.classList.toggle("focused", !!F);
       for (const p of this.links) {
-        const lit = !!F && (F.has(p.a) || F.has(p.b));
+        const lit = !!F && !this.route && (F.has(p.a) || F.has(p.b));
         p.path.setAttribute("class", "ls-link" + (lit ? " lit" : F ? (p.rest ? " faint" : "") : p.rest ? " rest" : ""));
       }
     }
@@ -288,6 +308,7 @@
         const mx = (ax + bx) / 2, my = (ay + by) / 2, qx = cx + (mx - cx) * 0.3, qy = cy + (my - cy) * 0.3;
         p.path.setAttribute("d", `M${ax.toFixed(1)},${ay.toFixed(1)} Q${qx.toFixed(1)},${qy.toFixed(1)} ${bx.toFixed(1)},${by.toFixed(1)}`);
       }
+      this.drawRoute(g);
     }
   }
   RM.Landscape = Landscape;

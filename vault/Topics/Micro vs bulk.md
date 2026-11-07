@@ -30,10 +30,10 @@ tags:
 - *echoes* → [[Scaffolds, nanoparticles & adhesives]]: Medical scaffolds, nanoparticles and adhesives are the clearest case where micro-scale precision earns its keep.
 - *echoes* → [[Fabrication readiness]]: Which fabrication method wins depends on scale: micro-scale precision pays for itself in medicine, while bulk materials need volume, energy economy and infrastructure.
 - via #concept/climate-performance, #domain/cellulose-and-wood, #tension/niche-vs-bulk → [[Cellulose, wood & concrete]]
-- via #barrier/scale-up, #barrier/unit-economics → [[Programmable biopolymers]]
-- via #barrier/scale-up, #barrier/unit-economics → [[Full cost of waste]]
+- via #barrier/scale-up, #barrier/unit-economics, #domain/medical-and-clinical → [[Programmable biopolymers]]
 - via #barrier/unit-economics, #concept/climate-performance → [[Replace or reinvent]]
 - via #barrier/unit-economics, #concept/climate-performance → [[Lessons from ventures]]
+- via #barrier/scale-up, #barrier/unit-economics → [[Full cost of waste]]
 - via #barrier/scale-up, #concept/climate-performance → [[Survive use, degrade after]]
 - via #concept/climate-performance, #domain/cellulose-and-wood → [[Engineering a tree]]
 - via #concept/climate-performance, #domain/medical-and-clinical → [['Bio' ≠ good]]

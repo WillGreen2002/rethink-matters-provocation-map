@@ -28,10 +28,9 @@ tags:
 
 - *echoes* → [[Predicting composites & proteins]]: Disordered, aggregation-prone proteins are both hard to predict and the source of the toxicity risk for designed peptides: a modelling gap with a safety consequence.
 - *tension* → [[Care & convivial tech]]: If biotech is opened up, safety has to travel with it: the convivial-technology discussion asked for a 'safety' row, and designed peptides are a case where the risks (aggregation, toxicity) are poorly predicted.
-- via #barrier/regulation-and-evidence, #concept/new-to-nature, #domain/proteins-and-peptides → [[Non-canonical amino acids]]
+- via #barrier/regulation-and-evidence, #concept/new-to-nature, #domain/proteins-and-peptides → [[Programmable biopolymers]]
 - via #barrier/data-gaps, #concept/new-to-nature, #domain/proteins-and-peptides → [[Biosensor design]]
 - via #barrier/regulation-and-evidence, #barrier/safety-and-misuse → [[Human–machine integration]]
-- via #concept/new-to-nature, #domain/proteins-and-peptides → [[Programmable biopolymers]]
 - via #concept/new-to-nature, #domain/proteins-and-peptides → [[Scaffolds, nanoparticles & adhesives]]
 - via #barrier/data-gaps, #barrier/regulation-and-evidence → [[Who benefits Wounds & clinicians]]
 - via #barrier/data-gaps, #barrier/regulation-and-evidence → [[Chronic bioelectrodes]]

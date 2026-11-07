@@ -76,6 +76,7 @@
   notes: ""
 
 - id: expansion-microscopy
+  cut: "the committee's review: its one prompt was cut"
   title: "1000× expansion microscopy"
   sessions: [PROPOSED]
   scale: [micro]

@@ -18,7 +18,7 @@ tags:
 
 > Using pressure, salinity, currents and marine organisms in manufacturing.
 
-**Theme:** [[Theme 6 · Ocean & extreme environments]]  
+**Theme:** [[Theme 6 · Extreme & constrained environments]]  
 **Scale:** micro, macro · **Working group:** WG3 · **Pillar:** climate, design · **Value:** sustainability
 
 ## Discussions behind this
@@ -37,6 +37,7 @@ tags:
 - via #tension/near-vs-far → [[Classifying materials]]
 - via #tension/near-vs-far → [[Unexplored biological features]]
 - via #tension/near-vs-far → [[Fabrication readiness]]
+- via #tension/near-vs-far → [[Current tech & manufacturing]]
 
 ## Tags
 

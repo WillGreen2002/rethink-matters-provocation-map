@@ -192,7 +192,10 @@ meta = load_yaml(P("curation", "meta.yaml"))
 tags_def = load_yaml(P("curation", "tags.yaml"))
 books_def = load_yaml(P("curation", "books.yaml"))
 topics_cur = load_many("topics_*.yaml")
-disc_cur = load_many("discussions_*.yaml")
+# a prompt or discussion marked `cut: <reason>` stays in curation/, so it can be brought back, but leaves the map
+CUT_TOPICS = [t for t in topics_cur if t.get("cut")]
+topics_cur = [t for t in topics_cur if not t.get("cut")]
+disc_cur = [d for d in load_many("discussions_*.yaml") if not d.get("cut")]
 threads_cur = load_yaml(P("curation", "threads.yaml"))
 
 bristol = read_bristol()
@@ -208,6 +211,9 @@ for n in bristol:
 # ---- topics ↔ bullets
 topic_ids = set()
 claimed = defaultdict(set)  # theme -> bullet indexes
+for t in CUT_TOPICS:   # (its line in the sheet is accounted for)
+    if t.get("match"):
+        claimed[t["theme"]].update(i for i, b in enumerate(bristol[t["theme"]]["bullets"]) if t["match"] in b)
 for t in topics_cur:
     tid = t["id"]
     if tid in topic_ids:
@@ -216,6 +222,10 @@ for t in topics_cur:
     th = bristol.get(t["theme"])
     if not th:
         err(f"{tid}: theme {t['theme']} not in sheet")
+        continue
+    if t.get("added"):   # a prompt added after the retreat: it has no line in the sheet, and its wording lives in curation/
+        t["_raw"] = t["_text"] = norm(t["text"])
+        t["_idx"] = len(th["bullets"]) + int(t.get("order", 0))
         continue
     hits = [i for i, b in enumerate(th["bullets"]) if t["match"] in b]
     if len(hits) != 1:
@@ -260,6 +270,9 @@ for d in disc_cur:
         for b in blocks:
             b["paras"] = [p.replace(old, new) for p in b["paras"]]
         REDACTIONS.append(f"{d['id']} ({key})")
+    if d.get("override_text"):   # reworded after the committee's review: shown in place of the sheet's words (still found above)
+        blocks = [{"session": blocks[0]["session"] if blocks else None, "paras": [norm(p) for p in d["override_text"]]}]
+        REDACTIONS.append(f"{d['id']} (reworded after the committee's review)")
     d["_blocks"] = blocks
     for s in d.get("sessions", []):
         if s not in meta["sessions"]:
@@ -284,6 +297,9 @@ for t in topics_cur:
     for b in t.get("reading", []) or []:
         if b not in books_def:
             err(f"{t['id']}: unknown book {b}")
+    for k in t.get("source_why") or {}:
+        if k not in (t.get("sources") or []):
+            err(f"{t['id']}: source_why for {k}, which is not one of its sources")
     for lk in t.get("links", []) or []:
         if lk["to"] not in topic_ids:
             err(f"{t['id']}: link to unknown topic {lk['to']}")
@@ -325,9 +341,8 @@ with open(P("site", "index.html"), encoding="utf-8") as _f:   # data-t="key" (te
 # keys the site builds at run time ("levels." + level + ".name" and the like), checked here by hand
 COPY_USED |= {f"levels.{lv}.{k}" for lv in ("landscape", "regime", "niche") for k in ("name", "short", "explain")}
 COPY_USED |= {"levels.regime.aria", "levels.regime.what"}
-COPY_USED |= {f"relations.{k}" for k in ("echoes", "tension", "enables", "extends", "enables_rev", "extends_rev", "shared", "shares",
-                                          "same_disc", "also", "shared_prefix")}
-COPY_USED |= {f"kinds.{k}" for k in ("topic", "theme", "tag", "discussion", "book", "arc", "example")}
+COPY_USED |= {f"relations.{k}" for k in ("echoes", "tension", "enables", "extends", "enables_rev", "extends_rev", "shared", "shares")}
+COPY_USED |= {f"kinds.{k}" for k in ("topic", "theme", "tag", "discussion", "book", "arc", "example", "walk", "center")}
 COPY_USED |= {f"hints.{lv}{t}" for lv in ("landscape", "regime", "niche") for t in ("", "_touch")}
 COPY_USED |= {f"side.{k}_{w}" for k in ("prev", "next") for w in ("theme", "prompt")}
 COPY_USED |= {f"view.{k}" for k in ("map", "list", "announce_map", "announce_list")}
@@ -350,7 +365,7 @@ thread_ids = {th["id"] for th in threads_cur}
 
 
 def evidence_grade(sheet_n):
-    ds = {s for tid in topic_ids_by_sheet[sheet_n] for s in (by_id_cur[tid].get("sources") or []) if (disc_by_id[s].get("notes") or "").strip()}
+    ds = {s for tid in topic_ids_by_sheet[sheet_n] for s in (by_id_cur[tid].get("sources") or []) if (disc_by_id.get(s, {}).get("notes") or "").strip()}
     return ("strong" if len(ds) >= 3 else "partial" if ds else "thin"), len(ds)
 
 
@@ -435,6 +450,9 @@ if futures_cur and futures_cur.get("show_on_site", True):
             continue
         if f.get("label") != meta["themes"][n]["short"]:
             err(f"futures.yaml: theme {n} label {f.get('label')!r} does not match meta.yaml ({meta['themes'][n]['short']!r}); check the numbering")
+        if f.get("hold"):   # the group is to write this one: the draft stays in the file, and the map says so
+            FUT_THEME[n] = {"text": "", "pending": True, "status": f.get("status", "draft"), "evidence": evidence_grade(n)[0], "drawsOn": []}
+            continue
         rec = check_future(f"futures.yaml theme {n}", f, 40, "A future where", n)
         if rec:
             FUT_THEME[n] = rec
@@ -480,6 +498,8 @@ for a, b in combinations(topics_cur, 2):
 curated = {}
 for t in topics_cur:
     for lk in t.get("links", []) or []:
+        if lk["to"] not in topic_ids:  # already an error above: stop it reaching the graph, so the build can report it
+            continue
         key = tuple(sorted((t["id"], lk["to"])))
         rec = {"type": lk["type"], "why": norm(lk["why"]), "from": t["id"], "to": lk["to"]}
         if key in curated:
@@ -529,7 +549,7 @@ for t in topics_cur:
 for n in meta["theme_order"]:
     th = bristol[n]
     m = meta["themes"][n]
-    nodes.append({"id": f"th:{n}", "kind": "theme", "n": n, "sheet": th["sheet"], "label": m["short"], "title": th["title"],
+    nodes.append({"id": f"th:{n}", "kind": "theme", "n": n, "sheet": th["sheet"], "label": m["short"], "title": m.get("title") or th["title"],
                   "lead": th["lead"], "arc": m["arc"], "topics": ["n:" + x for x in theme_topics[n]],
                   "future": FUT_THEME.get(th["sheet"])})
     hier.append({"s": "c", "t": f"th:{n}", "kind": "hier"})
@@ -538,9 +558,10 @@ wg_confirmed = {}
 for t in topics_cur:
     conf = set()
     for s in t.get("sources", []) or []:
-        conf |= set(next(d for d in disc_cur if d["id"] == s).get("wg", []) or [])
+        conf |= set(next((d for d in disc_cur if d["id"] == s), {}).get("wg", []) or [])
     wg_confirmed[t["id"]] = conf
 
+aired = {d["id"] for d in disc_cur if "PROPOSED" not in (d.get("sessions") or [])}
 for t in topics_cur:
     wgs = t.get("wg", []) or []
     nodes.append({
@@ -551,6 +572,9 @@ for t in topics_cur:
         "tags": ["t:" + x for x in t.get("tags", [])],
         "sources": ["d:" + x for x in t.get("sources", []) or []],
         "reading": ["b:" + x for x in t.get("reading", []) or []],
+        "open": not any(s in aired for s in t.get("sources", []) or []),   # an open question: no session has discussed it yet
+        "refs": t.get("refs") or [],
+        "sourceWhy": {"d:" + k: norm(v) for k, v in (t.get("source_why") or {}).items()},
     })
     hier.append({"s": f"th:{t['theme']}", "t": "n:" + t["id"], "kind": "hier"})
 
@@ -724,8 +748,8 @@ if os.path.exists(_rpath):
 _nodes_by_id = {n["id"]: n for n in nodes}
 for _key, _text in REVIEW_EDITS.items():
     _text = str(_text).strip()
-    _m = re.fullmatch(r"(theme):(th:\d+):(title|lead|future)|(centre):answer|(prompt):(n:[a-z0-9-]+):(label|text)|(disc):(d:[a-z0-9-]+):(label|notes)|copy:(levels\.(?:landscape|regime|niche)\.explain|hero\.lede)", _key)
-    if not _m or not _text:
+    _m = re.fullmatch(r"(theme):(th:\d+):(title|lead|future)|(centre):answer|(prompt):(n:[a-z0-9-]+):(label|text)|(disc):(d:[a-z0-9-]+):(label|notes)|copy:(levels\.(?:landscape|regime|niche)\.explain|hero\.lede|about\.conflicts)", _key)
+    if not _m or (not _text and not _key.endswith(":notes")):  # what the group said can be cleared; nothing else can
         err(f"curation/review_edits.yaml: cannot apply {_key!r}")
         continue
     if _m.group(1):
@@ -733,7 +757,7 @@ for _key, _text in REVIEW_EDITS.items():
         if _n and _m.group(3) in ("lead", "title"):
             _n[_m.group(3)] = _text
         elif _n and _n.get("future"):
-            _n["future"] = dict(_n["future"], text=_text)
+            _n["future"] = dict(_n["future"], text=_text, pending=False)
         else:
             err(f"curation/review_edits.yaml: no theme (or no future) for {_key!r}")
     elif _m.group(4):
@@ -864,7 +888,7 @@ def write_vault():
              f"Part of {wl('c', 'A world we want to live in')} · chapter: *{arc_label[n['arc']]}*"
              + (f" · theme {n['sheet']} in the Bristol retreat sheet" if n.get("sheet") and n["sheet"] != n["n"] else ""), ""]
         f = n.get("future")
-        if f:
+        if f and f.get("text"):
             L += ["## A future we'd want", "", f["text"], "", status_note(f)]
             if f.get("evidence") == "thin":
                 L.append("*Drawn from the prompts only: no session notes yet.*")
@@ -1054,7 +1078,7 @@ def write_tag_guide():
         if lk == "wg":
             prop = sum(len(n["wgProposed"]) for n in nodes if n["kind"] == "topic")
             A("")
-            A(f"*{prop} of the working-group assignments are proposals by the map (the sheets recorded none for that discussion); they are marked with an asterisk on the site. Please confirm or change them.*")
+            A(f"*{prop} of the working-group assignments are proposals by the map (the sheets recorded none for that discussion); they are marked (proposed) in the vault; the site no longer shows working groups. Please confirm or change them.*")
         A("")
     A("## Layer 2: semantic tags")
     A("")
@@ -1081,7 +1105,7 @@ def write_tag_guide():
     A("")
     A("## How tags turn into links")
     A("")
-    A("For every pair of prompts the build adds up the weight of the semantic tags they share (rarer tags weigh more, `ln((N+1)/(n+1))`; tensions count 1.5×, domains 0.7×, methods 0.8×) and adds 2.5 for each discussion they both grew from. Pairs scoring at least `DEFAULT_MIN` (6.0, set in `build/build.py`) are drawn on the Regime and the Niche, and listed in each prompt's note. Hand-written bridges are always shown. Lenses are *not* used for linking (every prompt has a scale, so sharing one means little).")
+    A("For every pair of prompts the build adds up the weight of the semantic tags they share (rarer tags weigh more, `ln((N+1)/(n+1))`; tensions count 1.5×, domains 0.7×, methods 0.8×) and adds 2.5 for each discussion they both grew from. Pairs scoring at least `DEFAULT_MIN` (6.0, set in `build/build.py`) are drawn on the Prompts level and the Niche. Hand-written bridges are always shown, and listed in each prompt's note as cross-references. Lenses are *not* used for linking (every prompt has a scale, so sharing one means little).")
     A("")
     A("## Things to decide")
     A("")
@@ -1165,7 +1189,7 @@ def report():
         L.append(f"- Theme {th_n}: " + (f"{f['status']}, evidence {f['evidence']}, {len(f['text'].split())} words" if f else "none yet"))
     L.append("- Overall answer: " + (f"{FUT_CENTER['status']}, {len(FUT_CENTER['text'].split())} words" if FUT_CENTER else "none yet"))
     if REDACTIONS:
-        L += ["", "## Deliberate redactions in verbatim provocation text", ""] + [f"- {r}" for r in REDACTIONS]
+        L += ["", "## Deliberate changes to verbatim provocation text", ""] + [f"- {r}" for r in REDACTIONS]
     if WARNINGS:
         L += ["", "## Warnings", ""] + [f"- {w}".replace("—", ",").replace("―", ",") for w in WARNINGS]
     OUT.append((P("docs", "build-report.md"), "\n".join(L) + "\n"))
@@ -1250,6 +1274,8 @@ def write_futures_review():
                            ("; partly supported: " + "; ".join(f"*{c}*" for c in chk.get("recheck_partly") or []) if chk.get("recheck_partly") else ""))
         if f.get("note"):
             out.append("- " + norm(f["note"]))
+        if f.get("hold"):
+            out.append("- held back from the map: " + norm(f["hold"]))
         sup = f.get("support") or []
         if sup:
             out += ["", "| part of the future | rests on |", "|---|---|"]

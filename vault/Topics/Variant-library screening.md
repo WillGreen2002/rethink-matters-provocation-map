@@ -27,7 +27,7 @@ tags:
 ## Linked ideas
 
 - *enables* → [[Biosensor design]]: Biosensors convert binding events into signals, supplying the high-throughput readout that variant-library screening lacks; otherwise we sample a millionth of the fitness landscape.
-- *echoes* → [[AI meets biological constraints]]: Automating the decision between design and experiment depends on models that respect biological constraints and on readouts fast enough to close the loop.
+- *echoes* → [[AI and biological constraints]]: Automating the decision between design and experiment depends on models that respect biological constraints and on readouts fast enough to close the loop.
 - via #barrier/data-gaps, #domain/engineered-cells, #method/machine-learning → [[Salt tolerance & ecosystems]]
 - via #barrier/data-gaps, #domain/proteins-and-peptides, #method/machine-learning → [[Predicting composites & proteins]]
 - via #barrier/scale-up, #domain/proteins-and-peptides → [[Programmable biopolymers]]

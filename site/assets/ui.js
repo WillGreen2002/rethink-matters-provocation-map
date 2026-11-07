@@ -68,13 +68,12 @@
   const NONE = "#9C978A", THREAD = "#666666", FAINT = "#6B675C";
   const FACET_COLOR = { tension: "#A04340", concept: "#48909F", barrier: "#7F8C64", domain: "#D9A441", method: "#8A8577" };
   const themeColor = (n) => u.themeColor(D.themeOrder, n);
-  const pillarColors = (t) => (t.pillar || []).map((k) => D.lenses.pillar.values[k].color);
   function colorOf(id) {
     const n = byId.get(id);
     if (!n) return NONE;
     switch (n.kind) {
       case "theme": return themeColor(n.n);
-      case "topic": return pillarColors(n)[0] || NONE;
+      case "topic": return themeColor(n.theme);
       case "arc": return u.logoColor(u.CHAPTER_TONE[Math.max(0, D.arcs.findIndex((a) => a.id === n.arc)) % 3]);
       case "example": return colorOf(n.topics[0]);
       case "discussion": return THREAD;
@@ -101,7 +100,7 @@
     goLevel: (lv, o) => goLevel(lv, o),
     // edit mode (review.js): show text that changed, and additions as they arrive
     refresh: (o = {}) => {
-      if (S.sel && byId.has(S.sel)) renderNote();
+      if (S.sel && byId.has(S.sel)) renderNote(true);
       renderLevelNote(); renderHero();
       // names drawn on the map changed: draw the level again (not during a walk, which keeps its own overlay)
       if (o.maps && S.level === "regime" && !S.thread) { reg.m = null; showRegime(); }
@@ -180,8 +179,8 @@
   function regimeModel(thId) {
     const th = byId.get(thId), mine = promptsOf(thId), inTheme = new Set(mine), arc = D.arcs.find((a) => a.id === th.arc);
     const members = mine.map((id) => {
-      const t = byId.get(id), cs = pillarColors(t);
-      return { id, kind: "topic", label: t.label, color: cs[0] || NONE, color2: cs[1], down: { aria: u.t("regime.down_aria", { label: t.label }) } };
+      const t = byId.get(id);
+      return { id, kind: "topic", label: t.label, color: themeColor(t.theme), open: t.open ? u.t("topic.open") : "", down: { aria: u.t("regime.down_aria", { label: t.label }) } };
     });
     const links = [], out = new Map();
     for (const l of relLinks) {
@@ -317,7 +316,7 @@
       heroIcon,
       h("h1", null, u.t("hero.title")),
       heroLede,
-      h("div", { class: "stats" }, ...[[themes.length, u.t("hero.stat_themes")], [topics.length, u.t("hero.stat_prompts")], [discs.length, u.t("hero.stat_discussions")]].map(([n, l]) => h("span", null, h("b", null, n), " " + l))),
+      h("div", { class: "stats" }, ...[[themes.length, u.t("hero.stat_themes")], [topics.length, u.t("hero.stat_prompts")], [discs.filter((d) => !d.proposed).length, u.t("hero.stat_discussions")]].map(([n, l]) => h("span", null, h("b", null, n), " " + l))),
       h("button", { class: "btn solid walk-cta", type: "button", onclick: () => openWalks() },
         h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "1.7", "stroke-linecap": "round", "stroke-linejoin": "round", "aria-hidden": "true", html: '<circle cx="5" cy="18" r="2"/><circle cx="19" cy="6" r="2"/><path d="M7 18h6a3 3 0 0 0 0-6h-2a3 3 0 0 1 0-6h6"/>' }),
         u.t("walks.cta"))),
@@ -356,7 +355,6 @@
     return (themeBtns[id] = h("button", { type: "button", class: "theme-go", style: { "--c": themeColor(th.n) }, onclick: () => { goTheme(id); if (mobile()) closeLeft(); } },
       h("b", { class: "num" }, th.n), h("span", null, th.label), h("small", null, u.t("explore.theme_count", { n: th.topics.length }))));
   }));
-  const PL = D.lenses.pillar;
   const legendEl = h("div", { class: "legend-inline", id: "legend", "aria-label": u.t("explore.legend") });
   panes.explore.append(
     sec(u.t("explore.themes_title"), h("p", { class: "hint" }, u.t("explore.themes_hint")), themeList),
@@ -373,7 +371,7 @@
       const items = [["dot", u.t("explore.legend_discussion")], ["ring", u.t("explore.legend_proposed")], ["book", u.t("explore.legend_book")],
         ...Object.values(T).map((v) => [v.shape, v.plural || v.label])];
       el.replaceChildren(h("ul", { class: "type-key" }, items.map(([s, l]) => h("li", null, h("i", { class: "shape shape-" + s }), l))), lines);
-    } else el.replaceChildren(h("ul", null, Object.values(PL.values).map((v) => h("li", null, h("i", { style: { "--c": v.color } }), v.label))), lines);
+    } else el.replaceChildren(h("ul", null, h("li", null, h("i", { class: "open" }), u.t("explore.legend_open"))), lines);
   }
   let noticeT;
   function notice(msg) {
@@ -383,45 +381,79 @@
   }
 
   /* ------------------------------------------------------------------ search */
+  const STOP = new Set("a an and are as at be but by can could do does for from had has have how i if in into is it its may might more most of on or our should so than that the their them there these they this to was we were what when where which who why will with would you your".split(" "));
+  const fold = (s) => String(s).toLowerCase().replace(/[\u2018\u2019']/g, "").replace(/[*_]/g, "");
+  // (cut back to what singular and plural share: the text searched is not stemmed)
+  const stem = (w) => (w.endsWith("ies") ? (w.length > 7 ? w.slice(0, -3) : w) : w.length > 3 && w.endsWith("s") && !w.endsWith("ss") ? w.slice(0, -1) : w);
   const searchIndex = [];
   for (const n of D.nodes) {
-    if (n.kind === "center") continue;
     const label = n.label + (n.kind === "theme" ? " " + n.title : "");
-    const extra = n.kind === "topic" ? n.text : n.kind === "tag" ? n.def : n.kind === "theme" ? n.lead
+    const extra = n.kind === "topic" ? n.text : n.kind === "tag" ? n.def : n.kind === "theme" ? n.lead : n.kind === "center" ? n.question
       : n.kind === "discussion" ? (n.texts.map((t) => t.paras.join(" ")).join(" ") + " " + n.notes)
       : n.kind === "example" ? [n.org, n.summary, n.year].filter(Boolean).join(" ") : n.author || "";
-    searchIndex.push({ id: n.id, kind: n.kind, label: n.label, hay1: label.toLowerCase(), hay2: String(extra).toLowerCase().replace(/[*_]/g, "") });
+    searchIndex.push({ id: n.id, kind: n.kind, label: n.label, hay1: fold(label), hay2: fold(extra), text: String(extra).replace(/[*_]/g, "") });
   }
-  let resIdx = -1, resList = [];
+  for (const t of D.threads) {
+    const extra = [t.intro, ...t.steps.map((s) => s.text), t.soWhat].join(" ");
+    searchIndex.push({ id: t.id, kind: "walk", label: t.title, hay1: fold(t.title), hay2: fold(extra), text: extra });
+  }
+  // a question typed in plain words is searched by the words that carry it
+  function searchWords(q) {
+    const all = fold(q).split(/[\s,.;:?!()]+/).filter(Boolean), kept = all.filter((w) => !STOP.has(w));
+    return (kept.length ? kept : all).map(stem);
+  }
+  // a few words of the text around the match, for what was found in the body of a note
+  function snippet(e, words) {
+    if (!e.text || words.some((w) => e.hay1.includes(w))) return "";
+    const low = e.text.toLowerCase(), w = words.find((x) => low.includes(x));
+    if (!w) return "";
+    const at = low.indexOf(w), from = Math.max(0, low.lastIndexOf(" ", Math.max(0, at - 28)) + 1), to = Math.min(e.text.length, at + w.length + 44);
+    return (from ? "…" : "") + e.text.slice(from, to).trim() + (to < e.text.length ? "…" : "");
+  }
+  let resIdx = -1, resList = [], resWords = [];
   function onSearch() {
-    const q = searchInput.value.trim().toLowerCase();
+    const q = searchInput.value.trim();
     S.q = q;
     searchBox.classList.toggle("has-text", !!q);
-    if (!q) { closeResults(); return; }
-    const toks = q.split(/\s+/);
-    const hits = [];
+    if (!q) { if (document.activeElement === searchInput) trySome(); else closeResults(); return; }
+    const words = searchWords(q), found = [];
     for (const e of searchIndex) {
-      let s = 0, ok = true;
-      for (const t of toks) {
-        if (e.hay1.includes(t)) s += e.hay1.startsWith(t) ? 6 : 4;
-        else if (e.hay2.includes(t)) s += 1;
-        else { ok = false; break; }
+      let s = 0, got = 0;
+      for (const t of words) {
+        if (e.hay1.includes(t)) { s += e.hay1.startsWith(t) ? 6 : 4; got++; }
+        else if (e.hay2.includes(t)) { s += 1; got++; }
       }
-      if (ok) hits.push({ e, s: s + ({ topic: 2, theme: 3, tag: 1, example: 1 }[e.kind] || 0) });
+      if (got) found.push({ e, got, s: s + ({ topic: 2, theme: 3, tag: 1, walk: 1, example: 1 }[e.kind] || 0) });
     }
-    hits.sort((a, b) => b.s - a.s);
+    // most of the words, or failing that the best it can do: the closest matches first
+    const most = found.filter((x) => x.got >= Math.ceil(words.length * 0.6)), hits = most.length ? most : found;
+    hits.sort((a, b) => b.got - a.got || b.s - a.s);
     resList = hits.slice(0, 9).map((x) => x.e);
+    resWords = words;
     resIdx = resList.length ? 0 : -1;
     renderResults();
   }
   function renderResults() {
     results.replaceChildren();
     if (!resList.length) results.append(h("div", { class: "none" }, u.t("search.none")));
-    resList.forEach((e, i) => results.append(h("button", { role: "option", class: i === resIdx ? "active" : "", onmousedown: (ev) => { ev.preventDefault(); pickResult(e); } }, h("span", { class: "k" }, u.t("kinds")[e.kind] || ""), h("span", null, e.label))));
+    resList.forEach((e, i) => {
+      const snip = snippet(e, resWords);
+      results.append(h("button", { role: "option", tabindex: "-1", class: i === resIdx ? "active" : "", onmousedown: (ev) => { ev.preventDefault(); pickResult(e); } },
+        h("span", { class: "k" }, S.q ? u.t("kinds")[e.kind] || "" : u.t("search.try")), h("span", { class: "r-t" }, e.label, snip ? h("small", null, snip) : null)));
+    });
     results.classList.add("open");
+    const on = results.querySelector(".active");
+    if (on) on.scrollIntoView({ block: "nearest" });
+    if (S.q || resIdx >= 0) live.textContent = resList[resIdx] ? resList[resIdx].label : u.t("search.none");
+  }
+  // nothing typed yet: the keywords used most, as a start
+  function trySome() {
+    resList = searchIndex.filter((e) => e.kind === "tag").sort((a, b) => byId.get(b.id).topics.length - byId.get(a.id).topics.length).slice(0, 6);
+    resWords = []; resIdx = -1;
+    renderResults();
   }
   function closeResults() { results.classList.remove("open"); resList = []; resIdx = -1; }
-  function pickResult(e) { closeResults(); select(e.id); if (mobile()) closeLeft(); }
+  function pickResult(e) { closeResults(); if (e.kind === "walk") startThread(e.id); else select(e.id); if (mobile()) closeLeft(); }
   searchInput.addEventListener("input", onSearch);
   searchInput.addEventListener("keydown", (ev) => {
     if (ev.key === "ArrowDown" && resList.length) { ev.preventDefault(); resIdx = (resIdx + 1) % resList.length; renderResults(); }
@@ -430,14 +462,21 @@
     else if (ev.key === "Escape") { ev.stopPropagation(); if (searchInput.value) { searchInput.value = ""; onSearch(); } else searchInput.blur(); }
   });
   searchInput.addEventListener("blur", () => setTimeout(closeResults, 120));
-  searchInput.addEventListener("focus", () => { if (S.q && resList.length) renderResults(); });
+  searchInput.addEventListener("focus", () => { if (!S.q) trySome(); else if (resList.length) renderResults(); });
 
   /* ------------------------------------------------------------------ guided walks + index panes */
+  // the themes a walk passes through, in order
+  const walkRoute = (t) => t.steps.map((s) => byId.get(s.topic).theme).filter((n, i, a) => n !== a[i - 1]);
   panes.walks.append(
     h("p", { class: "hint pane-intro" }, u.t("walks.intro")),
-    ...D.threads.map((t) => h("button", { class: "thread-card", type: "button", onclick: () => startThread(t.id) },
-      h("h4", null, t.title), h("p", null, t.intro),
-      h("div", { class: "meta" }, h("span", { class: "pips" }, t.steps.map((s) => h("i", { style: { "--c": colorOf(s.topic) } }))), h("span", null, u.t("walks.stops", { n: t.steps.length }))))));
+    h("p", { class: "hint pane-intro landscape-only route-hint" }, u.t("walks.intro_route")),
+    ...D.threads.map((t) => {
+      const show = () => land.setRoute(walkRoute(t)), hide = () => land.setRoute(null);
+      return h("button", { class: "thread-card", type: "button", onclick: () => startThread(t.id), onpointerenter: show, onpointerleave: hide, onfocus: show, onblur: hide },
+        h("h4", null, t.title), h("p", null, t.intro),
+        h("div", { class: "meta" }, h("span", { class: "pips" }, t.steps.map((s) => h("i", { style: { "--c": colorOf(s.topic) } }))),
+          h("span", null, u.t("walks.crosses", { n: t.steps.length, t: new Set(walkRoute(t)).size }))));
+    }));
   D.arcs.forEach((arc) => {
     panes.index.append(h("button", { class: "idx-arc", style: { "--c": colorOf("arc:" + arc.id) }, onclick: () => { select("arc:" + arc.id); if (mobile()) closeLeft(); } }, arc.label));
     for (const n of D.themeOrder.filter((x) => arc.themes.includes(x))) {
@@ -459,7 +498,7 @@
       title = u.t("tip.theme_title", { n: n.n, label: n.label });
       if (S.level === "landscape") {
         sub = u.t("tip.theme_landscape", { n: n.topics.length });
-        if (n.future) extra = h("span", { class: "tip-future" }, n.future.text);
+        if (n.future && n.future.text) extra = h("span", { class: "tip-future" }, n.future.text);
       } else if (id === S.theme) sub = n.lead;
       else sub = u.t("tip.theme_move");
     }
@@ -826,12 +865,14 @@
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, () => notice(url));
     else notice(url);
   }
-  function renderNote() {
+  function renderNote(stay) {
     const id = S.sel, n = byId.get(id);
     if (!n) return;
     const r = RM.panels.render(app, id);
     const ae = document.activeElement, had = !!ae && right.contains(ae), key = had ? ae.getAttribute("data-k") : null;
+    const top = stay ? (right.querySelector(".r-body") || {}).scrollTop || 0 : 0;
     right.replaceChildren(head(r.crumb), h("div", { class: "r-body" }, r.body));
+    if (top) right.querySelector(".r-body").scrollTop = top;
     right.setAttribute("aria-label", n.label || u.t("note.label"));
     const h1 = right.querySelector(".r-body h1");
     if (h1) h1.tabIndex = -1;
@@ -911,6 +952,7 @@
     const t = D.threads.find((x) => x.id === id);
     if (!t) return;
     const moved = S.level !== "regime";
+    land.setRoute(null);
     S.thread = { t, i: -1 };
     body.classList.add("thread-on");
     reg.forceRing = true;
@@ -920,6 +962,8 @@
     S.sel = null; S.hist = []; body.classList.remove("right-open");
     stepTo(o.stop ? o.stop - 1 : 0, { sync: false });
     if (o.sync !== false) syncURL(moved);
+    const ae = document.activeElement;
+    if (ae && (left.contains(ae) || right.contains(ae))) { const nx = bar.querySelector('[data-k="next"]'); if (nx) nx.focus({ preventScroll: true }); }
   }
   // the themes of the stops either side of this one, so the way in and the way on can be drawn
   function walkExtras(i) {
@@ -928,12 +972,11 @@
     return out;
   }
   function walkOverlay() {
-    const T = S.thread, steps = T.t.steps, cur = steps[T.i] && steps[T.i].topic;
-    if (!cur) return null;
+    const T = S.thread, steps = T.t.steps, cur = steps[T.i] ? steps[T.i].topic : null;
     const stops = new Map();
     steps.forEach((s, k) => { if (reg.holds(s.topic)) stops.set(s.topic, k + 1); });
     const end = (j) => { const s = steps[j]; if (!s) return null; return { id: reg.holds(s.topic) ? s.topic : "th:" + byId.get(s.topic).theme }; };
-    return { cur, stops, prev: end(T.i - 1), next: end(T.i + 1) };
+    return { cur, stops, prev: cur ? end(T.i - 1) : null, next: cur ? end(T.i + 1) : null };
   }
   function stepTo(i, o = {}) {
     const T = S.thread;
@@ -953,28 +996,34 @@
       else { reg.setSelected(id); }
       reg.setWalk(walkOverlay());
     } else {
-      S.sel = null; reg.setSelected(null); reg.setWalk(null); body.classList.remove("right-open");
+      // the end of the walk: the last stop's theme stays on the map (a link straight to the end opens it), with the stops still marked
+      const th = themeOf(t.steps[n - 1].topic);
+      S.sel = null; S.walkExtras = []; body.classList.remove("right-open");
+      if (S.level !== "regime") goLevel("regime", { theme: th, sync: false });
+      else { S.theme = th; showRegime(); }
+      reg.setSelected(null); reg.setWalk(walkOverlay());
     }
     renderChrome();
-    live.textContent = T.i < n ? u.t("walks.stop_of", { i: T.i + 1, n }) + ": " + byId.get(t.steps[T.i].topic).label : t.title + ": " + u.t("walks.summary");
+    live.textContent = T.i < n ? u.t("walks.stop_of", { i: T.i + 1, n }) + ": " + byId.get(t.steps[T.i].topic).label : t.title + ": " + u.t("walks.summary") + ": " + t.soWhat;
     if (o.sync !== false) syncURL(false);
   }
   function renderBar() {
     const T = S.thread;
     if (!T) { bar.classList.remove("open"); return; }
-    const t = T.t, n = t.steps.length, last = T.i >= n;
+    const t = T.t, n = t.steps.length, last = T.i >= n, nextWalk = D.threads[(D.threads.indexOf(t) + 1) % D.threads.length];
     const ae = document.activeElement, key = ae && bar.contains(ae) ? ae.getAttribute("data-k") : null;
     bar.replaceChildren(
       h("div", { class: "t-top" }, h("span", { class: "t-title" }, t.title), h("button", { class: "btn ghost", type: "button", "data-k": "end", onclick: () => endThread() }, u.t("walks.end"), h("span", { "aria-hidden": "true" }, " ✕"))),
       last
-        ? h("div", null, h("div", { class: "t-step" }, u.t("walks.summary")), h("p", { class: "t-sowhat" }, t.soWhat), h("p", { class: "t-text", style: { minHeight: 0 } }, t.intro))
+        ? h("div", null, h("div", { class: "t-step" }, u.t("walks.summary")), h("p", { class: "t-sowhat" }, t.soWhat),
+          h("button", { class: "btn t-next-walk", type: "button", "data-k": "nextwalk", onclick: () => startThread(nextWalk.id) }, u.t("walks.next_walk", { title: nextWalk.title }), h("span", { "aria-hidden": "true" }, " →")))
         : h("div", null,
           h("div", { class: "t-step" }, h("span", { class: "num" }, T.i + 1), u.t("walks.stop_of", { i: T.i + 1, n })),
           h("button", { class: "t-topic", type: "button", "data-k": "topic", onclick: () => select(t.steps[T.i].topic, { noPush: true }) }, byId.get(t.steps[T.i].topic).label),
           h("p", { class: "t-text" }, t.steps[T.i].text)),
       h("div", { class: "t-nav" },
         h("button", { class: "btn", type: "button", "data-k": "back", disabled: T.i === 0, onclick: () => stepTo(T.i - 1) }, h("span", { "aria-hidden": "true" }, "← "), u.t("walks.back")),
-        h("div", { class: "t-dots" }, [...t.steps.map((s, k) => h("button", { type: "button", class: k === T.i ? "on" : "", "data-k": "dot" + k, "aria-current": k === T.i ? "step" : null, "aria-label": u.t("walks.stop_n", { n: k + 1 }), onclick: () => stepTo(k) })),
+        h("div", { class: "t-dots" }, [...t.steps.map((s, k) => h("button", { type: "button", class: k === T.i ? "on" : "", style: { "--c": colorOf(s.topic) }, "data-k": "dot" + k, "aria-current": k === T.i ? "step" : null, "aria-label": u.t("walks.stop_n", { n: k + 1 }), title: u.t("walks.stop_label", { n: k + 1, label: byId.get(s.topic).label }), onclick: () => stepTo(k) })),
           h("button", { type: "button", class: last ? "on" : "", "data-k": "dot" + n, "aria-current": last ? "step" : null, "aria-label": u.t("walks.summary"), onclick: () => stepTo(n), style: { borderRadius: "2px" } })]),
         last ? h("button", { class: "btn solid", type: "button", "data-k": "next", onclick: () => { endThread(true); goLevel("landscape", { sync: false }); select("c", { sync: false }); syncURL(true); const h1 = right.querySelector(".r-body h1"); if (h1) h1.focus({ preventScroll: true }); } }, u.t("walks.big_picture"), h("span", { "aria-hidden": "true" }, " ↑"))
           : h("button", { class: "btn solid", type: "button", "data-k": "next", onclick: () => stepTo(T.i + 1) }, T.i === n - 1 ? u.t("walks.finish") : u.t("walks.next"), h("span", { "aria-hidden": "true" }, " →"))));

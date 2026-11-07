@@ -1,7 +1,7 @@
 ---
 tags: [discussion, aired, scale/micro, wg/wg1]
 ---
-# Should other macromolecules be more like DNA? (“DNA is fancy PEG”)
+# Should other macromolecules be more like DNA?
 
 *RM007 (2026-07-11)* · notes RM007.5
 
@@ -13,5 +13,5 @@ tags: [discussion, aired, scale/micro, wg/wg1]
 
 ## Feeds topics
 
-- [[DNA is fancy PEG]]
+- [[Classifying materials]]
 - [[Programmable biopolymers]]

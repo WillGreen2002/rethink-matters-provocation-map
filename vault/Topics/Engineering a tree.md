@@ -36,7 +36,7 @@ tags:
 - *echoes* → [[Cellulose, wood & concrete]]: Both refuse the 'drop-in substitute' framing: what would a tree look like if engineered from day one, and what can bacterial cellulose do that wood never could?
 - *extends* → [[Fabrication readiness]]: Cultured wood, volumetric printing and anisotropic alignment are candidate routes to engineered wood, and each needs an honest readiness check.
 - via #concept/hierarchy, #concept/self-assembly, #tension/copy-vs-principles → [[Portable design principles]]
-- via #concept/self-assembly, #method/machine-learning → [[Printing meets growth]]
+- via #concept/self-assembly, #method/machine-learning → [[Printing and growth]]
 - via #concept/climate-performance, #tension/replace-vs-reinvent → [[Replace or reinvent]]
 - via #concept/hierarchy, #tension/copy-vs-principles → [[Gradients as design]]
 - via #barrier/data-gaps, #method/machine-learning → [[World models & inverse design]]
@@ -44,9 +44,9 @@ tags:
 - via #barrier/data-gaps, #tension/copy-vs-principles → [[Unexplored biological features]]
 - via #domain/construction-and-minerals → [[Hydrated materials]]
 - via #concept/self-assembly, #domain/construction-and-minerals → [[Seabed structures & farms]]
-- via #barrier/data-gaps, #concept/hierarchy → [[Expansion microscopy]]
 - via #concept/climate-performance, #domain/cellulose-and-wood → [[Micro vs bulk]]
 - via #tension/copy-vs-principles → [[A shared language]]
+- via #tension/copy-vs-principles → [[IP & biological design]]
 
 ## On the Bookshelf
 

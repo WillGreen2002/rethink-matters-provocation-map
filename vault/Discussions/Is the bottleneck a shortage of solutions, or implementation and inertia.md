@@ -1,13 +1,13 @@
 ---
 tags: [discussion, aired, scale/macro, wg/wg2]
 ---
-# “We don’t need more solutions”
+# Is the bottleneck a shortage of solutions, or implementation and inertia?
 
 *RM007 (2026-07-11)*
 
 ## Provocation
 
-> We dont need more solutions. for most problems there are already multiple adequate mitigations. the issue is the petulant unwillingness to implement them because everything comes with drawbacks and societal inertia prefers the current drawbacks to novel ones.
+> Do we need more solutions? For most problems there are already multiple adequate mitigations. Is the issue an unwillingness to implement them, because everything comes with drawbacks and societal inertia prefers the current drawbacks to novel ones?
 
 ## Post-meeting synthesis (anonymised digest)
 

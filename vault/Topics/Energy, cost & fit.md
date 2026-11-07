@@ -28,7 +28,8 @@ tags:
 ## Linked ideas
 
 - *extends* → [[Micro vs bulk]]: The micro-versus-bulk question is settled in practice by energy requirements, cost and infrastructure.
-- *echoes* → [[Lessons from ventures]]: Product–market fit, cost and energy are where the ventures in the next topic ran aground.
+- *echoes* → [[Lessons from ventures]]: Product–market fit and cost return in the next topic, on lessons from ventures.
+- *echoes* → [[Current tech & manufacturing]]: Current manufacturing sets the energy, cost and infrastructure any new material has to meet.
 - via #barrier/unit-economics, #concept/climate-performance, #method/lca-and-economics → [[Replace or reinvent]]
 - via #barrier/scale-up, #barrier/unit-economics, #concept/true-cost, #method/lca-and-economics → [[Full cost of waste]]
 - via #concept/climate-performance, #method/lca-and-economics, #tension/niche-vs-bulk → [[Cellulose, wood & concrete]]

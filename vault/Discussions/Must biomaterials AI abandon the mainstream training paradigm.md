@@ -11,4 +11,4 @@ tags: [discussion, aired, scale/micro, scale/macro, wg/wg1]
 
 ## Feeds topics
 
-- [[AI meets biological constraints]]
+- [[AI and biological constraints]]

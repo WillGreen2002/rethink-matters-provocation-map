@@ -31,7 +31,7 @@
 - id: printing-meets-growth
   theme: 4
   match: "Combining printing and machine-imposed constraints"
-  label: "Printing meets growth"
+  label: "Printing and growth"
   scale: [micro, meso]
   wg: [wg3]
   pillar: [design, translation]
@@ -60,18 +60,21 @@
 - id: programmable-biopolymers
   theme: 4
   match: "Leverage biomacromolecules"
+  # with the sheet's non-canonical amino acids line folded in, after the committee's review
+  override_text: "Leverage biomacromolecules (nucleotides, amino acids, sugars, lipids) into more programmable, new-to-nature composite polymers, including through non-canonical amino acids."
   label: "Programmable biopolymers"
   scale: [micro]
   wg: [wg1]
   pillar: [design]
   value: []
-  tags: [concept/programmability, concept/new-to-nature, domain/dna-and-nucleic-acids, domain/proteins-and-peptides, barrier/scale-up, barrier/unit-economics]
-  sources: [dna-like-macromolecules]
+  tags: [concept/programmability, concept/new-to-nature, domain/dna-and-nucleic-acids, domain/proteins-and-peptides, barrier/scale-up, barrier/unit-economics, barrier/shared-language, barrier/regulation-and-evidence, domain/medical-and-clinical]
+  sources: [dna-like-macromolecules, ncaa-expanding-chemistry]
   reading: []
   links:
-    - { to: non-canonical-amino-acids, type: extends, why: "Non-canonical amino acids and new-to-nature composite polymers both expand chemistry beyond what biology has used." }
+    - { to: scaffolds-nanoparticles-adhesives, type: enables, why: "Mussel-inspired peptide wet-adhesives built with non-canonical residues could replace cyanoacrylate in surgery, a concrete payoff for expanding the genetic code." }
 
 - id: non-canonical-amino-acids
+  cut: "moved under Programmable biopolymers after the committee's review"
   theme: 4
   match: "non-canonical amino acids"
   label: "Non-canonical amino acids"
@@ -84,6 +87,22 @@
   reading: []
   links:
     - { to: scaffolds-nanoparticles-adhesives, type: enables, why: "Mussel-inspired peptide wet-adhesives built with non-canonical residues could replace cyanoacrylate in surgery, a concrete payoff for expanding the genetic code." }
+
+- id: current-tech-manufacturing
+  added: true   # asked for in the committee's review: not in the Bristol sheet, and not discussed yet
+  theme: 4
+  text: "What can current technology and manufacturing already do, and where do they fall short?"
+  label: "Current tech & manufacturing"
+  scale: [macro]
+  wg: [wg3]
+  pillar: [translation]
+  value: []
+  tags: [method/biofabrication, barrier/scale-up, tension/near-vs-far]
+  sources: []
+  reading: []
+  links:
+    - { to: fabrication-readiness, type: extends, why: "Before asking which new methods are ready, it helps to know what current manufacturing can already do." }
+    - { to: energy-cost-fit, type: echoes, why: "Current manufacturing sets the energy, cost and infrastructure any new material has to meet." }
 
 # ============================== THEME 5 · Circularity, waste and adaptive manufacturing ==============================
 - id: waste-valorisation
@@ -154,7 +173,7 @@
   sources: [discovery-vs-circularity, circular-bioeconomy]
   reading: [making-the-modern-world, plastics]
   links:
-    - { to: societal-inertia, type: echoes, why: "'We don't need more solutions' and 'do we need more materials?' are the same argument: the bottleneck may be implementation and reuse, not discovery." }
+    - { to: societal-inertia, type: echoes, why: "Do we need more solutions? Do we need more materials? Both ask whether the bottleneck is discovery, or implementation and reuse." }
     - { to: survive-then-degrade, type: echoes, why: "Every new material creates a future end-of-life problem; designing reliable degradation or collection is the other half of discovery." }
 
 # ============================== THEME 6 · Commercial value, scale and adoption ==============================
@@ -171,7 +190,6 @@
   reading: []
   links:
     - { to: infection-sensing-dressings, type: echoes, why: "Diagnostic dressings show why standards for sensing and responsive behaviour matter: the more generic the signal, the easier it is to manufacture but the harder to regulate." }
-    - { to: derisk-gene-delivery-once, type: echoes, why: "Derisk-once logic and standardisation are the same bet: a validated, reusable platform or property set that does not have to be re-proved every time." }
 
 - id: replacement-vs-new-capability
   theme: 6
@@ -227,7 +245,7 @@
   sources: [micro-vs-bulk, dropin-replacement]
   reading: [your-life-is-manufactured]
   links:
-    - { to: venture-lessons, type: echoes, why: "Product–market fit, cost and energy are where the ventures in the next topic ran aground." }
+    - { to: venture-lessons, type: echoes, why: "Product–market fit and cost return in the next topic, on lessons from ventures." }
 
 - id: venture-lessons
   theme: 6

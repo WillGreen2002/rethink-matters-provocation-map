@@ -32,14 +32,15 @@ tags:
 - *echoes* → [[Standardising dynamic properties]]: Diagnostic dressings show why standards for sensing and responsive behaviour matter: the more generic the signal, the easier it is to manufacture but the harder to regulate.
 - *echoes* → [[Biosensor design]]: The same move at different scales: turning a molecular event into a readable output (fluorescence for screening, colour change for infection).
 - via #barrier/regulation-and-evidence, #tension/access-vs-safety → [[Care & convivial tech]]
-- via #barrier/regulation-and-evidence, #domain/medical-and-clinical, #tension/general-vs-specific → [[Derisk once synthesis platform]]
 - via #concept/dynamic-function, #tension/general-vs-specific → [[Portable design principles]]
-- via #domain/proteins-and-peptides, #tension/general-vs-specific → [[DNA is fancy PEG]]
-- via #barrier/regulation-and-evidence, #domain/medical-and-clinical, #domain/proteins-and-peptides → [[Non-canonical amino acids]]
-- via #barrier/regulation-and-evidence, #domain/proteins-and-peptides → [[Designed-peptide risks]]
-- via #tension/general-vs-specific → [[Classifying materials]]
+- via #domain/proteins-and-peptides, #tension/general-vs-specific → [[Classifying materials]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical, #domain/proteins-and-peptides → [[Programmable biopolymers]]
 - via #tension/general-vs-specific → [[A shared language]]
-- via #tension/general-vs-specific → [[AI meets biological constraints]]
+- via #tension/general-vs-specific → [[AI and biological constraints]]
+- via #barrier/regulation-and-evidence, #domain/proteins-and-peptides → [[Designed-peptide risks]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Biobased vs biomaterial]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Funding platform medicines]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Chronic bioelectrodes]]
 
 ## Tags
 

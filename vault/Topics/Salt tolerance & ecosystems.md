@@ -20,7 +20,7 @@ tags:
 
 > Salt tolerance, ecosystem modelling and the consequences of marine interventions.
 
-**Theme:** [[Theme 6 · Ocean & extreme environments]]  
+**Theme:** [[Theme 6 · Extreme & constrained environments]]  
 **Scale:** micro, meso · **Working group:** WG3 · **Pillar:** climate, governance · **Value:** humility, sustainability
 
 ## Discussions behind this
@@ -39,7 +39,7 @@ tags:
 - via #concept/ecosystems, #domain/marine-and-ocean → [[Seabed structures & farms]]
 - via #barrier/data-gaps, #method/machine-learning → [[Emergent properties]]
 - via #barrier/data-gaps, #method/machine-learning → [[Engineering a tree]]
-- via #barrier/data-gaps, #method/machine-learning → [[AI meets biological constraints]]
+- via #barrier/data-gaps, #method/machine-learning → [[AI and biological constraints]]
 - via #barrier/data-gaps, #method/machine-learning → [[Predicting composites & proteins]]
 - via #barrier/data-gaps, #method/machine-learning → [[Public datasets]]
 - via #barrier/data-gaps, #domain/engineered-cells → [[Biosensor design]]

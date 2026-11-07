@@ -34,6 +34,9 @@ tags:
 - via #tension/private-vs-common → [[Who captures value]]
 - via #tension/private-vs-common → [[Theory of change]]
 - via #tension/private-vs-common → [[IP & biological design]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Biobased vs biomaterial]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Programmable biopolymers]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Chronic bioelectrodes]]
 
 ## Tags
 

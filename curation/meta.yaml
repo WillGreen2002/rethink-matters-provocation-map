@@ -11,7 +11,8 @@ site:
     - { label: "Bookshelf", href: "https://rethinkmatters.org/bookshelf" }
     - { label: "Members", href: "https://rethinkmatters.org/members" }
   apply: { label: "Apply", href: "https://rethinkmatters.org/apply" }
-  chatham: "Ideas on this map come from sessions held under the Chatham House Rule. Nothing here is attributed to any person or organisation."
+  chatham: "Sessions follow the Chatham House Rule: nothing is attributed."
+  feedback_email: "hello@rethinkmatters.org"   # the group's public address (rethinkmatters.org): where Let us know your thoughts writes to
   shared_language_post: "https://rethinkmatters.org/lets-build-a-shared-language-20-04-2026"
 
 center:
@@ -33,7 +34,7 @@ arcs:
 # shown as theme 5, and so on); everything in curation/ keeps the sheet's own numbers.
 theme_order: [1, 2, 3, 4, 7, 9, 5, 6, 8]
 
-# Short graph labels for the nine themes (full titles come from the sheet).
+# Short graph labels for the nine themes (full titles come from the sheet; `title` here replaces the sheet's on the map).
 themes:
   1: { short: "Defining biomaterials", arc: matter-to-life }
   2: { short: "Nature's design principles", arc: matter-to-life }
@@ -43,7 +44,7 @@ themes:
   6: { short: "Value, scale & adoption", arc: technology-to-society }
   7: { short: "Medical & long-term safety", arc: life-to-technology }
   8: { short: "Ethics, ownership & purpose", arc: technology-to-society }
-  9: { short: "Ocean & extreme environments", arc: life-to-technology }
+  9: { short: "Extreme & constrained environments", title: "Extreme and constrained environments", arc: life-to-technology }
 
 # The Niche level: the kinds of example curation/niche_examples.csv may list (column `type`), in the order they hang from a
 # prompt on the map, from the lab to the market. `shape` is how each is drawn.
@@ -70,7 +71,7 @@ lenses:
   wg:
     label: "Working group"
     question: "Which working group would carry this forward?"
-    source: "The 'Relevant working group' column of the sign-up sheets. Where a session recorded no group, the map proposes one (shown dashed)."
+    source: "The 'Relevant working group' column of the sign-up sheets. Where a session recorded no group, the map proposes one."
     values:
       wg1: { label: "WG1 · Prediction, knowledge & metrics", short: "WG1", def: "Models, data, definitions and the metrics needed to know what a biomaterial does.", color: "#2F6B63" }
       wg2: { label: "WG2 · Utopian to utilisation & socioeconomic application", short: "WG2", def: "From speculative aims to real use: economics, society, ethics, adoption.", color: "#B65438" }

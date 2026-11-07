@@ -7,39 +7,58 @@
   // in edit mode (with the edit link: review.js), a text block that can be clicked into and changed; otherwise the block as it is
   const ed = (el, key, o) => (RM.review ? RM.review.editable(el, key, o) : el);
   const FACET_COLOR = { tension: "#A04340", concept: "#48909F", barrier: "#7F8C64", domain: "#D9A441", method: "#8A8577" };
+  const REACH_MIN = 3;   // "Most connected to" names a theme only from this many links between prompts
 
   function relLabel(type, forward) {
     const R = u.t("relations");
     return forward ? R[type] : R[type + "_rev"] || R[type];
-  }
-  // a prompt's pillar: a coloured label (its definition on hover), the same colour as its disc on the Regime
-  function pillarChip(app, key) {
-    const v = app.D.lenses.pillar.values[key];
-    return h("span", { class: "chip sm static", style: { "--c": v.color }, title: v.def || v.q || null }, h("i", { class: "dot" }), v.short || v.label);
-  }
-
-  function tagChip(app, tid) {
-    const t = app.byId.get(tid);
-    return h("button", { type: "button", class: "chip sm ro", title: t.def, onclick: () => app.select(tid) }, h("i", { class: "dot", style: { "--c": FACET_COLOR[t.facet] } }), t.label);
   }
   function nodeLink(app, id, extra) {
     const n = app.byId.get(id);
     if (!n) return null;
     return h("button", { type: "button", class: "chip sm ro", onclick: () => app.select(id) }, h("i", { class: "dot", style: { "--c": app.colorOf(id) } }), extra || n.label);
   }
-  // working group and value: who looks after a prompt and which of the report's values it speaks to, as one quiet line
-  function metaLine(app, wg, wgProposed, value) {
-    const L = app.D.lenses, parts = [];
-    if (wg && wg.length) parts.push(u.t("topic.wg") + " " + wg.map((v) => L.wg.values[v].short + ((wgProposed || []).includes(v) ? "*" : "")).join(", "));
-    if (value && value.length) parts.push(u.t("topic.value") + " " + value.map((v) => L.value.values[v].label.toLowerCase()).join(", "));
-    if (!parts.length) return null;
-    return h("p", { class: "meta-line", title: (wgProposed || []).length ? u.t("topic.wg_proposed") : null }, parts.join(" · "));
+  // which of the report's values a prompt speaks to, as one quiet line
+  function valueLine(app, value) {
+    if (!value || !value.length) return null;
+    const L = app.D.lenses.value.values;
+    return h("p", { class: "meta-line" }, u.t("topic.value") + " " + value.map((v) => L[v].label.toLowerCase()).join(", "));
   }
   function refs(list) {
     if (!list || !list.length) return null;
     return h("ul", { class: "refs" }, list.map((r) => h("li", null, h("a", { href: r.url, target: "_blank", rel: "noopener noreferrer" }, r.label))));
   }
   function conf(app) { return h("p", { class: "conf" }, app.D.site.chatham); }
+  // a way to say something about what is open: an input in the note. With the edit link it goes to the committee's Sheet; without
+  // it, it opens an email to Rethink Matters in the visitor's own email app, so nothing is sent from the page itself
+  function thoughts(app, n) {
+    const mail = app.D.site.feedback_email, sheet = !!(RM.review && RM.review.sendThought);
+    if (!mail && !sheet) return null;
+    const wrap = h("section", { class: "thoughts" });
+    const closed = (focus) => {
+      const b = h("button", { type: "button", class: "btn th-open", "data-k": "thoughts", onclick: open }, u.t("thoughts.button"));
+      wrap.replaceChildren(b);
+      if (focus === true) b.focus({ preventScroll: true });
+    };
+    function open() {
+      const ta = h("textarea", { class: "th-in", rows: 4, "aria-label": u.t("thoughts.label"), placeholder: u.t("thoughts.placeholder") });
+      const msg = h("p", { class: "th-hint", role: "status" }, sheet ? u.t("thoughts.hint_sheet") : u.t("thoughts.hint_mail", { mail }));
+      const go = (e) => {
+        const text = ta.value.trim();
+        if (!text) { e.preventDefault(); msg.textContent = u.t("thoughts.empty"); ta.focus(); return; }
+        if (sheet) { RM.review.sendThought(n.id, text); closed(true); return; }
+        e.currentTarget.href = "mailto:" + mail + "?subject=" + encodeURIComponent(u.t("thoughts.subject", { label: n.label || u.t("center.kind") })) + "&body=" + encodeURIComponent(text);
+      };
+      wrap.replaceChildren(h("label", { class: "th-lab" }, u.t("thoughts.label"), ta), msg, h("div", { class: "th-acts" },
+        sheet ? h("button", { type: "button", class: "btn solid", onclick: go }, u.t("thoughts.send_sheet")) : h("a", { class: "btn solid", href: "mailto:" + mail, onclick: go }, u.t("thoughts.send_mail")),
+        h("button", { type: "button", class: "btn ghost", onclick: () => closed(true) }, u.t("thoughts.cancel"))));
+      ta.focus({ preventScroll: true });
+      wrap.scrollIntoView({ block: "nearest" });
+    }
+    closed();
+    return wrap;
+  }
+  const foot = (body, app, n) => put(body, thoughts(app, n), conf(app));
   function sessionMeta(app, d) {
     const S = app.D.sessions, out = [];
     for (const s of d.sessions) {
@@ -52,9 +71,10 @@
   // a future (or the overall answer): its words and what it was drawn from
   function future(app, f, title, key) {
     if (!f) return null;
+    const waiting = f.pending && !f.text;
     return h("section", { class: "future" },
       h("h2", null, title),
-      ed(h("p", { class: "future-text" }, f.text), key),
+      ed(h("p", { class: "future-text" + (waiting ? " pending" : "") }, waiting ? u.t("future.pending") : f.text), key),
       f.note ? h("p", { class: "future-note" }, f.note) : null,
       f.drawsOn && f.drawsOn.length ? h("div", { class: "drawn" }, h("span", { class: "drawn-k" }, u.t("future.drawn")), h("div", { class: "chips" }, f.drawsOn.map((id) => nodeLink(app, id)))) : null);
   }
@@ -84,24 +104,19 @@
     if (r) { wrap.append(h("h3", null, u.t("disc.refs"))); wrap.append(r); }
     return wrap;
   }
-  function discItem(app, d, open) {
-    const el = h("details", { class: "disc" }, h("summary", null, h("div", { class: "d-title" }, h("span", null, d.label)), h("div", { class: "d-meta" }, sessionMeta(app, d))), discBody(app, d));
+  function discItem(app, d, open, why) {
+    const el = h("details", { class: "disc" }, h("summary", null, h("div", { class: "d-title" }, h("span", null, d.label)), h("div", { class: "d-meta" }, sessionMeta(app, d)),
+      why ? h("p", { class: "d-why" }, u.t("disc.why", { why })) : null), discBody(app, d));
     if (open) el.setAttribute("open", "");
     return el;
   }
 
-  /* ---------------------------------------------------------------- relations */
+  /* ---------------------------------------------------------------- cross-references */
   function relItem(app, selfId, r) {
     const o = app.byId.get(r.other), l = r.link;
-    const el = h("button", { type: "button", class: "rel-item" + (l.curated ? "" : " derived"), onclick: () => app.select(r.other) });
-    const tl = l.curated ? relLabel(l.type, l.dir === selfId) : u.t("relations.shares");
-    el.append(h("div", { class: "rt" }, h("i", { style: { "--c": app.colorOf(r.other) } }), h("span", null, o.label), h("span", { class: "ty " + (l.curated ? "ty-" + l.type : "faint") }, tl)));
-    if (l.curated) el.append(h("p", { class: "why" }, l.why));
-    const via = [];
-    for (const t2 of l.tags) via.push(app.byId.get(t2).label);
-    for (const d of l.src) via.push(u.t("relations.same_disc", { label: app.byId.get(d).label }));
-    if (via.length) el.append(h("p", { class: "via" }, (l.curated ? u.t("relations.also") : u.t("relations.shared_prefix")) + " " + via.slice(0, 5).join(" · ") + (via.length > 5 ? " …" : "")));
-    return el;
+    return h("button", { type: "button", class: "rel-item", onclick: () => app.select(r.other) },
+      h("div", { class: "rt" }, h("i", { style: { "--c": app.colorOf(r.other) } }), h("span", null, o.label), h("span", { class: "ty ty-" + l.type }, relLabel(l.type, l.dir === selfId))),
+      h("p", { class: "why" }, l.why));
   }
 
   /* ---------------------------------------------------------------- topic */
@@ -111,56 +126,42 @@
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), u.t("topic.kind")));
     body.append(ed(h("h1", null, n.label), "prompt:" + n.id + ":label"));
     body.append(ed(h("p", { class: "prompt", style: { "--c": color } }, n.text), "prompt:" + n.id + ":text"));
+    if (n.open) body.append(h("p", { class: "open-q" }, u.t("topic.open")));
     if (app.level() === "regime") {
       const c = app.sourceCount(n.id);
       body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) },
         h("span", { "aria-hidden": "true" }, "↓ "), c === 0 ? u.t("topic.down_none") : c === 1 ? u.t("topic.down_one") : u.t("topic.down", { n: c })));
     }
-    body.append(h("div", { class: "lens-row" }, h("span", null, u.t("topic.pillar")), h("div", { class: "chips" }, n.pillar.map((v) => pillarChip(app, v)))));
-    put(body, metaLine(app, n.wg, n.wgProposed, n.value));
+    if (n.refs && n.refs.length) body.append(h("div", { class: "p-refs" }, h("span", { class: "drawn-k" }, u.t("topic.refs")), refs(n.refs)));
 
-    // tags grouped by facet
-    body.append(h("h2", null, u.t("topic.tags"), h("small", null, u.t("topic.tags_sub"))));
-    const byFacet = {};
-    for (const t of n.tags) (byFacet[app.byId.get(t).facet] = byFacet[app.byId.get(t).facet] || []).push(t);
-    for (const f of Object.keys(app.D.facets)) {
-      if (!byFacet[f]) continue;
-      body.append(h("div", { class: "group-h" }, app.D.facets[f].label));
-      body.append(h("div", { class: "chips" }, byFacet[f].map((t) => tagChip(app, t))));
+    // discussions come first: they are what the prompt grew from
+    const ds = n.sources.map((id) => app.byId.get(id)), why = n.sourceWhy || {};
+    if (ds.length) {
+      body.append(h("h2", null, n.open ? u.t("topic.proposed") : u.t("topic.discussions"), h("small", null, n.open ? u.t("topic.proposed_sub", { n: ds.length }) : u.t("topic.discussions_sub", { n: ds.length }))));
+      ds.forEach((d, i) => body.append(discItem(app, d, ds.length === 1 || (i === 0 && !!d.notes), why[d.id])));
     }
+    if (RM.review) put(body, RM.review.contributions(app, n.id));   // in edit mode: what the committee has added since
 
-    // connections
-    const rels = app.relOf(n.id);
-    // exactly the links the Regime and the Niche draw: every bridge, and the strong shared-tag links
-    const cur = rels.filter((r) => r.link.curated), der = rels.filter((r) => !r.link.curated && app.shown(r.link));
-    body.append(h("h2", null, u.t("topic.connections"), h("small", null, u.t("topic.connections_sub", { cur: cur.length, der: der.length }))));
-    if (cur.length) cur.forEach((r) => body.append(relItem(app, n.id, r)));
-    if (der.length) {
-      body.append(h("div", { class: "group-h" }, u.t("topic.also")));
-      der.slice(0, 5).forEach((r) => body.append(relItem(app, n.id, r)));
-      if (der.length > 5) {
-        const more = h("button", { type: "button", class: "more", onclick: () => { der.slice(5).forEach((r) => more.before(relItem(app, n.id, r))); more.remove(); } }, u.t("topic.more", { n: der.length - 5 }));
-        body.append(more);
-      }
+    // cross-references: exactly the hand-written links, each with its reason
+    const cur = app.relOf(n.id).filter((r) => r.link.curated);
+    if (cur.length) {
+      body.append(h("h2", null, u.t("topic.xrefs")));
+      cur.forEach((r) => body.append(relItem(app, n.id, r)));
     }
-    if (!cur.length && !der.length) body.append(h("p", { class: "md faint" }, u.t("topic.no_links")));
 
     // the Niche: examples on the ground
-    body.append(h("h2", null, u.t("ground.title")));
-    body.append(examplesLine(app, app.exOf(n.id), app.level() === "niche" ? null : n.id));
-
-    // discussions
-    const ds = n.sources.map((id) => app.byId.get(id));
-    body.append(h("h2", null, u.t("topic.discussions"), h("small", null, ds.length ? u.t("topic.discussions_sub", { n: ds.length }) : "")));
-    if (ds.length) ds.forEach((d, i) => body.append(discItem(app, d, ds.length === 1 || (i === 0 && !!d.notes))));
-    else body.append(h("p", { class: "md faint" }, u.t("topic.no_discussions")));
-    if (RM.review) put(body, RM.review.contributions(app, n.id));   // in edit mode: what the committee has added since
+    const ex = app.exOf(n.id);
+    if (ex.length) {
+      body.append(h("h2", null, u.t("ground.title")));
+      body.append(examplesLine(app, ex, app.level() === "niche" ? null : n.id));
+    }
 
     if (n.reading.length) {
       body.append(h("h2", null, u.t("topic.reading"), h("small", null, u.t("topic.reading_sub"))));
       body.append(h("div", { class: "chips books" }, n.reading.map((b) => nodeLink(app, b, app.byId.get(b).label))));
     }
-    body.append(conf(app));
+    put(body, valueLine(app, n.value));
+    foot(body, app, n);
     return { crumb: h("a", { href: "#" + th.id, onclick: (e) => { e.preventDefault(); app.select(th.id); } }, u.t("topic.crumb", { n: th.n, title: th.title })), body };
   }
 
@@ -175,18 +176,16 @@
     // down to its prompts (from the Landscape; on the Regime the theme is already in the middle)
     if (app.level() === "landscape") body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) }, h("span", { "aria-hidden": "true" }, "↓ "), u.t("theme.down", { n: ts.length })));
     put(body, future(app, n.future, u.t("future.title"), "theme:" + n.id + ":future"));
-    if (n.sheet && n.sheet !== n.n) body.append(h("p", { class: "cite" }, u.t("theme.sheet", { sheet: n.sheet })));
     body.append(h("h2", null, u.t("theme.prompts"), h("small", null, u.t("theme.prompts_sub", { n: ts.length }))));
-    ts.forEach((t) => body.append(h("button", { type: "button", class: "rel-item", onclick: () => app.select(t.id) },
-      h("div", { class: "rt" }, h("i", { style: { "--c": app.colorOf(t.id) } }), h("span", null, t.label)),
-      h("p", { class: "why" }, t.text))));
-    // where this theme reaches out
-    const cross = app.themeReach(n.n);
+    ts.forEach((t) => body.append(h("button", { type: "button", class: "rel-item slim", onclick: () => app.select(t.id) },
+      h("div", { class: "rt" }, h("i", { class: t.open ? "open" : null, style: { "--c": app.colorOf(t.id) } }), h("span", null, t.label, t.open ? h("span", { class: "sr-only" }, " (" + u.t("topic.open") + ")") : null)))));
+    // where this theme reaches out: the ties with some weight, or its strongest if none reaches that
+    const reach = app.themeReach(n.n), most = reach.length ? reach[0].count : 0, cross = reach.filter((c) => c.count >= Math.min(REACH_MIN, most));
     if (cross.length) {
       body.append(h("h2", null, u.t("theme.reach")));
-      body.append(h("div", { class: "chips" }, cross.slice(0, 5).map((c) => {
+      body.append(h("div", { class: "chips" }, cross.map((c) => {
         const t = app.byId.get("th:" + c.theme);
-        return h("button", { type: "button", class: "chip ro sm", onclick: () => app.select(t.id), title: u.t("theme.reach_tip", { n: c.count }) }, h("i", { class: "dot", style: { "--c": app.colorOf(t.id) } }), t.label + " ", h("span", { class: "n" }, c.count));
+        return h("button", { type: "button", class: "chip ro sm", onclick: () => app.select(t.id), title: u.t("theme.reach_tip", { n: c.count }) }, h("i", { class: "dot", style: { "--c": app.colorOf(t.id) } }), t.label);
       })));
     }
     const walks = app.walksThrough(n.n);
@@ -196,14 +195,11 @@
         h("div", { class: "rt" }, h("span", null, w.title), h("span", { class: "ty faint" }, u.t("walks.stops", { n: w.steps.length }))))));
     }
     const exs = [...new Set(ts.flatMap((t) => app.exOf(t.id)))];
-    body.append(h("h2", null, u.t("ground.title")));
-    body.append(examplesLine(app, exs, null));
-    const tc = {};
-    for (const t of ts) for (const tg of t.tags) tc[tg] = (tc[tg] || 0) + 1;
-    const top = Object.entries(tc).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 9);
-    body.append(h("h2", null, u.t("theme.tags")));
-    body.append(h("div", { class: "chips" }, top.map(([tg, c]) => h("button", { type: "button", class: "chip sm ro", onclick: () => app.select(tg), title: app.byId.get(tg).def }, h("i", { class: "dot", style: { "--c": FACET_COLOR[app.byId.get(tg).facet] } }), app.byId.get(tg).label + " ", h("span", { class: "n" }, c)))));
-    body.append(conf(app));
+    if (exs.length) {
+      body.append(h("h2", null, u.t("ground.title")));
+      body.append(examplesLine(app, exs, null));
+    }
+    foot(body, app, n);
     return { crumb: h("a", { href: "#arc:" + arc.id, onclick: (e) => { e.preventDefault(); app.select("arc:" + arc.id); } }, u.t("theme.crumb", { label: arc.label })), body };
   }
 
@@ -234,19 +230,64 @@
       body.append(h("div", { class: "chips books" }, n.books.map((b) => nodeLink(app, b, app.byId.get(b).label))));
     }
     body.append(h("p", { class: "md", style: { marginTop: "16px" } }, h("a", { class: "ext", href: u.t("links.bookshelf"), target: "_blank", rel: "noopener noreferrer" }, u.t("arc.shelf_link"))));
-    body.append(conf(app));
+    foot(body, app, n);
     return { crumb: h("span", null, u.t("arc.crumb")), body };
   }
 
   /* ---------------------------------------------------------------- centre */
+  // the magic 8 ball, as a way in: a question or an answer from somewhere on the map, a new one each time
+  function askPool(app) {
+    const Q = [], A = [];
+    for (const t of app.topics) if (/\?\s*$/.test(t.text)) Q.push({ text: t.text, from: t.label, id: t.id });
+    for (const d of app.D.nodes) if (d.kind === "discussion") for (const q of d.questions || []) Q.push({ text: q, from: d.label, id: d.id });
+    for (const th of app.D.nodes) if (th.kind === "theme" && th.future && th.future.text) A.push({ text: th.future.text, from: th.label, id: th.id });
+    for (const w of app.D.threads) A.push({ text: w.soWhat, from: w.title, walk: w.id });
+    return { Q, A };
+  }
+  function askCard(app) {
+    const { Q, A } = askPool(app), ball = h("span", { class: "ask-ball", "aria-hidden": "true" }), kind = h("span", { class: "ask-k" }), text = h("p", { class: "ask-text" });
+    const from = h("button", { type: "button", class: "btn sm ask-from" }), again = h("button", { type: "button", class: "btn sm ask-again", onclick: () => roll() }, u.t("center.ask_again"));
+    const card = h("section", { class: "ask", "aria-live": "polite" }, ball, kind, again, text, from);
+    let last = null;
+    function roll() {
+      const isQ = Math.random() < 0.5, list = isQ ? Q : A;
+      let x = list[Math.floor(Math.random() * list.length)];
+      if (x === last) x = list[(list.indexOf(x) + 1) % list.length];
+      last = x;
+      ball.textContent = isQ ? "Q" : "A";
+      kind.textContent = isQ ? u.t("center.ask_q") : u.t("center.ask_a");
+      text.textContent = x.text;
+      from.textContent = u.t("center.ask_from", { label: x.from });
+      from.onclick = () => (x.walk ? app.startThread(x.walk) : app.select(x.id));
+      card.classList.remove("shake"); void card.offsetWidth; card.classList.add("shake");
+    }
+    roll();
+    return card;
+  }
+  // what the map does not hold yet, worked out from the map itself
+  function gaps(app) {
+    const open = app.topics.filter((t) => t.open), nodes = app.D.nodes;
+    const quiet = nodes.filter((d) => d.kind === "discussion" && !d.proposed && !d.notes);
+    const empty = nodes.filter((t) => t.kind === "theme" && !t.topics.some((id) => app.byId.get(id).sources.some((s) => app.byId.get(s).notes)));
+    const sec = h("section", { class: "gaps" }, h("h2", null, u.t("center.gaps")));
+    if (open.length) sec.append(h("p", { class: "md" }, u.t("center.gaps_open", { n: open.length })), h("div", { class: "chips" }, open.map((t) => nodeLink(app, t.id))));
+    if (quiet.length) sec.append(h("p", { class: "md" }, u.t("center.gaps_notes", { n: quiet.length })), h("div", { class: "chips" }, quiet.map((d) => nodeLink(app, d.id))));
+    for (const t of empty) sec.append(h("p", { class: "md" }, u.t("center.gaps_theme", { label: t.label })));
+    sec.append(h("p", { class: "md" }, ...u.inline(u.t("center.gaps_add"))));
+    return sec;
+  }
   function center(app, n) {
     const body = h("div");
     body.append(h("span", { class: "kind", style: { "--c": "#C9963F" } }, h("i"), u.t("center.kind")));
     body.append(h("h1", { class: "q-title" }, n.question));
     body.append(h("p", { class: "cite" }, h("a", { class: "ext", href: n.citation.url, target: "_blank", rel: "noopener noreferrer" }, n.citation.text)));
+    body.append(askCard(app));
     put(body, future(app, n.answer, u.t("center.answer"), "centre:answer"));
     body.append(h("h2", null, u.t("center.howto")));
     body.append(h("ul", { class: "howto" }, u.t("center.howto_items").map((t) => h("li", null, ...u.inline(t)))));
+    body.append(h("h2", null, u.t("center.words")));
+    body.append(h("ul", { class: "howto" }, u.t("center.words_items").map((t) => h("li", null, ...u.inline(t)))));
+    body.append(gaps(app));
     body.append(h("h2", null, u.t("center.values")));
     body.append(h("p", { class: "md faint", style: { margin: "0 0 10px", fontSize: "13.5px" } }, n.valuesIntro));
     const grid = h("div", { class: "value-grid" });
@@ -257,7 +298,9 @@
     body.append(grid);
     body.append(h("h2", null, u.t("center.walks")));
     for (const th of app.D.threads) body.append(h("button", { type: "button", class: "rel-item", onclick: () => app.startThread(th.id) }, h("div", { class: "rt" }, h("i", { style: { "--c": app.D.lenses.value.values[th.value].color } }), h("span", null, th.title), h("span", { class: "ty faint" }, u.t("walks.stops", { n: th.steps.length }))), h("p", { class: "why" }, th.intro.split(". ")[0] + ".")));
-    body.append(conf(app));
+    body.append(h("h2", null, u.t("center.conflicts")));
+    body.append(ed(h("p", { class: "md" }, u.t("about.conflicts")), "copy:about.conflicts", { inline: true }));
+    foot(body, app, n);
     return { crumb: h("span", null, u.t("center.crumb")), body };
   }
 
@@ -267,13 +310,12 @@
     body.append(h("span", { class: "kind", style: { "--c": "#666666" } }, h("i"), n.proposed ? u.t("disc.kind_proposed") : u.t("disc.kind")));
     body.append(ed(h("h1", null, n.label), "disc:" + n.id + ":label"));
     body.append(h("div", { class: "chips", style: { marginBottom: "6px" } }, sessionMeta(app, n).map((x) => h("span", { class: "chip sm static" + (x.className.includes("proposed") ? " dashed" : "") }, x.textContent))));
-    put(body, metaLine(app, n.wg, [], []));
     const d = discBody(app, n);
     d.style.padding = "0"; d.style.border = "0";
     body.append(d);
     body.append(h("h2", null, u.t("disc.feeds")));
     body.append(h("div", { class: "chips" }, n.topics.map((t) => nodeLink(app, t))));
-    body.append(conf(app));
+    foot(body, app, n);
     return { crumb: h("span", null, n.proposed ? u.t("disc.crumb_proposed") : u.t("disc.crumb")), body };
   }
 
@@ -301,7 +343,7 @@
       body.append(h("h2", null, u.t("tag.often")));
       body.append(h("div", { class: "chips" }, top.map(([tg, c]) => h("button", { type: "button", class: "chip sm ro", onclick: () => app.select(tg) }, h("i", { class: "dot", style: { "--c": FACET_COLOR[app.byId.get(tg).facet] } }), app.byId.get(tg).label + " ", h("span", { class: "n" }, c)))));
     }
-    body.append(conf(app));
+    foot(body, app, n);
     return { crumb: h("span", null, u.t("tag.crumb", { facet: f.label, question: f.question })), body };
   }
 
@@ -314,7 +356,7 @@
     body.append(h("p", { class: "md" }, u.t("book.shelf") + " ", h("em", null, n.shelf), ". ", h("a", { class: "ext", href: u.t("links.bookshelf"), target: "_blank", rel: "noopener noreferrer" }, u.t("book.link"))));
     body.append(h("h2", null, u.t("book.alongside")));
     body.append(h("div", { class: "chips" }, n.topics.map((t) => nodeLink(app, t))));
-    body.append(conf(app));
+    foot(body, app, n);
     return { crumb: h("span", null, u.t("book.crumb")), body };
   }
 
@@ -336,7 +378,7 @@
         h("p", { class: "why" }, t.text)));
     });
     body.append(n.review && RM.review ? RM.review.exampleFooter(app, n) || h("span") : h("p", { class: "cite" }, u.t("example.checked")));
-    body.append(conf(app));
+    foot(body, app, n);
     return { crumb: h("span", null, u.t("example.crumb")), body };
   }
 
@@ -345,7 +387,7 @@
     const body = h("div");
     body.append(h("h1", null, n.label || n.id));
     if (n.topics && n.topics.length) body.append(h("div", { class: "chips" }, n.topics.map((t) => nodeLink(app, t))));
-    body.append(conf(app));
+    foot(body, app, n);
     return { crumb: h("span", null, u.t("note.label")), body };
   }
 

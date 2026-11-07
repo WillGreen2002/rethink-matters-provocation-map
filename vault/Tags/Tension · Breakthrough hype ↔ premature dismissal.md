@@ -9,7 +9,7 @@ Poles: **Breakthrough hype** ↔ **Premature dismissal**
 
 Used by 4 topics across 3 themes:
 
-- [[AI meets biological constraints]]
+- [[AI and biological constraints]]
 - [[Lessons from ventures]]
 - [[Hype vs evidence]]
 - [[Chronic bioelectrodes]]

@@ -26,7 +26,7 @@ tags:
 
 ## Linked ideas
 
-- *echoes* → [[Societal inertia]]: 'We don't need more solutions' and 'do we need more materials?' are the same argument: the bottleneck may be implementation and reuse, not discovery.
+- *echoes* → [[Societal inertia]]: Do we need more solutions? Do we need more materials? Both ask whether the bottleneck is discovery, or implementation and reuse.
 - *echoes* → [[Survive use, degrade after]]: Every new material creates a future end-of-life problem; designing reliable degradation or collection is the other half of discovery.
 - via #barrier/adoption-inertia, #tension/invent-vs-implement → [[Theory of change]]
 - via #concept/circularity, #concept/degradation → [[When to let materials die]]

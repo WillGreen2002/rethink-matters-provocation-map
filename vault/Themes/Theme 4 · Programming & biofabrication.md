@@ -13,13 +13,13 @@ A future where biological materials are both printed and grown, the balance of i
 
 *Draft, written from the group's prompts and anonymised notes, for Rethink Matters to rewrite.*
 
-Drawn from: [[Printing meets growth]], [[Signalling & crosstalk]], [[Fabrication readiness]], [[Patterning to organs]]
+Drawn from: [[Printing and growth]], [[Signalling & crosstalk]], [[Fabrication readiness]], [[Patterning to organs]]
 
 ## Prompts
 
 - [[Patterning to organs]]
 - [[Signalling & crosstalk]]
-- [[Printing meets growth]]
+- [[Printing and growth]]
 - [[Fabrication readiness]]
 - [[Programmable biopolymers]]
-- [[Non-canonical amino acids]]
+- [[Current tech & manufacturing]]

@@ -15,7 +15,7 @@ tags:
   - concept/variability
   - method/machine-learning
 ---
-# Printing meets growth
+# Printing and growth
 
 > Combining printing and machine-imposed constraints with growth and guided morphogenesis.
 

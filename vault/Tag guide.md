@@ -14,7 +14,7 @@ The group's own Micro / Meso / Macro format (sign-up sheet 'Read me').
 
 ### Working group (`wg/…`): Which working group would carry this forward?
 
-The 'Relevant working group' column of the sign-up sheets. Where a session recorded no group, the map proposes one (shown dashed).
+The 'Relevant working group' column of the sign-up sheets. Where a session recorded no group, the map proposes one.
 
 - `wg/wg1` **WG1 · Prediction, knowledge & metrics**: Models, data, definitions and the metrics needed to know what a biomaterial does.
 - `wg/wg2` **WG2 · Utopian to utilisation & socioeconomic application**: From speculative aims to real use: economics, society, ethics, adoption.
@@ -55,24 +55,24 @@ The debates the group keeps returning to. A topic carries a tension tag when it 
 - [[Tension · Private ownership ↔ common good|Private ownership ↔ common good]]: 7 topics · 4 themes
 - [[Tension · Open access ↔ safety & misuse|Open access ↔ safety & misuse]]: 4 topics · 2 themes
 - [[Tension · Human benefit ↔ duties to other life|Human benefit ↔ duties to other life]]: 3 topics · 2 themes
-- [[Tension · General & portable ↔ specific & contextual|General & portable ↔ specific & contextual]]: 9 topics · 5 themes
+- [[Tension · General & portable ↔ specific & contextual|General & portable ↔ specific & contextual]]: 7 topics · 5 themes
 - [[Tension · Living & maintained ↔ inert & finished|Living & maintained ↔ inert & finished]]: 4 topics · 2 themes
-- [[Tension · Derisk once & reuse ↔ approve case by case|Derisk once & reuse ↔ approve case by case]]: 4 topics · 2 themes
-- [[Tension · Near-term utility ↔ long-term & speculative|Near-term utility ↔ long-term & speculative]]: 8 topics · 4 themes
+- [[Tension · Reuse a proven platform ↔ approve case by case|Reuse a proven platform ↔ approve case by case]]: 2 topics · 2 themes
+- [[Tension · Near-term utility ↔ long-term & speculative|Near-term utility ↔ long-term & speculative]]: 9 topics · 4 themes
 
 ### Concepts: Which phenomenon or principle is at work?
 
 The recurring ideas (emergence, gradients, variability, degradation) that let a result in one setting inform another.
 
-- [[Concept · Emergence|Emergence]]: 6 topics · 4 themes
-- [[Concept · Hierarchy & modularity|Hierarchy & modularity]]: 5 topics · 3 themes
+- [[Concept · Emergence|Emergence]]: 5 topics · 3 themes
+- [[Concept · Hierarchy & modularity|Hierarchy & modularity]]: 4 topics · 2 themes
 - [[Concept · Gradients|Gradients]]: 3 topics · 3 themes
 - [[Concept · Self-assembly & morphogenesis|Self-assembly & morphogenesis]]: 6 topics · 4 themes
 - [[Concept · Spatial patterning|Spatial patterning]]: 6 topics · 3 themes
 - [[Concept · Sensing, repair & adaptation|Sensing, repair & adaptation]]: 9 topics · 6 themes
 - [[Concept · Signalling & circuits|Signalling & circuits]]: 3 topics · 3 themes
-- [[Concept · Programmable matter|Programmable matter]]: 5 topics · 3 themes
-- [[Concept · New-to-nature chemistry|New-to-nature chemistry]]: 5 topics · 3 themes
+- [[Concept · Programmable matter|Programmable matter]]: 4 topics · 3 themes
+- [[Concept · New-to-nature chemistry|New-to-nature chemistry]]: 4 topics · 3 themes
 - [[Concept · Water & hydration|Water & hydration]]: 5 topics · 4 themes
 - [[Concept · Variability & reproducibility|Variability & reproducibility]]: 4 topics · 3 themes
 - [[Concept · Degradation & durability|Degradation & durability]]: 6 topics · 4 themes
@@ -86,11 +86,11 @@ The recurring ideas (emergence, gradients, variability, degradation) that let a 
 
 The kinds of obstacle that recur across themes: missing data, missing vocabulary, unit economics, regulation, adoption, safety.
 
-- [[Barrier · Data gaps & readouts|Data gaps & readouts]]: 14 topics · 4 themes
+- [[Barrier · Data gaps & readouts|Data gaps & readouts]]: 13 topics · 4 themes
 - [[Barrier · Definitions & shared language|Definitions & shared language]]: 12 topics · 6 themes
 - [[Barrier · Unit economics|Unit economics]]: 8 topics · 3 themes
-- [[Barrier · Scale-up & infrastructure|Scale-up & infrastructure]]: 9 topics · 5 themes
-- [[Barrier · Regulation & long-term evidence|Regulation & long-term evidence]]: 12 topics · 5 themes
+- [[Barrier · Scale-up & infrastructure|Scale-up & infrastructure]]: 10 topics · 5 themes
+- [[Barrier · Regulation & long-term evidence|Regulation & long-term evidence]]: 10 topics · 5 themes
 - [[Barrier · Adoption & inertia|Adoption & inertia]]: 4 topics · 3 themes
 - [[Barrier · Funding & incentives|Funding & incentives]]: 7 topics · 5 themes
 - [[Barrier · Safety, security & misuse|Safety, security & misuse]]: 4 topics · 2 themes
@@ -100,13 +100,13 @@ The kinds of obstacle that recur across themes: missing data, missing vocabulary
 Where the work lands: cellulose and wood, proteins, textiles, clinical use, marine environments…
 
 - [[Domain · Cellulose & wood|Cellulose & wood]]: 6 topics · 4 themes
-- [[Domain · Proteins & peptides|Proteins & peptides]]: 10 topics · 5 themes
-- [[Domain · DNA & nucleic acids|DNA & nucleic acids]]: 6 topics · 4 themes
+- [[Domain · Proteins & peptides|Proteins & peptides]]: 9 topics · 5 themes
+- [[Domain · DNA & nucleic acids|DNA & nucleic acids]]: 4 topics · 4 themes
 - [[Domain · Textiles & fashion|Textiles & fashion]]: 5 topics · 3 themes
 - [[Domain · Construction & minerals|Construction & minerals]]: 5 topics · 4 themes
-- [[Domain · Medical & clinical|Medical & clinical]]: 13 topics · 5 themes
+- [[Domain · Medical & clinical|Medical & clinical]]: 11 topics · 5 themes
 - [[Domain · Engineered cells & hosts|Engineered cells & hosts]]: 8 topics · 6 themes
-- [[Domain · Living materials|Living materials]]: 5 topics · 3 themes
+- [[Domain · Living materials|Living materials]]: 4 topics · 2 themes
 - [[Domain · Marine & ocean|Marine & ocean]]: 8 topics · 3 themes
 - [[Domain · Waste & feedstocks|Waste & feedstocks]]: 5 topics · 2 themes
 
@@ -115,6 +115,6 @@ Where the work lands: cellulose and wood, proteins, textiles, clinical use, mari
 The enabling toolbox: machine learning, biofabrication, screening and directed evolution.
 
 - [[Method · Modelling & AI|Modelling & AI]]: 10 topics · 5 themes
-- [[Method · Printing & biofabrication|Printing & biofabrication]]: 5 topics · 3 themes
+- [[Method · Printing & biofabrication|Printing & biofabrication]]: 6 topics · 3 themes
 - [[Method · Life-cycle & techno-economic analysis|Life-cycle & techno-economic analysis]]: 5 topics · 2 themes
 

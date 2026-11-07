@@ -10,6 +10,6 @@ Used by 6 topics across 4 themes:
 - [[Material 'intelligence']]
 - [[Portable design principles]]
 - [[Engineering a tree]]
-- [[Printing meets growth]]
+- [[Printing and growth]]
 - [[Fabrication readiness]]
 - [[Seabed structures & farms]]

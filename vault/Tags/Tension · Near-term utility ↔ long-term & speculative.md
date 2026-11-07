@@ -7,12 +7,13 @@ Market-ready use versus early-stage, blue-sky or speculative research and future
 
 Poles: **Near-term utility** ↔ **Long-term & speculative**
 
-Used by 8 topics across 4 themes:
+Used by 9 topics across 4 themes:
 
 - [[Classifying materials]]
 - [[Unexplored biological features]]
 - [[Patterning to organs]]
 - [[Fabrication readiness]]
+- [[Current tech & manufacturing]]
 - [[Underwater or space first]]
 - [[Ocean as factory]]
 - [[Seabed structures & farms]]

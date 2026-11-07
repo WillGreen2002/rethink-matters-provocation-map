@@ -11,4 +11,4 @@ Used by 3 topics across 2 themes:
 
 - [[World models & inverse design]]
 - [[Patterning to organs]]
-- [[Printing meets growth]]
+- [[Printing and growth]]

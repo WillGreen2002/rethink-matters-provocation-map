@@ -17,7 +17,7 @@ tags:
 
 > Will humanity establish feasible habitats underwater or in space first, and what resources will be necessary?
 
-**Theme:** [[Theme 6 · Ocean & extreme environments]]  
+**Theme:** [[Theme 6 · Extreme & constrained environments]]  
 **Scale:** macro · **Working group:** WG3 · **Pillar:** climate, translation · **Value:** sustainability
 
 ## Discussions behind this
@@ -33,6 +33,7 @@ tags:
 - via #domain/marine-and-ocean, #tension/near-vs-far → [[Living interfaces]]
 - via #concept/ecosystems, #domain/marine-and-ocean → [[Salt tolerance & ecosystems]]
 - via #barrier/scale-up, #tension/near-vs-far → [[Fabrication readiness]]
+- via #barrier/scale-up, #tension/near-vs-far → [[Current tech & manufacturing]]
 - via #concept/care-and-maintenance, #concept/ecosystems → [[Duties to organisms]]
 - via #tension/near-vs-far → [[Classifying materials]]
 - via #tension/near-vs-far → [[Unexplored biological features]]

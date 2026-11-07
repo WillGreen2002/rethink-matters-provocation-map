@@ -26,7 +26,7 @@ tags:
 ## Linked ideas
 
 - *echoes* → [[Lessons from ventures]]: Investor expectations and sustainability claims feed the same breakthrough-versus-hype cycle that surrounds any bold result.
-- *echoes* → [[AI meets biological constraints]]: A single percentage point of benchmark error can separate a working drug from a failed one: claims need real-world evidence, whether they come from an AI model or an 'artificial cell'.
+- *echoes* → [[AI and biological constraints]]: A single percentage point of benchmark error can separate a working drug from a failed one: claims need real-world evidence, whether they come from an AI model or an 'artificial cell'.
 - *echoes* → [[Chronic bioelectrodes]]: The same discipline of evidence in a different field: is the conductive-polymer route to chronic bioelectrodes overhyped, and what long-term data would settle it?
 - via #barrier/funding-and-incentives, #barrier/shared-language → [[Public datasets]]
 - via #barrier/shared-language, #domain/engineered-cells → [[Classifying materials]]

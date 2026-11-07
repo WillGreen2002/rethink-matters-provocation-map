@@ -12,4 +12,4 @@ Used by 6 topics across 3 themes:
 - [[World models & inverse design]]
 - [[Patterning to organs]]
 - [[Signalling & crosstalk]]
-- [[Printing meets growth]]
+- [[Printing and growth]]

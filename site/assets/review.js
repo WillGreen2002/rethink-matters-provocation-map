@@ -105,7 +105,7 @@
   }
 
   /* ------------------------------------------------------------------ what the log of changes adds up to */
-  const EDIT = /^(theme:th:\d+:(title|lead|future)|centre:answer|prompt:n:[a-z0-9-]+:(label|text)|disc:d:[a-z0-9-]+:(label|notes)|copy:(levels\.(landscape|regime|niche)\.explain|hero\.lede))$/;
+  const EDIT = /^(theme:th:\d+:(title|lead|future)|centre:answer|prompt:n:[a-z0-9-]+:(label|text)|disc:d:[a-z0-9-]+:(label|notes)|copy:(levels\.(landscape|regime|niche)\.explain|hero\.lede|about\.conflicts))$/;
   const LABEL = /^(prompt:n:[a-z0-9-]+:label|disc:d:[a-z0-9-]+:label)$/;   // names drawn on the map itself
   const S = { cfg: null, be: null, log: [], pending: [], edits: new Map(), adds: new Map(), frozen: null, base: new Map(), synced: 0, error: null,
     booted: false, editing: false, later: false };
@@ -141,7 +141,7 @@
     if (key === "centre:answer") { const c = node("c"); return c && c.answer ? [c.answer, "text"] : null; }
     if ((m = /^prompt:(n:[a-z0-9-]+):(label|text)$/.exec(key))) { const n = node(m[1]); return n && n.kind === "topic" ? [n, m[2]] : null; }
     if ((m = /^disc:(d:[a-z0-9-]+):(label|notes)$/.exec(key))) { const n = node(m[1]); return n && n.kind === "discussion" ? [n, m[2]] : null; }
-    if ((m = /^copy:(levels\.(landscape|regime|niche)\.explain|hero\.lede)$/.exec(key))) { const p = m[1].split("."), o = p.slice(0, -1).reduce((x, k) => (x ? x[k] : null), D.copy); return o ? [o, p[p.length - 1]] : null; }
+    if ((m = /^copy:(levels\.(landscape|regime|niche)\.explain|hero\.lede|about\.conflicts)$/.exec(key))) { const p = m[1].split("."), o = p.slice(0, -1).reduce((x, k) => (x ? x[k] : null), D.copy); return o ? [o, p[p.length - 1]] : null; }
     return null;
   }
   const current = (key) => { const s = slot(key); return s ? s[0][s[1]] || "" : ""; };
@@ -196,11 +196,11 @@
     return S.be.load().then((rows) => {
       const before = S.log.length;
       // changes made elsewhere: new rows that are not this browser's own, just confirmed
-      const theirs = rows.slice(before).filter((r) => r.action !== "ping" && !S.pending.some((p) => same(r, p))).length;
+      const theirs = rows.slice(before).filter((r) => r.action !== "ping" && r.action !== "thought" && !S.pending.some((p) => same(r, p))).length;
       S.log = rows; S.synced = Date.now(); S.error = null;
       S.pending = S.pending.filter((p) => !rows.some((r) => same(r, p)));
       derive(); const labels = applyEdits(); applyAdds();
-      if (S.booted && rows.length !== before) { refresh(labels); if (before && theirs) toast(theirs === 1 ? t("review.status.new_one") : t("review.status.new", { n: theirs })); }
+      if (S.booted && (rows.length !== before || S.later)) { refresh(labels); if (before && theirs) toast(theirs === 1 ? t("review.status.new_one") : t("review.status.new", { n: theirs })); }
       else renderBar();
     }, () => { S.error = t("review.status.offline"); renderBar(); }).then(() => { syncing = false; });
   }
@@ -208,9 +208,11 @@
   function refresh(labels) {
     if (!S.booted) return;
     renderBar();
-    const ae = document.activeElement;
-    if (ae && ae.classList && ae.classList.contains("rv-field")) { if (labels) S.later = "maps"; else S.later = S.later || "note"; return; }
-    if (RM.app && RM.app.refresh) RM.app.refresh({ maps: !!labels });
+    const ae = document.activeElement, draft = document.querySelector("body.right-open .th-in");
+    if ((ae && ae.classList && ae.classList.contains("rv-field")) || (draft && (ae === draft || draft.value.trim()))) { S.later = labels || S.later === "maps" ? "maps" : "note"; return; }
+    const maps = !!labels || S.later === "maps";
+    S.later = false;
+    if (RM.app && RM.app.refresh) RM.app.refresh({ maps });
   }
 
   /* ------------------------------------------------------------------ the header: the Edit switch, and the review's state */
@@ -250,6 +252,8 @@
   function toast(msg) {
     const el = h("div", { class: "rv-toast", role: "status" }, msg);
     document.body.append(el);
+    const live = document.getElementById("live");   // the toast's own role is often missed, and focus may be moving
+    if (live) setTimeout(() => { live.textContent = msg; }, 200);
     setTimeout(() => el.classList.add("out"), 3000);
     setTimeout(() => el.remove(), 3600);
   }
@@ -307,7 +311,8 @@
     field.dataset.editKey = key;
     let before = null;
     const value = () => tidy(field.innerText);
-    field.addEventListener("focus", () => { before = value(); field.classList.add("on"); });
+    const held = !opts.md && !current(key), wording = held ? field.textContent : "";   // (a text still to be written: its wording is only a placeholder)
+    field.addEventListener("focus", () => { if (held && !current(key)) field.textContent = ""; before = value(); field.classList.add("on"); });
     field.addEventListener("keydown", (e) => {
       if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); field.textContent = opts.md ? current(key) : before; before = null; field.blur(); return; }
       if (e.key === "Enter" && (!opts.md || e.ctrlKey || e.metaKey)) { e.preventDefault(); field.blur(); }   // one-paragraph texts: Enter saves
@@ -321,7 +326,8 @@
         else send({ action: "edit", key, text });
       }
       before = null;
-      if (S.later) { const maps = S.later === "maps"; S.later = false; setTimeout(() => { if (RM.app) RM.app.refresh({ maps }); }, 0); }
+      if (held && !value()) field.textContent = wording;
+      if (S.later) setTimeout(() => refresh(false), 0);
     });
     const list = S.edits.get(key) || [];
     const meta = h("div", { class: "rv-meta" });
@@ -334,7 +340,7 @@
     const list = (S.edits.get(key) || []).slice().reverse();
     const item = (text, by, isNow) => h("li", { class: isNow ? "now" : "" },
       h("div", { class: "rv-h-by" }, by), opts.md ? u.md(text) : h("p", null, text),
-      isNow || frozen() ? null : h("button", { type: "button", class: "btn sm", onclick: () => { close(); send({ action: "edit", key, text }); } }, t("review.use_version")));
+      isNow || frozen() || (!text && !opts.md) ? null : h("button", { type: "button", class: "btn sm", onclick: () => { close(); send({ action: "edit", key, text }); } }, t("review.use_version")));
     const close = modal(t("review.history_title"), h("ol", { class: "rv-versions" },
       list.map((r, i) => item(r.text, t("review.edited", { who: r.who || t("review.someone"), when: when(r.at) }), i === 0)),
       item(S.base.get(key) || "", t("review.original"), !list.length)));
@@ -456,7 +462,8 @@
   if (!S.cfg) { startMap(); return; }   // no edit link: the public map, exactly as published
   S.be = backend(S.cfg);
   registerTypes();
-  RM.review = { editable, contributions, exampleFooter, editing: () => S.editing, frozen };
+  RM.review = { editable, contributions, exampleFooter, editing: () => S.editing, frozen,
+    sendThought: (id, text) => { send({ action: "thought", key: id, text: tidy(text) }); toast(t("thoughts.sent")); } };
   // the map waits a few seconds for the Sheet, so that it starts with the committee's latest text; if the Sheet cannot be reached,
   // it starts with the published text and says so
   let started = false;

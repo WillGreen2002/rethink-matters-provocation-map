@@ -10,10 +10,10 @@
   tags: [barrier/funding-and-incentives, tension/private-vs-common, barrier/regulation-and-evidence, tension/platform-vs-bespoke, domain/medical-and-clinical, domain/dna-and-nucleic-acids, concept/true-cost]
   sources: []
   reading: []
-  links:
-    - { to: derisk-gene-delivery-once, type: extends, why: "If a platform can be derisked once, the funding question changes: the cost of proving safety is shared across every disease it later serves." }
+  links: []
 
 - id: derisk-gene-delivery-once
+  cut: "the committee's review: overlaps and confuses"
   theme: 7
   match: "Should a living therapeutic material platform"
   label: "Derisk once: gene delivery"
@@ -28,6 +28,7 @@
     - { to: derisk-synthesis-platform, type: extends, why: "The same idea one level up: derisk the whole synthesis platform, not just the delivery vehicle." }
 
 - id: derisk-synthesis-platform
+  cut: "the committee's review: overlaps and confuses"
   theme: 7
   match: "Can a genetic medicine synthesis platform be derisked"
   override_text: "Can a genetic medicine synthesis platform be derisked once and reused for all materials? (prompted by a recent talk)"
@@ -107,10 +108,14 @@
   value: []
   tags: [domain/medical-and-clinical, tension/niche-vs-bulk, concept/new-to-nature, method/biofabrication, domain/proteins-and-peptides, concept/hydration]
   sources: [micro-vs-bulk, ncaa-expanding-chemistry]
+  source_why:   # the committee could not see why these two, from other themes, sit here
+    micro-vs-bulk: "Surgical scaffolds and medical nanoparticles are among its examples of where micro-scale precision is essential."
+    ncaa-expanding-chemistry: "Surgical glues are its example, where peptide wet-adhesives with non-canonical amino acids could replace cyanoacrylate."
   reading: [tissue-engineering]
   links: []
 
 - id: expansion-microscopy
+  cut: "the committee's review"
   theme: 7
   match: "Expansion microscopy"
   label: "Expansion microscopy"

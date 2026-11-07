@@ -71,12 +71,13 @@
           onclick: (e) => (mb.down ? RM.press(e, () => cb.select && cb.select(mb.id), () => cb.drill && cb.drill(mb.id)) : cb.select && cb.select(mb.id)) },
           mb.shape ? h("i", { class: "shape shape-" + mb.shape, "aria-hidden": "true" }) : null,
           mb.kicker ? h("span", { class: "fm-kicker" }, mb.kicker) : null,
-          h("span", { class: "fm-label" }, mb.label));
+          h("span", { class: "fm-label" }, mb.label),
+          mb.open ? h("span", { class: "sr-only" }, " (" + mb.open + ")") : null);
         // (the list's way down; the ring has none: a double click, or Go down in the prompt's note)
         const down = mb.down ? h("button", { class: "fm-down", type: "button", "aria-label": mb.down.aria, title: mb.down.aria, onclick: () => cb.drill && cb.drill(mb.id) },
           h("span", { "aria-hidden": "true" }, "↓")) : null;
         const badge = h("span", { class: "fm-badge", "aria-hidden": "true" });
-        const item = h("div", { class: "fm-member k-" + mb.kind, style: { "--c": mb.color, "--c2": mb.color2 || "transparent", "--i": i + 1 }, "data-id": mb.id }, node, down, badge);
+        const item = h("div", { class: "fm-member k-" + mb.kind + (mb.open ? " is-open" : ""), style: { "--c": mb.color, "--c2": mb.color2 || "transparent", "--i": i + 1 }, "data-id": mb.id }, node, down, badge);
         this.bindHover(node, mb.id);
         if (down) this.bindHover(down, mb.id);
         return { mb, item, node, down, badge };

@@ -9,7 +9,7 @@ Part of [[00 A world we want to live in|A world we want to live in]] · chapter:
 
 ## A future we'd want
 
-A future where medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response, dressing signals are reliable enough to read, and the role of clinical judgement and the funding of genetic medicines without a market are decided openly.
+A future where medical biomaterials come with long-term evidence of safety. Wound dressings that change colour warn of infection clearly and reliably. Two questions stay open: what role clinicians keep, and who should fund genetic medicines with no market.
 
 *Draft, written from the group's prompts and anonymised notes, for Rethink Matters to rewrite.*
 
@@ -18,11 +18,8 @@ Drawn from: [[Chronic bioelectrodes]], [[Designed-peptide risks]], [[Scaffolds, 
 ## Prompts
 
 - [[Funding platform medicines]]
-- [[Derisk once gene delivery]]
-- [[Derisk once synthesis platform]]
 - [[Infection-sensing dressings]]
 - [[Who benefits Wounds & clinicians]]
 - [[Chronic bioelectrodes]]
 - [[Designed-peptide risks]]
 - [[Scaffolds, nanoparticles & adhesives]]
-- [[Expansion microscopy]]

@@ -100,7 +100,7 @@
     - { topic: biobased-vs-biomaterial, text: "One word, three meanings: function, interaction, origin." }
     - { topic: classifying-materials, text: "Classify by application, composition, properties or level of biological control?" }
     - { topic: shared-language, text: "A portable vocabulary across biology, materials science, engineering and design." }
-    - { topic: non-canonical-amino-acids, text: "At the molecular scale there is no common vocabulary between those who build biological tools, those who formulate with them and those who must certify them." }
+    - { topic: programmable-biopolymers, text: "At the molecular scale there is no common vocabulary between those who build biological tools, those who formulate with them and those who must certify them." }
     - { topic: standardising-dynamic-properties, text: "Standardising sensing, repair and adaptation means agreeing which parameters are shared." }
     - { topic: public-datasets, text: "…which a public dataset can then record, so that results become comparable." }
   so_what: "Shared language is the quiet infrastructure of every other conversation on this map."

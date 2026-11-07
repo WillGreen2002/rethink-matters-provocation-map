@@ -27,7 +27,7 @@ tags: [discussion, aired, scale/macro]
 
 **Concluding thoughts**
 - “Bio”, “materials” and “good” are all contested terms; the prompt exposes differences between disciplines.
-- For science, “good” was framed as (money >) human health > environment.
+- The underlying assumption is that money > human health > environment.
 - A sense that “good” is unattainable at industrial scale: any process, however much better than the alternative, creates knock-on effects and new patterns of resource use (for example, effluent treatment around a large fermentation-based food plant).
 
 ## References

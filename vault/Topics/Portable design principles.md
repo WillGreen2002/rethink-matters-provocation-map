@@ -32,17 +32,17 @@ tags:
 - *enables* → [[A shared language]]: Principles only transfer if they are written down in a portable form: 'abstract enough to transfer, precise enough to design with'.
 - *extends* → [[Unexplored biological features]]: Mapping which features have and have not been reproduced is the empirical side of working out which principles are really portable.
 - *tension* → [[IP & biological design]]: Can a design principle found in nature be owned? IP over biological design sits uneasily with the aim of extracting portable, shared principles from biology.
-- *tension* → [[Printing meets growth]]: Self-assembly supplies hierarchy and emergence; machines supply control. Extracting a principle rather than copying a structure points towards designing initial conditions and constraints instead of final form.
+- *tension* → [[Printing and growth]]: Self-assembly supplies hierarchy and emergence; machines supply control. Extracting a principle rather than copying a structure points towards designing initial conditions and constraints instead of final form.
 - via #concept/hierarchy, #concept/self-assembly, #tension/copy-vs-principles → [[Engineering a tree]]
 - via #barrier/shared-language, #concept/dynamic-function, #tension/general-vs-specific → [[Standardising dynamic properties]]
 - via #concept/hierarchy, #tension/copy-vs-principles → [[Gradients as design]]
 - via #barrier/shared-language, #concept/dynamic-function, #concept/self-assembly → [[Material 'intelligence']]
 - via #concept/dynamic-function, #tension/general-vs-specific → [[Infection-sensing dressings]]
-- via #concept/ecosystems, #concept/self-assembly → [[Seabed structures & farms]]
 - via #barrier/shared-language, #tension/general-vs-specific → [[Classifying materials]]
+- via #concept/ecosystems, #concept/self-assembly → [[Seabed structures & farms]]
 - via #barrier/shared-language, #concept/dynamic-function → [[Living vs formerly living]]
-- via #tension/general-vs-specific → [[DNA is fancy PEG]]
-- via #tension/general-vs-specific → [[AI meets biological constraints]]
+- via #tension/general-vs-specific → [[AI and biological constraints]]
+- via #tension/general-vs-specific → [[Who benefits Wounds & clinicians]]
 
 ## On the Bookshelf
 

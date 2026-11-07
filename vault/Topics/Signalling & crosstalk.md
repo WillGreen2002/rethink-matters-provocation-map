@@ -30,6 +30,7 @@ tags:
 - *echoes* → [[Survive use, degrade after]]: Robust enough to survive use, adaptable enough to give way afterwards: the same design tension at the scale of a product's whole life.
 - *enables* → [[Patterning to organs]]: Spatial pattern is built out of signals; whether a pattern holds depends on how well one signal is insulated from another.
 - via #concept/patterning, #concept/signalling → [[Emergent properties]]
+- via #concept/programmability, #domain/engineered-cells → [[Classifying materials]]
 
 ## Tags
 

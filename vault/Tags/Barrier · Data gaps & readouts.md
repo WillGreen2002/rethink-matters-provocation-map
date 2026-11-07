@@ -5,12 +5,12 @@ tags: [tag-hub, barrier/data-gaps]
 
 Missing datasets, measurements, long-term data or high-throughput readouts.
 
-Used by 14 topics across 4 themes:
+Used by 13 topics across 4 themes:
 
 - [[Emergent properties]]
 - [[Engineering a tree]]
 - [[Unexplored biological features]]
-- [[AI meets biological constraints]]
+- [[AI and biological constraints]]
 - [[Predicting composites & proteins]]
 - [[Public datasets]]
 - [[World models & inverse design]]
@@ -19,5 +19,4 @@ Used by 14 topics across 4 themes:
 - [[Who benefits Wounds & clinicians]]
 - [[Chronic bioelectrodes]]
 - [[Designed-peptide risks]]
-- [[Expansion microscopy]]
 - [[Salt tolerance & ecosystems]]

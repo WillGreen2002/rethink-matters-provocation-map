@@ -2,6 +2,8 @@
 #
 # Every future was drafted from the group's own words only (the prompts and the anonymised note digests), then checked clause by
 # clause by an independent reader against those sources. Nothing here is a quotation, and nothing is attributed to anyone.
+# The one exception is sheet theme 9: the words on the map are the committee's own, from the edit Sheet, and were not checked
+# again. curation/review_edits.yaml holds them, and it overrides this file on the map.
 #
 # Rethink Matters: edit `text` freely, then set status to rm-edited, or rm-approved with approved_on (YYYY-MM).
 # Keep `theme` (the Bristol sheet number) and `label` as they are: they guard the numbering.
@@ -82,6 +84,7 @@ themes:
   - theme: 3
     label: "Prediction, AI & data"   # theme 3 on the map
     status: draft
+    hold: "The committee found this draft vague and wants the group to write it."
     text: "A future where what is measured and recorded is decided openly and shared, where models are tested against biological constraints and emergent behaviour, and where a fast signal counts only when it tracks the product itself."
     draws_on:
       prompts: ["public-datasets", "ai-and-biological-constraints", "predicting-properties", "screening-decisions", "biosensor-design"]
@@ -127,34 +130,34 @@ themes:
   - theme: 7
     label: "Medical & long-term safety"   # theme 5 on the map
     status: draft
-    text: "A future where medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response, dressing signals are reliable enough to read, and the role of clinical judgement and the funding of genetic medicines without a market are decided openly."
+    text: "A future where medical biomaterials come with long-term evidence of safety. Wound dressings that change colour warn of infection clearly and reliably. Two questions stay open: what role clinicians keep, and who should fund genetic medicines with no market."
     draws_on:
       prompts: ["chronic-bioelectrodes", "designed-peptide-risks", "scaffolds-nanoparticles-adhesives", "infection-sensing-dressings", "who-benefits-wounds", "funding-platform-medicines"]
       discussions: ["smart-sutures"]
       threads: ["bio-is-not-a-claim", "access-and-responsibility", "follow-the-value"]
     support:
-      - clause: "medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response"
+      - clause: "medical biomaterials come with long-term evidence of safety"
         from: ["n:chronic-bioelectrodes", "n:designed-peptide-risks", "n:scaffolds-nanoparticles-adhesives"]
-      - clause: "dressing signals are reliable enough to read"
+      - clause: "Wound dressings that change colour warn of infection"
         from: ["n:infection-sensing-dressings", "d:smart-sutures"]
-      - clause: "the role of clinical judgement"
+      - clause: "clearly and reliably"
+        from: ["d:smart-sutures"]
+      - clause: "Two questions stay open"
+        from: ["n:who-benefits-wounds", "n:funding-platform-medicines", "d:smart-sutures"]
+      - clause: "what role clinicians keep"
         from: ["n:who-benefits-wounds", "d:smart-sutures"]
-      - clause: "the funding of genetic medicines without a market"
+      - clause: "who should fund genetic medicines with no market"
         from: ["n:funding-platform-medicines"]
-      - clause: "are decided openly"
-        from: ["n:funding-platform-medicines", "d:smart-sutures"]
     open_tensions: ["t:tension/private-vs-common", "t:tension/access-vs-safety", "t:tension/general-vs-specific"]   # left open on purpose
     check:
       verdict: pass
-      partly: ["medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response", "the funding of genetic medicines without a market", "are decided openly"]
-      edited_after_check: "Neutral wording on clinical judgement; genetic medicines, closer to the prompt; the signal is the dressing's (checker notes)."
-      recheck: pass   # a second, independent reader checked the edited text
-      recheck_partly: ["medical biomaterials rest on long-term evidence of degradation, toxicity and tissue response", "the funding of genetic medicines without a market", "are decided openly"]
+      partly: ["medical biomaterials come with long-term evidence of safety", "Two questions stay open", "what role clinicians keep", "who should fund genetic medicines with no market"]
+      edited_after_check: "Reworded after the committee found the earlier text confusing, then checked again clause by clause."
 
   - theme: 9
-    label: "Ocean & extreme environments"   # theme 6 on the map
-    status: draft
-    text: "A future where underwater habitation must justify itself beyond research and niche industry; materials that survive extremes are planned to degrade, by trigger or collection, though control is limited; and which living functions justify ongoing care is decided openly."
+    label: "Extreme & constrained environments"   # theme 6 on the map
+    status: rm-edited
+    text: "A future where underwater habitation must justify itself beyond research and niche industry. Materials that survive extremes are planned to degrade, by trigger or collection, though control is limited. And living functions which justify ongoing care are decided openly."
     draws_on:
       prompts: ["habitats-first", "survive-then-degrade", "when-to-let-die"]
       discussions: ["ocean-habitation", "aqueous-materials"]
@@ -168,66 +171,68 @@ themes:
         from: ["n:survive-then-degrade"]
       - clause: "though control is limited"
         from: ["d:aqueous-materials"]
-      - clause: "which living functions justify ongoing care is decided openly"
+      - clause: "living functions which justify ongoing care are decided openly"
         from: ["n:when-to-let-die"]
     open_tensions: ["t:tension/human-vs-organism", "t:tension/living-vs-inert", "t:tension/near-vs-far", "t:tension/robust-vs-adaptable"]   # left open on purpose
     check:
       verdict: pass
       partly: []
+      edited_after_check: "The committee's own rewording, from the edit Sheet; not checked again."
 
   - theme: 5
     label: "Circularity & waste"   # theme 7 on the map
     status: draft
-    text: "A future where waste, protein-based waste included, feeds bioprocesses that tolerate variable feedstocks, the full cost of waste is counted, and who captures value, who carries cost and whether new materials complement or complicate reuse are worked out openly."
-    note: "Drawn from the prompts only: no session notes sit behind this theme yet."
+    text: "A future where waste becomes useful material, with its full cost counted. Biological manufacturing is designed to tolerate variable inputs. New materials are judged on whether they help or complicate reuse. And who gains and who pays are decided openly."
+    note: "To be discussed: this is drawn from the prompts only, as no session notes sit behind this theme yet."
     draws_on:
       prompts: ["waste-valorisation", "variable-feedstocks", "full-cost-of-waste", "value-capture", "discovery-vs-reuse"]
       discussions: []
       threads: ["follow-the-value"]
     support:
-      - clause: "waste, protein-based waste included, feeds bioprocesses"
-        from: ["n:waste-valorisation"]
-      - clause: "that tolerate variable feedstocks"
-        from: ["n:variable-feedstocks"]
-      - clause: "the full cost of waste is counted"
+      - clause: "waste becomes useful material"
+        from: ["n:waste-valorisation", "n:value-capture"]
+      - clause: "with its full cost counted"
         from: ["n:full-cost-of-waste"]
-      - clause: "who captures value, who carries cost"
-        from: ["n:value-capture"]
-      - clause: "whether new materials complement or complicate reuse"
+      - clause: "Biological manufacturing is designed to tolerate variable inputs"
+        from: ["n:variable-feedstocks"]
+      - clause: "New materials are judged on whether they help or complicate reuse"
         from: ["n:discovery-vs-reuse"]
-      - clause: "are worked out openly"
-        from: ["n:value-capture", "n:discovery-vs-reuse"]
+      - clause: "And who gains and who pays"
+        from: ["n:value-capture"]
+      - clause: "are decided openly"
+        from: ["n:value-capture"]
     open_tensions: ["t:tension/private-vs-common", "t:tension/invent-vs-implement"]   # left open on purpose
     check:
       verdict: pass
-      partly: ["waste, protein-based waste included, feeds bioprocesses", "that tolerate variable feedstocks", "are worked out openly"]
-      edited_after_check: "Keeps waste and variable feedstocks as two prompts rather than joining them (checker note)."
-      recheck: pass   # a second, independent reader checked the edited text
-      recheck_partly: ["waste, protein-based waste included, feeds bioprocesses", "that tolerate variable feedstocks", "are worked out openly"]
+      partly: ["New materials are judged on whether they help or complicate reuse", "are decided openly"]
+      edited_after_check: "Reworded after the committee found the earlier text a run-on sentence, then checked again clause by clause."
 
   - theme: 6
     label: "Value, scale & adoption"   # theme 8 on the map
     status: draft
-    text: "A future where biomaterials are valued for new functions as well as for matching old ones, judged on shared, reproducible evidence rather than hype or hasty dismissal, with sustainability claims naming their reference point and rewards for repair and reuse."
+    text: "A future where biomaterials are valued for what they replace and what they add, such as sensing and adapting. Claims get a fair, repeatable test. Sustainability claims state what they are compared with. And repair and reuse are rewarded."
     draws_on:
       prompts: ["replacement-vs-new-capability", "standardising-dynamic-properties", "hype-vs-evidence", "venture-lessons", "societal-inertia"]
-      discussions: ["dropin-replacement", "bacterial-cellulose-vs-wood", "micro-vs-bulk", "spudcells-hype", "biobased-startups", "societal-inertia"]
+      discussions: ["dropin-replacement", "bacterial-cellulose-vs-wood", "micro-vs-bulk", "biomineral-rocks", "spudcells-hype", "biobased-startups", "societal-inertia"]
       threads: ["bio-is-not-a-claim"]
     support:
-      - clause: "biomaterials are valued for new functions as well as for matching old ones"
-        from: ["n:replacement-vs-new-capability", "d:dropin-replacement", "d:bacterial-cellulose-vs-wood", "d:micro-vs-bulk"]
-      - clause: "judged on shared, reproducible evidence"
-        from: ["d:dropin-replacement", "n:standardising-dynamic-properties"]
-      - clause: "rather than hype or hasty dismissal"
-        from: ["n:hype-vs-evidence", "d:spudcells-hype"]
-      - clause: "sustainability claims naming their reference point"
+      - clause: "biomaterials are valued for what they replace"
+        from: ["n:replacement-vs-new-capability", "d:dropin-replacement", "d:micro-vs-bulk", "d:biomineral-rocks"]
+      - clause: "and what they add"
+        from: ["n:replacement-vs-new-capability", "d:dropin-replacement", "d:bacterial-cellulose-vs-wood", "d:biomineral-rocks"]
+      - clause: "such as sensing and adapting"
+        from: ["n:replacement-vs-new-capability", "n:standardising-dynamic-properties", "d:dropin-replacement"]
+      - clause: "Claims get a fair, repeatable test"
+        from: ["n:hype-vs-evidence", "d:spudcells-hype", "d:dropin-replacement", "n:standardising-dynamic-properties"]
+      - clause: "Sustainability claims state what they are compared with"
         from: ["d:dropin-replacement", "d:biobased-startups", "n:venture-lessons"]
-      - clause: "rewards for repair and reuse"
-        from: ["d:societal-inertia", "n:societal-inertia", "d:micro-vs-bulk"]
+      - clause: "repair and reuse are rewarded"
+        from: ["d:societal-inertia", "d:micro-vs-bulk"]
     open_tensions: ["t:tension/replace-vs-reinvent", "t:tension/hype-vs-evidence", "t:tension/invent-vs-implement", "t:tension/general-vs-specific", "t:tension/niche-vs-bulk"]   # left open on purpose
     check:
       verdict: pass
-      partly: []
+      partly: ["Claims get a fair, repeatable test"]
+      edited_after_check: "Reworded after the committee found the earlier text confusing and dismissive, then checked again clause by clause."
 
   - theme: 8
     label: "Ethics, ownership & purpose"   # theme 9 on the map

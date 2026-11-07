@@ -1,6 +1,6 @@
 # Discussions = the provocations that were actually aired (RM003 → RM010, incl. the Vancouver edition).
-# Provocation TEXT is pulled verbatim from the workbook / notes docx at build time (see 'texts'); it never includes the
-# provocateur column. 'notes' are anonymised digests of the post-meeting synthesis notes (Chatham House Rule):
+# Provocation TEXT is pulled verbatim from the workbook / notes docx at build time (see 'texts'), unless the committee's review
+# reworded it ('override_text', shown in its place); it never includes the provocateur column. 'notes' are anonymised digests of the post-meeting synthesis notes (Chatham House Rule):
 # no names, no attribution, no unverifiable claims about named third parties, nothing about any one person's own pathway.
 # scale: from the sheet's Category column (normalised). wg: only where the sheet recorded a working group.
 
@@ -31,7 +31,7 @@
 
     **Concluding thoughts**
     - “Bio”, “materials” and “good” are all contested terms; the prompt exposes differences between disciplines.
-    - For science, “good” was framed as (money >) human health > environment.
+    - The underlying assumption is that money > human health > environment.
     - A sense that “good” is unattainable at industrial scale: any process, however much better than the alternative, creates knock-on effects and new patterns of resource use (for example, effluent treatment around a large fermentation-based food plant).
 
 - id: aqueous-materials
@@ -147,8 +147,8 @@
   texts:
     - { from: docx, find: "smart enough sutures" }
   refs:
-    - { label: "Cited in the provocation (1)", url: "https://www.sciencedirect.com/science/article/pii/S0009250925020469" }
-    - { label: "Cited in the provocation (2)", url: "https://www.sciencedirect.com/science/article/pii/S0032386125010997" }
+    - { label: "Carbon-dot nanozyme-empowered responsive hydrogels for smart wound dressing (Chemical Engineering Science, 2026)", url: "https://www.sciencedirect.com/science/article/pii/S0009250925020469" }
+    - { label: "An infection-responsive collagen-based wet-spun textile fibre for wound monitoring (Polymer, 2025)", url: "https://www.sciencedirect.com/science/article/pii/S0032386125010997" }
   notes: |
     **Application issues**
     - The chemistry behind the mode of action matters most: a colour-changing dressing is only clinically useful if the signal is specific, reliable and interpretable. pH colour change is easy to engineer.
@@ -159,7 +159,7 @@
     - Key question (clinician redundancy): can the device replace clinical judgement? Self-diagnosis is already common (lateral-flow tests, glucose monitors). The idea of “normal” should be objective and measurable but is often subjective.
 
     **Is it feasible on a 10–20–30-year horizon?**
-    - Animal-derived collagen materials were said to be approved already (citation needed); other candidates include chitosan and cellulose.
+    - Candidates include animal-derived collagen, chitosan and cellulose.
     - On-demand synthesis at the point of care; multi- or N-dimensional detection (for example click-chemistry-grafted azido-collagen tuned to several conditions, limited by toxicity and compatibility); hydrogels, where release kinetics matter most; nanozymes; nanodiamonds (not yet demonstrated robustly in vivo).
 
 - id: biofabrication-as-method
@@ -327,7 +327,7 @@
     - **What can we do?** Press involvement is not inherently bad (grey literature counts). Consider changing the publication structure: plain-language abstracts (for example describing the science in the thousand most common words), open sourcing, and writing in increasing specificity from public to expert. “Simplification reveals the truth.”
 
 - id: dna-like-macromolecules
-  title: "Should other macromolecules be more like DNA? (“DNA is fancy PEG”)"
+  title: "Should other macromolecules be more like DNA?"
   sessions: [RM007]
   note_ids: ["RM007.5"]
   scale: [micro]
@@ -347,22 +347,26 @@
     - { from: xlsx, sheet: "007 | 11072026", find: "Assessing past biobased" }
   # one redaction of named third parties; the wording lives in build/local_checks.json (never published)
   redact: [startups-companies]
+  # softened after the committee's review (its "from ventures" note): the map shows this in place of the sheet's words
+  override_text: ["Assessing past biobased materials start-ups, especially the downturn around 2023 to 2024. The main examples are textile start-ups. What tensions made expectations hard to meet? Timing, investor expectations, product–market fit, sustainability claims and regulation or policy hurdles. What's the latest on biobased material companies?"]
   refs: []
   notes: |
-    - **Why look back?** The “second wave” of companies is struggling with venture-capital funding, so how do you build a biomaterial company? Tensions behind earlier disappointments: timing, investor expectations, product–market fit, sustainability claims, regulation and policy hurdles.
-    - **Range of examples discussed:** stretchable bio-based formulations (a balloon replacement), mycelium-based materials, bacterial-cellulose products, a universal peptide adhesive inspired by mussel glue, elastic dampers. A pivot under delivery pressure was cited as one pattern to watch.
+    - **Why look back?** Venture-capital funding is a challenge for the “second wave” of companies, so how do you build a biomaterial company? Tensions in earlier ventures: timing, investor expectations, product–market fit, sustainability claims, regulation and policy hurdles.
+    - **Range of examples discussed:** stretchable and elastic bio-based materials, mycelium-based materials, bacterial-cellulose products and peptide adhesives. One pattern to watch: pressure to deliver can lead companies to change direction.
     - **What does a win look like?** Possibly a *quiet* one: something that operates in a niche or at small scale and solves a real problem; incremental collaborations with established brands.
-    - **Every company has a missing factor:** sustainability (life-cycle assessments are likely to be gate-to-gate rather than cradle-to-gate) or price.
-    - **Open questions:** why does no one want to wear wool? Is the protein trend engineered? Should the focus be novel bio-based materials? And is it always down to regulation, so should we lobby government? Local production and incentives.
+    - **A common missing factor:** sustainability (life-cycle assessments may be gate-to-gate rather than cradle-to-gate) or price.
+    - **Open questions:** why does no one want to wear wool? What is behind the protein trend? Should the focus be novel bio-based materials? And is it always down to regulation, so should we lobby government? Local production and incentives.
 
 - id: societal-inertia
-  title: "“We don’t need more solutions”"
+  title: "Is the bottleneck a shortage of solutions, or implementation and inertia?"
   sessions: [RM007]
   note_ids: []
   scale: [macro]
   wg: [wg2]
   texts:
     - { from: xlsx, sheet: "007 | 11072026", find: "need more solutions" }
+  # softened after the committee's review ("controversial!"): the map shows this in place of the sheet's words
+  override_text: ["Do we need more solutions? For most problems there are already multiple adequate mitigations. Is the issue an unwillingness to implement them, because everything comes with drawbacks and societal inertia prefers the current drawbacks to novel ones?"]
   refs: []
   notes: |
     - Perception of risk and social inertia: risk mitigation brings costs, and the perceived cost is a drop in quality of life.

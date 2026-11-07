@@ -27,7 +27,7 @@ Values used as a lens: #value/equity, #value/humility, #value/sustainability, #v
 - [[Theme 3 · Prediction, AI & data]]
 - [[Theme 4 · Programming & biofabrication]]
 - [[Theme 5 · Medical & long-term safety]]
-- [[Theme 6 · Ocean & extreme environments]]
+- [[Theme 6 · Extreme & constrained environments]]
 
 **How technology becomes society**
 - [[Theme 7 · Circularity & waste]]

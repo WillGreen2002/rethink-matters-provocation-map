@@ -31,9 +31,14 @@ tags:
 - *extends* → [[Living vs formerly living]]: 'Living' is one more contested word alongside 'bio': the same discipline-by-discipline drift in meaning applies to it.
 - *enables* → [[A shared language]]: Being explicit about which meaning of 'biomaterial' is in play, function (use in the body), interaction (with living systems) or origin (biological provenance), is the first move towards a shared language.
 - via #domain/textiles-and-fashion, #tension/natural-vs-good → [[Lessons from ventures]]
-- via #barrier/regulation-and-evidence, #barrier/shared-language, #domain/medical-and-clinical → [[Non-canonical amino acids]]
+- via #barrier/regulation-and-evidence, #barrier/shared-language, #domain/medical-and-clinical → [[Programmable biopolymers]]
 - via #barrier/shared-language → [[Classifying materials]]
 - via #barrier/regulation-and-evidence, #barrier/shared-language → [[Standardising dynamic properties]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Funding platform medicines]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Infection-sensing dressings]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Who benefits Wounds & clinicians]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Chronic bioelectrodes]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Human–machine integration]]
 
 ## Tags
 

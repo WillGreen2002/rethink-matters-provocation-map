@@ -26,13 +26,12 @@ tags:
 
 ## Linked ideas
 
+- *enables* → [[Programmable biopolymers]]: Mussel-inspired peptide wet-adhesives built with non-canonical residues could replace cyanoacrylate in surgery, a concrete payoff for expanding the genetic code.
 - *echoes* → [[Micro vs bulk]]: Medical scaffolds, nanoparticles and adhesives are the clearest case where micro-scale precision earns its keep.
-- *enables* → [[Non-canonical amino acids]]: Mussel-inspired peptide wet-adhesives built with non-canonical residues could replace cyanoacrylate in surgery, a concrete payoff for expanding the genetic code.
 - via #tension/niche-vs-bulk → [[Energy, cost & fit]]
 - via #concept/hydration, #tension/niche-vs-bulk → [[Cellulose, wood & concrete]]
 - via #concept/hydration, #method/biofabrication → [[Underwater materials]]
 - via #concept/new-to-nature, #domain/proteins-and-peptides → [[Biosensor design]]
-- via #concept/new-to-nature, #domain/proteins-and-peptides → [[Programmable biopolymers]]
 - via #concept/new-to-nature, #domain/proteins-and-peptides → [[Designed-peptide risks]]
 - via #domain/medical-and-clinical, #method/biofabrication → [[Patterning to organs]]
 

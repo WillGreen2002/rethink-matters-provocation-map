@@ -33,6 +33,7 @@ tags:
 - via #barrier/data-gaps, #barrier/shared-language → [[Public datasets]]
 - via #tension/near-vs-far → [[Patterning to organs]]
 - via #tension/near-vs-far → [[Fabrication readiness]]
+- via #tension/near-vs-far → [[Current tech & manufacturing]]
 - via #tension/near-vs-far → [[Underwater or space first]]
 - via #tension/near-vs-far → [[Ocean as factory]]
 - via #tension/near-vs-far → [[Seabed structures & farms]]

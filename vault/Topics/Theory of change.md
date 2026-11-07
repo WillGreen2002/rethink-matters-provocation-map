@@ -21,7 +21,7 @@ tags:
 
 ## Discussions behind this
 
-- [[We don't need more solutions]] (RM007)
+- [[Is the bottleneck a shortage of solutions, or implementation and inertia]] (RM007)
 
 ## Linked ideas
 

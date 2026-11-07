@@ -7,7 +7,7 @@ Batch, feedstock and biological variation; reproducibility and which parameters 
 
 Used by 4 topics across 3 themes:
 
-- [[Printing meets growth]]
+- [[Printing and growth]]
 - [[Full cost of waste]]
 - [[Variable feedstocks]]
 - [[Standardising dynamic properties]]

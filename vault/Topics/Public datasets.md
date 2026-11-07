@@ -28,7 +28,7 @@ tags:
 ## Linked ideas
 
 - *enables* → [[Emergent properties]]: To model emergent properties we need training data that records patterning, alignment and signalling, not just composition. Is that the real bottleneck under all of biotech?
-- *enables* → [[AI meets biological constraints]]: Models that respect biology's constraints still need data: what to measure and record is the practical question behind the paradigm debate.
+- *enables* → [[AI and biological constraints]]: Models that respect biology's constraints still need data: what to measure and record is the practical question behind the paradigm debate.
 - *enables* → [[Standardising dynamic properties]]: A shared, standard list of parameters is exactly what a public dataset has to record; standardisation and datasets are the same task seen from two sides.
 - *echoes* → [[Chronic bioelectrodes]]: Both turn on what to record and for how long: public datasets for composites, long-term stability data for implanted electrodes.
 - via #barrier/data-gaps, #method/machine-learning → [[Predicting composites & proteins]]

@@ -17,7 +17,7 @@ tags:
 
 > Which living interfaces such as self-healing skins, hydrogel optics and artificial gills could help us live at the bottom of the ocean?
 
-**Theme:** [[Theme 6 · Ocean & extreme environments]]  
+**Theme:** [[Theme 6 · Extreme & constrained environments]]  
 **Scale:** micro, macro · **Working group:** WG3 · **Pillar:** design · **Value:** none
 
 ## Discussions behind this
@@ -31,14 +31,15 @@ tags:
 - via #domain/marine-and-ocean, #tension/near-vs-far → [[Underwater or space first]]
 - via #domain/marine-and-ocean, #tension/near-vs-far → [[Ocean as factory]]
 - via #domain/marine-and-ocean, #tension/near-vs-far → [[Seabed structures & farms]]
-- via #concept/hydration, #domain/marine-and-ocean, #domain/textiles-and-fashion → [[Hydrated materials]]
 - via #concept/hydration, #domain/living-materials, #domain/marine-and-ocean → [[Underwater materials]]
+- via #concept/hydration, #domain/marine-and-ocean, #domain/textiles-and-fashion → [[Hydrated materials]]
 - via #concept/dynamic-function, #domain/living-materials, #domain/textiles-and-fashion → [[Living vs formerly living]]
 - via #concept/hydration, #domain/marine-and-ocean → [[Cellulose, wood & concrete]]
 - via #tension/near-vs-far → [[Classifying materials]]
 - via #tension/near-vs-far → [[Unexplored biological features]]
 - via #tension/near-vs-far → [[Patterning to organs]]
 - via #tension/near-vs-far → [[Fabrication readiness]]
+- via #tension/near-vs-far → [[Current tech & manufacturing]]
 
 ## Tags
 

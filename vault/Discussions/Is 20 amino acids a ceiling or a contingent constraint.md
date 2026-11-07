@@ -12,5 +12,5 @@ tags: [discussion, proposed]
 ## Feeds topics
 
 - [[A shared language]]
-- [[Non-canonical amino acids]]
+- [[Programmable biopolymers]]
 - [[Scaffolds, nanoparticles & adhesives]]

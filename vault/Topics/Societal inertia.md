@@ -21,12 +21,12 @@ tags:
 
 ## Discussions behind this
 
-- [[We don't need more solutions]] (RM007)
+- [[Is the bottleneck a shortage of solutions, or implementation and inertia]] (RM007)
 
 ## Linked ideas
 
 - *extends* → [[Theory of change]]: Societal inertia is one candidate answer to 'what theory of change will drive a technological transition?' (the question the Ethics theme asks directly).
-- *echoes* → [[Discovery vs reuse]]: 'We don't need more solutions' and 'do we need more materials?' are the same argument: the bottleneck may be implementation and reuse, not discovery.
+- *echoes* → [[Discovery vs reuse]]: Do we need more solutions? Do we need more materials? Both ask whether the bottleneck is discovery, or implementation and reuse.
 
 ## On the Bookshelf
 

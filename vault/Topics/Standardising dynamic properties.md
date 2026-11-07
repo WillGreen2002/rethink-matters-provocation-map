@@ -27,19 +27,19 @@ tags:
 ## Linked ideas
 
 - *echoes* → [[Infection-sensing dressings]]: Diagnostic dressings show why standards for sensing and responsive behaviour matter: the more generic the signal, the easier it is to manufacture but the harder to regulate.
-- *echoes* → [[Derisk once gene delivery]]: Derisk-once logic and standardisation are the same bet: a validated, reusable platform or property set that does not have to be re-proved every time.
 - *enables* → [[Classifying materials]]: You can only decide which properties to standardise once you have agreed which axis (application, composition, properties or level of control) you are classifying along.
 - *enables* → [[Public datasets]]: A shared, standard list of parameters is exactly what a public dataset has to record; standardisation and datasets are the same task seen from two sides.
-- via #barrier/regulation-and-evidence, #tension/general-vs-specific, #tension/platform-vs-bespoke → [[Derisk once synthesis platform]]
 - via #barrier/shared-language, #concept/dynamic-function, #tension/general-vs-specific → [[Portable design principles]]
 - via #barrier/regulation-and-evidence, #tension/platform-vs-bespoke → [[Funding platform medicines]]
-- via #concept/dynamic-function, #concept/variability → [[Variable feedstocks]]
-- via #concept/dynamic-function → [[Replace or reinvent]]
-- via #barrier/shared-language, #tension/general-vs-specific → [[A shared language]]
 - via #barrier/regulation-and-evidence, #tension/general-vs-specific → [[Who benefits Wounds & clinicians]]
+- via #barrier/shared-language, #tension/general-vs-specific → [[A shared language]]
+- via #concept/dynamic-function → [[Replace or reinvent]]
+- via #concept/dynamic-function, #concept/variability → [[Variable feedstocks]]
 - via #barrier/shared-language, #concept/dynamic-function → [[Living vs formerly living]]
 - via #barrier/shared-language, #concept/dynamic-function → [[Material 'intelligence']]
 - via #barrier/regulation-and-evidence, #barrier/shared-language → [[Biobased vs biomaterial]]
+- via #barrier/regulation-and-evidence, #barrier/shared-language → [[Programmable biopolymers]]
+- via #tension/general-vs-specific → [[AI and biological constraints]]
 
 ## Tags
 
@@ -48,4 +48,4 @@ tags:
 - [[Tension · General & portable ↔ specific & contextual]]
 - [[Concept · Variability & reproducibility]]
 - [[Barrier · Regulation & long-term evidence]]
-- [[Tension · Derisk once & reuse ↔ approve case by case]]
+- [[Tension · Reuse a proven platform ↔ approve case by case]]

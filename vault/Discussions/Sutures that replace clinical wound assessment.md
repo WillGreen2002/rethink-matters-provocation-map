@@ -22,13 +22,13 @@ tags: [discussion, aired, scale/macro]
 - Key question (clinician redundancy): can the device replace clinical judgement? Self-diagnosis is already common (lateral-flow tests, glucose monitors). The idea of “normal” should be objective and measurable but is often subjective.
 
 **Is it feasible on a 10–20–30-year horizon?**
-- Animal-derived collagen materials were said to be approved already (citation needed); other candidates include chitosan and cellulose.
+- Candidates include animal-derived collagen, chitosan and cellulose.
 - On-demand synthesis at the point of care; multi- or N-dimensional detection (for example click-chemistry-grafted azido-collagen tuned to several conditions, limited by toxicity and compatibility); hydrogels, where release kinetics matter most; nanozymes; nanodiamonds (not yet demonstrated robustly in vivo).
 
 ## References
 
-- [Cited in the provocation (1)](https://www.sciencedirect.com/science/article/pii/S0009250925020469)
-- [Cited in the provocation (2)](https://www.sciencedirect.com/science/article/pii/S0032386125010997)
+- [Carbon-dot nanozyme-empowered responsive hydrogels for smart wound dressing (Chemical Engineering Science, 2026)](https://www.sciencedirect.com/science/article/pii/S0009250925020469)
+- [An infection-responsive collagen-based wet-spun textile fibre for wound monitoring (Polymer, 2025)](https://www.sciencedirect.com/science/article/pii/S0032386125010997)
 
 ## Feeds topics
 

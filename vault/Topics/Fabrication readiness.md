@@ -26,13 +26,14 @@ tags:
 
 ## Linked ideas
 
-- *extends* → [[Printing meets growth]]: Guided morphogenesis moves fabrication from static shaping to setting initial conditions; whether today's methods are ready for that is the next question.
+- *extends* → [[Printing and growth]]: Guided morphogenesis moves fabrication from static shaping to setting initial conditions; whether today's methods are ready for that is the next question.
 - *extends* → [[Engineering a tree]]: Cultured wood, volumetric printing and anisotropic alignment are candidate routes to engineered wood, and each needs an honest readiness check.
+- *extends* → [[Current tech & manufacturing]]: Before asking which new methods are ready, it helps to know what current manufacturing can already do.
 - *echoes* → [[Micro vs bulk]]: Which fabrication method wins depends on scale: micro-scale precision pays for itself in medicine, while bulk materials need volume, energy economy and infrastructure.
 - via #concept/self-assembly, #tension/near-vs-far → [[Seabed structures & farms]]
+- via #concept/self-assembly → [[Material 'intelligence']]
 - via #method/biofabrication, #tension/near-vs-far → [[Patterning to organs]]
 - via #barrier/scale-up, #tension/near-vs-far → [[Underwater or space first]]
-- via #concept/self-assembly → [[Material 'intelligence']]
 - via #domain/cellulose-and-wood, #tension/near-vs-far → [[Classifying materials]]
 - via #tension/near-vs-far → [[Unexplored biological features]]
 - via #tension/near-vs-far → [[Ocean as factory]]

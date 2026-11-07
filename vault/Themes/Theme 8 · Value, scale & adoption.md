@@ -9,7 +9,7 @@ Part of [[00 A world we want to live in|A world we want to live in]] · chapter:
 
 ## A future we'd want
 
-A future where biomaterials are valued for new functions as well as for matching old ones, judged on shared, reproducible evidence rather than hype or hasty dismissal, with sustainability claims naming their reference point and rewards for repair and reuse.
+A future where biomaterials are valued for what they replace and what they add, such as sensing and adapting. Claims get a fair, repeatable test. Sustainability claims state what they are compared with. And repair and reuse are rewarded.
 
 *Draft, written from the group's prompts and anonymised notes, for Rethink Matters to rewrite.*
 

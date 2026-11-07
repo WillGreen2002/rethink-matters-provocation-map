@@ -5,10 +5,9 @@ tags: [tag-hub, concept/hierarchy]
 
 Structure across length scales, modular building blocks, redundancy.
 
-Used by 5 topics across 3 themes:
+Used by 4 topics across 2 themes:
 
 - [[Portable design principles]]
 - [[Gradients as design]]
 - [[Engineering a tree]]
 - [[Cellulose, wood & concrete]]
-- [[Expansion microscopy]]

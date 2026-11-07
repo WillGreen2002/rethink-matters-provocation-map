@@ -1,0 +1,4 @@
+# Written by build/review_import.py from the committee's frozen review: the latest text of each block it edited.
+# build.py applies these to the published map, then checks them like everything else. Edit here only to correct an import.
+edits:
+  "theme:th:6:future": "A future where underwater habitation must justify itself beyond research and niche industry. Materials that survive extremes are planned to degrade, by trigger or collection, though control is limited. And living functions which justify ongoing care are decided openly."

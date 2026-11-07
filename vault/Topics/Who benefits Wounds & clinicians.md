@@ -28,15 +28,16 @@ tags:
 - *extends* → [[Infection-sensing dressings]]: Which wounds, which patients, and how much clinical judgement can be delegated to a colour change?
 - via #barrier/regulation-and-evidence, #domain/medical-and-clinical, #tension/access-vs-safety → [[Human–machine integration]]
 - via #barrier/regulation-and-evidence, #tension/access-vs-safety → [[Care & convivial tech]]
-- via #barrier/regulation-and-evidence, #domain/medical-and-clinical, #tension/general-vs-specific → [[Derisk once synthesis platform]]
 - via #barrier/regulation-and-evidence, #tension/general-vs-specific → [[Standardising dynamic properties]]
-- via #barrier/data-gaps, #tension/general-vs-specific → [[AI meets biological constraints]]
+- via #barrier/data-gaps, #tension/general-vs-specific → [[AI and biological constraints]]
 - via #barrier/data-gaps, #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Chronic bioelectrodes]]
 - via #barrier/data-gaps, #barrier/regulation-and-evidence → [[Designed-peptide risks]]
 - via #tension/general-vs-specific → [[Classifying materials]]
-- via #tension/general-vs-specific → [[DNA is fancy PEG]]
 - via #tension/general-vs-specific → [[Portable design principles]]
 - via #tension/general-vs-specific → [[A shared language]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Biobased vs biomaterial]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Programmable biopolymers]]
+- via #barrier/regulation-and-evidence, #domain/medical-and-clinical → [[Funding platform medicines]]
 
 ## Tags
 

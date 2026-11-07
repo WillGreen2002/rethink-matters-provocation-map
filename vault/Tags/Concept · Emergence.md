@@ -5,11 +5,10 @@ tags: [tag-hub, concept/emergence]
 
 Properties that arise from organisation, interaction and signalling rather than composition alone.
 
-Used by 6 topics across 4 themes:
+Used by 5 topics across 3 themes:
 
 - [[Material 'intelligence']]
 - [[Emergent properties]]
-- [[AI meets biological constraints]]
+- [[AI and biological constraints]]
 - [[Predicting composites & proteins]]
 - [[World models & inverse design]]
-- [[Expansion microscopy]]
