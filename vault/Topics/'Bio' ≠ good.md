@@ -16,7 +16,7 @@ tags:
 
 > Why biological origin alone does not establish environmental or ethical value.
 
-**Theme:** [[Theme 9 · Governance, ownership & purpose]]  
+**Theme:** [[Theme 9 · Ethics, ownership & purpose]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** governance · **Value:** humility
 
 ## Discussions behind this

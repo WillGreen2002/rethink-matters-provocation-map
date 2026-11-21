@@ -25,7 +25,7 @@ tags:
 
 ## Linked ideas
 
-- *extends* → [[Theory of change]]: Societal inertia is one candidate answer to 'what theory of change will drive a technological transition?' (the question the Governance theme asks directly).
+- *extends* → [[Theory of change]]: Societal inertia is one candidate answer to 'what theory of change will drive a technological transition?' (the question the Ethics theme asks directly).
 - *echoes* → [[Discovery vs reuse]]: Do we need more solutions? Do we need more materials? Both ask whether the bottleneck is discovery, or implementation and reuse.
 
 ## On the Bookshelf

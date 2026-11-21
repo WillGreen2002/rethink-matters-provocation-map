@@ -288,4 +288,4 @@
   sources: [societal-inertia]
   reading: [great-reconfiguration, your-life-is-manufactured]
   links:
-    - { to: theory-of-change, type: extends, why: "Societal inertia is one candidate answer to 'what theory of change will drive a technological transition?' (the question the Governance theme asks directly)." }
+    - { to: theory-of-change, type: extends, why: "Societal inertia is one candidate answer to 'what theory of change will drive a technological transition?' (the question the Ethics theme asks directly)." }

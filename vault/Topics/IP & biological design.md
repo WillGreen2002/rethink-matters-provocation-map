@@ -15,7 +15,7 @@ tags:
 
 > Patents and other intellectual-property questions around genes and biological design.
 
-**Theme:** [[Theme 9 · Governance, ownership & purpose]]  
+**Theme:** [[Theme 9 · Ethics, ownership & purpose]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** governance · **Value:** equity
 
 ## Discussions behind this

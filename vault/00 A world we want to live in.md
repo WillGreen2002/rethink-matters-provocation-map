@@ -32,7 +32,7 @@ Values used as a lens: #value/equity, #value/humility, #value/sustainability, #v
 **How technology becomes society**
 - [[Theme 7 · Circularity & waste]]
 - [[Theme 8 · Value, scale & adoption]]
-- [[Theme 9 · Governance, ownership & purpose]]
+- [[Theme 9 · Ethics, ownership & purpose]]
 
 ## Guided walks
 

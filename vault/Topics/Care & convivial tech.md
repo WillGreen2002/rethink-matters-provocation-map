@@ -17,7 +17,7 @@ tags:
 
 > Designing for care, accessibility and convivial technology.
 
-**Theme:** [[Theme 9 · Governance, ownership & purpose]]  
+**Theme:** [[Theme 9 · Ethics, ownership & purpose]]  
 **Scale:** macro · **Working group:** WG2 (proposed) · **Pillar:** governance · **Value:** equity, solidarity
 
 ## Discussions behind this

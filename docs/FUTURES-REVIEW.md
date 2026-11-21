@@ -155,7 +155,7 @@ Each theme has one short future, drafted from the group's own prompts and anonym
 | Sustainability claims state what they are compared with | Biobased materials ≠ drop-in replacements; Assessing past biobased-materials start-ups; Lessons from ventures |
 | repair and reuse are rewarded | Is the bottleneck a shortage of solutions, or implementation and inertia?; Should biomaterials research be limited to the microscale? |
 
-## Theme 9 · Governance, ownership & purpose
+## Theme 9 · Ethics, ownership & purpose
 
 > A future where biological origin is not mistaken for goodness, shared tools come with the means to use them safely, people keep control of implanted devices, and duties to organisms and ownership of genes and designs are weighed openly.
 

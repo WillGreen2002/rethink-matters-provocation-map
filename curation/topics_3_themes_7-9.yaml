@@ -129,7 +129,7 @@
   links:
     - { to: emergent-properties, type: enables, why: "Seeing nanostructure across scales is one way to collect the data on patterning and alignment that models of emergent properties lack." }
 
-# ============================== THEME 8 · Governance, ownership and social purpose ==============================
+# ============================== THEME 8 · Ethics, ownership and social purpose ==============================
 - id: theory-of-change
   theme: 8
   match: "What theory of change"
