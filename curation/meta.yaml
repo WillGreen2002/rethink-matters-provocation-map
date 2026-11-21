@@ -43,7 +43,7 @@ themes:
   5: { short: "Circularity & waste", arc: technology-to-society }
   6: { short: "Value, scale & adoption", arc: technology-to-society }
   7: { short: "Medical & long-term safety", arc: life-to-technology }
-  8: { short: "Ethics, ownership & purpose", arc: technology-to-society }
+  8: { short: "Governance, ownership & purpose", title: "Governance, ownership and social purpose", arc: technology-to-society }
   9: { short: "Extreme & constrained environments", title: "Extreme and constrained environments", arc: life-to-technology }
 
 # The Niche level: the kinds of example curation/niche_examples.csv may list (column `type`), in the order they hang from a

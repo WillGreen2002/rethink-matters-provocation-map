@@ -16,7 +16,7 @@ tags:
 
 > What theory of change do you believe will drive a technological transition and why?
 
-**Theme:** [[Theme 9 · Ethics, ownership & purpose]]  
+**Theme:** [[Theme 9 · Governance, ownership & purpose]]  
 **Scale:** macro · **Working group:** WG2 · **Pillar:** governance, translation · **Value:** solidarity
 
 ## Discussions behind this
@@ -25,7 +25,7 @@ tags:
 
 ## Linked ideas
 
-- *extends* → [[Societal inertia]]: Societal inertia is one candidate answer to 'what theory of change will drive a technological transition?' (the question the Ethics theme asks directly).
+- *extends* → [[Societal inertia]]: Societal inertia is one candidate answer to 'what theory of change will drive a technological transition?' (the question the Governance theme asks directly).
 - *echoes* → [[Care & convivial tech]]: One theory of change is bottom-up: technology people can use, adapt and repair, rather than a market or regulatory push from above.
 - via #barrier/adoption-inertia, #tension/invent-vs-implement → [[Discovery vs reuse]]
 - via #barrier/funding-and-incentives, #tension/private-vs-common → [[Public datasets]]
