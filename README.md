@@ -86,7 +86,7 @@ then open <http://localhost:8766>.
 
 ### Review before publishing
 
-1. **Chatham House.** All provocateur and joiner names are removed; note digests are anonymised; named people appear only as cited authors
+1. **Anonymity.** All provocateur and joiner names are removed; note digests are anonymised; named people appear only as cited authors
    (book authors on your Bookshelf, one 1973 book's author, and Frank Geels for the levels). `build.py` *refuses to build*, and `build/preflight.py` *refuses to publish*, if any participant name,
    Google Drive or Docs link, e-mail address (bar the group's own public one, used by the thoughts button), local path, em dash or a term on the private list (`build/local_checks.json`) shows up. That is a safety net, not a substitute for
    reading the digests in `curation/discussions_*.yaml` once yourselves.
@@ -183,7 +183,7 @@ The map itself can be edited by anyone who has its **edit link**. Without the li
 * **Freeze** stops editing for everyone; **Unfreeze** reopens it. **Done editing** turns the outlines off.
 
 **The public map changes only when you publish** (below): everyone else keeps seeing the published text until then, and publishing runs
-the Chatham House name check and the other checks first.
+the name check and the other checks first.
 
 **Setting it up (once, about five minutes).** Open the map with `?setup` on the end
 (`https://willgreen2002.github.io/rethink-matters-provocation-map/?setup`) and follow the steps: make a Google Form in a personal Google

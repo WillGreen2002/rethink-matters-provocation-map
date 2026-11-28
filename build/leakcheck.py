@@ -1,6 +1,6 @@
 """Shared leak-check logic for build.py and preflight.py.
 
-Why this exists: the map is published under the Chatham House Rule (no statement attributed to a person, no participant
+Why this exists: the map is published anonymously (no statement attributed to a person, no participant
 identified) and must not reveal project-confidential material. The SENSITIVE lists — names and nicknames of participants
 and of outside people mentioned in the notes, project-confidential terms, and the original text of any redactions — live in
 `build/local_checks.json`, which is git-ignored and never published. This file contains only generic patterns, so it is safe

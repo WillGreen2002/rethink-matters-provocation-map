@@ -1,6 +1,6 @@
 # Discussions = the provocations that were actually aired (RM003 → RM010, incl. the Vancouver edition).
 # Provocation TEXT is pulled verbatim from the workbook / notes docx at build time (see 'texts'), unless the committee's review
-# reworded it ('override_text', shown in its place); it never includes the provocateur column. 'notes' are anonymised digests of the post-meeting synthesis notes (Chatham House Rule):
+# reworded it ('override_text', shown in its place); it never includes the provocateur column. 'notes' are anonymised digests of the post-meeting synthesis notes:
 # no names, no attribution, no unverifiable claims about named third parties, nothing about any one person's own pathway.
 # scale: from the sheet's Category column (normalised). wg: only where the sheet recorded a working group.
 

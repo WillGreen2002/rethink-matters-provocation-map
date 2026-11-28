@@ -8,7 +8,7 @@ Looks at exactly the files git would publish (tracked + untracked-but-not-ignore
     spreadsheets / Word files / zips / PDFs, the local check lists, local tooling folders;
   * participant names or confidential terms (build/local_checks.json, never published), Drive/Docs share-links,
     e-mail addresses, or local machine paths (generic patterns in leakcheck.py).
-The Chatham House Rule applies to everything on the public map: ideas may be used, but nothing is attributed to a person.
+Everything on the public map is anonymised: ideas may be used, but nothing is attributed to a person.
 """
 from __future__ import annotations
 
