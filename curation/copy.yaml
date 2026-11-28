@@ -349,7 +349,6 @@ aria:
 
 # edit mode (site/assets/review.js): only people with the edit link see these words
 review:
-  rule: "Chatham House Rule: no names, and nothing that says who said what."
   cancel: "Cancel"
   close: "Close"
   empty: "This text cannot be empty: it is back as it was."

@@ -28,7 +28,6 @@
     if (!list || !list.length) return null;
     return h("ul", { class: "refs" }, list.map((r) => h("li", null, h("a", { href: r.url, target: "_blank", rel: "noopener noreferrer" }, r.label))));
   }
-  function conf(app) { return h("p", { class: "conf" }, app.D.site.chatham); }
   // a way to say something about what is open: an input in the note. With the edit link it goes to the committee's Sheet; without
   // it, it opens an email to Rethink Matters in the visitor's own email app, so nothing is sent from the page itself
   function thoughts(app, n) {
@@ -58,7 +57,7 @@
     closed();
     return wrap;
   }
-  const foot = (body, app, n) => put(body, thoughts(app, n), conf(app));
+  const foot = (body, app, n) => put(body, thoughts(app, n));
   function sessionMeta(app, d) {
     const S = app.D.sessions, out = [];
     for (const s of d.sessions) {

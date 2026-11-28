@@ -281,7 +281,6 @@
     store.set(STORE.seen, "1");
     const close = modal(t("review.welcome.title"), h("p", null, t("review.welcome.lede")),
       h("ul", { class: "rv-list" }, t("review.welcome.items").map((x) => h("li", null, ...u.inline(x)))),
-      h("p", { class: "rv-rule" }, t("review.rule")),
       h("div", { class: "rv-actions" }, whoField(), h("button", { type: "button", class: "btn solid", onclick: () => close() }, t("review.welcome.ok"))));
   }
   // initials: only the committee sees them (they are not carried to the public map)
@@ -357,7 +356,6 @@
     const close = modal(t("review.add.heading", { label: node(tid).label }),
       h("label", { class: "rv-lab" }, t("review.add.type"), ty), h("label", { class: "rv-lab" }, t("review.add.title"), ti),
       h("label", { class: "rv-lab" }, t("review.add.text"), tx), h("label", { class: "rv-lab" }, t("review.add.link"), ln), msg,
-      h("p", { class: "rv-rule" }, t("review.rule")),
       h("div", { class: "rv-actions" }, whoField(), h("button", { type: "button", class: "btn", onclick: () => close() }, t("review.cancel")),
         h("button", { type: "button", class: "btn solid", onclick: () => {
           const title = tidy(ti.value), text = tidy(tx.value), url = ln.value.trim();

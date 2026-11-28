@@ -1,5 +1,5 @@
 # --- NEVER publish ---------------------------------------------------------------------------------
-# Raw sources: participant names, contact e-mails, budgets. The map is anonymised (Chatham House Rule); these are not.
+# Raw sources: participant names, contact e-mails, budgets. The map is anonymised; these are not.
 source_data/
 source_notes/
 # Local-only lists for the leak check (names, confidential terms, redaction wording)
