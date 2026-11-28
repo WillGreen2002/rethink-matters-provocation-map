@@ -334,9 +334,9 @@ thoughts:
 
 hints:
   landscape: "Click a theme for its note · double-click to go down"
-  landscape_touch: "Tap a theme for its note · its ↓ goes down"
+  landscape_touch: "Tap a theme for its note · double-tap to go down"
   regime: "Click a prompt for its note · double-click to go down · Up goes back"
-  regime_touch: "Tap a prompt for its note · its ↓ goes down"
+  regime_touch: "Tap a prompt for its note · double-tap to go down"
   niche: "Click a source for its note · Up goes back to the theme"
   niche_touch: "Tap a source for its note · Up goes back to the theme"
 

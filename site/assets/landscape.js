@@ -15,6 +15,7 @@
     constructor(el, app, cb) {
       this.el = el; this.app = app; this.cb = cb || {};
       this.sel = null; this.hover = null;
+      this.view = "map";
       this.insets = { l: 0, r: 0, t: 0, b: 0 };
       this.pos = null;
       this.reduced = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -89,6 +90,7 @@
     /* ---------------------------------------------------------------- state */
     setSelected(id) { this.sel = id; this.paint(); }
     setHover(id) { if (id !== this.hover) { this.hover = id; this.paint(); } }
+    setView(v) { if (v !== this.view) { this.view = v; this.layout(false); } }
     setInsets(i) {
       const before = JSON.stringify(this.insets);
       Object.assign(this.insets, i);
@@ -140,61 +142,98 @@
     }
 
     /* ---------------------------------------------------------------- layout */
-    // cards rather than the ring: on a phone, or when the room left beside an open note (and the left panel) is too narrow for it
-    // (the width is the one the stage is heading for, insets.w, so a side panel still sliding does not flash the cards)
-    stacked() { const I = this.insets || {}, W = I.w || this.el.clientWidth; return W < 620 || W - (I.l || 0) - (I.r || 0) < 520 || window.matchMedia("(max-width: 820px)").matches; }
+    // cards rather than the ring: on mobile when the visitor chooses List, or on desktop when the room left beside an open note
+    // (and the left panel) is too narrow for it
+    stacked() {
+      const phone = window.matchMedia("(max-width: 820px)").matches;
+      if (phone) return this.view === "list";
+      const I = this.insets || {}, W = I.w || this.el.clientWidth;
+      return W < 620 || W - (I.l || 0) - (I.r || 0) < 520;
+    }
     layout(animate, noRoom) {
       const W = this.insets.w || this.el.clientWidth, H = this.el.clientHeight;
       if (!W || !H) return;
+      const phone = window.matchMedia("(max-width: 820px)").matches;
       const stack = noRoom || this.stacked();
       const ae = document.activeElement;
       if (!stack && ae && this.el.contains(ae) && ae.matches(".ls-down")) { const d = ae.closest(".ls-theme").querySelector(".ls-disc"); if (d) d.focus({ preventScroll: true }); }
       this.el.classList.toggle("stack", stack);
+      this.fellBack = stack && this.view !== "list";
       if (stack) {
+        this.el.classList.remove("compact");
         cancelAnimationFrame(this._raf);   // a ring still easing into place must not write over the cards
         for (const el of [this.center, ...this.chapters.map((c) => c.el), ...[...this.items.values()].map((x) => x.item)]) el.removeAttribute("style");
         for (const { th, item } of this.items.values()) { item.style.setProperty("--c", this.app.themeColor(th.n)); item.style.setProperty("--i", this.themes.indexOf(th)); }
         this.chapters.forEach((c, i) => c.el.style.setProperty("--c", u.logoColor(CHAPTER_TONE[i % 3])));
-        const I = this.insets || {}, phone = window.matchMedia("(max-width: 820px)").matches;
+        const I = this.insets || {};
         this.el.style.padding = phone ? "" : `${(I.tc != null ? I.tc : I.t || 0) + 4}px ${(I.r || 0) + 14}px ${(I.b || 0) + 24}px ${(I.l || 0) + 14}px`;
         this.pos = null;
         this.paint();
+        if (this.cb.laidOut) this.cb.laidOut(this);
         return;
       }
       this.el.style.padding = "";
       const I = this.insets, sw = Math.max(200, W - I.l - I.r), sh = Math.max(200, H - I.t - I.b);
+      const compact = phone || sw < 620;
+      this.el.classList.toggle("compact", compact);
       const cx = I.l + sw / 2, cy = I.t + sh / 2;
-      const need = this.labelFit();   // the smallest disc the names fit in
-      const rd0 = Math.max(u.clamp(Math.min(sw, sh) * 0.088, 36, 62), need), pill = 10;
-      // the chapters' names sit beside the ring (wrapping when room is short): the ring is never wider than they allow, and in a
-      // narrow room it grows less tall rather than push them out of view
-      const capW = Math.round(u.clamp(sw * 0.2, 112, 172));
-      this.el.style.setProperty("--capw", capW + "px");
-      const RxMax = Math.min(sw / 2 - rd0 - 18, sw / 2 - capW - 26);
-      let Ry = Math.max(rd0 * 2.2, sh / 2 - rd0 - pill);
-      if (Ry * 0.82 > RxMax) Ry = Math.max(rd0 * 2.2, RxMax / 0.82);
-      let Rx = Math.max(Ry * 0.82, Math.min(sw / 2 - rd0 - 18, Ry * 1.45, RxMax));
-      const D = this.app.D, slot = 1 / (this.themes.length + GAP * D.arcs.length);
-      let at = u.alongEllipse(Rx, Ry);
-      // a short window: the ring grows wider (up to twice as wide as tall) rather than shrink its discs below their names
-      const RxTop = Math.min(RxMax, sw / 2 - rd0 - 18, Ry * 2);
-      while ((at.total * slot) / 2.3 < need && Rx < RxTop - 0.5) { Rx = Math.min(Rx + 8, RxTop); at = u.alongEllipse(Rx, Ry); }
-      // each theme's slot round the ring holds its disc with a little air between neighbours; and no smaller than the names need
-      const rd = Math.max(26, Math.min(rd0, (at.total * slot) / 2.3));
-      if (rd < need - 0.01) return this.layout(animate, true);
-      const rc = u.clamp(Math.min(Rx, Ry) * 0.46, 54, 112);
+      const D = this.app.D;
+      let Rx, Ry, rd, rc, gap = GAP, at, slot;
+      if (compact) {
+        if (sw < 220 || sh < 220) return this.layout(animate, true);
+        gap = 0.56;
+        slot = 1 / (this.themes.length + gap * D.arcs.length);
+        const capW = Math.round(u.clamp(sw * 0.3, 94, 128));
+        this.el.style.setProperty("--capw", capW + "px");
+        let rd0 = u.clamp(Math.min(sw, sh) * 0.105, 28, 46);
+        const topPad = 24, botPad = 14, edgePad = 8;
+        Rx = Math.max(rd0 * 1.8, sw / 2 - rd0 - edgePad);
+        Ry = Math.max(rd0 * 2.1, Math.min(sh / 2 - rd0 - topPad, Rx * 1.65));
+        if (sw > sh * 1.15) {   // landscape-rotated phone
+          Ry = Math.max(rd0 * 1.7, sh / 2 - rd0 - topPad);
+          Rx = Math.max(Ry * 1.1, Math.min(sw / 2 - rd0 - edgePad, Ry * 1.9));
+        }
+        at = u.alongEllipse(Rx, Ry);
+        rd = Math.max(24, Math.min(rd0, (at.total * slot) / 2.2));
+        Rx = Math.min(Rx, sw / 2 - rd - edgePad);
+        Ry = Math.min(Ry, sh / 2 - rd - botPad);
+        at = u.alongEllipse(Rx, Ry);
+        rd = Math.max(24, Math.min(rd, (at.total * slot) / 2.18));
+        rc = u.clamp(Math.min(Rx - rd - 10, Ry - rd - 10, Math.min(Rx, Ry) * 0.5), 34, 66);
+      } else {
+        const need = this.labelFit();   // the smallest disc the names fit in
+        const rd0 = Math.max(u.clamp(Math.min(sw, sh) * 0.088, 36, 62), need), pill = 10;
+        // the chapters' names sit beside the ring (wrapping when room is short): the ring is never wider than they allow, and in a
+        // narrow room it grows less tall rather than push them out of view
+        const capW = Math.round(u.clamp(sw * 0.2, 112, 172));
+        this.el.style.setProperty("--capw", capW + "px");
+        const RxMax = Math.min(sw / 2 - rd0 - 18, sw / 2 - capW - 26);
+        Ry = Math.max(rd0 * 2.2, sh / 2 - rd0 - pill);
+        if (Ry * 0.82 > RxMax) Ry = Math.max(rd0 * 2.2, RxMax / 0.82);
+        Rx = Math.max(Ry * 0.82, Math.min(sw / 2 - rd0 - 18, Ry * 1.45, RxMax));
+        slot = 1 / (this.themes.length + GAP * D.arcs.length);
+        at = u.alongEllipse(Rx, Ry);
+        // a short window: the ring grows wider (up to twice as wide as tall) rather than shrink its discs below their names
+        const RxTop = Math.min(RxMax, sw / 2 - rd0 - 18, Ry * 2);
+        while ((at.total * slot) / 2.3 < need && Rx < RxTop - 0.5) { Rx = Math.min(Rx + 8, RxTop); at = u.alongEllipse(Rx, Ry); }
+        // each theme's slot round the ring holds its disc with a little air between neighbours; and no smaller than the names need
+        rd = Math.max(26, Math.min(rd0, (at.total * slot) / 2.3));
+        if (rd < need - 0.01) return this.layout(animate, true);
+        rc = u.clamp(Math.min(Rx, Ry) * 0.46, 54, 112);
+      }
       // clockwise from the top: a gap before each chapter for its name, then one slot per theme, all of equal length round the ring
-      let cur = -(GAP * slot) / 2;
+      let cur = -(gap * slot) / 2;
       const ang = new Map(), capAng = new Map(), bandAng = new Map();
       for (const a of D.arcs) {
-        capAng.set(a.id, at(cur + (GAP * slot) / 2));
-        cur += GAP * slot;
+        capAng.set(a.id, at(cur + (gap * slot) / 2));
+        cur += gap * slot;
         const a0 = cur;
         for (const th of this.themes.filter((t) => t.arc === a.id)) { ang.set(th.n, at(cur + slot / 2)); cur += slot; }
         bandAng.set(a.id, [at(a0) + 0.05, at(cur) - 0.05]);
       }
       const P = (a, f = 1) => [cx + Rx * f * Math.cos(a), cy + Ry * f * Math.sin(a)];
-      const target = { cx, cy, Rx, Ry, rd, rc, themes: new Map([...ang].map(([n, a]) => [n, P(a)])), caps: capAng, bands: bandAng };
+      const target = { cx, cy, Rx, Ry, rd, rc, compact, bounds: [I.l + 6, W - I.r - 6, I.t + 2, H - I.b - 2],
+        themes: new Map([...ang].map(([n, a]) => [n, P(a)])), caps: capAng, bands: bandAng };
       if (animate && this.pos && !this.reduced) {
         const from = this.pos, t0 = performance.now(), dur = 380;
         cancelAnimationFrame(this._raf);
@@ -202,6 +241,7 @@
           const p = ease(u.clamp((now - t0) / dur, 0, 1)), L = (a, b) => a + (b - a) * p;
           this.apply({
             cx: L(from.cx, target.cx), cy: L(from.cy, target.cy), Rx: L(from.Rx, target.Rx), Ry: L(from.Ry, target.Ry), rd: L(from.rd, target.rd), rc: L(from.rc, target.rc),
+            compact: target.compact, bounds: target.bounds,
             themes: new Map([...target.themes].map(([n, [x, y]]) => { const f = from.themes.get(n) || [x, y]; return [n, [L(f[0], x), L(f[1], y)]]; })),
             caps: target.caps, bands: target.bands,
           });
@@ -212,6 +252,7 @@
       } else { this.apply(target); this.fitText(target); }
       this.pos = target;
       this.paint();
+      if (this.cb.laidOut) this.cb.laidOut(this);
     }
     widest(label) {
       this._ww = this._ww || new Map();
@@ -247,15 +288,15 @@
     // once the ring has settled: every theme's name in one size, stepped down until each sits inside its disc as the page draws it,
     // and the question in the middle likewise
     fitText(g) {
-      const { rd, rc } = g;
-      const fs0 = u.clamp(Math.min(rd * 0.232, ...[...this.items.values()].map(({ th }) => (1.62 * rd - 6) / this.widest(th.label))), 9, 15.5);
+      const { rd, rc, compact } = g;
+      const fs0 = u.clamp(Math.min(rd * 0.232, ...[...this.items.values()].map(({ th }) => (1.62 * rd - 6) / this.widest(th.label))), compact ? 7.5 : 9, 15.5);
       const pairs = [...this.items.values()].map(({ disc }) => [disc, disc]);
-      u.shrinkToFit(pairs, (fs) => this.el.style.setProperty("--fsl", fs.toFixed(2) + "px"), fs0, 8);
+      u.shrinkToFit(pairs, (fs) => this.el.style.setProperty("--fsl", fs.toFixed(2) + "px"), fs0, compact ? 7 : 8);
       this.center.classList.toggle("tight", rc < 70);
-      u.shrinkToFit([[this.center, this.center]], (fs) => this.el.style.setProperty("--fsq", fs.toFixed(1) + "px"), Math.max(13, rc * 0.2), 10);
+      u.shrinkToFit([[this.center, this.center]], (fs) => this.el.style.setProperty("--fsq", fs.toFixed(1) + "px"), Math.max(compact ? 11 : 13, rc * 0.2), compact ? 8.5 : 10);
     }
     apply(g) {
-      const { cx, cy, Rx, Ry, rd, rc } = g;
+      const { cx, cy, Rx, Ry, rd, rc, compact, bounds } = g;
       this.el.style.setProperty("--rd", rd.toFixed(1) + "px");
       this.el.style.setProperty("--rc", rc.toFixed(1) + "px");
       const P = (a) => [cx + Rx * Math.cos(a), cy + Ry * Math.sin(a)];
@@ -287,6 +328,15 @@
         const a = g.caps.get(c.arc), [x, y] = P(a), co = Math.cos(a), el = c.el;
         el.classList.remove("cap-l", "cap-r", "cap-t", "cap-b");
         const side = co > 0.35 ? "r" : co < -0.35 ? "l" : Math.sin(a) < 0 ? "t" : "b";
+        if (compact && bounds && (side === "r" || side === "l")) {
+          // on a narrow phone, tuck side chapter names neatly inside their ring gap against the screen edge so they never clip
+          const [minX, maxX, minY, maxY] = bounds;
+          el.classList.add(side === "r" ? "cap-l" : "cap-r");
+          const hh = el.offsetHeight || 28;
+          const cyGap = u.clamp(y, minY + hh / 2, maxY - hh / 2);
+          Object.assign(el.style, { left: (side === "r" ? maxX : minX) + "px", top: cyGap + "px" });
+          continue;
+        }
         el.classList.add("cap-" + side);
         const w = el.offsetWidth, hh = el.offsetHeight;
         // its box for a given push outwards, and the push that clears every pill it would touch
@@ -298,8 +348,8 @@
         while (k < 120 && hit(box(k))) k += 3;
         if (side === "r") Object.assign(el.style, { left: x + 14 + k + "px", top: y + "px" });
         else if (side === "l") Object.assign(el.style, { left: x - 14 - k + "px", top: y + "px" });
-        else if (side === "t") Object.assign(el.style, { left: x + "px", top: y - 12 - k + "px" });
-        else Object.assign(el.style, { left: x + "px", top: y + 12 + k + "px" });
+        else if (side === "t") Object.assign(el.style, { left: x + "px", top: (compact && bounds ? Math.max(bounds[2] + hh, y - 8 - k) : y - 12 - k) + "px" });
+        else Object.assign(el.style, { left: x + "px", top: (compact && bounds ? Math.min(bounds[3] - hh, y + 8 + k) : y + 12 + k) + "px" });
       }
       // the ties between themes bow towards the question
       for (const p of this.links) {

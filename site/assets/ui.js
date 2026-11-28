@@ -160,7 +160,8 @@
 
   /* ------------------------------------------------------------------ the three planes */
   const landEl = $("#landscape"), regEl = $("#regime"), nicEl = $("#niche");
-  const land = new RM.Landscape(landEl, app, { select: (id) => select(id), drill: (id) => drill(id), hover: (id, rect) => showTipAt(id, rect) });
+  const land = new RM.Landscape(landEl, app, { select: (id) => select(id), drill: (id) => drill(id), hover: (id, rect) => showTipAt(id, rect),
+    laidOut: (fm) => { if (fm === MAPS[S.level]) syncToggle(); } });
   const fmCallbacks = {
     select: (id) => { if (S.thread && !S.thread.t.steps.some((s) => s.topic === id) && id !== S.theme) endThread(); select(id); },
     drill: (id) => drill(id),
@@ -170,7 +171,7 @@
   };
   const reg = new RM.FocusMap(regEl, fmCallbacks);
   const nic = new RM.FocusMap(nicEl, fmCallbacks);
-  reg.view = nic.view = S.view;
+  land.view = reg.view = nic.view = S.view;
   const MAPS = { landscape: land, regime: reg, niche: nic };
   const PLANE = { landscape: landEl, regime: regEl, niche: nicEl };
 
@@ -269,13 +270,14 @@
     if (v === "map" && fm && fm.fellBack && S.view === "map") { live.textContent = u.t("view.no_room"); return; }   // nothing to switch to
     S.view = v;
     u.store.set("rm-view", v);
-    reg.setView(v); nic.setView(v);
+    land.setView(v); reg.setView(v); nic.setView(v);
+    updateInsets();
     syncToggle();
     live.textContent = fm && fm.fellBack && v === "map" ? u.t("view.no_room") : u.t("view.announce_" + v);
   }
   // the switch shows what is drawn: List is on when the visitor chose it, and also when the ring had no room (Map then says why)
   function syncToggle() {
-    const fm = MAPS[S.level], noRoom = !!(fm && fm.fellBack), ring = !!(fm && fm.el && fm.m && !fm.el.classList.contains("stack"));
+    const fm = MAPS[S.level], noRoom = !!(fm && fm.fellBack), ring = !!(fm && fm.el && (S.level === "landscape" || fm.m) && !fm.el.classList.contains("stack"));
     viewBtns.map.setAttribute("aria-pressed", ring ? "true" : "false");
     viewBtns.list.setAttribute("aria-pressed", ring ? "false" : "true");
     if (noRoom) { viewBtns.map.setAttribute("aria-disabled", "true"); viewBtns.map.title = u.t("view.no_room"); }
@@ -803,8 +805,8 @@
     const W = stageWidth();   // (all in the stage's own coordinates)
     const shift = body.classList.contains("right-open") && !mobile() ? rightWidth() : 0, gap = 10;
     body.classList.toggle("cramped", cramped());
-    // the switch shows where it can do something: on the Regime and Niche, with room for a ring
-    viewToggle.hidden = S.level === "landscape" || mobile() || cramped();
+    // the switch shows where it can do something: on mobile for all levels (Map default, List optional), and on desktop on Regime and Niche when there is room
+    viewToggle.hidden = mobile() ? false : (S.level === "landscape" || cramped());
     syncToggle();
     if (mobile() || !W) return;
     const lo = () => fab.offsetLeft + fab.offsetWidth + gap;
@@ -836,18 +838,19 @@
     fitChrome();
     const open = body.classList.contains("right-open"), m = mobile();
     const r = open && !m ? rightWidth() : 0;
+    const mTop = 56, mBot = (levelbar.offsetHeight || 56) + 6;
     if (S.level === "landscape") {
       // the ring sits below the question's caption; as cards (the question heading the list), just below the top row
-      const q = $("#qcap");
-      land.setInsets({ t: m ? 0 : chromeTop() + (q.offsetHeight || 56) + 4, tc: m ? 0 : chromeTop() + 4, r, b: m ? 0 : 58, l: 0, w: m ? 0 : stageWidth() });
+      const q = $("#qcap"), qh = q && q.offsetHeight ? q.offsetHeight + 4 : 0;
+      land.setInsets({ t: m ? mTop + qh : chromeTop() + (q.offsetHeight || 56) + 4, tc: m ? mTop : chromeTop() + 4, r, b: m ? mBot : 58, l: 0, w: stageWidth() });
       return;
     }
     const dock = walkDock();
     body.classList.toggle("walk-dock", dock);
     document.documentElement.style.setProperty("--walk-top", chromeTop() + "px");
-    const card = S.thread && !dock ? bar.offsetHeight + 28 : 0, pk = 58;   // room kept for the peek tab and hints, so the ring does not jump when one shows
+    const card = S.thread && !dock ? bar.offsetHeight + (m ? 18 : 28) : 0, pk = 58;   // room kept for the peek tab and hints, so the ring does not jump when one shows
     const c = cramped();   // (no side arrows then, so no room kept for them; nor during a walk, which has none)
-    MAPS[S.level].setInsets(m ? { t: 0, r: 0, b: 0, l: 0, side: 0, cramp: false, w: 0 }
+    MAPS[S.level].setInsets(m ? { t: mTop, r: 0, b: mBot + card, l: 0, side: 0, cramp: false, w: stageWidth() }
       : { t: chromeTop(), b: Math.max(card, pk), l: dock ? WALK_W + 32 : 0, r, side: c || S.thread ? 0 : 70, cramp: c, w: stageWidth() });
   }
   function head(crumb) {

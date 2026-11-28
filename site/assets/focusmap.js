@@ -175,12 +175,13 @@
     }
 
     /* ---------------------------------------------------------------- layout */
-    // a list rather than the ring: when the visitor asks for it, on a phone, or when there is truly no room for a ring. The width
+    // a list rather than the ring: when the visitor asks for it, or on desktop when there is truly no room for a ring. The width
     // is the one the stage is heading for (insets.w), so a side panel still sliding does not flash the list.
     stacked() {
-      if (window.matchMedia("(max-width: 820px)").matches) return true;
+      const phone = window.matchMedia("(max-width: 820px)").matches;
       if (this.forceRing) return false;   // a guided walk reads best as a map: the visitor's List choice waits until it ends
-      if (this.view === "list" || this.insets.cramp) return true;
+      if (this.view === "list" || (!phone && this.insets.cramp)) return true;
+      if (phone) return false;            // map is the default on mobile
       const I = this.insets;
       return (I.w || this.el.clientWidth) - I.l - I.r < 420;
     }
@@ -215,12 +216,14 @@
       if (!stack && ae && this.el.contains(ae) && ae.matches(".fm-down")) { const n = ae.closest(".fm-member").querySelector(".fm-node"); if (n) n.focus({ preventScroll: true }); }
       this.el.classList.toggle("stack", stack);
       // the ring was wanted but had no room: the map/list switch says so rather than show Map as on
-      this.fellBack = stack && this.view !== "list" && !phone;
+      this.fellBack = stack && this.view !== "list";
       if (stack) {
+        this.el.classList.remove("compact");
         for (const el of [this.centre, this.emptyEl, ...this.items.map((x) => x.item), ...this.nbs.map((x) => x.btn)].filter(Boolean)) {
           for (const k of ["left", "top", "width", "height"]) el.style[k] = "";
           el.classList.remove("side-l", "side-r", "side-t", "side-b");
         }
+        for (const { btn } of this.nbs) { const lb = btn.querySelector(".fm-nblabel"); if (lb) lb.style.removeProperty("--shift"); }
         const I = this.insets;
         this.noArrows = false;
         this.el.style.padding = phone ? "" : `${I.t}px ${I.r + (I.side || 0) + 12}px ${I.b + 24}px ${I.l + (I.side || 0) + 12}px`;
@@ -232,18 +235,72 @@
       }
       this.el.style.padding = "";
       // (insets.side is the room the side arrows would like; they step aside when the ring needs it)
-      const I = this.insets, side = I.side || 0, sh = Math.max(240, H - I.t - I.b);
-      const cx = I.l + Math.max(280, W - I.l - I.r) / 2, cy = I.t + sh / 2;
+      const I = this.insets, side = I.side || 0;
+      const sw0 = Math.max(220, W - I.l - I.r), sh = Math.max(220, H - I.t - I.b);
+      const compact = phone || sw0 < 540;
+      this.el.classList.toggle("compact", compact);
+      const cx = I.l + sw0 / 2, cy = I.t + sh / 2;
       const niche = this.m.style === "niche", M = this.items.length, N = this.nbs.length;
-      const nbR = niche ? 6 : 19;
+      const nbR = niche ? 6 : compact ? 14 : 19;
       // members: evenly round the ring from the top, clockwise (an even count starts half a step on, so it sits symmetrically;
       // two sit above and below the middle, where wide cards have the most room)
       const placeOn = (rx, ry) => { const at1 = u.alongEllipse(rx, ry); return this.items.map((x, i) => at1(i / Math.max(1, M) + (M % 2 === 0 && M !== 2 ? 0.5 / M : 0))); };
-      // Two ways to fit the rings: the neighbours' names beside their discs (the usual), or, where that leaves the rings too
-      // little width, above and below them (narrower, so the rings can be wider). Each returns the sizes, or null if no ring fits.
-      // tight: smaller gaps between the rings; s: the room left for each side arrow
-      // the middle must hold its title's longest word at the smallest type it is set in (10.5px, see apply)
-      const rcMin = Math.max(34, (10.5 * this.widest(this.m.centre.title, 500, "Spectral, Georgia, serif") + 8) / 1.55);
+      // the middle must hold its title's longest word at the smallest type it is set in
+      const rcMin = compact ? 30 : Math.max(34, (10.5 * this.widest(this.m.centre.title, 500, "Spectral, Georgia, serif") + 8) / 1.55);
+      const clampX = compact ? [I.l + 4, W - I.r - 4] : null;
+      const fitCompact = () => {
+        if (sw0 < 240 || sh < 240) return null;
+        const labW = Math.round(u.clamp(sw0 * (niche ? 0.27 : 0.19), niche ? 78 : 60, niche ? 112 : 76));
+        const labH = N ? Math.max(...this.labelSizes(labW, niche, true).map(([, h]) => h)) : 0;
+        const padT = Math.min(niche ? 58 : 44, Math.max(22, labH + 8));
+        const Rx2 = Math.max(76, sw0 / 2 - nbR - (niche ? 12 : 8));
+        const Ry2 = Math.max(88, sh / 2 - nbR - padT);
+        let Rx1, Ry1, rm = 0, cw = 0, ch = 0, mAng, rc, hh = [];
+        if (!niche) {
+          const gapH = M >= 7 ? 24 : 18, gapV = 20;
+          const ring = (r) => [N ? Math.max(48, Rx2 - r - nbR - gapH) : Math.max(60, sw0 / 2 - r - 12), N ? Math.max(64, Ry2 - r - nbR - gapV) : Math.max(72, sh / 2 - r - 16)];
+          rm = u.clamp(Math.min(sw0, sh) * (M >= 7 ? 0.08 : 0.088), 24, M >= 7 ? 31 : 36);
+          for (let k = 0; k < 40; k++) {
+            [Rx1, Ry1] = ring(rm);
+            const r = Math.min(rm, perimeter(Rx1, Ry1) / (Math.max(M, 3) * 2.2), Math.min(Rx1, Ry1) - 8 - rcMin);
+            if (r >= rm - 0.5 || rm <= 22) break;
+            rm = Math.max(22, r);
+          }
+          [Rx1, Ry1] = ring(rm);
+          mAng = placeOn(Rx1, Ry1);
+          rc = u.clamp(Math.min(Rx1, Ry1) - rm - 8, 28, M >= 7 ? 46 : 52);
+        } else {
+          ch = 46;
+          cw = u.clamp(sw0 * 0.35, 102, 146);
+          const heights = (w) => this.items.map(({ item }) => { item.style.width = w + "px"; return Math.max(ch, item.offsetHeight); });
+          hh = heights(cw);
+          const cardRing = () => {
+            const w = M ? cw : 0, maxH = M ? Math.max(...hh) : ch;
+            Rx1 = Math.min(sw0 / 2 - w / 2 - 6, N ? Math.max(w / 2 + 10, Rx2 - w / 2 - nbR - 14) : sw0 / 2 - w / 2 - 10);
+            Ry1 = N ? Math.max(60, Ry2 - maxH / 2 - nbR - Math.min(34, Math.max(20, labH * 0.65))) : Math.max(72, sh / 2 - maxH / 2 - 14);
+          };
+          const at = () => mAng.map((a) => [Rx1 * Math.cos(a), Ry1 * Math.sin(a)]);
+          const widthFor = (P) => {
+            let w = cw;
+            for (let i = 0; i < M; i++) for (let j = i + 1; j < M; j++)
+              if (Math.abs(P[i][1] - P[j][1]) < (hh[i] + hh[j]) / 2 + 6) w = Math.min(w, Math.abs(P[i][0] - P[j][0]) - 10);
+            return w;
+          };
+          const gap = (P, w) => (M ? Math.min(...P.map(([x, y], i) => Math.hypot(Math.max(Math.abs(x) - w / 2, 0), Math.max(Math.abs(y) - hh[i] / 2, 0)))) : Math.min(Rx1, Ry1));
+          cardRing(); mAng = placeOn(Rx1, Ry1);
+          for (let pass = 0; pass < 5; pass++) {
+            const P = at();
+            let w = widthFor(P);
+            while (M && gap(P, w) - 10 < Math.max(38, rcMin) && w > 88) w -= 6;
+            w = Math.max(88, w);
+            if (w >= cw - 0.5) break;
+            cw = w; hh = heights(cw); cardRing(); mAng = placeOn(Rx1, Ry1);
+          }
+          const P = at(), g = gap(P, cw);
+          rc = u.clamp(g - 10, 28, 54);
+        }
+        return { vert: true, s: 0, labW, Rx1, Ry1, Rx2, Ry2, rm, cw, ch, rc, mAng, hh, compact: true };
+      };
       const fit = (vert, s, tight, relax) => {
         const sw = Math.max(280, W - I.l - I.r - 2 * s);
         const labW = vert ? Math.round(u.clamp(sw * 0.17, 84, niche ? 140 : 124)) : Math.round(u.clamp(sw * (niche ? 0.2 : 0.17), niche ? 104 : 92, niche ? 172 : 150));   // names wrap when room is short
@@ -314,12 +371,8 @@
           if (widthFor(P) < cw - 0.5 || g - 14 < rcMin) return null;
           rc = u.clamp(g - 14, rcMin, 96);
         }
-        return { vert, s, labW, Rx1, Ry1, Rx2, Ry2, rm, cw, ch, rc, mAng, hh };
+        return { vert, s, labW, Rx1, Ry1, Rx2, Ry2, rm, cw, ch, rc, mAng, hh, compact: false };
       };
-      // the usual first; then, while it still does not fit, tighter gaps, the names above and below, the side arrows stepping aside
-      const tries = [[false, side, false], [false, side, true], [true, side, true], [false, 0, true], [true, 0, true]].filter((t, i) => side || i < 3);
-      // during a walk, one last try with the smallest discs the page can still fit names into (the names are shrunk to fit below)
-      if (this.forceRing) tries.push([false, 0, true, true], [true, 0, true, true]);
       // neighbours: on the Regime, towards the prompts that link to them; on the Niche, in the gaps between the sources
       // (the members are in the way too: a disc on the Regime, a card on the Niche, as tall as its text)
       const spread = (g) => {
@@ -328,23 +381,32 @@
           const x = cx + g.Rx1 * Math.cos(a), y = cy + g.Ry1 * Math.sin(a), v = niche ? g.hh[i] / 2 : g.rm;
           return { a, b: [x - hw, y - v, x + hw, y + v], c: [x, y], r: niche ? 0 : g.rm };
         });
-        return this.untangle(niche ? this.gapAngles(g.mAng, N) : this.towardAngles(g.mAng, g.Rx2, g.Ry2, nbR), cx, cy, g.Rx2, g.Ry2, nbR, g.labW, niche, obs, g.vert);
+        return this.untangle(niche ? this.gapAngles(g.mAng, N) : this.towardAngles(g.mAng, g.Rx2, g.Ry2, nbR), cx, cy, g.Rx2, g.Ry2, nbR, g.labW, niche, obs, g.vert, g.compact, clampX);
       };
-      // the first layout whose names all sit clear; failing that, the one with fewest touching
       let G = null, best = null;
-      for (const [vert, s, tight, relax] of tries) {
-        const g = fit(vert, s, tight, relax);
-        if (!g) continue;
-        g.nAng = spread(g);
-        if (!g.nAng.clash) { G = g; break; }
-        if (!best || g.nAng.clash < best.nAng.clash) best = g;
+      if (compact) {
+        G = fitCompact();
+        if (G) G.nAng = spread(G);
+      } else {
+        // the usual first; then, while it still does not fit, tighter gaps, the names above and below, the side arrows stepping aside
+        const tries = [[false, side, false], [false, side, true], [true, side, true], [false, 0, true], [true, 0, true]].filter((t, i) => side || i < 3);
+        // during a walk, one last try with the smallest discs the page can still fit names into (the names are shrunk to fit below)
+        if (this.forceRing) tries.push([false, 0, true, true], [true, 0, true, true]);
+        // the first layout whose names all sit clear; failing that, the one with fewest touching
+        for (const [vert, s, tight, relax] of tries) {
+          const g = fit(vert, s, tight, relax);
+          if (!g) continue;
+          g.nAng = spread(g);
+          if (!g.nAng.clash) { G = g; break; }
+          if (!best || g.nAng.clash < best.nAng.clash) best = g;
+        }
+        G = G || best;
       }
-      G = G || best;
       if (!G) return this.layout(true);   // no ring can hold this: the list, this once
       const { vert, labW, Rx1, Ry1, Rx2, Ry2, rm, cw, ch, rc, mAng, hh, nAng } = G;
       this.noArrows = side > 0 && G.s === 0;
       this.el.style.setProperty("--labw", labW + "px");
-      this.pos = { cx, cy, Rx1, Ry1, Rx2, Ry2, rm, cw, ch, rc, nbR, niche, vert,
+      this.pos = { cx, cy, Rx1, Ry1, Rx2, Ry2, rm, cw, ch, rc, nbR, niche, vert, compact: !!G.compact, clampX, nUp: nAng.up || null,
         members: new Map(this.items.map((x, i) => [x.mb.id, [cx + Rx1 * Math.cos(mAng[i]), cy + Ry1 * Math.sin(mAng[i])]])),
         nbs: new Map(this.nbs.map((x, i) => [x.nb.id, [cx + Rx2 * Math.cos(nAng[i]), cy + Ry2 * Math.sin(nAng[i])]])) };
       this.apply(this.pos);
@@ -379,7 +441,7 @@
     // beside its disc, on the outward side); any two that would overlap are eased apart along the ring, and one that would run into
     // a member is eased away from it
     // each neighbour's name as the page sets it at a given width: [widest line, height], wrapped at spaces, hyphens and en dashes
-    labelSizes(labW, niche) {
+    labelSizes(labW, niche, compact) {
       const c = (this._ctx = this._ctx || document.createElement("canvas").getContext("2d"));
       const wrap = (text, font, maxW) => {
         c.font = font;
@@ -388,31 +450,41 @@
         for (const [pw, spaced] of parts) { const add = (line && spaced ? sp : 0) + pw; if (line && line + add > maxW) { widest = Math.max(widest, line); lines++; line = pw; } else line += add; }
         return [Math.max(widest, line), lines];
       };
+      const fs = compact ? 9.5 : (niche ? 12.5 : 11.5), lh = compact ? 11.2 : (niche ? 15 : 14);
+      const fsSub = compact ? 8.5 : 11, lhSub = compact ? 10.2 : 14;
       return this.nbs.map(({ nb }) => {
-        const [w, lines] = wrap(nb.label, `600 ${niche ? 12.5 : 11.5}px Inter, system-ui, sans-serif`, labW);
-        // (a Regime neighbour shows its link count under its name while lit: room is kept for it)
-        const [sw2, sl] = nb.sub ? wrap(nb.sub, "400 11px Inter, system-ui, sans-serif", labW) : [0, 0];
-        return [lines > 1 || sl > 1 ? Math.max(labW, w) : Math.max(w, sw2), lines * (niche ? 15 : 14) + sl * 14];
+        const [w, lines] = wrap(nb.label, `600 ${fs}px Inter, system-ui, sans-serif`, labW);
+        // (on Regime compact the link count only shows on focus; on Niche it is always shown)
+        const [sw2, sl] = (niche || !compact) && nb.sub ? wrap(nb.sub, `400 ${fsSub}px Inter, system-ui, sans-serif`, labW) : [0, 0];
+        return [lines > 1 || sl > 1 ? Math.max(labW, w) : Math.max(w, sw2), lines * lh + sl * lhSub];
       });
     }
-    untangle(angles, cx, cy, Rx2, Ry2, nbR, labW, niche, obs, vert) {
+    untangle(angles, cx, cy, Rx2, Ry2, nbR, labW, niche, obs, vert, compact, clampX) {
       const n = angles.length;
       if (!n) return angles;
-      const size = this.labelSizes(labW, niche);
+      const size = this.labelSizes(labW, niche, compact);
       const rr = nbR * 1.15;   // a lit disc grows a little
-      const box = (i, a) => {
+      const box = (i, a, upOverride) => {
         const x = cx + Rx2 * Math.cos(a), y = cy + Ry2 * Math.sin(a), [lw, lh] = size[i], r = x >= cx;
-        if (vert) { const up = y < cy, hx = Math.max(rr, lw / 2); return [x - hx, up ? y - nbR - 4 - lh : y - rr, x + hx, up ? y + rr : y + nbR + 4 + lh]; }
+        if (vert) {
+          const up = upOverride != null ? upOverride : y < cy, hx = Math.max(rr, lw / 2);
+          let x0 = x - hx, x1 = x + hx;
+          if (clampX) {
+            if (x0 < clampX[0]) { const d = clampX[0] - x0; x0 += d; x1 += d; }
+            if (x1 > clampX[1]) { const d = x1 - clampX[1]; x0 -= d; x1 -= d; }
+          }
+          return [x0, up ? y - nbR - 4 - lh : y - rr, x1, up ? y + rr : y + nbR + 4 + lh];
+        }
         return [r ? x - rr : x - nbR - 8 - lw, Math.min(y - rr, y - lh / 2), r ? x + nbR + 8 + lw : x + rr, Math.max(y + rr, y + lh / 2)];
       };
-      const hit = (A, B) => A[0] < B[2] + 6 && B[0] < A[2] + 6 && A[1] < B[3] + 4 && B[1] < A[3] + 4;
+      const hit = (A, B) => A[0] < B[2] + (compact ? 4 : 6) && B[0] < A[2] + (compact ? 4 : 6) && A[1] < B[3] + (compact ? 3 : 4) && B[1] < A[3] + (compact ? 3 : 4);
       // what could not be eased apart (a real overlap, not just closer than the margin)
       const real = (A, B) => A[0] < B[2] - 1 && B[0] < A[2] - 1 && A[1] < B[3] - 1 && B[1] < A[3] - 1;
-      const onDisc = (A, o) => Math.hypot(Math.max(A[0] - o.c[0], 0, o.c[0] - A[2]), Math.max(A[1] - o.c[1], 0, o.c[1] - A[3])) < o.r - 1;
-      const clashes = (out) => {
+      const onDisc = (A, o) => Math.hypot(Math.max(A[0] - o.c[0], 0, o.c[0] - A[2]), Math.max(A[1] - o.c[1], 0, o.c[1] - A[3])) < o.r + (compact ? 4 : -1);
+      const clashes = (out, ups) => {
         let c = 0;
-        for (let k = 0; k < n; k++) for (let j = k + 1; j < n; j++) if (real(box(k, out[k]), box(j, out[j]))) c++;
-        for (let k = 0; k < n; k++) for (const o of obs || []) if (o.r ? onDisc(box(k, out[k]), o) : real(box(k, out[k]), o.b)) c++;
+        for (let k = 0; k < n; k++) for (let j = k + 1; j < n; j++) if (real(box(k, out[k], ups && ups[k]), box(j, out[j], ups && ups[j]))) c++;
+        for (let k = 0; k < n; k++) for (const o of obs || []) if (o.r ? onDisc(box(k, out[k], ups && ups[k]), o) : real(box(k, out[k], ups && ups[k]), o.b)) c++;
         return c;
       };
       const ease = (start) => {
@@ -457,6 +529,22 @@
         const again = ease(even);
         if (again.clash < out.clash) out = again;
       }
+      // on compact screens, allow side neighbours near the equator to flip their label above/below if that eliminates an overlap
+      if (compact && vert) {
+        const ups = out.map((a) => cy + Ry2 * Math.sin(a) < cy);
+        for (let pass = 0; pass < 2; pass++) {
+          for (let k = 0; k < n; k++) {
+            const y = cy + Ry2 * Math.sin(out[k]);
+            if (Math.abs(y - cy) > Ry2 * 0.72) continue;   // top & bottom poles always point outward
+            const cur = clashes(out, ups);
+            if (!cur) break;
+            ups[k] = !ups[k];
+            if (clashes(out, ups) >= cur) ups[k] = !ups[k];
+          }
+        }
+        out.up = ups;
+        out.clash = clashes(out, ups);
+      }
       return out;
     }
     // evenly spaced, turned so as to sit as far as possible from the given angles
@@ -471,7 +559,7 @@
       return best.as;
     }
     apply(g) {
-      const { cx, cy, Rx1, Ry1, Rx2, Ry2, rm, cw, rc, nbR, niche } = g;
+      const { cx, cy, Rx1, Ry1, Rx2, Ry2, rm, cw, rc, nbR, niche, compact, clampX, nUp } = g;
       this.el.style.setProperty("--rm", f1(rm) + "px");
       this.el.style.setProperty("--rc", f1(rc) + "px");
       this.el.style.setProperty("--cw", f1(cw) + "px");
@@ -482,11 +570,11 @@
       // the longest word of the label in the middle has to fit across it (and then every line has to sit inside the circle)
       this.centre.classList.toggle("tight", rc < 66);   // a small middle keeps only its kicker and title
       this.centre.classList.remove("bare");
-      const fsC = u.clamp(Math.min(rc * 0.2, (1.55 * rc - 8) / this.widest(this.m.centre.title, 500, "Spectral, Georgia, serif")), 10.5, 24);
+      const fsC = u.clamp(Math.min(rc * 0.2, (1.55 * rc - 8) / this.widest(this.m.centre.title, 500, "Spectral, Georgia, serif")), compact ? 8.5 : 10.5, 24);
       const setC = (fs) => this.centre.style.setProperty("--fs", fs.toFixed(1) + "px");
-      u.shrinkToFit([[this.centre, this.centre]], setC, fsC, 9);
+      u.shrinkToFit([[this.centre, this.centre]], setC, fsC, compact ? 8 : 9);
       // still too much for a small middle: the title alone (its kicker, "Prompt · Theme 5", is in the level bar and the note)
-      if (!u.textInCircle(this.centre, this.centre)) { this.centre.classList.add("bare"); u.shrinkToFit([[this.centre, this.centre]], setC, fsC, 8.5); }
+      if (!u.textInCircle(this.centre, this.centre)) { this.centre.classList.add("bare"); u.shrinkToFit([[this.centre, this.centre]], setC, fsC, compact ? 7.5 : 8.5); }
       for (const { mb, item } of this.items) {
         const [x, y] = g.members.get(mb.id), d = Math.hypot(x - cx, y - cy) || 1;
         if (niche) Object.assign(item.style, { left: x + "px", top: y + "px", width: cw + "px", height: "" });
@@ -497,18 +585,30 @@
       // every prompt's name in one size: the largest at which every name's longest word fits across its disc, then stepped down
       // until each name sits inside its circle as the page actually draws it
       if (!niche && this.items.length) {
-        const fs0 = u.clamp(Math.min(rm * 0.27, ...this.items.map(({ mb }) => (1.6 * rm - 6) / this.widest(mb.label, 600, "Inter, system-ui, sans-serif"))), 9, 14);
+        const fs0 = u.clamp(Math.min(rm * 0.27, ...this.items.map(({ mb }) => (1.6 * rm - 6) / this.widest(mb.label, 600, "Inter, system-ui, sans-serif"))), compact ? 7.5 : 9, 14);
         const pairs = this.items.map(({ item }) => [item.querySelector(".fm-node"), item.querySelector(".fm-label")]);
-        u.shrinkToFit(pairs, (fs) => this.el.style.setProperty("--fsm", fs.toFixed(2) + "px"), fs0, 8);
+        u.shrinkToFit(pairs, (fs) => this.el.style.setProperty("--fsm", fs.toFixed(2) + "px"), fs0, compact ? 7 : 8);
       }
-      for (const { nb, btn } of this.nbs) {
+      this.nbs.forEach(({ nb, btn }, i) => {
         const [x, y] = g.nbs.get(nb.id);
+        const up = nUp ? !!nUp[i] : y < cy;
         Object.assign(btn.style, { left: x - nbR + "px", top: y - nbR + "px" });
         btn.classList.toggle("side-r", !g.vert && x >= cx);
         btn.classList.toggle("side-l", !g.vert && x < cx);
-        btn.classList.toggle("side-t", !!g.vert && y < cy);   // (names above and below their discs, where width is short)
-        btn.classList.toggle("side-b", !!g.vert && y >= cy);
-      }
+        btn.classList.toggle("side-t", !!g.vert && up);   // (names above and below their discs, where width is short)
+        btn.classList.toggle("side-b", !!g.vert && !up);
+        const lb = btn.querySelector(".fm-nblabel");
+        if (lb) {
+          lb.style.removeProperty("--shift");
+          if (clampX && g.vert) {
+            const w = lb.offsetWidth || 0;
+            let dx = 0;
+            if (x - w / 2 < clampX[0]) dx = clampX[0] - (x - w / 2);
+            else if (x + w / 2 > clampX[1]) dx = clampX[1] - (x + w / 2);
+            if (dx) lb.style.setProperty("--shift", f1(dx) + "px");
+          }
+        }
+      });
       // lines: from the middle out to each member (Regime), between members, and out to the neighbours
       const edge = (from, to, r) => { const dx = to[0] - from[0], dy = to[1] - from[1], d = Math.hypot(dx, dy) || 1; return [from[0] + (dx / d) * r, from[1] + (dy / d) * r]; };
       const mr = niche ? 0 : rm, C = [cx, cy];

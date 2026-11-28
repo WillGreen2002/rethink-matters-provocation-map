@@ -148,7 +148,7 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
   The three chapters, the Bookshelf's shelves (*how matter becomes life, how life becomes technology, how technology becomes society*), are coloured bands with their names in
   the gaps. Dashed lines join themes whose prompts are linked: at rest each theme's strongest tie and any tie of three links or more; point at a theme for all of them. All lines have one weight: the committee found strengths arbitrary.
   Click a theme for its note (with its future, where there is one); double-click it (or use Go down in its note) to go down to its prompts. A theme's note names the themes it is most connected to, from three links up (or its strongest ties, if none reaches three). Click the middle for a question or an answer.
-  On a phone the ring becomes a list of cards.
+  On a phone it opens as a compact portrait ring by default, with the Map / List switch at the top right to switch to cards.
 * **Prompts.** One theme in the middle and only its prompts round it (mostly verbatim from the sheet), all in the theme's one colour; a dashed disc is an open question that no session has discussed yet. Lines show
   the links between them. The other themes they reach sit further out as small numbered discs: point at a prompt and its links light up in the colour of the relation (teal
   *echoes*, terracotta *in tension with*, olive *enables*, ochre *leads on to*; dashed lines share keywords or a discussion), together with the themes it reaches; click a theme
@@ -158,7 +158,7 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
   suggested with it, and examples shaped by type (square paper, triangle company, diamond product, ring pre-clinical, dot clinical, cross other). The prompts it links to sit
   further out, in the colour of the relation; click one to move across.
 * **Notes.** A prompt's note leads with its discussions, then its cross-references (the hand-written links, each with its reason), any examples and books. Every note ends with **Let us know your thoughts**: with the edit link it goes to the committee's Sheet, otherwise it opens an email to the group's public address.
-* **Narrow screens.** On a phone the Prompts level and the Niche are always plain lists in the same order. On a laptop the ring stays beside an open note: it shrinks to fit
+* **Narrow screens.** On a phone all three levels default to a compact portrait map, with the **Map / List** switch at the top right to switch to the list view whenever preferred. On a laptop the ring stays beside an open note: it shrinks to fit
   (its discs never smaller than their names need, its middle never smaller than its title), then tightens the gaps between its rings, sets the outer themes' names
   above and below them, and lets the side arrows step aside. On a small laptop, going down folds the left panel away if the ring still has no room beside it (it
   comes back on the Landscape). Only if none of that is enough does the level fall back to the list, and the Map / List switch then says so. The top row's buttons
