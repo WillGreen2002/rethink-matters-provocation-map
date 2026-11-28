@@ -67,8 +67,7 @@
       const app = this.app, color = app.themeColor(th.n);
       const disc = h("button", { class: "ls-disc", type: "button", "data-id": th.id, onclick: (e) => RM.press(e, () => this.cb.select && this.cb.select(th.id), () => this.cb.drill && this.cb.drill(th.id)) },
         h("span", { class: "ls-num" }, u.t("landscape.theme_n", { n: th.n })),
-        h("span", { class: "ls-label" }, th.label),
-        h("span", { class: "ls-lead" }, th.lead));
+        h("span", { class: "ls-label" }, th.label));
       // (the cards' way down; the ring has none: a double click, or Go down in the theme's note)
       const down = h("button", { class: "ls-down", type: "button", "aria-label": u.t("landscape.down_label", { theme: th.n }), title: u.t("landscape.down_label", { theme: th.n }),
         onclick: () => this.cb.drill && this.cb.drill(th.id) }, h("span", { "aria-hidden": "true" }, "↓"));

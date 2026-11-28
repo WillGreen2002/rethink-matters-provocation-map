@@ -437,7 +437,6 @@ body.thread-on #btnWalks { display: none; }   /* (Up stays: it ends the walk and
 }
 .ls-num { font-size: max(8.5px, calc(var(--rd, 44px) * .165)); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #5A564C; }
 .ls-label { font-size: var(--fsl, 11px); font-weight: 600; line-height: 1.15; margin-top: 2px; hyphens: auto; -webkit-hyphens: auto; text-wrap: balance; }
-.ls-lead { display: none; }
 .ls-theme:hover .ls-disc, .ls-theme.on .ls-disc { transform: scale(1.06); background: color-mix(in srgb, var(--c) 20%, var(--paper)); }
 .ls-theme.sel .ls-disc { box-shadow: 0 0 0 5px var(--paper), 0 0 0 6.5px var(--c); }
 .landscape.focused .ls-theme.dim .ls-disc { border-color: color-mix(in srgb, var(--c) 35%, var(--paper)); background: var(--paper); }
@@ -465,8 +464,7 @@ body.thread-on #btnWalks { display: none; }   /* (Up stays: it ends the walk and
 .landscape.stack .ls-theme { position: relative; width: auto; height: auto; margin: 0 0 8px; }
 .landscape.stack .ls-disc { position: relative; inset: auto; width: 100%; border-radius: 16px; border: 1px solid var(--line); border-left: 4px solid var(--c); align-items: flex-start; text-align: left; padding: 11px 56px 11px 14px; transform: none; }
 .landscape.stack .ls-num { font-size: 10.5px; }
-.landscape.stack .ls-label { font-size: 16px; margin: 2px 0 4px; hyphens: manual; }
-.landscape.stack .ls-lead { display: block; font-size: 13px; line-height: 1.4; color: var(--faint); font-weight: 400; }
+.landscape.stack .ls-label { font-size: 16px; margin: 2px 0 0; hyphens: manual; }
 .landscape.stack .ls-down { left: auto; right: 12px; top: 50%; bottom: auto; transform: translateY(-50%); font-size: 12.5px; padding: 3px 12px; }
 .landscape.stack.focused .ls-theme.dim .ls-disc { border-color: var(--line); border-left-color: var(--c); background: color-mix(in srgb, var(--c) 11%, var(--paper)); }
 
@@ -716,9 +714,9 @@ body.right-open .side-arrow.next { right: calc(var(--right-w) + 10px); }
 .theme-go small { font-size: 11.5px; color: var(--faint); white-space: nowrap; }
 .theme-go:hover { background: rgba(34, 33, 28, .05); }
 .theme-go[aria-current="true"] { border-color: var(--line); background: var(--card); font-weight: 600; }
-.rel-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; }
-.rel-row .rel-item { margin-bottom: 8px; }
-.down-mini { margin-top: 8px; white-space: nowrap; font-size: 12px; padding: 5px 11px; }
+.rel-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; margin-bottom: 8px; }
+.rel-row .rel-item { margin-bottom: 0; }
+.down-mini { white-space: nowrap; font-size: 12px; padding: 5px 11px; }
 /* the way down sits on the disc's lower edge: pointing outward it would land on the neighbour theme the prompt links to */
 .fmap[data-style="regime"]:not(.stack) .fm-down { left: 50%; top: 100%; transform: translate(-50%, -60%); z-index: 4; }
 /* a note open on a laptop, or a level bar that would run over them: the buttons fold to their icons */

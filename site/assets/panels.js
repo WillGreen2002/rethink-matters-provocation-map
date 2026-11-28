@@ -171,7 +171,6 @@
     const body = h("div");
     body.append(h("span", { class: "kind", style: { "--c": color } }, h("i"), u.t("theme.kind", { n: n.n, chapter: arc.label })));
     body.append(ed(h("h1", null, n.title), "theme:" + n.id + ":title"));
-    body.append(ed(h("p", { class: "prompt", style: { "--c": color } }, n.lead), "theme:" + n.id + ":lead"));
     // down to its prompts (from the Landscape; on the Regime the theme is already in the middle)
     if (app.level() === "landscape") body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) }, h("span", { "aria-hidden": "true" }, "↓ "), u.t("theme.down", { n: ts.length })));
     put(body, future(app, n.future, u.t("future.title"), "theme:" + n.id + ":future"));
@@ -212,8 +211,7 @@
     body.append(h("h2", null, u.t("arc.themes")));
     ths.forEach((t) => body.append(h("div", { class: "rel-row" },
       h("button", { type: "button", class: "rel-item", onclick: () => app.select(t.id) },
-        h("div", { class: "rt" }, h("i", { style: { "--c": app.colorOf(t.id) } }), h("span", null, u.t("arc.theme_item", { n: t.n, title: t.title }))),
-        h("p", { class: "why" }, t.lead)),
+        h("div", { class: "rt" }, h("i", { style: { "--c": app.colorOf(t.id) } }), h("span", null, u.t("arc.theme_item", { n: t.n, title: t.title })))),
       h("button", { type: "button", class: "btn down-mini", "aria-label": u.t("arc.down_theme", { n: t.n, label: t.label }), onclick: () => app.drill(t.id) },
         u.t("arc.prompts_n", { n: t.topics.length }), h("span", { "aria-hidden": "true" }, " ↓")))));
     const r = app.chapterReach(n.arc);

@@ -174,7 +174,7 @@ The map itself can be edited by anyone who has its **edit link**. Without the li
 
 * **Opening the edit link once** sets that browser up (it remembers it). The map then starts with everyone's latest changes and shows an
   **Edit** switch in the header.
-* **With Edit on**, everything that can be changed is outlined: theme titles, questions and futures, the overall answer, prompts (names and
+* **With Edit on**, everything that can be changed is outlined: theme titles and futures, the overall answer, prompts (names and
   text), discussions (names and what the group said), the level explainers, the introduction and the conflicts statement. **Click into the text and type; click
   away (or press Enter) to save**, Esc to undo. Changes reach everyone with the link at once; **History** under a changed text keeps every
   earlier version, with initials and time, and can bring one back. Renaming a prompt renames its disc on the map.

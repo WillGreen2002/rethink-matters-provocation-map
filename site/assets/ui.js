@@ -388,7 +388,7 @@
   const searchIndex = [];
   for (const n of D.nodes) {
     const label = n.label + (n.kind === "theme" ? " " + n.title : "");
-    const extra = n.kind === "topic" ? n.text : n.kind === "tag" ? n.def : n.kind === "theme" ? n.lead : n.kind === "center" ? n.question
+    const extra = n.kind === "topic" ? n.text : n.kind === "tag" ? n.def : n.kind === "theme" ? ((n.future && n.future.text) || "") : n.kind === "center" ? n.question
       : n.kind === "discussion" ? (n.texts.map((t) => t.paras.join(" ")).join(" ") + " " + n.notes)
       : n.kind === "example" ? [n.org, n.summary, n.year].filter(Boolean).join(" ") : n.author || "";
     searchIndex.push({ id: n.id, kind: n.kind, label: n.label, hay1: fold(label), hay2: fold(extra), text: String(extra).replace(/[*_]/g, "") });
@@ -496,11 +496,10 @@
     if (n.kind === "topic") { sub = u.t("tip.topic", { n: n.theme, label: byId.get("th:" + n.theme).label }); extra = h("span", { class: "tip-future" }, n.text); }
     else if (n.kind === "theme") {
       title = u.t("tip.theme_title", { n: n.n, label: n.label });
-      if (S.level === "landscape") {
+      if (S.level === "landscape" || id === S.theme) {
         sub = u.t("tip.theme_landscape", { n: n.topics.length });
         if (n.future && n.future.text) extra = h("span", { class: "tip-future" }, n.future.text);
-      } else if (id === S.theme) sub = n.lead;
-      else sub = u.t("tip.theme_move");
+      } else sub = u.t("tip.theme_move");
     }
     else if (n.kind === "tag") sub = u.t("tip.tag", { facet: D.facets[n.facet].label.replace(/s$/, ""), n: n.topics.length });
     else if (n.kind === "discussion") sub = n.sessions.map((s) => D.sessions[s].label).join(", ");

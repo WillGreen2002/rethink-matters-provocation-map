@@ -2,7 +2,7 @@
    starts the map as it is: visitors see the published text, untouched.
 
    With the link (opened once; the browser then remembers it), the map starts with the committee's latest text and shows an Edit
-   switch in the header. With Edit on, the main text can be changed by clicking into it: theme titles, questions and futures, the
+   switch in the header. With Edit on, the main text can be changed by clicking into it: theme titles and futures, the
    overall answer, prompts, discussions and what the group said, the explainers. Leaving the text saves it for everyone with the
    link; History keeps every earlier version. Any prompt can take additions after a provocation; Freeze stops editing.
 
@@ -105,7 +105,7 @@
   }
 
   /* ------------------------------------------------------------------ what the log of changes adds up to */
-  const EDIT = /^(theme:th:\d+:(title|lead|future)|centre:answer|prompt:n:[a-z0-9-]+:(label|text)|disc:d:[a-z0-9-]+:(label|notes)|copy:(levels\.(landscape|regime|niche)\.explain|hero\.lede|about\.conflicts))$/;
+  const EDIT = /^(theme:th:\d+:(title|future)|centre:answer|prompt:n:[a-z0-9-]+:(label|text)|disc:d:[a-z0-9-]+:(label|notes)|copy:(levels\.(landscape|regime|niche)\.explain|hero\.lede|about\.conflicts))$/;
   const LABEL = /^(prompt:n:[a-z0-9-]+:label|disc:d:[a-z0-9-]+:label)$/;   // names drawn on the map itself
   const S = { cfg: null, be: null, log: [], pending: [], edits: new Map(), adds: new Map(), frozen: null, base: new Map(), synced: 0, error: null,
     booted: false, editing: false, later: false };
@@ -137,7 +137,7 @@
   /* ------------------------------------------------------------------ where each editable text lives in the map's data */
   function slot(key) {
     let m;
-    if ((m = /^theme:(th:\d+):(title|lead|future)$/.exec(key))) { const n = node(m[1]); if (!n) return null; return m[2] === "future" ? (n.future ? [n.future, "text"] : null) : [n, m[2]]; }
+    if ((m = /^theme:(th:\d+):(title|future)$/.exec(key))) { const n = node(m[1]); if (!n) return null; return m[2] === "future" ? (n.future ? [n.future, "text"] : null) : [n, m[2]]; }
     if (key === "centre:answer") { const c = node("c"); return c && c.answer ? [c.answer, "text"] : null; }
     if ((m = /^prompt:(n:[a-z0-9-]+):(label|text)$/.exec(key))) { const n = node(m[1]); return n && n.kind === "topic" ? [n, m[2]] : null; }
     if ((m = /^disc:(d:[a-z0-9-]+):(label|notes)$/.exec(key))) { const n = node(m[1]); return n && n.kind === "discussion" ? [n, m[2]] : null; }

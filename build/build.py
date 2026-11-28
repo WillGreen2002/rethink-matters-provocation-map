@@ -550,7 +550,7 @@ for n in meta["theme_order"]:
     th = bristol[n]
     m = meta["themes"][n]
     nodes.append({"id": f"th:{n}", "kind": "theme", "n": n, "sheet": th["sheet"], "label": m["short"], "title": m.get("title") or th["title"],
-                  "lead": th["lead"], "arc": m["arc"], "topics": ["n:" + x for x in theme_topics[n]],
+                  "arc": m["arc"], "topics": ["n:" + x for x in theme_topics[n]],
                   "future": FUT_THEME.get(th["sheet"])})
     hier.append({"s": "c", "t": f"th:{n}", "kind": "hier"})
 
@@ -748,13 +748,13 @@ if os.path.exists(_rpath):
 _nodes_by_id = {n["id"]: n for n in nodes}
 for _key, _text in REVIEW_EDITS.items():
     _text = "" if _text is None else str(_text).strip()
-    _m = re.fullmatch(r"(theme):(th:\d+):(title|lead|future)|(centre):answer|(prompt):(n:[a-z0-9-]+):(label|text)|(disc):(d:[a-z0-9-]+):(label|notes)|copy:(levels\.(?:landscape|regime|niche)\.explain|hero\.lede|about\.conflicts)", _key)
+    _m = re.fullmatch(r"(theme):(th:\d+):(title|future)|(centre):answer|(prompt):(n:[a-z0-9-]+):(label|text)|(disc):(d:[a-z0-9-]+):(label|notes)|copy:(levels\.(?:landscape|regime|niche)\.explain|hero\.lede|about\.conflicts)", _key)
     if not _m or (not _text and not _key.endswith(":notes")):  # what the group said can be cleared; nothing else can
         err(f"curation/review_edits.yaml: cannot apply {_key!r}")
         continue
     if _m.group(1):
         _n = _nodes_by_id.get(_m.group(2))
-        if _n and _m.group(3) in ("lead", "title"):
+        if _n and _m.group(3) == "title":
             _n[_m.group(3)] = _text
         elif _n and _n.get("future"):
             _n["future"] = dict(_n["future"], text=_text, pending=False)
@@ -888,7 +888,7 @@ def write_vault():
     for n in nodes:
         if n["kind"] != "theme":
             continue
-        L = ["---", f"tags: [theme/{n['n']}, arc/{n['arc']}]", "---", f"# Theme {n['n']}. {n['title']}", "", f"> {n['lead']}", "",
+        L = ["---", f"tags: [theme/{n['n']}, arc/{n['arc']}]", "---", f"# Theme {n['n']}. {n['title']}", "",
              f"Part of {wl('c', 'A world we want to live in')} · chapter: *{arc_label[n['arc']]}*"
              + (f" · theme {n['sheet']} in the Bristol retreat sheet" if n.get("sheet") and n["sheet"] != n["n"] else ""), ""]
         f = n.get("future")

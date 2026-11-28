@@ -24,7 +24,7 @@ import urllib.parse
 import urllib.request
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-EDIT = re.compile(r"^(theme:th:\d+:(title|lead|future)|centre:answer|prompt:n:[a-z0-9-]+:(label|text)|disc:d:[a-z0-9-]+:(label|notes)|copy:(levels\.(landscape|regime|niche)\.explain|hero\.lede|about\.conflicts))$")
+EDIT = re.compile(r"^(theme:th:\d+:(title|future)|centre:answer|prompt:n:[a-z0-9-]+:(label|text)|disc:d:[a-z0-9-]+:(label|notes)|copy:(levels\.(landscape|regime|niche)\.explain|hero\.lede|about\.conflicts))$")
 EX_TYPES = {"paper": "paper", "company": "company", "product": "product", "preclinical": "preclinical", "clinical": "clinical",
             "note": "other", "book": "other", "link": "other", "other": "other"}
 EX_COLS = ["id", "type", "name", "organisation", "year", "stage", "summary", "url", "prompts", "status", "notes"]

@@ -432,7 +432,7 @@ review:
     title: "Editing the map"
     lede: "You have the map's edit link. Press Edit (top right) to switch edit mode on: everything you can change is then outlined. Your changes are shared with everyone who has the link at once; the public map changes only when it is published."
     items:
-      - "**Click into any outlined text** (a theme's title, question or future, the overall answer, a prompt, a discussion and what the group said, the explainers, the conflicts statement) and type. **Click away** (or press Enter) to save; Esc puts it back as it was."
+      - "**Click into any outlined text** (a theme's title or future, the overall answer, a prompt, a discussion and what the group said, the explainers, the conflicts statement) and type. **Click away** (or press Enter) to save; Esc puts it back as it was."
       - "**Nothing is lost.** **History** under a changed text shows every earlier version, with initials and time, and can bring one back."
       - "**After a provocation**, open its prompt and choose **Add to this prompt**: a note from the discussion, a paper, a company, a book or a link. It appears on the prompt's Niche straight away. A second person ticks **I have checked this** before it can go public."
       - "**Freeze** stops editing for everyone when the text is ready to publish. Anyone with the link can unfreeze."

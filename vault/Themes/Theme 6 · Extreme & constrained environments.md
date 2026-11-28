@@ -3,8 +3,6 @@ tags: [theme/6, arc/life-to-technology]
 ---
 # Theme 6. Extreme and constrained environments
 
-> Could biomaterials help us live, manufacture and adapt underwater, in space and amid climate extremes, and what maintenance would they require?
-
 Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How life becomes technology* · theme 9 in the Bristol retreat sheet
 
 ## A future we'd want

@@ -3,8 +3,6 @@ tags: [theme/9, arc/technology-to-society]
 ---
 # Theme 9. Governance, ownership and social purpose
 
-> What would make biomaterials ethically and socially better?
-
 Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How technology becomes society* · theme 8 in the Bristol retreat sheet
 
 ## A future we'd want

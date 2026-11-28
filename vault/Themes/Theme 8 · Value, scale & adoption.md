@@ -3,8 +3,6 @@ tags: [theme/8, arc/technology-to-society]
 ---
 # Theme 8. Commercial value, scale and adoption
 
-> Where do biomaterials offer a compelling advantage, and what stops them reaching widespread use?
-
 Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How technology becomes society* · theme 6 in the Bristol retreat sheet
 
 ## A future we'd want
