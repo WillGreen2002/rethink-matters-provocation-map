@@ -5,7 +5,7 @@ tags: [theme/6, arc/life-to-technology]
 
 Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How life becomes technology* · theme 9 in the Bristol retreat sheet
 
-## A future we'd want
+## Questions for the future
 
 A future where underwater habitation must justify itself beyond research and niche industry. Materials that survive extremes are planned to degrade, by trigger or collection, though control is limited. And living functions which justify ongoing care are decided openly.
 

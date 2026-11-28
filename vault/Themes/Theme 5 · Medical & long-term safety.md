@@ -5,7 +5,7 @@ tags: [theme/5, arc/life-to-technology]
 
 Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How life becomes technology* · theme 7 in the Bristol retreat sheet
 
-## A future we'd want
+## Questions for the future
 
 A future where medical biomaterials come with long-term evidence of safety. Wound dressings that change colour warn of infection clearly and reliably. Two questions stay open: what role clinicians keep, and who should fund genetic medicines with no market.
 

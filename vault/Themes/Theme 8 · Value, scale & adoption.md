@@ -5,7 +5,7 @@ tags: [theme/8, arc/technology-to-society]
 
 Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How technology becomes society* · theme 6 in the Bristol retreat sheet
 
-## A future we'd want
+## Questions for the future
 
 A future where biomaterials are valued for what they replace and what they add, such as sensing and adapting. Claims get a fair, repeatable test. Sustainability claims state what they are compared with. And repair and reuse are rewarded.
 

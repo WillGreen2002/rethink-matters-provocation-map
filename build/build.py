@@ -893,7 +893,7 @@ def write_vault():
              + (f" · theme {n['sheet']} in the Bristol retreat sheet" if n.get("sheet") and n["sheet"] != n["n"] else ""), ""]
         f = n.get("future")
         if f and f.get("text"):
-            L += ["## A future we'd want", "", f["text"], "", status_note(f)]
+            L += ["## Questions for the future", "", f["text"], "", status_note(f)]
             if f.get("evidence") == "thin":
                 L.append("*Drawn from the prompts only: no session notes yet.*")
             if f.get("drawsOn"):

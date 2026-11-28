@@ -5,7 +5,7 @@ tags: [theme/7, arc/technology-to-society]
 
 Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How technology becomes society* · theme 5 in the Bristol retreat sheet
 
-## A future we'd want
+## Questions for the future
 
 A future where waste becomes useful material, with its full cost counted. Biological manufacturing is designed to tolerate variable inputs. New materials are judged on whether they help or complicate reuse. And who gains and who pays are decided openly.
 

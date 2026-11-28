@@ -5,7 +5,7 @@ tags: [theme/1, arc/matter-to-life]
 
 Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How matter becomes life*
 
-## A future we'd want
+## Questions for the future
 
 A future where calling a material bio makes clear which meaning is in play rather than implying it is good, and where medicine and design each state openly what justifies a new material.
 

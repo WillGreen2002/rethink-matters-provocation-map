@@ -5,7 +5,7 @@ tags: [theme/2, arc/matter-to-life]
 
 Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How matter becomes life*
 
-## A future we'd want
+## Questions for the future
 
 A future where biology, materials science, engineering and design share a language and work together on design principles such as gradients and self-assembly, and where what counts as biomimicry, from precise mimicry to looser inspiration, is debated openly.
 
