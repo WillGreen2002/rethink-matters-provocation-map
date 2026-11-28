@@ -174,6 +174,12 @@
     // down to its prompts (from the Landscape; on the Regime the theme is already in the middle)
     if (app.level() === "landscape") body.append(h("button", { type: "button", class: "btn solid down-btn", "data-k": "down", onclick: () => app.drill(n.id) }, h("span", { "aria-hidden": "true" }, "↓ "), u.t("theme.down", { n: ts.length })));
     put(body, future(app, n.future, u.t("future.title"), "theme:" + n.id + ":future"));
+    const walks = app.walksThrough(n.n);
+    if (walks.length) {
+      body.append(h("h2", null, u.t("theme.walks")));
+      walks.forEach((w) => body.append(h("button", { type: "button", class: "rel-item walk-item", onclick: () => app.startThread(w.id) },
+        h("div", { class: "rt" }, h("span", null, w.title), h("span", { class: "ty faint" }, u.t("walks.stops", { n: w.steps.length }))))));
+    }
     body.append(h("h2", null, u.t("theme.prompts"), h("small", null, u.t("theme.prompts_sub", { n: ts.length }))));
     ts.forEach((t) => body.append(h("button", { type: "button", class: "rel-item slim", onclick: () => app.select(t.id) },
       h("div", { class: "rt" }, h("i", { class: t.open ? "open" : null, style: { "--c": app.colorOf(t.id) } }), h("span", null, t.label, t.open ? h("span", { class: "sr-only" }, " (" + u.t("topic.open") + ")") : null)))));
@@ -185,12 +191,6 @@
         const t = app.byId.get("th:" + c.theme);
         return h("button", { type: "button", class: "chip ro sm", onclick: () => app.select(t.id), title: u.t("theme.reach_tip", { n: c.count }) }, h("i", { class: "dot", style: { "--c": app.colorOf(t.id) } }), t.label);
       })));
-    }
-    const walks = app.walksThrough(n.n);
-    if (walks.length) {
-      body.append(h("h2", null, u.t("theme.walks")));
-      walks.forEach((w) => body.append(h("button", { type: "button", class: "rel-item walk-item", onclick: () => app.startThread(w.id) },
-        h("div", { class: "rt" }, h("span", null, w.title), h("span", { class: "ty faint" }, u.t("walks.stops", { n: w.steps.length }))))));
     }
     const exs = [...new Set(ts.flatMap((t) => app.exOf(t.id)))];
     if (exs.length) {
