@@ -14,13 +14,13 @@ tissue-engineering: { title: "Principles of Tissue Engineering", author: "Robert
 synthetic-aesthetics: { title: "Synthetic Aesthetics", author: "Alexandra Daisy Ginsberg, Jane Calvert, Pablo Schyfter, Alistair Elfick and Drew Endy", shelf: "How life becomes technology" }
 frankenstein: { title: "Frankenstein (annotated for scientists, engineers and creators)", author: "Mary Shelley, edited by David H. Guston, Ed Finn and Jason Scott Robert", shelf: "How life becomes technology" }
 bio-design: { title: "Bio Design", author: "William Myers", shelf: "How life becomes technology" }
-staying-with-the-trouble: { title: "Staying with the Trouble", author: "Donna Haraway", shelf: "How technology becomes society" }
-tools-for-conviviality: { title: "Tools for Conviviality", author: "Ivan Illich", shelf: "How technology becomes society" }
-maintenance: { title: "Maintenance", author: "Stewart Brand", shelf: "How technology becomes society" }
-your-life-is-manufactured: { title: "Your Life Is Manufactured", author: "Tim Minshall", shelf: "How technology becomes society" }
-great-reconfiguration: { title: "The Great Reconfiguration", author: "Frank W. Geels and Bruno Turnheim", shelf: "How technology becomes society" }
-thinking-in-systems: { title: "Thinking in Systems", author: "Donella H. Meadows", shelf: "How technology becomes society" }
-wizard-and-prophet: { title: "The Wizard and the Prophet", author: "Charles C. Mann", shelf: "How technology becomes society" }
-plastics: { title: "Plastics", author: "Imari Walker-Franklin and Jenna Jambeck", shelf: "How technology becomes society" }
-making-the-modern-world: { title: "Making the Modern World", author: "Vaclav Smil", shelf: "How technology becomes society" }
-scale: { title: "Scale", author: "Geoffrey West", shelf: "How technology becomes society" }
+staying-with-the-trouble: { title: "Staying with the Trouble", author: "Donna Haraway", shelf: "How technology is society" }
+tools-for-conviviality: { title: "Tools for Conviviality", author: "Ivan Illich", shelf: "How technology is society" }
+maintenance: { title: "Maintenance", author: "Stewart Brand", shelf: "How technology is society" }
+your-life-is-manufactured: { title: "Your Life Is Manufactured", author: "Tim Minshall", shelf: "How technology is society" }
+great-reconfiguration: { title: "The Great Reconfiguration", author: "Frank W. Geels and Bruno Turnheim", shelf: "How technology is society" }
+thinking-in-systems: { title: "Thinking in Systems", author: "Donella H. Meadows", shelf: "How technology is society" }
+wizard-and-prophet: { title: "The Wizard and the Prophet", author: "Charles C. Mann", shelf: "How technology is society" }
+plastics: { title: "Plastics", author: "Imari Walker-Franklin and Jenna Jambeck", shelf: "How technology is society" }
+making-the-modern-world: { title: "Making the Modern World", author: "Vaclav Smil", shelf: "How technology is society" }
+scale: { title: "Scale", author: "Geoffrey West", shelf: "How technology is society" }

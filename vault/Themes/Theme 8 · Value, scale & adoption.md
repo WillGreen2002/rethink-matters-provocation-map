@@ -3,7 +3,7 @@ tags: [theme/8, arc/technology-to-society]
 ---
 # Theme 8. Commercial value, scale and adoption
 
-Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How technology becomes society* · theme 6 in the Bristol retreat sheet
+Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How technology is society* · theme 6 in the Bristol retreat sheet
 
 ## Questions for the future
 

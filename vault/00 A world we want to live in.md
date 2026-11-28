@@ -29,7 +29,7 @@ Values used as a lens: #value/equity, #value/humility, #value/sustainability, #v
 - [[Theme 5 · Medical & long-term safety]]
 - [[Theme 6 · Extreme & constrained environments]]
 
-**How technology becomes society**
+**How technology is society**
 - [[Theme 7 · Circularity & waste]]
 - [[Theme 8 · Value, scale & adoption]]
 - [[Theme 9 · Governance, ownership & purpose]]

@@ -145,7 +145,7 @@ python -I build/build.py --review    # also write Excel-friendly review sheets t
   a *source* is what sits under a prompt on the Niche (its discussions, examples and books); a *note* is the panel that opens when you choose something.
 * **Landscape.** The question in the middle; the nine themes round it, **numbered 1 to 9 clockwise from the top right**. The numbers follow the ring, not the Bristol sheet (sheet
   theme 7 is map theme 5, and so on; `curation/` keeps the sheet's numbers; the ring order is `theme_order` in `curation/meta.yaml`).
-  The three chapters, the Bookshelf's shelves (*how matter becomes life, how life becomes technology, how technology becomes society*), are coloured bands with their names in
+  The three chapters, the Bookshelf's shelves (*how matter becomes life, how life becomes technology, how technology is society*), are coloured bands with their names in
   the gaps. Dashed lines join themes whose prompts are linked: at rest each theme's strongest tie and any tie of three links or more; point at a theme for all of them. All lines have one weight: the committee found strengths arbitrary.
   Click a theme for its note (with its future, where there is one); double-click it (or use Go down in its note) to go down to its prompts. A theme's note names the themes it is most connected to, from three links up (or its strongest ties, if none reaches three). Click the middle for a question or an answer.
   On a phone it opens as a compact portrait ring by default, with the Map / List switch at the top right to switch to cards.

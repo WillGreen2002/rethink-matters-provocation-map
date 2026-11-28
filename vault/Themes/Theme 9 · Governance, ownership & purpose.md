@@ -3,7 +3,7 @@ tags: [theme/9, arc/technology-to-society]
 ---
 # Theme 9. Governance, ownership and social purpose
 
-Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How technology becomes society* · theme 8 in the Bristol retreat sheet
+Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How technology is society* · theme 8 in the Bristol retreat sheet
 
 ## Questions for the future
 

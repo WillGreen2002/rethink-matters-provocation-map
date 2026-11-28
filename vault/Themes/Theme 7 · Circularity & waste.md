@@ -3,7 +3,7 @@ tags: [theme/7, arc/technology-to-society]
 ---
 # Theme 7. Circularity, waste and adaptive manufacturing
 
-Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How technology becomes society* · theme 5 in the Bristol retreat sheet
+Part of [[00 A world we want to live in|A world we want to live in]] · chapter: *How technology is society* · theme 5 in the Bristol retreat sheet
 
 ## Questions for the future
 
