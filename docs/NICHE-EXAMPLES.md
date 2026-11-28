@@ -137,7 +137,7 @@ Every row needs a type, name, public link, at least one known prompt and a statu
 | Hype vs evidence | `hype-vs-evidence` |
 | Societal inertia | `societal-inertia` |
 
-### Theme 9 · Ethics, ownership & purpose
+### Theme 9 · Governance, ownership & purpose
 
 | prompt | id |
 |---|---|

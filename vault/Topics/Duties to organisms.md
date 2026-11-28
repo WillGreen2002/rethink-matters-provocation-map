@@ -16,7 +16,7 @@ tags:
 
 > Duties towards the organisms used in research and manufacturing, including questions of sentience.
 
-**Theme:** [[Theme 9 · Ethics, ownership & purpose]]  
+**Theme:** [[Theme 9 · Governance, ownership & purpose]]  
 **Scale:** macro · **Working group:** WG2 · **Pillar:** governance · **Value:** humility
 
 ## Discussions behind this

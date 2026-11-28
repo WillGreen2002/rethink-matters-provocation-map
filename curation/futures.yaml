@@ -235,7 +235,7 @@ themes:
       edited_after_check: "Reworded after the committee found the earlier text confusing and dismissive, then checked again clause by clause."
 
   - theme: 8
-    label: "Ethics, ownership & purpose"   # theme 9 on the map
+    label: "Governance, ownership & purpose"   # theme 9 on the map
     status: draft
     text: "A future where biological origin is not mistaken for goodness, shared tools come with the means to use them safely, people keep control of implanted devices, and duties to organisms and ownership of genes and designs are weighed openly."
     draws_on:
